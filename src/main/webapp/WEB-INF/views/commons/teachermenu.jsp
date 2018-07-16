@@ -11,15 +11,12 @@
 <link href="${tmenu}" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-
-
-
 $(function(){
 	<%	Object login = session.getAttribute("tlogin");
- 	if(Objects.isNull(login)){%>
+		if(Objects.isNull(login)){%>
 			alert("로그인 해주세요.");
 			self.location = "/kinder/tlogin";
 	<%	}%>
@@ -28,8 +25,9 @@ $(function(){
 		$("#logoutIframe").attr('src', 'https://developers.kakao.com/logout');
 		setTimeout(function() {
 		location.href = "/kinder/logout"}, 1000);
-
 	})
+	
+	
 	
 	var currenturl = document.location.href;
 // 	alert(currenturl);
@@ -50,7 +48,7 @@ $(function(){
 	<div id="maindiv">
 	<ul>
 		<li></li>
-		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${tlogin.memname }</span> 선생님 <button class="logout" >LOGOUT</button></li>
+		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${tlogin.memname }</span> 선생님 <button class="logout">LOGOUT</button></li>
 	</ul>
 	</div>
 	<nav>
@@ -95,6 +93,5 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
-<iframe id='logoutIframe' style='display: none;' src="" ></iframe>
 </body>
 </html>

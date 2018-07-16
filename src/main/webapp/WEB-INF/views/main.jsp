@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Welcome Kindergarten~</title>
 <style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
 /* * {border: thin solid red} */
 body {
 	margin: 0;
@@ -14,6 +15,7 @@ body {
 	background-size: 100% 1800px;
 	background-position: center center;
  	background-color: #FFE70A; 
+ 	font-family: 'Jeju Gothic', serif;
 }
 
 #maindiv ul{
@@ -21,6 +23,7 @@ body {
 	text-align: center;
 }
 #maindiv ul li button{
+	font-family: 'Jeju Gothic', serif;
 	width: 350px;
 	height: 350px;
 	background-color: white;
@@ -51,13 +54,13 @@ body {
 <div id="maindiv">
 <ul style="margin-bottom: 60px;">
 	<li><img alt="logo" src="resources/images/logo.png" style="width: 500px;"></li>
-	<li style="font-size: 25px;">환영합니다! 프로그램 사용자를 선택해주세요.</li>
+	<li style="font-size: 30px;">환영합니다! 프로그램 사용자를 선택해주세요.</li>
 </ul>
 <ul>
 	<li style="display: inline; margin-right: 23px;">
-		<a href="tlogin"><button><img alt="teacher" src="resources/images/teacher.png" style="height: 250px;"><p style="font-size: 20px;">선생님</p></button></a></li>
+		<a href="tlogin"><button><img alt="teacher" src="resources/images/teacher.png" style="height: 250px;"><p style="font-size: 22px;">선생님</p></button></a></li>
 	<li style="display: inline; margin-left: 23px;">
-		<a href="glogin"><button><img alt="parents" src="resources/images/parents.png" style="height: 250px;"><p style="font-size: 20px;">보호자</p></button></a></li>
+		<a href="glogin"><button><img alt="parents" src="resources/images/parents.png" style="height: 250px;"><p style="font-size: 22px;">보호자</p></button></a></li>
 </ul>
 </div>
 </body>

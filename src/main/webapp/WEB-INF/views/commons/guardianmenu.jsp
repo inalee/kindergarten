@@ -11,6 +11,8 @@
 <link href="${gmenu}" rel="stylesheet" type="text/css" />
 </head>
 <body>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(function(){
@@ -19,6 +21,10 @@ $(function(){
 			alert("로그인 해주세요.");
 			self.location = "/kinder/glogin";
 	<%	}%>
+	
+	$(".logout").on("click", function(){
+		location.href = "/kinder/logout"
+	})
 	
 	$(".logout").on("click", function(){
 			$("#logoutIframe").attr('src', 'https://developers.kakao.com/logout');
@@ -104,6 +110,5 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
-<iframe id='logoutIframe' style='display: none;' src="" ></iframe>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.kinder.controller;
 
 import javax.inject.Inject;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kinder.domain.GuardianVO;
@@ -96,6 +95,52 @@ public class CommonController {
 		model.addAttribute("memberVO", vo);
 	}
 	
+
+	@RequestMapping(value = "/nLoginPost", method = RequestMethod.POST)
+	public ResponseEntity<String> nloginPost(HttpServletRequest r, HttpSession session) throws Exception {
+		
+		MemberVO vo = new MemberVO();
+		vo.setMemid(r.getParameter("memid"));
+		vo.setMemsort(Integer.parseInt(r.getParameter("memsort")));
+		
+		MemberVO mem = service.nlogin(vo);
+		
+		if(mem == null)
+		{		
+			if(dao.checkMemId((String)vo.getMemid()) == 1) {
+				session.setAttribute("exist", true);
+				return new ResponseEntity<>("success", HttpStatus.OK);			
+			}
+			return new ResponseEntity<>("fail", HttpStatus.OK);	
+		}
+		
+		
+		// 선생님인지 부모님인지 확인해야함
+		if(vo.getMemsort() == 0) {
+		session.setAttribute("glogin", mem);
+		}
+		else
+			session.setAttribute("tlogin", mem);
+		return new ResponseEntity<>("success", HttpStatus.OK);			
+		
+	}
+
+	@RequestMapping(value = "/naverJoinPost", method = RequestMethod.POST)
+	public ResponseEntity<String> naverJoinPost(HttpServletRequest r, HttpSession session, Model m){
+		
+		session.setAttribute("memid", r.getParameter("memid"));
+		session.setAttribute("memname", r.getParameter("memname"));
+		session.setAttribute("gender", r.getParameter("gender"));
+		session.setAttribute("profileimage", r.getParameter("profileimage"));
+		
+		
+		return new ResponseEntity<>(HttpStatus.OK);	
+	}
+	
+	@RequestMapping(value = "/naverJoinPost", method = RequestMethod.GET)
+	public void naverJoinGet(){
+	}
+	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception{
 		
@@ -133,10 +178,10 @@ public class CommonController {
 		System.out.println("주소:"+vo.getMemaddress());
 		dao.insertMember(vo);
 		
-		System.out.println("회원 추가 완료");
+		System.out.println("회원추가 완료");
 
 		if(memsort==0) {
-			//부모일 경우, 부모 table 정보 입력
+//			 부모일 경우, 부모 table 정보 입력
 			gv.setMemid(r.getParameter("memid"));
 			gv.setGrelation(r.getParameter("grelation"));
 			dao.insertGuardian(gv);
@@ -145,7 +190,7 @@ public class CommonController {
 			return "redirect:glogin";
 		}
 		else if(memsort==1) {
-			//선생님일 경우, 선생님 table 정보 입력
+			//선생님일경우, 선생님 table 정보 입력
 			tv.setKincode(Integer.parseInt(r.getParameter("kincode")));
 			tv.setMemid(r.getParameter("memid"));
 			tv.setTmaster(Integer.parseInt(r.getParameter("tmaster")));
@@ -177,7 +222,7 @@ public class CommonController {
 			return "tmain";
 		}else if (dao.checkMemId((String)hs.getAttribute("id")) == 1) {
 			hs.setAttribute("exist",true);
-			return "glogin";
+			return "tlogin";
 		}else {
 			hs.setAttribute("exist",false);
 			return "tJoinWithKakao";			
@@ -213,7 +258,7 @@ public class CommonController {
 			return "gmain";
 		}else if (dao.checkMemId((String)hs.getAttribute("id")) == 1) {
 			hs.setAttribute("exist",true);
-			return "tlogin";
+			return "glogin";
 		}else {
 			hs.setAttribute("exist",false);
 			return "gJoinWithKakao";	
@@ -234,5 +279,6 @@ public class CommonController {
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 	
 }

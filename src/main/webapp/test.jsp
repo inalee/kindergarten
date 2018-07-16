@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<p>안녕하세요 이인아입니다.</p>
 </head>
 <body>
 <iframe id='logoutIframe' style='' src="https://developers.kakao.com/logout"></iframe>

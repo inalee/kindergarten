@@ -1,0 +1,94 @@
+@charset "UTF-8";
+
+/* * {border: thin solid red} */
+body {
+	font: 18px/1.4 sans-serif;
+	margin: 0;
+	background-color: #fefefe; 
+}
+
+header {
+	background:url(../images/kinder2.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 830px;
+	background-color: #fefefe; 
+}
+
+#maindiv ul{
+	list-style: none;
+	text-align: center;
+	margin: 0;
+}
+.logout {
+	border-radius: 8px;
+	background-color: white;
+	outline: none;
+}
+
+.sub-menu-parent {
+	position: relative;
+	width: 185px;
+}
+
+.sub-menu { 
+  visibility: hidden; /* hides sub-menu */
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-2em);
+  z-index: -1;
+  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+  background: #fff7ac;
+}
+
+.sub-menu-parent:focus .sub-menu,
+.sub-menu-parent:focus-within .sub-menu,
+.sub-menu-parent:hover .sub-menu {
+  visibility: visible; /* shows sub-menu */
+  opacity: 1;
+  z-index: 1;
+  transform: translateY(0%);
+  transition-delay: 0s, 0s, 0.3s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+}
+
+/* presentational */
+nav {
+	
+}
+
+nav a {
+	color: black;
+	display: block;
+	padding: 0.5em 1em;
+	text-decoration: none;
+}
+
+nav a:hover {
+	color: #808080;
+}
+
+nav ul, nav ul li {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+nav>ul {
+	background: #FFE70A;
+	text-align: center;
+/* 	z-index: 5; */
+}
+
+nav>ul>li {
+	display: inline-block;
+	border-left: solid 1px #aaa;
+	margin-right: -5.6px;
+}
+
+nav>ul>li:first-child {
+	border-left: none;
+}
+
+

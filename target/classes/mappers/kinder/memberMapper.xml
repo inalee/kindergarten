@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
+  <mapper namespace="com.kinder.mapper.memberMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+  
+  <select id="getTime" resultType="string">
+  select now()
+  </select>
+  
+  
+  <!-- 회원가입시 member insert(공통) -->
+ <insert id="insertMember">
+  insert into member (memid,mempw,memname,memphone,memaddress,memgen,memage,memsort) values
+  (#{memid},#{mempw},#{memname},#{memphone},#{memaddress},#{memgen},#{memage},#{memsort})
+ </insert>
+
+<!-- 보호자 insert -->
+ <insert id="insertGuard">
+ insert into guardian (memid,grelation) values (#{memid},#{grelation});
+ </insert>
+  
+ 
+ <!-- 선생님 insert -->
+<insert id="insertTeacher">
+insert into teacher (memid,kincode,tmaster) values(#{memid},#{kincode},#{tmaster});
+ </insert>
+  
+ <select id="checkId" resultType="int">
+ select count(*) from member where memid = #{memid}
+ </select>
+  
+  <select id="login" resultType="MemberVO">
+    select memid, mempw, memname from member where memid = #{memid} and mempw = #{mempw} and memsort = #{memsort}
+  </select>
+
+  <select id="nlogin" resultType="MemberVO">
+    select memid, memname from member where memid = #{memid} and memsort = #{memsort}
+  </select>
+
+
+  </mapper>

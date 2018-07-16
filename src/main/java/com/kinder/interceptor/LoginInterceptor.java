@@ -24,7 +24,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(memberVO != null) {
 			logger.info("new login success");
 			System.out.println("받은 uri :"+request.getRequestURI());
-			if(request.getRequestURI().contains("glogin") || request.getRequestURI().contains("gLoginWithKakao")) {
+			if(request.getRequestURI().contains("glogin" ) || request.getRequestURI().contains("gLoginWithKakao")) {
 				session.setAttribute("glogin", memberVO);
 				response.sendRedirect("/kinder/gmain");
 			}

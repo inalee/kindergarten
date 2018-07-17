@@ -22,7 +22,8 @@ $(function(){
 	<%	}%>
 	
 	$(".logout").on("click", function(){
-		$("#logoutIframe").attr('src', 'https://developers.kakao.com/logout');
+		$("#logoutKakao").attr('src', 'https://developers.kakao.com/logout');
+		$("#logoutNaver").attr('src', 'http://nid.naver.com/nidlogin.logout');
 		setTimeout(function() {
 		location.href = "/kinder/logout"}, 1000);
 	})
@@ -48,7 +49,7 @@ $(function(){
 	<div id="maindiv">
 	<ul>
 		<li></li>
-		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${tlogin.memname }</span> 선생님 <button class="logout">LOGOUT</button></li>
+		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${tlogin.memname }</span> 선생님 <button class="logout" title="로그아웃">LOGOUT</button></li>
 	</ul>
 	</div>
 	<nav>
@@ -93,5 +94,7 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
+<iframe id='logoutKakao' style='display: none;' src="" ></iframe>
+<iframe id='logoutNaver' style='display: none;' src="" ></iframe>
 </body>
 </html>

@@ -23,11 +23,8 @@ $(function(){
 	<%	}%>
 	
 	$(".logout").on("click", function(){
-		location.href = "/kinder/logout"
-	})
-	
-	$(".logout").on("click", function(){
-			$("#logoutIframe").attr('src', 'https://developers.kakao.com/logout');
+		$("#logoutKakao").attr('src', 'http://developers.kakao.com/logout');
+		$("#logoutNaver").attr('src', 'http://nid.naver.com/nidlogin.logout');
 			setTimeout(function() {
 			location.href = "/kinder/logout"}, 1000);
 	})

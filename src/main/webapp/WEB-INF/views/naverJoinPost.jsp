@@ -8,6 +8,20 @@
 <title>Insert title here</title>
 <c:url var="join" value="resources/css/join.css"></c:url>
 <link href="${join}" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.photo {
+	overflow: hidden;
+    margin : 0 auto;
+    top: 50%;
+	width: 130px;
+	height: 130px;
+    overflow:hidden;
+    border-radius: 50%;
+}
+.profile {
+    margin-left: -22px;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 	function MemsortFunc(sel) {
@@ -58,7 +72,7 @@ input[type="radio"]{
 		<img alt="logo" src="resources/images/logo.png" style="width: 300px; z-index: 2; margin-top: -50px; margin-bottom: -15px;">
 	    <form action="/kinder/join" method="post" name="twin">
 	    	<input type="hidden" id="memid" name="memid" value="${memid}" />
-	        <img alt="" src="${profileimage}">
+	        <div class="photo"><img src="${profileimage}" width=auto height="130" class="profile" /></div>
 	        <table width="500" height="380" cellpadding="0" style="border-collapse:collapse; font-size:11pt; font-family: 'Nanum Gothic', sans-serif;">
 <!-- 	            <tr height="7"> -->
 <!-- 	                <td colspan="3"><hr /></td> -->

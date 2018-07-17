@@ -23,6 +23,7 @@ header {
 	border-radius: 8px;
 	background-color: white;
 	outline: none;
+	cursor: pointer;
 }
 
 .sub-menu-parent {

@@ -15,3 +15,4 @@
 # 파일 다운로드 후 실행 전 체크할 것
 1. tomcat path -> / 로 수정
 2. root-context.xml 에  Mybatis user / pw 자기 것으로 수정하기
+>>>>>>> refs/remotes/master/dev

@@ -22,7 +22,8 @@ $(function(){
 	<%	}%>
 	
 	$(".logout").on("click", function(){
-		$("#logoutIframe").attr('src', 'https://developers.kakao.com/logout');
+		$("#logoutKakao").attr('src', 'https://developers.kakao.com/logout');
+		$("#logoutNaver").attr('src', 'http://nid.naver.com/nidlogin.logout');
 		setTimeout(function() {
 		location.href = "/kinder/logout"}, 1000);
 	})
@@ -93,5 +94,7 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
+<iframe id='logoutKakao' style='display: none;' src="" ></iframe>
+<iframe id='logoutNaver' style='display: none;' src="" ></iframe>
 </body>
 </html>

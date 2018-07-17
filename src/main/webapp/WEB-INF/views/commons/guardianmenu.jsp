@@ -107,7 +107,7 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
-<iframe id='logoutKakao' style='display: ;' src="" ></iframe>
-<iframe id='logoutNaver' style='display: ;' src="" ></iframe>
+<iframe id='logoutKakao' style='display: none;' src="" ></iframe>
+<iframe id='logoutNaver' style='display: none;' src="" ></iframe>
 </body>
 </html>

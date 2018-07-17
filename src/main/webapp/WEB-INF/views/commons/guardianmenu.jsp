@@ -49,7 +49,7 @@ $(function(){
 	<div id="maindiv">
 	<ul>
 		<li></li>
-		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout">LOGOUT</button></li>
+		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout" title="로그아웃">LOGOUT</button></li>
 	</ul>
 	</div>
 	<nav>
@@ -107,7 +107,7 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
-<iframe id='logoutKakao' style='display: ;' src="" ></iframe>
-<iframe id='logoutNaver' style='display: ;' src="" ></iframe>
+<iframe id='logoutKakao' style='display: none;' src="" ></iframe>
+<iframe id='logoutNaver' style='display: none;' src="" ></iframe>
 </body>
 </html>

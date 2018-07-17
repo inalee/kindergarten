@@ -1,4 +1,4 @@
-package com.ina.domain;
+package com.kinder.domain;
 
 public class ChildrenVO {
 	private int ccode;

@@ -9,5 +9,8 @@
 </head>
 <body>
 <h1>출석체크</h1>
+<ul>
+	<li>별님반</li>
+</ul>
 </body>
 </html>

@@ -49,7 +49,7 @@ $(function(){
 	<div id="maindiv">
 	<ul>
 		<li></li>
-		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout">LOGOUT</button></li>
+		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout" title="로그아웃">LOGOUT</button></li>
 	</ul>
 	</div>
 	<nav>

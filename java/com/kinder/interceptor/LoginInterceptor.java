@@ -22,7 +22,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		Object memberVO = modelMap.get("memberVO");
 		if(memberVO != null) {
 			logger.info("new login success");
-
 			if(request.getRequestURI().contains("glogin") || request.getRequestURI().contains("gLoginWithKakao")) {
 				session.setAttribute("glogin", memberVO);
 				response.sendRedirect("/kinder/gmain");

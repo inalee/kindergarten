@@ -1,3 +1,4 @@
+<%@page import="java.util.Objects"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -10,14 +11,15 @@
 <link href="${glogin}" rel="stylesheet" type="text/css" />
 <c:if test="${exist eq true}">
 <script>
-alert("보호자로 가입되어 있습니다. 보호자로 로그인 해주세요")
+alert("선생님으로 가입되어 있습니다. 선생님으로 로그인 해주세요")
+location.href="/kinder/tlogin";
 </script>
+<% session.removeAttribute("exist"); %>
 </c:if>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-
-
 
 $(function(){
 
@@ -27,7 +29,20 @@ var join = '${jointest}';
 	}
 });
 
+var naverLogin = new naver.LoginWithNaverId(
+	{
+		clientId: "nZ6hOsd_vBKNiin5JPzT",
+		callbackUrl: "http://localhost:8080/gloginWithNaver.jsp",
+		isPopup: false  /* 팝업을 통한 연동처리 여부 */
+	}
+);
+window.addEventListener('load', function () {		
+/* 설정정보를 초기화하고 연동을 준비 */
+	naverLogin.init();
+
+})
 </script>
+
 
 <!-- Join & login for Kakao  -->
 <script type='text/javascript'>
@@ -70,6 +85,7 @@ var join = '${jointest}';
     
 </script>
 
+
 </head>
 <body>
 <div class="login-page">
@@ -82,9 +98,10 @@ var join = '${jointest}';
       <button>보호자 로그인</button>
     </form>
     <div class="snslogin" style="display: inline-block; width: 400px; margin-top: 16px;">
-    	<span style="float: left; width: 195px; margin-right: 5px;"><button class="naverlogin"></button></span>
-    	  	<span style="float: right; width: 195px; margin-left: 5px;"><a id="kakao-login-btn" href="javascript:loginWithKakao()">
-<button class="kakaologin" type="button"></button></a></span></div>
+    	<div id="naverIdLogin"><a id="naverIdLogin_loginButton" href="#" role="button"><span style="float: right; width: 195px; margin-left: 5px;"><button class="naverlogin"></button></span></a></div>
+    		<span style="float: right; width: 195px; margin-left: 5px;"><a id="kakao-login-btn" href="javascript:loginWithKakao()">
+<button class="kakaologin" type="button"></button></a></span>
+    </div>
     <div class="joinlink">
     	<span class="message">아직 회원이 아니신가요?</span> <span class="join"><a href="join">회원가입하기</a></span>
     </div>

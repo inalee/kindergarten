@@ -11,6 +11,8 @@
 <link href="${gmenu}" rel="stylesheet" type="text/css" />
 </head>
 <body>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(function(){
@@ -21,7 +23,8 @@ $(function(){
 	<%	}%>
 	
 	$(".logout").on("click", function(){
-			$("#logoutIframe").attr('src', 'https://developers.kakao.com/logout');
+		$("#logoutKakao").attr('src', 'http://developers.kakao.com/logout');
+		$("#logoutNaver").attr('src', 'http://nid.naver.com/nidlogin.logout');
 			setTimeout(function() {
 			location.href = "/kinder/logout"}, 1000);
 	})
@@ -104,6 +107,7 @@ $(function(){
 	   </ul>
 	 </nav>
 </header>
-<iframe id='logoutIframe' style='display: none;' src="" ></iframe>
+<iframe id='logoutKakao' style='display: ;' src="" ></iframe>
+<iframe id='logoutNaver' style='display: ;' src="" ></iframe>
 </body>
 </html>

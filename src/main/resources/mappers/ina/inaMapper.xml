@@ -4,42 +4,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
-  <mapper namespace="com.kinder.mapper.memberMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+  <mapper namespace="com.kinder.mapper.ina.inaMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
   
-  <select id="getTime" resultType="string">
-  select now()
-  </select>
-  
-  
+
   <!-- 회원가입시 member insert(공통) -->
- <insert id="insertMember">
-  insert into member (memid,mempw,memname,memphone,memaddress,memgen,memage,memsort) values
-  (#{memid},#{mempw},#{memname},#{memphone},#{memaddress},#{memgen},#{memage},#{memsort})
+ <insert id="ina_insertChild">
+  insert into children(gcode,kincode,id,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution) values 
+  (#{gcode},#{kincode},#{id},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution})
  </insert>
 
-<!-- 보호자 insert -->
- <insert id="insertGuard">
- insert into guardian (memid,grelation) values (#{memid},#{grelation});
- </insert>
-  
- 
- <!-- 선생님 insert -->
-<insert id="insertTeacher">
-insert into teacher (memid,kincode,tmaster) values(#{memid},#{kincode},#{tmaster});
- </insert>
-  
- <select id="checkId" resultType="int">
- select count(*) from member where memid = #{memid}
- </select>
-  
-  <select id="login" resultType="MemberVO">
-    select memid, mempw, memname from member where memid = #{memid} and mempw = #{mempw} and memsort = #{memsort}
-  </select>
+<!-- memid로 gcode 찾는 sql -->
+<select id="gcode_select" resultType="int">
+select gcode from guardian where memid=#{memid}
+</select>
 
-  <select id="nlogin" resultType="MemberVO">
-    select memid, memname,memaddress from member where memid = #{memid} and memsort = #{memsort}
-  </select>
+<!-- gcode 통해서 아이 찿기 -->
+<select id="search_mychild" resultType="ChildrenVO">
+select ccode,gcode,cname,cgen,caddress,cidnum,cage from children where gcode=#{gcode}
+</select>
 
+<!-- 입소대기점수 업데이트 -->
+<update id="update_rank">
+update children
+set crank=#{crank}
+where ccode=#{ccode};
+</update>
 
 <!-- 어린이집 검색하기 -->
 <select id="search_kinder" resultType="KindergartenVO">
@@ -70,5 +59,9 @@ select * from kindergarten
 select kinname,kinaddress from kindergarten where kincode=#{kincode}
 </select>
 
+<!-- 아이 검색 -->
+<select id="search_childname" resultType="String">
+select cname from children where ccode=#{ccode} 
+</select>
 
   </mapper>

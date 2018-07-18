@@ -12,8 +12,8 @@ public class ChildrenVO {
 	private int crank;
 	private String cstate;
 	private int cage;
-	private String cperson;
-	private String chobby;
+	private int pscode;
+	private int hcode;
 	private String cinterest;
 	private String ccaution;
 	public int getCcode() {
@@ -82,17 +82,17 @@ public class ChildrenVO {
 	public void setCage(int cage) {
 		this.cage = cage;
 	}
-	public String getCperson() {
-		return cperson;
+	public int getPscode() {
+		return pscode;
 	}
-	public void setCperson(String cperson) {
-		this.cperson = cperson;
+	public void setPscode(int pscode) {
+		this.pscode = pscode;
 	}
-	public String getChobby() {
-		return chobby;
+	public int getHcode() {
+		return hcode;
 	}
-	public void setChobby(String chobby) {
-		this.chobby = chobby;
+	public void setHcode(int hcode) {
+		this.hcode = hcode;
 	}
 	public String getCinterest() {
 		return cinterest;
@@ -107,7 +107,7 @@ public class ChildrenVO {
 		this.ccaution = ccaution;
 	}
 	public ChildrenVO(int ccode, int gcode, int kincode, int id, String cname, String cgen, String caddress,
-			String cidnum, int crank, String cstate, int cage, String cperson, String chobby, String cinterest,
+			String cidnum, int crank, String cstate, int cage, int pscode, int hcode, String cinterest,
 			String ccaution) {
 		super();
 		this.ccode = ccode;
@@ -121,16 +121,15 @@ public class ChildrenVO {
 		this.crank = crank;
 		this.cstate = cstate;
 		this.cage = cage;
-		this.cperson = cperson;
-		this.chobby = chobby;
+		this.pscode = pscode;
+		this.hcode = hcode;
 		this.cinterest = cinterest;
 		this.ccaution = ccaution;
 	}
 	
 	
-	
 	public ChildrenVO() {
 		
 	}
-
+	
 }

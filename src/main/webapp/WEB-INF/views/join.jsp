@@ -10,18 +10,30 @@
 <link href="${join}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	function MemsortFunc(sel) {
 
+	function findkinder(){
+	
+		var popUrl = "kinder_find";	//팝업창에 출력될 페이지 URL
+
+		var popOption = "width=720, height=220";    //팝업창 옵션(optoin)
+
+		window.open(popUrl,"",popOption);
+
+	}
+	
+	
+	function MemsortFunc(sel) {
+	
 		if (sel == 1) {
 			document.getElementById("grelation").disabled = true;
 			document.getElementById("tmaster").disabled = false;
 			document.getElementById("tmaster1").disabled = false;
-			document.getElementById("kincode").disabled = false;
+			document.getElementById("findkin").disabled = false;
 		} else if (sel == 0) {
 			document.getElementById("tmaster").disabled = true;
 			document.getElementById("tmaster1").disabled = true;
-			document.getElementById("kincode").disabled = true;
 			document.getElementById("grelation").disabled = false;
+			document.getElementById("findkin").disabled = true;
 		}
 
 	}
@@ -230,10 +242,8 @@ input[type="radio"]{
 	             <tr class="register" height="28">
 	                <td width="5%" align="center">*</td>
 	                <td width="20%">유치원 번호</td>
-	                <td><select name="kincode" style="height: 23px; width: 100px;" id="kincode" disabled="disabled">
-	               <option value="3"> 3</option>
-	               <option value="4"> 4</option>
-	            </select></td>
+	                <td><button type="button" id="findkin" onclick="findkinder()">유치원 찾기</button><input type="text" disabled="disabled" id="kincode" name="kincode" style="width: 350px;">
+	                <input type="hidden" id="kincode2" name="kincode2"></td>
 	            </tr>
 	             <tr height="7">
 	                <td colspan="3"><hr /></td>

@@ -1,0 +1,153 @@
+@charset "UTF-8";
+/* * {border: thin solid red;}  */
+
+.page_name {
+	margin: 0 auto;
+	background-color: #8e8e8e;
+	border-left: solid 4px #8e8e8e;
+	border-right: solid 4px #8e8e8e;
+	border-top: solid 4px #8e8e8e;
+	padding-bottom: 2px;
+	width:700px;
+}
+
+.page_name h2 {
+	margin: 0;
+	margin-bottom: -18px;
+	padding: 5px;
+	color: #ffffff;
+}
+
+.page_name .sp1 {
+	background-color: #ffffff;
+	font-size: 17px;
+	padding: 2px 5px 3px 5px;
+	cursor: default;
+}
+
+.page_name .sp2 {
+	background-color: #d7d7d7;
+	font-size: 17px;
+	padding: 2px 15px 3px 15px;
+	margin-left: -4px;
+}
+
+.page_name .sp2:hover {
+	background-color: #ffffff;
+	cursor: pointer;
+}
+
+.kinder_search {
+	margin: 0 auto;
+	border-bottom: solid 4px #8e8e8e;
+	border-left: solid 4px #8e8e8e;
+	border-right: solid 4px #8e8e8e;
+	width:700px;
+}
+
+.kinder_search ul {
+	list-style-type: none;
+	padding: 10px;
+	margin: 0;
+}
+
+.kinder_search ul p {
+	margin: 0;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.kinder_search ul li {
+	display: inline-block;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.kinder_search select {
+	outline: none;
+	height: 30px;
+	width: 100px;
+}
+
+.kinder_search input[type="text"] {
+	outline: none;
+	height: 26px;
+	width: 200px;
+/* 	margin-top: -5px; */
+}
+
+.kinder_search ul:first-child .basis:nth-last-child(1) {
+	height: 30px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.btn {
+    border: none;
+    color: white;
+    padding: 4px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 0;
+    margin-right:5px;
+/*     -webkit-transition-duration: 0.4s; */
+/*     transition-duration: 0.4s; */
+    cursor: pointer;
+    outline: none;
+}
+
+.search_btn {
+	float: right;
+	background-color: #ffffff;
+    color: black;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    -webkit-transition: all 0.3 ease;
+  	transition: all 0.3 ease;
+}
+
+.search_btn:hover {
+    color: #888888;
+    border: 1px solid #888888;
+}
+
+.search_btn:active {
+	box-shadow: 0 1px #666;
+  	transform: translateY(1px);
+}
+
+.kinder_search summary::-webkit-details-marker {
+    display: none;
+}
+
+.kinder_search details[open] summary:after {
+	content: "-";
+}
+
+.kinder_search summary {
+	color: #828282; 
+	font-size: 14px;
+	outline: none;
+}
+
+.kinder_search summary:after {
+	content: "+"; 
+	color: #828282; 
+	float: left; 
+	font-size: 20px; 
+	margin: -5px 6px 0 0; 
+	padding: 0; 
+	text-align: center; 
+	width: 20px;
+}
+
+.kinder_search details li {
+	font-size: 15px;
+	display: block;
+	margin: 5px;
+}
+
+.kinder_search details input[type="checkbox"] {
+	vertical-align: middle;
+}

@@ -1,5 +1,7 @@
 package com.kinder.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +23,12 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kinder.domain.GuardianVO;
+import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
+import com.kinder.domain.SearchCri;
 import com.kinder.domain.TeacherVO;
 import com.kinder.dto.LoginDTO;
+import com.kinder.persistence.KindergartenDAO;
 import com.kinder.persistence.MemberDAO;
 import com.kinder.service.MemberService;
 import com.mysql.cj.Session;
@@ -45,6 +50,11 @@ public class CommonController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main() {
 		return "main";
+	}
+	
+	@RequestMapping(value = "/kinder_find", method = RequestMethod.GET)
+	public String kinder_find() {
+		return "kinder_find";
 	}
 	
 	@RequestMapping(value = "/glogin", method = RequestMethod.GET)
@@ -169,6 +179,7 @@ public class CommonController {
 	@Inject MemberDAO dao;
 
 	
+	
 	@RequestMapping(value="/join", method = RequestMethod.POST)
 	public String insert_member(HttpServletRequest r,Model model,HttpSession session,MemberVO vo){
 		
@@ -192,7 +203,7 @@ public class CommonController {
 		}
 		else if(memsort==1) {
 			//선생님일경우, 선생님 table 정보 입력
-			tv.setKincode(Integer.parseInt(r.getParameter("kincode")));
+			tv.setKincode(Integer.parseInt(r.getParameter("kincode2")));
 			tv.setMemid(r.getParameter("memid"));
 			tv.setTmaster(Integer.parseInt(r.getParameter("tmaster")));
 			dao.insertTeacher(tv);
@@ -201,6 +212,7 @@ public class CommonController {
 		}
 		return "redirect:tlogin";
 	}
+	
 	
 	
 	@RequestMapping(value = "/memIdcheck", method = RequestMethod.GET)
@@ -281,5 +293,29 @@ public class CommonController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	
+	@Inject	KindergartenDAO kindao; 
+	
+	@RequestMapping(value="/search_kinder",method=RequestMethod.GET)
+	public  @ResponseBody List<KindergartenVO> search_kinder(SearchCri cri) {
+
+		
+		System.out.println(cri.getKinkindcode());
+		
+		List<KindergartenVO> kgv = kindao.searchKinder(cri);
+
+		return kgv;
+		
+	}
+
+	@RequestMapping(value="/search_kinder2",method=RequestMethod.GET)
+	public @ResponseBody KindergartenVO search_kinder2(@RequestParam("kincode") int kincode){
+			
+		KindergartenVO kgv = kindao.searchKinder2(kincode);
+		
+		return kgv;
+		
+	}
+	
 	
 }

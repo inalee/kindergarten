@@ -1,13 +1,13 @@
-package com.ina.domain;
+package com.kinder.domain;
 
 import java.util.Date;
 
 public class KindergartenVO {
 	private int kincode;
 	private String sido;
-	private String sigungu;
+	private int sigungucode;
 	private String kinname;
-	private String kinkind;
+	private int kinkindcode;
 	private String zipcode;
 	private String kinaddress;
 	private String kinphone;
@@ -21,7 +21,6 @@ public class KindergartenVO {
 	private boolean kinshuttle;
 	private String kinhome;
 	private Date kinpermit;
-	
 	public int getKincode() {
 		return kincode;
 	}
@@ -34,11 +33,11 @@ public class KindergartenVO {
 	public void setSido(String sido) {
 		this.sido = sido;
 	}
-	public String getSigungu() {
-		return sigungu;
+	public int getSigungucode() {
+		return sigungucode;
 	}
-	public void setSigungu(String sigungu) {
-		this.sigungu = sigungu;
+	public void setSigungucode(int sigungucode) {
+		this.sigungucode = sigungucode;
 	}
 	public String getKinname() {
 		return kinname;
@@ -46,11 +45,11 @@ public class KindergartenVO {
 	public void setKinname(String kinname) {
 		this.kinname = kinname;
 	}
-	public String getKinkind() {
-		return kinkind;
+	public int getKinkindcode() {
+		return kinkindcode;
 	}
-	public void setKinkind(String kinkind) {
-		this.kinkind = kinkind;
+	public void setKinkindcode(int kinkindcode) {
+		this.kinkindcode = kinkindcode;
 	}
 	public String getZipcode() {
 		return zipcode;
@@ -130,15 +129,15 @@ public class KindergartenVO {
 	public void setKinpermit(Date kinpermit) {
 		this.kinpermit = kinpermit;
 	}
-	public KindergartenVO(int kincode, String sido, String sigungu, String kinname, String kinkind, String zipcode,
+	public KindergartenVO(int kincode, String sido, int sigungucode, String kinname, int kinkindcode, String zipcode,
 			String kinaddress, String kinphone, String kinfax, int kinroom, int kinarea, int kinplay, int kinteacher,
 			int kinmax, int kincurrent, boolean kinshuttle, String kinhome, Date kinpermit) {
 		super();
 		this.kincode = kincode;
 		this.sido = sido;
-		this.sigungu = sigungu;
+		this.sigungucode = sigungucode;
 		this.kinname = kinname;
-		this.kinkind = kinkind;
+		this.kinkindcode = kinkindcode;
 		this.zipcode = zipcode;
 		this.kinaddress = kinaddress;
 		this.kinphone = kinphone;
@@ -153,11 +152,12 @@ public class KindergartenVO {
 		this.kinhome = kinhome;
 		this.kinpermit = kinpermit;
 	}
+
 	
 	
 	public KindergartenVO() {
 		
 	}
-
+	
 	
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>선생님 로그인</title>
 
 <c:url var="tlogin" value="resources/css/tlogin.css"></c:url>
 <link href="${tlogin}" rel="stylesheet" type="text/css" />

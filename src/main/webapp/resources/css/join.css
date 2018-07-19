@@ -112,3 +112,10 @@ body {
   width:100%;
   transition:800ms ease all;
 }
+
+#findkin {
+	background-color: #ffffff;
+	outline: none;
+	vertical-align: middle;
+	border-width: 1.3px;
+}

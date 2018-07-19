@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>네이버 아이디로 회원가입</title>
 <c:url var="join" value="resources/css/join.css"></c:url>
 <link href="${join}" rel="stylesheet" type="text/css" />
 <style type="text/css">
@@ -13,13 +13,14 @@
 	overflow: hidden;
     margin : 0 auto;
     top: 50%;
-	width: 130px;
-	height: 130px;
-    overflow:hidden;
-    border-radius: 50%;
-}
-.profile {
-    margin-left: -22px;
+    z-index: -1;
+ 	width: 130px; 
+ 	height: 130px; 
+    border-radius: 50% ; 
+	background-image: url('${profileimage}');
+	background-repeat: no-repeat;
+	background-size: auto 130px;
+	background-position: center center;
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -72,7 +73,7 @@ input[type="radio"]{
 		<img alt="logo" src="resources/images/logo.png" style="width: 300px; z-index: 2; margin-top: -50px; margin-bottom: -15px;">
 	    <form action="/kinder/join" method="post" name="twin">
 	    	<input type="hidden" id="memid" name="memid" value="${memid}" />
-	        <div class="photo"><img src="${profileimage}" width=auto height="130" class="profile" /></div>
+	        <div class="photo"></div>
 	        <table width="500" height="380" cellpadding="0" style="border-collapse:collapse; font-size:11pt; font-family: 'Nanum Gothic', sans-serif;">
 <!-- 	            <tr height="7"> -->
 <!-- 	                <td colspan="3"><hr /></td> -->

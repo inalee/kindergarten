@@ -105,6 +105,18 @@ public class CommonController {
 		model.addAttribute("memberVO", vo);
 	}
 	
+	/* 관리자 로그인 페이지 */
+	@RequestMapping(value = "/alogin", method = RequestMethod.GET)
+	public String aloginGET() {
+		return "alogin";
+	}
+	
+	@RequestMapping(value = "/amain", method = RequestMethod.GET)
+	public String amain() {
+		
+		return "amain";
+	}
+	
 
 	@RequestMapping(value = "/nLoginPost", method = RequestMethod.POST)
 	public ResponseEntity<String> nloginPost(HttpServletRequest r, HttpSession session) throws Exception {

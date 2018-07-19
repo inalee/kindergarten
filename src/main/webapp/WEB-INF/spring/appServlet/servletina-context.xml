@@ -21,6 +21,14 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+		<beans:bean id="logInterceptor" class="com.kinder.interceptor.LogInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/**/*"/>
+			<beans:ref bean="logInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	<!-- 파일 업로드에 사용 -->
 <!-- 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
 <!-- 		<beans:property name="maxUploadSize" value="10485760"></beans:property> -->

@@ -23,5 +23,5 @@ public interface MemberDAO {
 
    public int checkMemId(String memid);
 
-   
+   public TeacherVO seltecher(String memid);
 }

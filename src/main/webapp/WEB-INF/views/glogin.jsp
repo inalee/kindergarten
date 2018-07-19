@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>보호자 로그인</title>
 <c:url var="glogin" value="resources/css/glogin.css"></c:url>
 <link href="${glogin}" rel="stylesheet" type="text/css" />
 <c:if test="${exist eq true}">

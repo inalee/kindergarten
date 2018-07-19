@@ -82,8 +82,10 @@ public class CommonController {
 		model.addAttribute("memberVO", vo);
 	}
 	@RequestMapping(value = "/tmain", method = RequestMethod.GET)
-	public String teachermenu() {
-		
+	public String teachermenu(HttpSession session) {
+		MemberVO vo = (MemberVO)(session.getAttribute("tlogin"));
+		session.setAttribute("teacher", dao.seltecher(vo.getMemid()));
+			
 		return "tmain";
 	}
 	
@@ -103,6 +105,18 @@ public class CommonController {
 		
 		if(vo == null) return;
 		model.addAttribute("memberVO", vo);
+	}
+	
+	/* 관리자 로그인 페이지 */
+	@RequestMapping(value = "/alogin", method = RequestMethod.GET)
+	public String aloginGET() {
+		return "alogin";
+	}
+	
+	@RequestMapping(value = "/amain", method = RequestMethod.GET)
+	public String amain() {
+		
+		return "amain";
 	}
 	
 

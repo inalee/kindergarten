@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>통합검색</title>
 <c:url var="kinder_search" value="resources/hjcss/kinder_search.css"></c:url>
 <link href="${kinder_search}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -57,9 +57,7 @@ function search_btn() {
 		}
 		
 		});
-	
-	
-	
+
 }
 
 function selkinder(dat) {
@@ -72,22 +70,14 @@ function selkinder(dat) {
 		self.close();
 	});
 
-
-
 }
 </script>
 <style>
-
-
-
 #contain4{
-width: 1200px;
-position: relative; 
-margin: auto;
-
-
+	width: 1200px;
+	position: relative; 
+	margin: auto;
 }
-
 #mychild{
 
     border-collapse: collapse;
@@ -95,38 +85,26 @@ margin: auto;
  	font-size:11pt;
  	margin: auto; 
  	position: relative;
-
 }
-
 #mychild th{
-
-background-color: #D9E5FF;
+	background-color: #D9E5FF;
 }
-
-
 #mychild th, #mychild td {
     padding: 8px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
-
 #mychild tr:hover {
-background-color:#EBF3FB;
+	background-color:#EBF3FB;
 }
-
-
-
-
-  .my-hr3 {
-    border: 0;
-    height: 2px;
-    background: #D5D5D5;
-    width: 800px;
-    margin-top: 100px;
-    margin-bottom: 70px;
-
-
-  }
+.my-hr3 {
+  border: 0;
+  height: 2px;
+  background: #D5D5D5;
+  width: 800px;
+  margin-top: 100px;
+  margin-bottom: 70px;
+}
 
 </style>
 </head>
@@ -134,12 +112,11 @@ background-color:#EBF3FB;
 
 <div class="page_name">
 	<h2>통합검색</h2><br>
-	<span class="sp1">검색으로 찾기</span>
 </div>
 	
 <div class="kinder_search">
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-	<ul>
+	<ul style="margin-bottom: 0;">
 		<li class="basis"><p>시도</p>
 			<select title="시도 선택">
               <option disabled="disabled">== 선택 ==</option>
@@ -179,9 +156,8 @@ background-color:#EBF3FB;
 		<li class="basis">
           <input type="text" name="kinname"  id="kinname"  title="어린이집명을 입력하세요." placeholder="기관명" style="padding: 0;"/>
         </li><br>
-        <li class="basis">
+        <li class="basis" style="margin-top: 0px;">
          <button type="button" onclick="search_btn()" class="btn search_btn">검색</button>
-          
         </li>
 	</ul>
 </div>

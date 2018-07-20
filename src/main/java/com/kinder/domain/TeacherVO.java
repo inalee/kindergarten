@@ -3,8 +3,17 @@ package com.kinder.domain;
 public class TeacherVO {
 	private String memid;
 	private int kincode;
+	private String kinname;
 	private int tmaster;
 
+	public String getKinname() {
+		return kinname;
+	}
+
+	public void setKinname(String kinname) {
+		this.kinname = kinname;
+	}
+	
 	public String getMemid() {
 		return memid;
 	}
@@ -29,14 +38,17 @@ public class TeacherVO {
 		this.tmaster = tmaster;
 	}
 
-	public TeacherVO(String memid, int kincode, int tmaster) {
+	
+
+	
+	public TeacherVO(String memid, int kincode, String kinname, int tmaster) {
 		super();
 		this.memid = memid;
 		this.kincode = kincode;
+		this.kinname = kinname;
 		this.tmaster = tmaster;
 	}
 
-	
 	public TeacherVO() {
 		
 	}

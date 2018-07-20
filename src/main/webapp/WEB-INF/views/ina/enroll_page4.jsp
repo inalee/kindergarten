@@ -12,23 +12,6 @@
 <script type="text/javascript">
 
 
-function checkrank(){
-	if (confirm("입소 신청 이후, 해당 사항 확인을 위한 서류 제출이 반드시 7일 이내에 이루어져야 최종적으로 신청이 완료가 됩니다.이를 확인하셨습니까?") == true){   
-		location.href='enroll_page';
-	}else{   
-	    return;
-	}
-}
-
-
-function calculate(val){
-
-	  $("#totalnum").val(val);
-}
-
-
-
-
 </script>
 </head>
 <style>
@@ -111,36 +94,32 @@ margin-top: 180px;
 
 }
 
-table.type05 {
-	
-	width: 1100px;
+
+table.type04 {
+	width: 1050px;
+	font-size: 15px;
     border-collapse: separate;
     border-spacing: 1px;
     text-align: left;
     line-height: 1.5;
     border-top: 1px solid #ccc;
-    margin: 0 auto;
-    position: relative;
+  margin : auto;
+  position: relative;
+
 }
-
-
-table.type05 th {
-   width: 250px;
-    padding: 10px;
+table.type04 th {
+    width: 150px;
+    padding: 15px;
     font-weight: bold;
-    font-size: 16px;
-    vertical-align: top;
-    border-bottom: 1px solid #ccc;
-    background: #efefef;
-}
-table.type05 td {
-	 font-size: 15px;
-    padding: 10px;
     vertical-align: top;
     border-bottom: 1px solid #ccc;
 }
-
-
+table.type04 td {
+    width: 350px;
+    padding: 15px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
 
   .my-hr3 {
     border: 0;
@@ -163,7 +142,7 @@ text-align:center;
  	margin: auto; 
  	position: relative;
  	margin-top: 60px;
- 	margin-bottom: 40px;
+ 	margin-bottom: 70px;
 }
 
 
@@ -228,13 +207,31 @@ text-align:center;
           <li class="active">아동선택</li>
           <li class="active">추가정보입력</li>
           <li class="active">입소 어린이집 검색·선택</li>
-          <li>희망 입소일 선택</li>          
-          <li class="active"><p style="font-weight: bolder; font-size: 13px;">입소대기확정</li>
+          <li class="active"><p style="font-weight: bolder; font-size: 13px;">희망 입소일 선택</p></li>          
+          <li>입소대기확정</li>
   </ul>
 </div>
 <div id="contain2">
-<h4 style=" margin-left: 30px;">4.　　입소신청이 완료되었습니다. 아래 정보를 확인해주세요.</h4><br>
+<h4 style=" margin-left: 30px;">4.　　희망 입소일을 선택해주세요.</h4><br>
+<table class="type04">
+    <tr>
+        <th scope="row">아동 이름</th>
+        <td>${cname}</td>
+         <th scope="row">어린이집 이름</th>
+        <td>${kinder.kinname}</td>
+    </tr>
+    <tr>
+        <th scope="row">어린이집 주소</th>
+        <td>${kinder.kinaddress}</td>
+ 			 <th scope="row">입소 희망 날짜</th>
+        <td><input type="date"></td>
+    </tr>
 
+</table>
+	<div id="btnid">
+	<button class="button" type="button" onclick="location.href='enroll_page3'"><span id="before">이전 단계</span></button>　　
+	<button class="button" type="button" onclick="checkkind()"><span>입소 신청하기</span></button>
+	</div>
 </div>
 
 

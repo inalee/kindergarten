@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
+  <mapper namespace="com.kinder.mapper.ina.inaMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+  
+
+  <!-- 회원가입시 member insert(공통) -->
+ <insert id="ina_insertChild">
+  insert into children(gcode,kincode,id,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution) values 
+  (#{gcode},#{kincode},#{id},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution})
+ </insert>
+
+<!-- memid로 gcode 찾는 sql -->
+<select id="gcode_select" resultType="int">
+select gcode from guardian where memid=#{memid}
+</select>
+
+<!-- gcode 통해서 아이 찿기 -->
+<select id="search_mychild" resultType="ChildrenVO">
+select ccode,gcode,cname,cgen,caddress,cidnum,cage from children where gcode=#{gcode}
+</select>
+
+<!-- 입소대기점수 업데이트 -->
+<update id="update_rank">
+update children
+set crank=#{crank}
+where ccode=#{ccode};
+</update>
+
+<!-- 어린이집 검색하기 -->
+<select id="search_kinder" resultType="KindergartenVO">
+select * from kindergarten
+	<if test="sigungucode != null">
+		<choose>
+		<!-- kinkind 선택 / kinname은 선택 X -->
+		<when test="kinkindcode != 0 and kinname == ''">
+			where sigungucode=#{sigungucode} and kinkindcode=#{kinkindcode} 
+		</when>
+		<!-- kinkind 선택 / kinname 선택  -->
+		<when test="kinkindcode != 0 and kinname != ''">
+			where sigungucode=#{sigungucode} and kinkindcode=#{kinkindcode} and kinname like CONCAT('%',#{kinname},'%')
+		</when>
+		<!--  kinkind 선택 X / kinname 은 선택  -->
+			<when test="kinkindcode == 0 and kinname != ''">
+			where sigungucode=#{sigungucode} and kinname like CONCAT('%',#{kinname},'%')
+			</when>
+		<otherwise>
+			where sigungucode=#{sigungucode} order by kinkindcode
+		</otherwise>
+		</choose>
+	</if>
+</select>
+
+<!-- 어린이집 검색2 -->
+<select id="search_kinder2" resultType="KindergartenVO">
+select kinname,kinaddress from kindergarten where kincode=#{kincode}
+</select>
+
+<!-- 아이 검색 -->
+<select id="search_childname" resultType="String">
+select cname from children where ccode=#{ccode} 
+</select>
+
+  </mapper>

@@ -56,4 +56,8 @@ public MemberVO nLogin(MemberVO vo) throws Exception {
 	return sqlSession.selectOne(namespace + ".nlogin", vo);
 }
    
+@Override
+public TeacherVO seltecher(String memid) {
+	return sqlSession.selectOne(namespace + ".selteacher", memid);
+}
 }

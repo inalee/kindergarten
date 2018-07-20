@@ -48,6 +48,14 @@ body {
     -o-transform: scale(1.05);
     transform: scale(1.05);
 }
+.admin {
+	text-decoration: none;
+	font-family: sans-serif;
+	color: #999999;
+}
+.admin:hover {
+	color: #adadad;
+}
 </style>
 </head>
 <body>
@@ -61,6 +69,9 @@ body {
 		<a href="tlogin"><button><img alt="teacher" src="resources/images/teacher.png" style="height: 250px;"><p style="font-size: 22px;">선생님</p></button></a></li>
 	<li style="display: inline; margin-left: 23px;">
 		<a href="glogin"><button><img alt="parents" src="resources/images/parents.png" style="height: 250px;"><p style="font-size: 22px;">보호자</p></button></a></li>
+</ul>
+<ul style="margin-top: 50px;">
+	<li><a href="alogin" class="admin">관리자로 로그인</a></li>
 </ul>
 </div>
 </body>

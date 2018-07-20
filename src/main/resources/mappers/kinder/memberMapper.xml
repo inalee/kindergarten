@@ -37,7 +37,7 @@ insert into teacher (memid,kincode,tmaster) values(#{memid},#{kincode},#{tmaster
   </select>
 
   <select id="nlogin" resultType="MemberVO">
-    select memid, memname from member where memid = #{memid} and memsort = #{memsort}
+    select memid, memname,memaddress from member where memid = #{memid} and memsort = #{memsort}
   </select>
 
 
@@ -70,5 +70,9 @@ select * from kindergarten
 select kinname,kinaddress from kindergarten where kincode=#{kincode}
 </select>
 
+<!-- 선생님으로 로그인하면 어린이집 정보 가져오기  -->
+<select id="selteacher" resultType="TeacherVO">
+	select teacher.memid as memid, kindergarten.kinname as kinname, kindergarten.kincode from teacher, kindergarten where teacher.kincode = kindergarten.kincode and teacher.memid = #{memid};
+</select>
 
   </mapper>

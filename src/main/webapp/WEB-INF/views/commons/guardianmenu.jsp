@@ -40,7 +40,7 @@ $(function(){
 		logolink="../gmain"
 	}
 	
-	$("#maindiv>ul:first-child>li:first-child").append("<a href="+logolink+"><img alt='logo' src='resources/images/logo.png' style='width: 400px; margin-top: -20px; margin-bottom: -50px;'></a>");
+	$("#maindiv>ul:first-child>li:last-child").append("<a href="+logolink+"><img alt='logo' src='resources/images/logo.png' style='width: 400px; margin-top: -50px; margin-bottom: -20px;'></a>");
 	
 })
 </script>
@@ -48,8 +48,8 @@ $(function(){
 
 	<div id="maindiv">
 	<ul>
+		<li style="font-size: 15px; text-align: right; padding: 10px 15px 0 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout">LOGOUT</button></li>
 		<li></li>
-		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout">LOGOUT</button></li>
 	</ul>
 	</div>
 	<nav>

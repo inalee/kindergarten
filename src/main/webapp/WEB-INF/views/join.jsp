@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원가입</title>
 <c:url var="join" value="resources/css/join.css"></c:url>
 <link href="${join}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -242,8 +242,11 @@ input[type="radio"]{
 	             <tr class="register" height="28">
 	                <td width="5%" align="center">*</td>
 	                <td width="20%">유치원 번호</td>
-	                <td><button type="button" id="findkin" onclick="findkinder()">유치원 찾기</button><input type="text" disabled="disabled" id="kincode" name="kincode" style="width: 350px;">
-	                <input type="hidden" id="kincode2" name="kincode2"></td>
+	                <td>
+		                <button type="button" id="findkin" onclick="findkinder()">유치원 찾기</button>
+		                <input type="text" disabled="disabled" id="kincode" name="kincode" style="width: 270px;">
+		                <input type="hidden" id="kincode2" name="kincode2">
+	                </td>
 	            </tr>
 	             <tr height="7">
 	                <td colspan="3"><hr /></td>

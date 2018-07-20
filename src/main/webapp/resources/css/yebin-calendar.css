@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+
+.fa-chevron-right:before {
+	content: "\f054";
+}
+
+.fa-chevron-left:before {
+	content: "\f054";
+}
+
+.fc-title{
+	color: black;
+}
+
+.fc-time{
+	color: gray;
+}
+
+td .fc-highlight{
+	background-color: #ffee59;
+}
+
+td .alert-info{
+	background-color: #d6efff;
+}
+
+td .fc-event{
+	background-color: #ABDDFF;
+    border-color: #ABDDFF;
+    border-radius :3px;
+	border: 1px solid #ABDDFF;
+}
+
+
+/* .fc-event-container .fc-content { */
+/* 	background-color: #ABDDFF; */
+/*     border-color: #ABDDFF; */
+/*     border-radius :3px; */
+/*     border: 1px solid #ABDDFF; */
+/* } */
+
+.fc-event-container .fc-event {
+	background-color: #ABDDFF;
+    border-color: #ABDDFF;
+    border-radius :3px;
+    border: none;
+}
+
+
+body {
+	margin: 40px 10px;
+	padding: 0;
+	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 14px;
+}
+
+#calendar {
+	max-width: 1500px;
+	margin: 0 auto;
+}

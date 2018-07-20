@@ -57,16 +57,23 @@ function search_btn() {
 			else if(data[i].kinkindcode==7){
 				var kinkind = "협동";
 			}
-			$("#mychild").append("<tr id='trresult'><td><input type='hidden' id='kins' name='kins' value='"+data[i].kinname+"'><input type='radio' id='info_kinder' name='info_kinder' value='"+data[i].kincode+"'></td>"+
+			$("#mychild").append("<tr id='trresult'><td><input type='hidden' id='kins' name='kins' value='"+data[i].kinname+"'><input type='radio' id='info_kinder' onclick='javascript:calculate(this.value,kins.value)' name='info_kinder' value='"+data[i].kincode+"'></td>"+
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinmax+"명</td><td>"+data[i].kincurrent+"명</td>"+   
 				    "<td><a href='#'>[상세보기]</a></td></tr>");
 		}
 		
 		});
 	
-	
+
+}
+
+function calculate(val,val2){
+alert(val2);
 	
 }
+
+
+
 
 function checkkind(){
 	var data = $("#kins").val();
@@ -78,11 +85,6 @@ function checkkind(){
 	}
 }
 
-
-function calculate(val){
-
-	  $("#totalnum").val(val);
-}
 
 
 

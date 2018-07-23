@@ -230,7 +230,7 @@ text-align:center;
 </table>
 	<div id="btnid">
 	<button class="button" type="button" onclick="location.href='enroll_page3'"><span id="before">이전 단계</span></button>　　
-	<button class="button" type="button" onclick="checkkind()"><span>입소 신청하기</span></button>
+	<button class="button" type="button" onclick="location.href='enroll_page5'"><span>입소 신청하기</span></button>
 	</div>
 </div>
 

@@ -40,7 +40,7 @@ $(function(){
 		logolink="../gmain"
 	}
 	
-	$("#maindiv>ul:first-child>li:first-child").append("<a href="+logolink+"><img alt='logo' src='resources/images/logo.png' style='width: 400px; margin-top: -20px; margin-bottom: -50px;'></a>");
+	$("#maindiv>ul:first-child>li:last-child").append("<a href="+logolink+"><img alt='logo' src='resources/images/logo.png' style='width: 400px; margin-top: -50px; margin-bottom: -20px;'></a>");
 	
 })
 </script>
@@ -48,8 +48,8 @@ $(function(){
 
 	<div id="maindiv">
 	<ul>
+		<li style="font-size: 15px; text-align: right; padding: 10px 15px 0 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout">LOGOUT</button></li>
 		<li></li>
-		<li style="font-size: 15px; text-align: right; margin: 0 10px 10px 0;"><span style="font-weight: bold;">${glogin.memname }</span> 학부모님 <button class="logout">LOGOUT</button></li>
 	</ul>
 	</div>
 	<nav>
@@ -68,10 +68,8 @@ $(function(){
 	       	 <li><a href="/kinder/ina/gmenu4">내 아이 등록하기</a></li>
 	      	 <li><a href="/kinder/ina/gmenu5">공지사항</a></li>
 	      	 <li><a href="/kinder/ina/gmenu6">정기모집</a></li>
-	         <li><a href="/kinder/ina/gmenu7">신청방법</a></li>
 	         <li><a href="/kinder/ina/gmenu8">신청하기</a></li>
 	         <li><a href="/kinder/ina/gmenu9">대기현황</a></li>
-	         <li><a href="/kinder/ina/gmenu10">문의사항</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

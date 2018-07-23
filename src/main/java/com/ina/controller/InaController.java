@@ -126,8 +126,9 @@ public class InaController {
 	@RequestMapping(value = "/enroll_page4", method = RequestMethod.GET)
 	public String enroll_page4(HttpServletRequest request,Model model,HttpSession session) {
 		
-	int kincode = Integer.parseInt(request.getParameter("kincode"));
+		int kincode = Integer.parseInt(request.getParameter("kincode"));
 		model.addAttribute("kinder",kindao.searchKinder2(kincode));
+		session.setAttribute("kincode", kincode);
 		int ccode = (int)session.getAttribute("ccode");
 		model.addAttribute("cname",childdao.search_child(ccode));
 		return "/enroll_page4";
@@ -135,7 +136,7 @@ public class InaController {
 	
 	
 	@RequestMapping(value = "/enroll_page5", method = RequestMethod.GET)
-	public String enroll_page5() {
+	public String enroll_page5(HttpSession session) {
 		
 		return "/enroll_page5";
 	}	

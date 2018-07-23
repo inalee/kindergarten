@@ -32,7 +32,7 @@
 
 	<beans:bean id="loginInterceptor" class="com.kinder.interceptor.LoginInterceptor"></beans:bean>
 	<beans:bean id="authInterceptor" class="com.kinder.interceptor.AuthInterceptor"></beans:bean>
-	
+	<beans:bean id="logInterceptor" class="com.kinder.interceptor.LogInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
 			<mapping path="/tloginPost" />
@@ -45,6 +45,10 @@
 			<mapping path="/tmain"/>
 			<mapping path="/gmain"/>
 			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/**/*"/>
+			<beans:ref bean="logInterceptor"/>
 		</interceptor>
 	</interceptors>
 		

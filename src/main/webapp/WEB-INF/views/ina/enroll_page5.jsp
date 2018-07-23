@@ -228,12 +228,12 @@ text-align:center;
           <li class="active">아동선택</li>
           <li class="active">추가정보입력</li>
           <li class="active">입소 어린이집 검색·선택</li>
-          <li>희망 입소일 선택</li>          
+          <li  class="active">희망 입소일 선택</li>          
           <li class="active"><p style="font-weight: bolder; font-size: 13px;">입소대기확정</li>
   </ul>
 </div>
 <div id="contain2">
-<h4 style=" margin-left: 30px;">4.　　입소신청이 완료되었습니다. 아래 정보를 확인해주세요.</h4><br>
+<h4 style=" margin-left: 30px;">5.　　입소신청이 완료되었습니다. 아래 정보를 확인해주세요.</h4><br>
 
 </div>
 

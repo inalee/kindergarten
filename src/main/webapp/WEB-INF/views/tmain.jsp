@@ -9,5 +9,6 @@
 </head>
 <body>
 <h1>선생님 메인입니다.</h1>
+<h2>${teacher.kinname}</h2>
 </body>
 </html>

@@ -1,7 +1,10 @@
 package com.ina.persistence;
 
+import java.util.HashMap;
 import java.util.List;
 
+import com.ina.domain.EnrollBean;
+import com.ina.domain.EnrollVO;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.GuardianVO;
 import com.kinder.domain.MemberVO;
@@ -22,5 +25,12 @@ public interface ChildrenDAO {
    
    public String search_child(int ccode);
 	
+   public void enroll_kinder(EnrollBean eb);
+   
+   public EnrollVO result_enroll(EnrollBean eb);
+   
+   public int Kin_num(int ccode);
+   
+   public int same_kin(EnrollBean eb);
    
 }

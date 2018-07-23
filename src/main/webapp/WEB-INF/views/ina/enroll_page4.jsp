@@ -11,7 +11,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-
+$(function() {
+	var re = '${samekin}';
+	if(re=='same'){
+		alert("같은 어린이집에는 입소 대기 신청이 1회만 가능합니다.");
+		document.location.href="gmenu8";
+	}
+	});
+	
+	
 </script>
 </head>
 <style>
@@ -211,6 +219,10 @@ text-align:center;
           <li>입소대기확정</li>
   </ul>
 </div>
+<form action="enroll_kinder" method="post">
+        <input type="hidden" value="${ccode}" name="ccode">
+        <input type="hidden" value="${kincode}" name="kincode">
+        
 <div id="contain2">
 <h4 style=" margin-left: 30px;">4.　　희망 입소일을 선택해주세요.</h4><br>
 <table class="type04">
@@ -224,16 +236,17 @@ text-align:center;
         <th scope="row">어린이집 주소</th>
         <td>${kinder.kinaddress}</td>
  			 <th scope="row">입소 희망 날짜</th>
-        <td><input type="date"></td>
+        <td><input type="date" name="hopedate" required="required"></td>
+
     </tr>
 
-</table>
+        </table>
 	<div id="btnid">
 	<button class="button" type="button" onclick="location.href='enroll_page3'"><span id="before">이전 단계</span></button>　　
-	<button class="button" type="button" onclick="checkkind()"><span>입소 신청하기</span></button>
+	<button class="button" type="submit"><span>입소 신청하기</span></button>
 	</div>
 </div>
-
+</form>
 
 
 

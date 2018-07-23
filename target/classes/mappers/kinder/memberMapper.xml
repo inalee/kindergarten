@@ -32,7 +32,7 @@ insert into teacher (memid,kincode,tmaster) values(#{memid},#{kincode},#{tmaster
  </select>
   
   <select id="login" resultType="MemberVO">
-    select memid, mempw, memname from member where memid = #{memid} and mempw = #{mempw} and memsort = #{memsort}
+    select memid, mempw, memname,memaddress from member where memid = #{memid} and mempw = #{mempw} and memsort = #{memsort}
   </select>
 
   <select id="nlogin" resultType="MemberVO">

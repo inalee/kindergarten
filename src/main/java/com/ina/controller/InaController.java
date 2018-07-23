@@ -1,7 +1,10 @@
 package com.ina.controller;
 
-import java.util.Iterator;
-import java.util.List;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -9,29 +12,23 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import com.google.common.collect.Lists;
-
+import com.ina.domain.EnrollBean;
+import com.ina.domain.EnrollVO;
 import com.ina.persistence.ChildrenDAO;
 
 import com.kinder.domain.ChildrenVO;
-import com.kinder.domain.GuardianVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
-import com.kinder.domain.SearchCri;
-import com.kinder.domain.TeacherVO;
+
 import com.kinder.persistence.KindergartenDAO;
-import com.kinder.persistence.MemberDAO;
+
 
 /**
  * Handles requests for the application home page.
@@ -96,10 +93,16 @@ public class InaController {
 	
 	
 	@RequestMapping(value = "/enroll_page2", method = RequestMethod.POST)
-	public String enroll_page2_post(HttpServletRequest request,HttpSession session) {
+	public String enroll_page2_post(HttpServletRequest request,HttpSession session,Model model) {
 
 		int ccode = Integer.parseInt(request.getParameter("ccode"));
 		session.setAttribute("ccode", ccode);
+		
+		int re = childdao.Kin_num(ccode);
+		
+		if(re>=3) {
+			model.addAttribute("kinnum","over");
+		}
 		return "/enroll_page2";
 	}
 	
@@ -131,13 +134,41 @@ public class InaController {
 		session.setAttribute("kincode", kincode);
 		int ccode = (int)session.getAttribute("ccode");
 		model.addAttribute("cname",childdao.search_child(ccode));
+		
+		EnrollBean eb = new EnrollBean();
+		
+		eb.setCcode(ccode);
+		eb.setKincode(kincode);
+		int re = childdao.same_kin(eb);
+		
+		if(re!=0) {
+			model.addAttribute("samekin","same");
+		}
+		
 		return "/enroll_page4";
 	}	
 	
 	
+	/**
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "/enroll_page5", method = RequestMethod.GET)
-	public String enroll_page5(HttpSession session) {
+	public String enroll_page5(HttpSession session,Model model) {
+		int ccode = (int)session.getAttribute("ccode");
+		int kincode = (int)session.getAttribute("kincode");
+		EnrollBean eb = new EnrollBean();
+		eb.setCcode(ccode);
+		eb.setKincode(kincode);
+		EnrollVO ev = childdao.result_enroll(eb);
 		
+		model.addAttribute("re_enroll",ev);
+		
+		
+		
+		KindergartenVO kgv = kindao.searchKinder2(kincode);
+		model.addAttribute("kinname",kgv.getKinname());
+		model.addAttribute("cname",childdao.search_child(ccode));
 		return "/enroll_page5";
 	}	
 	
@@ -176,7 +207,7 @@ public class InaController {
 		
 		//임시값
 		cv.setKincode(10);
-		cv.setId(2);
+		cv.setClcode(5);
 		
 		childdao.insertChild(cv);
 		System.out.println("아이추가 완료");
@@ -185,7 +216,23 @@ public class InaController {
 	}
 
 	
+	@RequestMapping(value="/enroll_kinder",method=RequestMethod.POST)
+	public String enroll_kinder(HttpSession session,HttpServletRequest request) throws ParseException {
+		int ccode = (int)session.getAttribute("ccode");
+		int kincode = (int)session.getAttribute("kincode");
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = request.getParameter("hopedate");
+		Date hopedate = transFormat.parse(date);
+		
+		EnrollBean eb = new EnrollBean();
+		
+		eb.setCcode(ccode);
+		eb.setHopedate(hopedate);
+		eb.setKincode(kincode);
 
+		childdao.enroll_kinder(eb);
+		return "redirect:enroll_page5";
+	}
 	
 	
 	

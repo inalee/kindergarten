@@ -71,7 +71,7 @@ body {
 		<a href="glogin"><button><img alt="parents" src="resources/images/parents.png" style="height: 250px;"><p style="font-size: 22px;">보호자</p></button></a></li>
 </ul>
 <ul style="margin-top: 50px;">
-	<li><a href="alogin" class="admin">관리자로 로그인</a></li>
+	<li><a href="alogin" class="admin">관리자로 로그인</a></li>	
 </ul>
 </div>
 </body>

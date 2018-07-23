@@ -58,7 +58,7 @@ $(function(){
 	     <a href="#">업무관리</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/yebin/tmenu1">일정 관리</a></li>
-	         <li><a href="/kinder/yebin/tmenu2">보육일지작성</a></li>
+	         <li><a href="/kinder/yebin/tmenu2">체험학습 도우미</a></li>
 	         <li><a href="/kinder/yebin/tmenu3">월간계획안</a></li>
 	         <li><a href="/kinder/yebin/tmenu4">체험학습</a></li>
 	       </ul>

@@ -10,7 +10,13 @@
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-
+$(function() {
+var re = '${kinnum}';
+if(re=='over'){
+	alert("입소 신청 가능 횟수(3회)를 초과하였습니다.")
+	document.location.href="gmenu8";
+}
+});
 
 function checkrank(total){
  	

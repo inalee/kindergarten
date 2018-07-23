@@ -58,12 +58,13 @@ public static void kinderlog(HttpServletRequest request,
 	  loginmem = "glogin";
   }
 
-    if(!(Objects.isNull(key))) {
+    if(!(Objects.isNull(key)) && ((!Objects.isNull(session.getAttribute("glogin")) && key.equals("guardian")) || (!Objects.isNull(session.getAttribute("tlogin")) && key.equals("teacher")))) {
     	MemberVO vo = (MemberVO) session.getAttribute(loginmem);
 		MongoCollection<Document> col = MongoUtil.getCollection("kinder", "kinderlog");
 		Document d = new Document();
-		d.append(key, new Date() + "," + request.getRequestURI() + "," + vo.getMemid() + ","
-				+ vo.getMemname());
+		
+		d.append("div", key).append("date", new Date()).append("uri", request.getRequestURI())
+		.append("memid", vo.getMemid()).append("memname", vo.getMemname());
 		col.insertOne(d);
     }
 		

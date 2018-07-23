@@ -22,22 +22,22 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	    
 	    HttpSession session = request.getSession();   
 	    String uri = request.getRequestURI();
-	    if(uri.contains("tmain")) {
+	    if(uri.contains("tmain") || uri.contains("tmenu")) {
 	    	if(session.getAttribute("tlogin") == null){
 	       		logger.info("current user is not logined");
 	      
 	       		response.sendRedirect("/kinder/tlogin");
 	          return false;
 	        }
-	  }  
-	    if(uri.contains("gmain")) {
+	    }  
+	    if(uri.contains("gmain") || uri.contains("gmenu")) {
 		    if(session.getAttribute("glogin") == null){
 		       		logger.info("current user is not logined");
 		      
 		       		response.sendRedirect("/kinder/glogin");
 		          return false;
 		        }
-		  }  
+		}  
 	    return true;
 	}
 }

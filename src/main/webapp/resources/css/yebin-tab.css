@@ -1,0 +1,62 @@
+@charset "UTF-8";
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+
+body{
+  margin-top: 100px;
+  font-family: 'Jeju Gothic', serif;
+  line-height: 1.6
+}
+
+.tabContainer{
+  width: 90%;
+  margin: 0 auto;
+}
+ 
+ul.tabs{
+  font-family: 'Jeju Gothic', serif;
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+ul.tabs li{
+  font-family: 'Jeju Gothic', serif;
+  background: lightgray;
+  color: #222;
+  display: inline-block;
+  margin-top : 30px;
+  padding: 10px 30px;
+  cursor: pointer;
+}
+ 
+ul.tabs li.current{
+  background: #ABDDFF;
+  color: #222;
+}
+ 
+.tab-content{
+  font-family: 'Jeju Gothic', serif;
+  display: none;
+  background: white;
+  border: 5px solid #ABDDFF;
+  padding: 15px;
+  width: 100%;
+}
+ 
+.tab-content.current{
+  display: inherit;
+}
+
+/* 검색 */
+/* .tab-1-search{ */
+/* 	text-align: center; */
+/* } */
+
+/* .searchlabel{ */
+/* 	background-color: #FFE70A; */
+/* 	border: 1px solid; */
+/* 	padding: 3px; */
+/* 	margin: 5px; */
+/* } */
+
+

@@ -30,15 +30,18 @@
 <!-- 		<beans:constructor-arg value="C:\\sts-bundle\\upload"></beans:constructor-arg> -->
 <!-- 	</beans:bean> -->
 	
+	<beans:bean id="authInterceptor" class="com.kinder.interceptor.AuthInterceptor"></beans:bean>
 	<beans:bean id="logInterceptor" class="com.kinder.interceptor.LogInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
 			<mapping path="/**/*"/>
 			<beans:ref bean="logInterceptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/**/*"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
 	</interceptors>
-	
-	
 	<context:component-scan base-package="com.kinder.controller" />
 	<context:component-scan base-package="com.guangwoo.controller" />
 	<context:component-scan base-package="com.hojung.controller" />

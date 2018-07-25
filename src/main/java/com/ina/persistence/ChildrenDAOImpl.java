@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.ina.domain.EnrollBean;
+import com.ina.domain.EnrollVO;
 import com.kinder.domain.ChildrenVO;
 
 
@@ -45,5 +47,26 @@ public class ChildrenDAOImpl implements ChildrenDAO{
 	public String search_child(int ccode) {
 		return sqlSession.selectOne(namespace+".search_childname",ccode);
 	}
+	
+	@Override
+	public void enroll_kinder(EnrollBean eb) {
+		sqlSession.insert(namespace+".p_enroll",eb);
+	}
 
+	
+	@Override
+	public EnrollVO result_enroll(EnrollBean eb) {
+		return sqlSession.selectOne(namespace+".result_enroll",eb);
+	}
+	
+	
+	@Override
+	public int Kin_num(int ccode) {
+		return sqlSession.selectOne(namespace+".search_kinnum",ccode);
+	}
+	
+	@Override
+	public int same_kin(EnrollBean eb) {
+		return sqlSession.selectOne(namespace+".same_kinder",eb);
+	}
 }

@@ -4,7 +4,7 @@ public class ChildrenVO {
 	private int ccode;
 	private int gcode;
 	private int kincode;
-	private int id; //반번호
+	private int clcode;
 	private String cname;
 	private String cgen;
 	private String caddress;
@@ -34,14 +34,15 @@ public class ChildrenVO {
 	public void setKincode(int kincode) {
 		this.kincode = kincode;
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public String getCname() {
 		return cname;
+	}
+	public int getClcode() {
+		return clcode;
+	}
+	public void setClcode(int clcode) {
+		this.clcode = clcode;
 	}
 	public void setCname(String cname) {
 		this.cname = cname;
@@ -106,14 +107,17 @@ public class ChildrenVO {
 	public void setCcaution(String ccaution) {
 		this.ccaution = ccaution;
 	}
-	public ChildrenVO(int ccode, int gcode, int kincode, int id, String cname, String cgen, String caddress,
+
+	
+	
+	public ChildrenVO(int ccode, int gcode, int kincode, int clcode, String cname, String cgen, String caddress,
 			String cidnum, int crank, String cstate, int cage, int pscode, int hcode, String cinterest,
 			String ccaution) {
 		super();
 		this.ccode = ccode;
 		this.gcode = gcode;
 		this.kincode = kincode;
-		this.id = id;
+		this.clcode = clcode;
 		this.cname = cname;
 		this.cgen = cgen;
 		this.caddress = caddress;
@@ -126,8 +130,6 @@ public class ChildrenVO {
 		this.cinterest = cinterest;
 		this.ccaution = ccaution;
 	}
-	
-	
 	public ChildrenVO() {
 		
 	}

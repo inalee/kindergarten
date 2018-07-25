@@ -21,8 +21,7 @@
  <insert id="insertGuard">
  insert into guardian (memid,grelation) values (#{memid},#{grelation});
  </insert>
-  
- 
+
  <!-- 선생님 insert -->
 <insert id="insertTeacher">
 insert into teacher (memid,kincode,tmaster) values(#{memid},#{kincode},#{tmaster});
@@ -33,7 +32,7 @@ insert into teacher (memid,kincode,tmaster) values(#{memid},#{kincode},#{tmaster
  </select>
   
   <select id="login" resultType="MemberVO">
-    select memid, mempw, memname from member where memid = #{memid} and mempw = #{mempw} and memsort = #{memsort}
+    select memid, mempw, memname,memaddress from member where memid = #{memid} and mempw = #{mempw} and memsort = #{memsort}
   </select>
 
   <select id="nlogin" resultType="MemberVO">

@@ -14,7 +14,6 @@
 
 function search_btn() {
 	
-
 	var psigungu = $("#sigungu").val();
 	var pkinkind = $("#kinkind").val();
 	var pkinname = $("#kinname").val();
@@ -57,7 +56,9 @@ function search_btn() {
 			else if(data[i].kinkindcode==7){
 				var kinkind = "협동";
 			}
-			$("#mychild").append("<tr id='trresult'><td><input type='hidden' id='kins' name='kins' value='"+data[i].kinname+"'><input type='radio' id='info_kinder' name='info_kinder' value='"+data[i].kincode+"'></td>"+
+			
+
+			$("#mychild").append("<tr id='trresult'><td><input type='hidden' id='kins' name='kins'><input type='radio' id='info_kinder' onclick='javascript:calculate((\""+data[i].kinname+"\"))' name='info_kinder' value='"+data[i].kincode+"'></td>"+
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinmax+"명</td><td>"+data[i].kincurrent+"명</td>"+   
 				    "<td><a href='#'>[상세보기]</a></td></tr>");
 		}
@@ -65,12 +66,19 @@ function search_btn() {
 		});
 	
 	
-	
+
 }
 
+function calculate(val1){
+	$("#kins").val(val1);
+}
+
+
+
+
 function checkkind(){
-	var data = $("#kins").val();
-	var code = $("#info_kinder").val();
+	var data = 	$("#kins").val();
+	var code = $("input:radio[name='info_kinder']:checked").val();
 	if (confirm("선택하신 어린이집이 "+data+" 이(가) 맞습니까?") == true){   
 		location.href='enroll_page4?kincode='+code;
 	}else{   
@@ -78,11 +86,6 @@ function checkkind(){
 	}
 }
 
-
-function calculate(val){
-
-	  $("#totalnum").val(val);
-}
 
 
 

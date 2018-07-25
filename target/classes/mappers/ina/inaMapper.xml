@@ -9,8 +9,8 @@
 
   <!-- 회원가입시 member insert(공통) -->
  <insert id="ina_insertChild">
-  insert into children(gcode,kincode,id,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution) values 
-  (#{gcode},#{kincode},#{id},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution})
+  insert into children(gcode,kincode,clcode,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution) values 
+  (#{gcode},#{kincode},#{clcode},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution})
  </insert>
 
 <!-- memid로 gcode 찾는 sql -->
@@ -64,4 +64,24 @@ select kinname,kinaddress from kindergarten where kincode=#{kincode}
 select cname from children where ccode=#{ccode} 
 </select>
 
+<!--  아이의 입소신청 어린이집 갯수 출력 -->
+<select id="search_kinnum" resultType="int">
+select count(*) from enroll where ccode=#{ccode}
+</select>
+
+<!-- 같은 어린이집에 입소 못하게 count -->
+<select id="same_kinder" resultType="int">
+select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode}
+</select>
+
+
+<!-- 입소신청 프로시저 -->
+<insert id="p_enroll" statementType="CALLABLE">
+{call p_waiting(#{kincode},#{ccode},#{hopedate})}
+</insert>
+
+
+<select id="result_enroll" resultType="EnrollVO">
+select encode,statcode,date_add(enlog,interval +7 day) enlog from enroll where ccode=#{ccode} and kincode=#{kincode}
+</select>
   </mapper>

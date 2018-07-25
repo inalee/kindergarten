@@ -68,10 +68,8 @@ $(function(){
 	       	 <li><a href="/kinder/ina/gmenu4">내 아이 등록하기</a></li>
 	      	 <li><a href="/kinder/ina/gmenu5">공지사항</a></li>
 	      	 <li><a href="/kinder/ina/gmenu6">정기모집</a></li>
-	         <li><a href="/kinder/ina/gmenu7">신청방법</a></li>
 	         <li><a href="/kinder/ina/gmenu8">신청하기</a></li>
 	         <li><a href="/kinder/ina/gmenu9">대기현황</a></li>
-	         <li><a href="/kinder/ina/gmenu10">문의사항</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

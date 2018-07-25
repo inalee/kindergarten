@@ -25,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
 import com.ina.persistence.ChildrenDAO;
+import com.ina.persistence.EnrollManageDAO;
 import com.ina.persistence.WaitingDAO;
 import com.kinder.domain.ChildrenVO;
+import com.kinder.domain.ClassVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
-
+import com.kinder.domain.TeacherVO;
 import com.kinder.persistence.KindergartenDAO;
 
 
@@ -106,15 +108,19 @@ public class InaController {
 		model.addAttribute("wait1",waitdao.wait_list(gcode));
 		model.addAttribute("wait2",lm);
 		model.addAttribute("wait3",waitdao.wait_list3(gcode));
-		
+		model.addAttribute("wait5",waitdao.wait_list5(gcode));		
 		
 		
 		return "/gmenu9";
 	}
 
 	@RequestMapping(value = "/tmenu6", method = RequestMethod.GET)
-	public String tmenu6() {
-		
+	public String tmenu6(HttpSession session,Model model) {
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		model.addAttribute("kinlist",managedao.enroll_list(kincode));
+		model.addAttribute("kinlist2",managedao.enroll_list2(kincode));
+		model.addAttribute("kinlist3",managedao.enroll_list3(kincode));
 		return "/tmenu6";
 	}
 	
@@ -129,6 +135,68 @@ public class InaController {
 
 		return "/enroll_page2";
 	}	
+
+	@RequestMapping(value = "/upload", method = RequestMethod.GET)
+	public String upload() {
+		
+		return "/upload";
+	}
+	
+	@RequestMapping(value = "/manage", method = RequestMethod.GET)
+	public String manage() {
+		
+		return "/manage";
+	}
+		
+	@RequestMapping(value = "/manage2", method = RequestMethod.GET)
+	public String manage2(HttpSession session,Model model) {
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		
+		model.addAttribute("sellist",kindao.select_kinder_child(kincode));
+		
+		model.addAttribute("sellist2",kindao.select_class(kincode));
+
+		return "/manage2";
+	}
+	
+	@RequestMapping(value = "/update_class", method = RequestMethod.POST)
+	public String update_class(ChildrenVO cv) {
+		
+		kindao.update_class(cv);
+		
+		return "manage2";
+		
+	}
+	
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public void upload_post(HttpServletRequest request) {
+		int encode = Integer.parseInt(request.getParameter("encode"));
+		waitdao.update_state(encode);
+	}
+	
+	
+
+	@RequestMapping(value = "/status_modify", method = RequestMethod.POST)
+	public String status_modify(HttpServletRequest request,EnrollVO ev) {
+
+		
+		managedao.modify_status(ev);
+		
+		return "/tmenu6";
+	}
+	
+	@RequestMapping(value = "/final_enroll", method = RequestMethod.POST)
+	public String final_enroll(HttpServletRequest request,EnrollVO ev) {
+
+		
+		managedao.p_manage_enroll(ev);
+		
+		return "/tmenu6";
+	}
+	
+	
 	
 	
 	@RequestMapping(value = "/enroll_page2", method = RequestMethod.POST)
@@ -226,12 +294,12 @@ public class InaController {
 	@Inject	ChildrenDAO childdao;
 	@Inject	KindergartenDAO kindao;
 	@Inject WaitingDAO waitdao;
-	
+	@Inject EnrollManageDAO managedao;
 	
 	//아이 등록하는 메소드
 	@RequestMapping(value="/insertChild", method = RequestMethod.POST)
 	public String insert_Child(HttpServletRequest r,ChildrenVO cv){
-			
+
 		//주민번호 합쳐주기
 		String cidnum = r.getParameter("cidnum1")+r.getParameter("cidnum2");
 		cv.setCidnum(cidnum);
@@ -246,9 +314,20 @@ public class InaController {
 		int gcode = childdao.checkGid(memid);
 		cv.setGcode(gcode);
 		
-		//임시값
-		cv.setKincode(10);
-		cv.setClcode(5);
+		// kincode
+		if(cv.getCstate().equals("미재학")) {
+			cv.setKincode(0);
+		}
+		else {
+		int kincode = Integer.parseInt(r.getParameter("kincode2"));
+		cv.setKincode(kincode);
+		}
+
+		System.out.println("test:"+cv.getCstate());
+		
+
+//		//class 임시값
+//		cv.setClcode(5);
 		
 		childdao.insertChild(cv);
 		System.out.println("아이추가 완료");
@@ -275,5 +354,15 @@ public class InaController {
 		return "redirect:enroll_page5";
 	}
 	
+	@RequestMapping(value="/make_class",method=RequestMethod.POST)
+	public String search_kinder2(ClassVO cv){
+			
+		kindao.make_class(cv);
+		
+		return "manage2";
+		
+	}
+	
 
+	
 }

@@ -12,4 +12,9 @@ public interface WaitingDAO {
 	public List<Map<String, Object>> wait_list3(int gcode);
 	
 	public List<Map<String, Object>> wait_list4(int kincode);
+	
+	public List<Map<String, Object>> wait_list5(int gcode);
+	
+	public void update_state(int encode);
+	
 }

@@ -39,4 +39,16 @@ public class WaitingDAOImpl implements WaitingDAO{
 		return sqlSession.selectList(namespace+".wait_list4",kincode);
 	}
 	
+	@Override
+	public List<Map<String, Object>> wait_list5(int gcode) {
+		return sqlSession.selectList(namespace+".wait_list5",gcode);
+	}
+		
+	@Override
+	public void update_state(int encode) {
+		sqlSession.update(namespace+".update_state",encode);
+	}
+	
+	
+	
 }

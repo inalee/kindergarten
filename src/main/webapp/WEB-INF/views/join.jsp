@@ -241,10 +241,10 @@ input[type="radio"]{
 	            </tr>
 	             <tr class="register" height="28">
 	                <td width="5%" align="center">*</td>
-	                <td width="20%">유치원 번호</td>
+	                <td width="20%">유치원</td>
 	                <td>
 		                <button type="button" id="findkin" onclick="findkinder()">유치원 찾기</button>
-		                <input type="text" disabled="disabled" id="kincode" name="kincode" style="width: 270px;">
+		                <input type="text" disabled="disabled" id="kincode_1" name="kincode_1" style="width: 270px;">
 		                <input type="hidden" id="kincode2" name="kincode2">
 	                </td>
 	            </tr>

@@ -13,7 +13,15 @@
 <link href="${join}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+function findkinder(){
+	
+	var popUrl = "/kinder/kinder_find";	//팝업창에 출력될 페이지 URL
 
+	var popOption = "width=720, height=220";    //팝업창 옵션(optoin)
+
+	window.open(popUrl,"",popOption);
+
+}
 
 
 function inum_check(inum1,inum2) {
@@ -49,12 +57,14 @@ function inum_check(inum1,inum2) {
 //재학여부 판단 function
 function Kinsort(sel) {
   
-   if(sel=='ok'){
+   if(sel=='재학중'){
 
-      document.getElementById("kincode").disabled = false;
-   }else if(sel=='notok'){
+      document.getElementById("kincode_1").disabled = false;
+	  document.getElementById("findkin").disabled = false;
+   }else if(sel=='미재학'){
 
-	      document.getElementById("kincode").disabled = true;
+	      document.getElementById("kincode_1").disabled = true;
+	      document.getElementById("findkin").disabled = true;
    }
    
 }
@@ -198,9 +208,9 @@ input[type="radio"]{
 	            </tr>
 	             <tr class="register" height="30">
 	                <td width="5%" align="center">*</td>
-	                <td width="20%">유치원 재학 여부</td>
+	                <td width="20%">재학 여부</td>
 	               	                <td>
-	                       재학중<input type="radio" name="kindercheck" value="ok" onchange="Kinsort(this.value)"  required="required"/>&nbsp;&nbsp;&nbsp;미재학<input type="radio" name="kindercheck" onchange="Kinsort(this.value)" value="notok" required="required"/>
+	                       재학중<input type="radio" name="cstate" value="재학중" onchange="Kinsort(this.value)"  required="required"/>&nbsp;&nbsp;&nbsp;미재학<input type="radio" name="cstate" onchange="Kinsort(this.value)" value="미재학" required="required"/>
 	                </td>
 	            </tr>
 	             <tr height="7">
@@ -209,10 +219,11 @@ input[type="radio"]{
 	            <tr class="register" height="30">
 	                <td width="5%" align="center">*</td>
 	                <td width="20%">유치원 정보</td>
-	                   <td><select name="kincode" id="kincode" style="height: 23px; width: 100px;" >
-	               <option value="3">3</option>
-	               <option value="4">4</option>
-	            </select></td>
+	               	                <td>
+		                <button type="button" id="findkin" onclick="findkinder()">유치원 찾기</button>
+		                <input type="text" disabled="disabled" id="kincode_1" name="kincode_1" style="width: 400px; height: 20px;">
+		                <input type="hidden" id="kincode2" name="kincode2">
+	                </td>
 	            </tr>
 	            <tr height="7">
 	                <td colspan="3"><hr /></td>

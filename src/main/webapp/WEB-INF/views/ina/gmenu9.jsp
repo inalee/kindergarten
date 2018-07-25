@@ -8,9 +8,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+function uploadfile(data){
+
+	var popUrl = "upload?encode="+data;	//팝업창에 출력될 페이지 URL
+
+	var popOption = "width=650, height=150";    //팝업창 옵션(optoin)
+
+	window.open(popUrl,"",popOption);
+
+}
+
+
 $(document).ready(function() {
 	  
 	  var $wrapper = $('.tab-wrapper'),
@@ -139,6 +151,7 @@ background-color: #f5f5f5;
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    
 }
 
 #mychild tr:hover {
@@ -168,6 +181,129 @@ margin-left: 300px;
 #discript_2 li{
 list-style: square;
 }
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+	opacity: 0.8;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+
+.button3 {
+    background-color: #f44336;
+    color: white; 
+    border: 2px solid #f44336;
+}
+
+.button3:hover {
+    background-color: white;
+    color: black;
+}
+
+.button2 {
+    background-color: #008CBA;
+    color: white; 
+    border: 2px solid #008CBA;
+}
+
+.button2:hover {
+    background-color: white;
+    color: black;
+}
+
+#progress{
+
+margin: auto;
+margin-top: 20px;
+position: relative;
+float: none;
+}
+
+.stepBar {
+  position: relative;
+  list-style: none;
+  margin: 0 0 1em;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  *zoom: 1;
+}
+.stepBar .step {
+  position: relative;
+  float: left;
+  display: inline-block;
+  line-height: 40px;
+  padding: 0 40px 0 20px;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.stepBar .step:before, .stepBar .step:after {
+  position: absolute;
+  left: -15px;
+  display: block;
+  content: '';
+  background-color: white;
+  border-left: 4px solid #FFF;
+  width: 20px;
+  height: 20px;
+}
+.stepBar .step:after {
+  top: 0;
+  -moz-transform: skew(30deg);
+  -ms-transform: skew(30deg);
+  -webkit-transform: skew(30deg);
+  transform: skew(30deg);
+}
+.stepBar .step:before {
+  bottom: 0;
+  -moz-transform: skew(-30deg);
+  -ms-transform: skew(-30deg);
+  -webkit-transform: skew(-30deg);
+  transform: skew(-30deg);
+}
+.stepBar .step:first-child {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.stepBar .step:first-child:before, .stepBar .step:first-child:after {
+  content: none;
+}
+.stepBar .step:last-child {
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.stepBar .step.current {
+
+}
+.stepBar .step.current:before, .stepBar .step.current:after {
+ 
+}
+
+.stepBar.step5 .step {
+  width: 25%;
+}
+
+
 </style>
 </head>
 <body>
@@ -184,12 +320,26 @@ list-style: square;
 <br>
 <li><b>정해진 기일 이내에 입소 대기 순위 관련 서류를 제출하지 않을 시, 자동으로 입소 대기가 취소됩니다.</b></li>
 </ul>
+<br>
+<h4 style="margin-left: 10px; margin-top: 20px; ">※입소 신청 후 승인 절차</h4>
+<div id="progress">
+<ol class="stepBar step5">
+<li class="step current" style="background-color: #FAF4C0;">(추가)대기</li>
+<li class="step" style="background-color: #FFFF90;">자료제출</li>
+<li class="step current" style="background-color: #FFFF5A;">(추가)대기확정</li>
+<li class="step" style="background-color: #FFE400;">입소완료</li>
+</ol>
+ <p style="font-size: 13px; ">대기: 해당 어린이집의 현원이 다 차지 않아 입소 자리가 남은 경우
+ <br>추가 대기: 해당 어린이집의 입소 자리가 남지 않아 추가 대기가 필요한 경우</p>
 </div>
+</div>
+
 <div class="tab-wrapper">
   
   <ul class="tab-menu">
     <li class="active">전체보기</li>
     <li>대기현황</li>
+    <li>완료현황</li>
     <li>취소현황</li>
   </ul>
 	
@@ -218,11 +368,8 @@ list-style: square;
     <td>${i.status}</td>
   </tr>
 </c:forEach>
-
 </table>
-    
-    
-    </div>
+</div>
     <div>
           <table id="mychild">
   <tr>
@@ -231,14 +378,18 @@ list-style: square;
     <th>어린이집</th>
     <th>입소희망일</th>
 	<th>입소순번</th>
-	<th>입소우선순위 배점</th>
-    <th>상태</th>    
+	<th>우선순위 배점</th>
+    <th>상태</th> 
+    <th>자료제출기한</th>      
     <th>-</th>        
   </tr>
 
 <c:forEach items="${wait2}" var="i">
 <fmt:parseNumber var="ranking" value="${i.rank}" integerOnly="true" />
+<fmt:formatDate var="date_re2" value="${i.enlog}" pattern="yyyy-MM-dd HH:mm:ss" />
   <tr>
+  	<form>
+	<input type="hidden" id="encode" name="encode" value="${i.encode}">
     <td>${i.encode}</td>
 	<td>${i.cname}</td>
     <td>${i.kinname}</td>
@@ -246,13 +397,48 @@ list-style: square;
     <td> ${ranking}번째 / ${i.number}명</td>
     <td>${i.crank}</td>
     <td>${i.status}</td>
-    <td><a href="#">[자료제출]</a><a href="#">[신청취소]</a></td>
+    <td>${date_re2}</td>
+ 	<c:choose>
+ 	<c:when test="${i.status eq '대기' or i.status eq '추가대기'}">
+ 	<td><button type="button" class="button button2" onclick="uploadfile(encode.value)">자료제출</button><br>
+    <button class="button button3" type="button">신청취소</button></td>
+ 	</c:when>
+ 	<c:otherwise>
+ 	<td><button class="button button3" type="button">신청취소</button></td>
+ 	</c:otherwise>
+ 	</c:choose>
+ 	</form>
   </tr>
+
 </c:forEach>
 </table>
  
     </div>
-    <div>
+       <div>
+ <table id="mychild">
+  <tr>
+	<th>번호</th>
+    <th>아동 이름</th>
+    <th>어린이집</th>
+    <th>입소희망일</th>
+    <th>상태</th>    
+   
+  </tr>
+
+<c:forEach items="${wait5}" var="i">
+  <tr>
+    <td>${i.encode}</td>
+	<td>${i.cname}</td>
+    <td>${i.kinname}</td>
+    <td>${i.hopedate}</td>
+    <td>${i.status}</td>
+  </tr>
+</c:forEach>
+</table>
+   </div>
+   
+   
+       <div>
  <table id="mychild">
   <tr>
 	<th>번호</th>
@@ -279,17 +465,7 @@ list-style: square;
   </div><!-- //tab-content -->
   
 </div><!-- //tab-wrapper -->
-
-
 </div>
-
-
-<br><br>
-
-<br>
-
-
-<br><br>
 
 
 </body>

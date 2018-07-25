@@ -74,4 +74,27 @@ select kinname,kinaddress from kindergarten where kincode=#{kincode}
 	select teacher.memid as memid, kindergarten.kinname as kinname, kindergarten.kincode from teacher, kindergarten where teacher.kincode = kindergarten.kincode and teacher.memid = #{memid};
 </select>
 
+
+<!-- 특정 유치원에 반 생성 -->
+
+<insert id="insert_class">
+insert into class(kincode,clname,clage,agecode) values (#{kincode},#{clname},#{clage},#{agecode})
+</insert>
+
+<!-- 해당 유치원 가입 but 반 없는 아이 select  -->
+<select id="select_kinder_child" resultType="ChildrenVO">
+select ccode,cname,cgen,cage from children where kincode=#{kincode} and clcode is null
+</select>
+
+<!-- 해당 유치원에 있는 class 가져오기  -->
+<select id="kinder_class" resultType="ClassVO">
+select * from class where kincode=#{kincode}
+</select>
+
+<update id="update_class">
+update children
+set clcode=#{clcode}
+where ccode=#{ccode} and kincode=#{kincode}
+</update>
+
   </mapper>

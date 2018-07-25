@@ -94,96 +94,203 @@ margin-top: 30px;
 <div style="margin-left:130px">
 <!--   <div class="w3-padding" style="font-size: 30px; text-align: center; margin-top: 30px;">000 선생님을 위한,<br/><a style="font-size: 40px">체험학습 도우미 프로그램</a></div> -->
 
-<!-- Step 1 -->
+<!-- 1. 체험학습 분류 -->
   <div id="step1" class="w3-container step">
   	<p class="headline">Q. ${tlogin.memname} 선생님, 어떤 체험학습을 알아볼까요?</p>
   <hr style="border: 2px solid lightgray;"/>
-<div class="checkContainer">	
-  <ul>
-  
-  <li>
-    <input type="radio" id="a-option" name="selector" value="체험시설">
-    <label for="a-option" class="title">체험시설</label>
-    <div class="check"></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="b-option" name="selector" value="전시-공연시설">
-    <label for="b-option" class="title">전시/공연시설</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="c-option" name="selector" value="문화재-역사">
-    <label for="c-option" class="title">문화재/역사</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="d-option" name="selector" value="자연">
-    <label for="d-option" class="title">자연</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="e-option" name="selector" value="관공서">
-    <label for="e-option" class="title">관공서</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="f-option" name="selector" value="안전-의료-복지시설">
-    <label for="f-option" class="title">안전/의료/복지시설</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="g-option" name="selector" value="연구시설">
-    <label for="g-option" class="title">연구시설</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  
-  <li>
-    <input type="radio" id="h-option" name="selector">
-    <label for="h-option" class="title">전체</label>
-    <div class="check"></div>
-  </li>
-  
-</ul>
-</div>
+	<p><label class="explainLabel">대분류</label><select class="select" id="cateMain"><option>---대분류---</option></select></p>
+		
+	<div class="checkContainer">
+  		<ul id="radioBundle"></ul>
+	</div>
     <br/>
-    <button type="button" class="btNext" data-num=1>다음</button>
+    <button type="button" class="btNext" data-num=1 id="loadAreacodebt">다음</button>
   </div>
   
+  <script>
+// 1. 체험학습 분류 - 몽고DB에 저장된 program-category 가져오기 
+$(function() {
+		$.ajax({
+			url: '/kinder/getProgramCategory',
+			type: 'get',
+			dataType: 'json',
+			success: function(data) {
+			
+				var tempArr = [];
+				for(var i = 0; i < data.length; i++){
+					if(tempArr.length == 0){
+						tempArr.push(data[i].catemain);
+						$('#cateMain').append("<option>"+data[i].catemain+"</option>")
+					}else{
+						var dupliFlag = true;
+						for (var j = 0; j < tempArr.length; j++){
+							if(tempArr[j] == data[i].catemain){
+								dupliFlag = false;
+								break;
+						}
+					}
+						if(dupliFlag){
+						tempArr.push(data[i].catemain);
+						$('#cateMain').append("<option>"+data[i].catemain+"</option>")
+						}
+				}
+			}
+			}
+		})
+})
+
+// 1. 체험학습 분류 - 몽고DB에 저장된 program-category catesub 불러오기
+$(function() {
+	$('#cateMain').change(function() { 
+		$.ajax({
+			url: '/kinder/getProgramCategory',
+			type: 'get',
+			dataType: 'json',
+			success: function(data) {
+				$('#radioBundle').empty();
+				
+				for (var i in data){
+					if(data[i].catemain == $('#cateMain').val()){
+						$('#radioBundle').append("<li><input type='radio' id='"+i+"-option' name='selector' value='"+data[i].catesub+"-"+data[i].catemain+"' required>"+
+						"<label for='"+i+"-option' class='title'>"+data[i].catesub+"</label><div class='check'></div></li>")
+					}
+				}
+			}
+		})
+	})
+})
+</script>	
+ 
   
-<!-- Step 2 -->
+<!-- 2. 지역/날짜/인원 선택 -->
   <div id="step2" class="w3-container step">
     <p class="headline">Q. 지역/날짜/인원을 선택해주세요.</p>
  	 <hr style="border: 2px solid lightgray;"/>
  	 
- 	<p><label class="explainLabel">지역</label><select class="select" id="zone">
- 	<option>강원</option></select></p>
- 	<p><label class="explainLabel">도시</label><select class="select" id="city"><option>강동구</option></select></p>
+ 	<p><label class="explainLabel">지역</label><select class="select" id="zone" required><option>---지역---</option></select></p>
+ 	<p><label class="explainLabel">도시</label><select class="select" id="city" required><option>---도시---</option></select></p>
  	<p><label class="explainLabel">일정</label><input type="month" class="select" id="month" value="2018-08"></p>
  	<p><label class="explainLabel">인원</label><select class="select" id="person"><option>30명</option></select></p>
- 	 
- 	 
-    <button type="button" class="btNext" data-num=2 id="searchbt">검색!</button>
+    <button type="button" class="btNext" data-num=2 id="searchbt">검색</button>
   </div>
+  <script>
+// 2. 지역/날짜/인원 선택 - 몽고DB에 저장된 areacode 가져오기
+  $(function() {
+  	$('#loadAreacodebt').on('click', function() { 
+  		$.ajax({
+  			url: '/kinder/getAreacode',
+  			type: 'get',
+  			dataType: 'json',
+  			success: function(data) {
+  			
+  				var tempArr = [];
+  				for(var i = 0; i < data.length; i++){
+  					if(tempArr.length == 0){
+  						tempArr.push(data[i].zone);
+  						$('#zone').append("<option>"+data[i].zone+"</option>")
+  					}else{
+  						var dupliFlag = true;
+  						for (var j = 0; j < tempArr.length; j++){
+  							if(tempArr[j] == data[i].zone){
+  								dupliFlag = false;
+  								break;
+  						}
+  					}
+  						if(dupliFlag){
+  						tempArr.push(data[i].zone);
+  						$('#zone').append("<option>"+data[i].zone+"</option>")
+  						}
+  				}
+  			}
+  				
+  			}
+  		})
+  	})
+  })
+
+  // 2. 지역/날짜/인원 선택 - 로딩 후 city 선택지 가져오기 
+  $(function() {
+  	$('#zone').change(function() { 
+  		$.ajax({
+  			url: '/kinder/getAreacode',
+  			type: 'get',
+  			dataType: 'json',
+  			success: function(data) {
+  				$('#city').empty();
+  				$('#city').append("<option>---도시---</option>")
+  				for (var i in data){
+  					if(data[i].zone == $('#zone').val()){
+  						$('#city').append("<option>"+data[i].city+"</option>")
+  					}
+  				}		
+  			}
+  		})
+  })
+  })
+  </script>
 
 	
-
+<!-- 3. 체험학습 검색 -->
   <div id="step3" class="w3-container step">
-    <p class="headline">A. 체험학습 검색 결과</p>
+    <p class="headline">A. 체험학습 검색 결과 : 관심있는 장소를 모두 고른 뒤 [다음] 버튼을 눌러주세요.
+    	<br><button type="button" class="btNext" data-num=3>다음</button></p>
  	 <hr style="border: 2px solid lightgray;"/>
+ 	 	<ul id="noSearchedData"></ul>
 		<div class="square">
 			<div class="spin"></div>
 			<p>Loading..</p>
 		</div>
+	
+		<ul id="uldata" style="margin-left: 3%; padding-bottom: 3%"></ul>
+
+	
+	<script>
+	//조건에 맞춰 검색데이터 불러오는 ajax
+	$(function() {
+		$("#searchbt").on('click', function() {
+			$.ajax({
+				url: '/kinder/getSerchedResult',
+				type: 'get',
+				data: {
+					term : $('input[type=radio][name=selector]:checked').val(),
+					zone : $('#zone').val() == "---지역---" ? "지역없음" : $('#zone').val(),
+					city : $('#city').val() == "---도시---" ? "도시없음" : $('#city').val(),
+					date : $('#month').val(),
+					person : $('#person').val()
+				},
+				dataType: 'json',
+				success: function(data) {
+					if(!data || data =="" || data == null ||data ==" " || data =="[]"){
+						$(".square").remove();
+						$("#searchagain").remove();
+						$("#uldata").before("<p class='headline' id='searchagain' style='margin: 0 auto;'> 조건에 맞는 장소가 없습니다.. ㅠ.ㅠ </p>")
+						$("#uldata").before("<button type='button' class='btNext' data-num=2 id='seachagain'>조건 다시설정하기</button>")
+						$('#seachagain').on('click', function() {
+							openStep(event, 'step2', 'id2');
+						})
+					}else{
+						$(".square").remove();
+						$("#uldata").empty();
+						for(var i=0; i < data.length; i++){
+							$("#uldata").append("<table frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 600px; float: left; padding: 0.5%; border-radius: 4px'>"
+							+ "<tr><td colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
+							+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
+							+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a href='"+data[i].website+"' target='_blank' style='font-color: w3-blue'>홈페이지 방문하기</a></td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td>"+data[i].address+"</td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
+							+ "</table>")
+					}
+						
+					}
+				}
+		})
 		
-		<ul id="uldata"></ul>
-	<button type="button" class="btNext" data-num=3>다음</button>
- 	 <!-- 검색 조건 받아서 컨트롤러 작동시키기 -->
+	})
+			
+	})	
+	</script>
   </div>
 
   <div id="step4" class="w3-container step">
@@ -211,7 +318,6 @@ margin-top: 30px;
 </div>
 
 <script>
-
 //다음 버튼으로 탭 이동시키는 함수
 $(function() {
 	$('.btNext').on('click', function() { 
@@ -241,47 +347,6 @@ function openStep(evt, step, id) {
 //   evt.currentTarget.className += " w3-yellow";
 //   console.log(evt.currentTarget.className);
 }
-
-
-
-//몽고DB에 저장된 areacode 가져와서 뿌리는 ajax 
-$(function() {
-	$.ajax({
-		
-	})
-})
-
-//조건에 맞춰 검색데이터 불러오는 ajax
-$(function() {
-	$("#searchbt").on('click', function() {
-		$.ajax({
-			url: '/kinder/getSerchedResult',
-			type: 'get',
-			data: {
-				term : $('input[type=radio][name=selector]:checked').val(),
-				zone : $('#zone').val(),
-				city : $('#city').val(),
-				date : new Date($('#month').val()),
-				person : $('#person').val()
-			},
-			dataType: 'json',
-			success: function(data) {
-				$(".square").remove();
-				$("#uldata").append("<p class='headline'>Q. 관심있는 장소 골라보세요. </p>")
-				for(var i=0; i < data.length; i++){
-				$("#uldata").append("<li>"+data[i].title+"</li>");		
-				$("#uldata").append("<li><img src="+data[i].thumbnail_url+"></li>");		
-				$("#uldata").append("<li> 등록일: "+data[i].post_date+"</li>");	
-				$("#uldata").append("<li> 주소:"+data[i].address+"</li>");	
-				$("#uldata").append("<li> 웹사이트:"+data[i].website+"</li>");	
-				}
-			}
-	})
-	
-})
-		
-})	
-
 </script>
 
 </body>

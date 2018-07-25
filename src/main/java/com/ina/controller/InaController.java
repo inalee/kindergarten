@@ -5,6 +5,9 @@ package com.ina.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
 import com.ina.persistence.ChildrenDAO;
-
+import com.ina.persistence.WaitingDAO;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
@@ -68,7 +71,43 @@ public class InaController {
 	}
 	
 	@RequestMapping(value = "/gmenu9", method = RequestMethod.GET)
-	public String gmenu9() {
+	public String gmenu9(HttpSession session,Model model) {
+		
+		
+		MemberVO vo = (MemberVO)session.getAttribute("glogin");
+		int gcode = childdao.checkGid(vo.getMemid());
+		
+		List<Map<String, Object>> lm  = waitdao.wait_list2(gcode);
+		
+
+		
+
+		for (Map<String, Object> map : lm) {
+
+			int kincode = (int)map.get("kincode");
+			List<Map<String, Object>> lm2 = waitdao.wait_list4(kincode);
+			map.put("number", lm2.size());
+			
+			
+			String cname = (String)map.get("cname");
+			
+			for (Map<String, Object> map2 : lm2) {
+				String cname2 = (String)map2.get("cname");
+				
+				if (cname.equals(cname2)) {
+					map.put("rank", map2.get("ROWNUM"));
+				}
+			}
+			
+		}
+
+
+
+		model.addAttribute("wait1",waitdao.wait_list(gcode));
+		model.addAttribute("wait2",lm);
+		model.addAttribute("wait3",waitdao.wait_list3(gcode));
+		
+		
 		
 		return "/gmenu9";
 	}
@@ -186,6 +225,8 @@ public class InaController {
 	
 	@Inject	ChildrenDAO childdao;
 	@Inject	KindergartenDAO kindao;
+	@Inject WaitingDAO waitdao;
+	
 	
 	//아이 등록하는 메소드
 	@RequestMapping(value="/insertChild", method = RequestMethod.POST)
@@ -234,6 +275,5 @@ public class InaController {
 		return "redirect:enroll_page5";
 	}
 	
-	
-	
+
 }

@@ -139,13 +139,17 @@ font-size: 20px;
 
 .button:hover {opacity: 1}
 
+h2{
+padding-left: 50px;
+}
 
 </style>
 </head>
 <body>
 <div id="headdiv">
 
-<h3>■ 입소대기신청안내</h3>
+<h2>┃ 입소대기신청안내</h2>
+<br>
 <div id="discript">
 <p class="phead">어린이집 원장은 입소대기자를 실시간으로 공개하여 투명하게 운영하고</p>
 <p class="phead">어린이집 이용을 원하는 보호자는 시간·장소의 제한없이 온라인으로 입소대기 신청이 가능합니다.</p>

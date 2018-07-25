@@ -84,4 +84,45 @@ select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode}
 <select id="result_enroll" resultType="EnrollVO">
 select encode,statcode,date_add(enlog,interval +7 day) enlog from enroll where ccode=#{ccode} and kincode=#{kincode}
 </select>
-  </mapper>
+
+
+<!-- 대기목록 전체 -->
+<select id="wait_list" resultType="map">
+select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode}
+</select>  
+
+
+<!-- 취소된건 제외, 대기 목록 select -->
+<select id="wait_list2" resultType="map">
+<![CDATA[
+select e.encode,c.cname,k.kinname,k.kincode,e.hopedate,c.crank,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and e.statcode<5
+]]>
+</select>
+
+<!-- 취소된 대기목록 select -->
+<select id="wait_list3" resultType="map">
+<![CDATA[
+select e.encode,c.cname,k.kinname,e.hopedate,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and e.statcode>=5 and e.statcode!=7
+]]>
+</select>
+
+
+<!-- 어린이집 입소순번 쿼리....아직 대기중인 사람들 중(취소,입소완료처리된사람들은 xxx) 몇번쨰인지 rank 구하기... -->
+<select id="wait_list4" resultType="map">
+<![CDATA[
+SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,crank,enlog
+FROM
+(SELECT e.encode,c.cname,c.crank,e.enlog
+FROM
+enroll e,children c,kindergarten k where e.ccode=c.ccode and e.kincode=k.kincode  and statcode<5 and  k.kincode=#{kincode} order by crank desc,enlog
+) t,
+( SELECT @RNUM := 0 ) R
+
+]]>
+</select>
+
+
+</mapper>

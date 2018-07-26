@@ -12,6 +12,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+
+function del_enroll(pencode){
+	
+	if (confirm("신청을 취소하시겠습니까?") == true){   
+		$.post("del_enroll", {encode: pencode}, function(result){
+			alert("신청이 취소되었습니다.");
+			location.reload();
+	    });
+	
+	}else{   
+	    return;
+	}
+	
+}
+
 function uploadfile(data){
 
 	var popUrl = "upload?encode="+data;	//팝업창에 출력될 페이지 URL
@@ -401,10 +416,10 @@ float: none;
  	<c:choose>
  	<c:when test="${i.status eq '대기' or i.status eq '추가대기'}">
  	<td><button type="button" class="button button2" onclick="uploadfile(encode.value)">자료제출</button><br>
-    <button class="button button3" type="button">신청취소</button></td>
+    <button class="button button3" type="button" onclick="del_enroll(encode.value)">신청취소</button></td>
  	</c:when>
  	<c:otherwise>
- 	<td><button class="button button3" type="button">신청취소</button></td>
+ 	<td><button class="button button3" type="button" onclick="del_enroll(encode.value)">신청취소</button></td>
  	</c:otherwise>
  	</c:choose>
  	</form>

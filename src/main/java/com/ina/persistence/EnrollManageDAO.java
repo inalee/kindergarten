@@ -15,4 +15,7 @@ public interface EnrollManageDAO {
 	public List<Map<String, Object>> enroll_list3(int kincode);
 
 	public void p_manage_enroll(EnrollVO ev);
+	
+	public void enroll_delete(int encode);
+	
 }

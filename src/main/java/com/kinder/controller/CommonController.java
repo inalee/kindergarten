@@ -82,6 +82,7 @@ public class CommonController {
 		if(vo == null) return;
 		model.addAttribute("memberVO", vo);
 	}
+	
 	@RequestMapping(value = "/tmain", method = RequestMethod.GET)
 	public String teachermenu(HttpSession session) {
 		MemberVO vo = (MemberVO)(session.getAttribute("tlogin"));
@@ -90,6 +91,7 @@ public class CommonController {
 		return "tmain";
 	}
 	
+	
 	@RequestMapping(value = "/tlogin", method = RequestMethod.GET)
 	public void teachlogin(@ModelAttribute("dto") LoginDTO dto,HttpSession session,Model model) {
 		if(session.getAttribute("joincheck")=="joinok") {
@@ -97,6 +99,7 @@ public class CommonController {
 			model.addAttribute("jointest","ok");
 		}
 		session.setAttribute("joinsort", 1);
+
 	}
 	
 	@RequestMapping(value = "/tloginPost", method = RequestMethod.POST)
@@ -220,7 +223,13 @@ public class CommonController {
 			//선생님일경우, 선생님 table 정보 입력
 			tv.setKincode(Integer.parseInt(r.getParameter("kincode2")));
 			tv.setMemid(r.getParameter("memid"));
-			tv.setTmaster(Integer.parseInt(r.getParameter("tmaster")));
+			if(r.getParameter("tmaster").equals("0")) {
+				tv.setTmaster(false);
+			}
+			else {
+				tv.setTmaster(true);
+			}
+			
 			dao.insertTeacher(tv);
 			session.setAttribute("joincheck", "joinok");
 			return "redirect:tlogin";

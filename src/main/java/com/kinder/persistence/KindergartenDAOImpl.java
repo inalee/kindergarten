@@ -1,6 +1,7 @@
 package com.kinder.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
@@ -51,5 +52,20 @@ public class KindergartenDAOImpl implements KindergartenDAO{
 	@Override
 	public void update_class(ChildrenVO cv) {
 		sqlSession.selectOne(namespace+".update_class", cv);
+	}
+	
+	@Override
+	public List<Map<String, Object>> find_teacher(int kincode) {
+		return sqlSession.selectList(namespace+".teacher_find", kincode);
+	}
+
+	@Override
+	public List<Map<String, Object>> all_child(int kincode) {
+		return sqlSession.selectList(namespace+".all_child", kincode);
+	}
+	
+	@Override
+	public List<Map<String, Object>> class_info(int kincode) {
+		return sqlSession.selectList(namespace+".class_info", kincode);
 	}
 }

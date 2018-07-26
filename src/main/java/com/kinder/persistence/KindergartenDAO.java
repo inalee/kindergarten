@@ -1,6 +1,7 @@
 package com.kinder.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.ClassVO;
@@ -23,5 +24,10 @@ public interface KindergartenDAO {
    public List<ClassVO> select_class (int kincode);
    
    public void update_class (ChildrenVO cv);
+  
+   public List<Map<String, Object>> find_teacher (int kincode);
    
+   public List<Map<String, Object>> all_child (int kincode);
+   
+   public List<Map<String, Object>> class_info (int kincode);
 }

@@ -52,13 +52,7 @@ public class InaController {
 		
 		return "/gmenu4";
 	}
-	
-	@RequestMapping(value = "/gmenu5", method = RequestMethod.GET)
-	public String gmenu5() {
-		
-		return "/gmenu5";
-	}
-	
+
 	@RequestMapping(value = "/gmenu6", method = RequestMethod.GET)
 	public String gmenu6() {
 		
@@ -70,6 +64,19 @@ public class InaController {
 	public String gmenu8() {
 		
 		return "/gmenu8";
+	}
+	
+	@RequestMapping(value = "/regular", method = RequestMethod.GET)
+	public String regular() {
+		
+		return "/regular";
+	}
+	
+	
+	@RequestMapping(value = "/detail_regular_enroll", method = RequestMethod.GET)
+	public String detail_regular_enroll() {
+		
+		return "/detail_regular_enroll";
 	}
 	
 	@RequestMapping(value = "/gmenu9", method = RequestMethod.GET)
@@ -143,8 +150,10 @@ public class InaController {
 	}
 	
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
-	public String manage() {
-		
+	public String manage(HttpSession session,Model model) {
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		model.addAttribute("teacherlist",kindao.find_teacher(kincode));
 		return "/manage";
 	}
 		
@@ -153,9 +162,10 @@ public class InaController {
 		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
 		int kincode = tv.getKincode();
 		
-		model.addAttribute("sellist",kindao.select_kinder_child(kincode));
-		
+
 		model.addAttribute("sellist2",kindao.select_class(kincode));
+		model.addAttribute("sellist3",kindao.all_child(kincode));
+		model.addAttribute("sellist4",kindao.class_info(kincode));
 
 		return "/manage2";
 	}
@@ -326,8 +336,8 @@ public class InaController {
 		System.out.println("test:"+cv.getCstate());
 		
 
-//		//class 임시값
-//		cv.setClcode(5);
+
+		cv.setClcode(1);
 		
 		childdao.insertChild(cv);
 		System.out.println("아이추가 완료");
@@ -359,10 +369,18 @@ public class InaController {
 			
 		kindao.make_class(cv);
 		
-		return "manage2";
+		return "redirect:manage2";
 		
 	}
 	
-
+	@RequestMapping(value="/del_enroll",method=RequestMethod.POST)
+	public String del_enroll(HttpServletRequest request){
+			
+		int encode = Integer.parseInt(request.getParameter("encode"));
+		managedao.enroll_delete(encode);
+		
+		return "gmenu9";
+	}
+	
 	
 }

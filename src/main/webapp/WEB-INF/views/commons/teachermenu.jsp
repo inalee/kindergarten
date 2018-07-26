@@ -64,9 +64,11 @@ $(function(){
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">
-	     <a href="#">출석체크</a>
+	     <a href="#">원생 관리</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/jiwon/tmenu5">출석체크</a></li>
+	         <li><a href="/kinder/ina/manage">반 만들기</a></li>
+	         <li><a href="/kinder/ina/manage2">원생 관리</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

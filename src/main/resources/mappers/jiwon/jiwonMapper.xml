@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+    <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
+  <mapper namespace="com.jiwon.mapper.jiwonMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+
+  <select id="getClassList" resultType="ClassVO">
+  	<![CDATA[select clcode, clname, kincode from class where kincode=#{kincode}]]>
+  </select>
+   <select id="getClassMember" resultType="ChildrenVO">
+  		select ccode, cname from children where clcode = #{clcode}
+  </select>
+  </mapper>

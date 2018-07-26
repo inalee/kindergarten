@@ -49,4 +49,5 @@
 	<context:component-scan base-package="com.yebin.controller" />
 	<context:component-scan base-package="com.jiwon.controller" />
 	
+	
 </beans:beans>

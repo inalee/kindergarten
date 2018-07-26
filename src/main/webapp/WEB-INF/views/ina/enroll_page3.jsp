@@ -271,7 +271,6 @@ text-align:center;
 }
 
 
-}
 
 #contain3{
 width: 1200px;

@@ -11,6 +11,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+$(function(){
+	
+	var master = "${teacher.tmaster}";
+	
+	if(master=='false'){
+		alert("원장만 접근 가능한 메뉴입니다.");
+		location.href = "/kinder/tmain";
+	}
+	
+});
+
+
 </script>
 </head>
 <style>
@@ -22,58 +34,6 @@
   }
   
 
-  .progressbar {
-      counter-reset: step;
-  }
-  
-  .progressbar li {
-      list-style-type: none;
-      width: 20%;
-      float: left;
-      font-size: 12px;
-      position: relative;
-      text-align: center;
-      text-transform: uppercase;
-      color: #7d7d7d;
-  }
-  .progressbar li:before {
-      width: 30px;
-      height: 30px;
-      content: counter(step);
-      counter-increment: step;
-      line-height: 30px;
-      border: 2px solid #7d7d7d;
-      display: block;
-      text-align: center;
-      margin: 0 auto 10px auto;
-      border-radius: 50%;
-      background-color: white;
-  }
-  .progressbar li:after {
-      width: 100%;
-      height: 2px;
-      content: '';
-      position: absolute;
-      background-color: #7d7d7d;
-      top: 15px;
-      left: -50%;
-      z-index: -1;
-  }
-  .progressbar li:first-child:after {
-      content: none;
-  }
-  .progressbar li.active {
-      color: #4374D9;
-  }
-  .progressbar li.active:before {
-      border-color: #4374D9;
- 
-        
-  }
-  .progressbar li.active + li:after {
-      background-color: #4374D9;
- 
-  }
 
 #header{
 position: relative;
@@ -85,11 +45,10 @@ width: 1300px;
 
 #contain2{
 width: 1200px;
-
 /* border: solid thin black; */
 position: relative; 
 margin: auto;
-margin-top: 80px;
+margin-top: 60px;
 
 }
 
@@ -120,135 +79,6 @@ table.type04 td {
 }
 
 
-  .my-hr3 {
-    border: 0;
-    height: 2px;
-    background: #D5D5D5;
-    width: 800px;
-    margin-top: 70px;
-    margin-bottom: 70px;
-
-
-  }
-
-
-
-
-
-#btnid{
-
-text-align:center;
- 	margin: auto; 
- 	position: relative;
- 	margin-top: 60px;
- 	margin-bottom: 40px;
-}
-
-
-.button {
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #FAECC5;
-  border: none;
-  color: black;
-  text-align: center;
-  font-size: x-large;
-
-  width: 400px;
-  transition: all 0.1s;
-  cursor: pointer;
-
-  height: 60px;
-}
-
-.button span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
-
-.button span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
-
-
-#before:after {
-  content: '\00ab';
-}
-
-.button:hover span {
-  padding-right: 25px;
-}
-
-.button:hover span:after {
-  opacity: 1;
-  right: 0;	
-}
-
-
-}
-
-#contain3{
-width: 1200px;
-position: relative; 
-margin: auto;
-}
-
-#contain4{
-width: 1200px;
-position: relative; 
-margin: auto;
-
-
-}
-
-#mychild{
-
-    border-collapse: collapse;
-    width: 90%;
- 	font-size:11pt;
- 	margin: auto; 
- 	position: relative;
-
-}
-
-#mychild th{
-
-background-color: #D9E5FF;
-}
-
-
-#mychild th, #mychild td {
-    padding: 8px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
-#mychild tr:hover {
-background-color:#EBF3FB;
-}
-
-
-.button2 {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-  
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.1s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
 
 
 .button4 {
@@ -269,8 +99,8 @@ background-color:#EBF3FB;
 
 <form action="make_class" method="POST">
 <table class="type04">
+
     <tr>
-    
         <th scope="row">반이름</th>
         <td><input type="text" name="clname">
         <input type="hidden" name="kincode" value="${teacher.kincode}"></td>
@@ -288,9 +118,10 @@ background-color:#EBF3FB;
         <th scope="row">상세나이</th>
         <td><input type="text" name="clage"></td>
  			 <th scope="row" >담당 선생님</th>
-        <td><select style="width: 150px; height: 25px;">
-        <option>이인아</option>
-        <option>원호정</option>
+        <td><select style="width: 150px; height: 25px;" name="tecode">
+        <c:forEach items="${teacherlist}" var="i">
+        <option value="${i.tecode}">${i.memname}</option>
+        </c:forEach>
         </select></td>
     </tr>
     <tr>

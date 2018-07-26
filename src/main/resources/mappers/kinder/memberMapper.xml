@@ -71,19 +71,19 @@ select kinname,kinaddress from kindergarten where kincode=#{kincode}
 
 <!-- 선생님으로 로그인하면 어린이집 정보 가져오기  -->
 <select id="selteacher" resultType="TeacherVO">
-	select teacher.memid as memid, kindergarten.kinname as kinname, kindergarten.kincode from teacher, kindergarten where teacher.kincode = kindergarten.kincode and teacher.memid = #{memid};
+	select teacher.memid as memid, kindergarten.kinname as kinname, kindergarten.kincode,teacher.tmaster as tmaster from teacher, kindergarten where teacher.kincode = kindergarten.kincode and teacher.memid = #{memid};
 </select>
 
 
 <!-- 특정 유치원에 반 생성 -->
 
 <insert id="insert_class">
-insert into class(kincode,clname,clage,agecode) values (#{kincode},#{clname},#{clage},#{agecode})
+insert into class(kincode,clname,clage,agecode,tecode) values (#{kincode},#{clname},#{clage},#{agecode},#{tecode})
 </insert>
 
 <!-- 해당 유치원 가입 but 반 없는 아이 select  -->
 <select id="select_kinder_child" resultType="ChildrenVO">
-select ccode,cname,cgen,cage from children where kincode=#{kincode} and clcode is null
+select ccode,cname,cgen,cage from children where kincode=#{kincode} and clcode = 1
 </select>
 
 <!-- 해당 유치원에 있는 class 가져오기  -->
@@ -96,5 +96,26 @@ update children
 set clcode=#{clcode}
 where ccode=#{ccode} and kincode=#{kincode}
 </update>
+
+<!--  해당 어린이집에 있는 선생님 찾기 -->
+<select id="teacher_find" resultType="map">
+select t.tecode,m.memname from teacher t,member m,kindergarten k where t.kincode=k.kincode and m.memid=t.memid and k.kincode=#{kincode}
+</select>
+
+<!--  해당 어린이집 전체 아이 찾기 -->
+<select id="all_child" resultType="map">
+select c.ccode,c.cname,c.cgen,c.cage,c.caddress,cl.clname,m.memphone 
+from class cl,children c,kindergarten k,guardian g,member m 
+where cl.clcode=c.clcode and m.memid=g.memid and g.gcode=c.gcode and k.kincode=c.kincode and k.kincode=#{kincode} order by c.ccode;
+</select>
+
+
+<!--  반 정보 -->
+<select id="class_info" resultType="map">
+select cl.clcode,m.memname,cl.clname,clage,count(*) re
+from class cl,member m,teacher t,kindergarten k,children c where c.clcode=cl.clcode and cl.tecode=t.tecode 
+and m.memid=t.memid and k.kincode=cl.kincode and k.kincode=#{kincode}
+ group by cl.clcode,m.memname,cl.clname,cl.clage
+</select>
 
   </mapper>

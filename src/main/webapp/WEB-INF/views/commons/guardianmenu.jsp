@@ -66,7 +66,6 @@ $(function(){
 	     <a href="#">입소신청</a>
 	       <ul class="sub-menu">
 	       	 <li><a href="/kinder/ina/gmenu4">내 아이 등록하기</a></li>
-	      	 <li><a href="/kinder/ina/gmenu5">공지사항</a></li>
 	      	 <li><a href="/kinder/ina/gmenu6">정기모집</a></li>
 	         <li><a href="/kinder/ina/gmenu8">신청하기</a></li>
 	         <li><a href="/kinder/ina/gmenu9">대기현황</a></li>

@@ -9,8 +9,8 @@
 
   <!--아이 insert-->
  <insert id="ina_insertChild">
-  insert into children(gcode,kincode,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution,cstate) values 
-  (#{gcode},#{kincode},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution},#{cstate})
+  insert into children(gcode,kincode,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution,cstate,clcode) values 
+  (#{gcode},#{kincode},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution},#{cstate},#{clcode})
  </insert>
 
 <!-- memid로 gcode 찾는 sql -->
@@ -66,12 +66,12 @@ select cname from children where ccode=#{ccode}
 
 <!--  아이의 입소신청 어린이집 갯수 출력 -->
 <select id="search_kinnum" resultType="int">
-select count(*) from enroll where ccode=#{ccode}
+select count(*) from enroll where ccode=#{ccode} and (statcode != 5 or statcode != 6)
 </select>
 
 <!-- 같은 어린이집에 입소 못하게 count -->
 <select id="same_kinder" resultType="int">
-select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode}
+select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode} and (statcode != 5 or statcode != 6)
 </select>
 
 
@@ -89,7 +89,7 @@ select encode,statcode,date_add(enlog,interval +7 day) enlog from enroll where c
 <!-- 대기목록 전체 -->
 <select id="wait_list" resultType="map">
 select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
-and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} order by e.encode
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} order by e.encode 
 </select>  
 
 
@@ -97,7 +97,7 @@ and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} order by e.en
 <select id="wait_list2" resultType="map">
 <![CDATA[
 select e.encode,c.cname,k.kinname,k.kincode,e.hopedate,c.crank,s.status,date_add(e.enlog,interval +7 day) enlog from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
-and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode<5 or e.statcode=8) 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode<5 or e.statcode=8) order by e.encode
 ]]>
 </select>
 
@@ -105,7 +105,7 @@ and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statco
 <select id="wait_list3" resultType="map">
 <![CDATA[
 select e.encode,c.cname,k.kinname,e.hopedate,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
-and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode=5 or e.statcode=6)
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode=5 or e.statcode=6) order by e.encode
 ]]>
 </select>
 
@@ -181,7 +181,9 @@ update enroll set statcode=#{statcode} where encode=#{encode}
 {call p_manage_enroll(#{kincode},#{ccode})}
 </update>
 
-
+<update id="del_enroll">
+update enroll set statcode=5 where encode=#{encode}
+</update>
 
 
 

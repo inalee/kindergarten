@@ -15,7 +15,6 @@ public class ClassVO {
 
 
 	public ClassVO(int clcode, int tecode, int kincode, String clname, String clage, int agecode) {
-		super();
 		this.clcode = clcode;
 		this.tecode = tecode;
 		this.kincode = kincode;

@@ -5,6 +5,9 @@ package com.ina.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
 import com.ina.persistence.ChildrenDAO;
-
+import com.ina.persistence.EnrollManageDAO;
+import com.ina.persistence.WaitingDAO;
 import com.kinder.domain.ChildrenVO;
+import com.kinder.domain.ClassVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
-
+import com.kinder.domain.TeacherVO;
 import com.kinder.persistence.KindergartenDAO;
 
 
@@ -47,13 +52,7 @@ public class InaController {
 		
 		return "/gmenu4";
 	}
-	
-	@RequestMapping(value = "/gmenu5", method = RequestMethod.GET)
-	public String gmenu5() {
-		
-		return "/gmenu5";
-	}
-	
+
 	@RequestMapping(value = "/gmenu6", method = RequestMethod.GET)
 	public String gmenu6() {
 		
@@ -67,15 +66,68 @@ public class InaController {
 		return "/gmenu8";
 	}
 	
+	@RequestMapping(value = "/regular", method = RequestMethod.GET)
+	public String regular() {
+		
+		return "/regular";
+	}
+	
+	
+	@RequestMapping(value = "/detail_regular_enroll", method = RequestMethod.GET)
+	public String detail_regular_enroll() {
+		
+		return "/detail_regular_enroll";
+	}
+	
 	@RequestMapping(value = "/gmenu9", method = RequestMethod.GET)
-	public String gmenu9() {
+	public String gmenu9(HttpSession session,Model model) {
+		
+		
+		MemberVO vo = (MemberVO)session.getAttribute("glogin");
+		int gcode = childdao.checkGid(vo.getMemid());
+		
+		List<Map<String, Object>> lm  = waitdao.wait_list2(gcode);
+		
+
+		
+
+		for (Map<String, Object> map : lm) {
+
+			int kincode = (int)map.get("kincode");
+			List<Map<String, Object>> lm2 = waitdao.wait_list4(kincode);
+			map.put("number", lm2.size());
+			
+			
+			String cname = (String)map.get("cname");
+			
+			for (Map<String, Object> map2 : lm2) {
+				String cname2 = (String)map2.get("cname");
+				
+				if (cname.equals(cname2)) {
+					map.put("rank", map2.get("ROWNUM"));
+				}
+			}
+			
+		}
+
+
+
+		model.addAttribute("wait1",waitdao.wait_list(gcode));
+		model.addAttribute("wait2",lm);
+		model.addAttribute("wait3",waitdao.wait_list3(gcode));
+		model.addAttribute("wait5",waitdao.wait_list5(gcode));		
+		
 		
 		return "/gmenu9";
 	}
 
 	@RequestMapping(value = "/tmenu6", method = RequestMethod.GET)
-	public String tmenu6() {
-		
+	public String tmenu6(HttpSession session,Model model) {
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		model.addAttribute("kinlist",managedao.enroll_list(kincode));
+		model.addAttribute("kinlist2",managedao.enroll_list2(kincode));
+		model.addAttribute("kinlist3",managedao.enroll_list3(kincode));
 		return "/tmenu6";
 	}
 	
@@ -90,6 +142,71 @@ public class InaController {
 
 		return "/enroll_page2";
 	}	
+
+	@RequestMapping(value = "/upload", method = RequestMethod.GET)
+	public String upload() {
+		
+		return "/upload";
+	}
+	
+	@RequestMapping(value = "/manage", method = RequestMethod.GET)
+	public String manage(HttpSession session,Model model) {
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		model.addAttribute("teacherlist",kindao.find_teacher(kincode));
+		return "/manage";
+	}
+		
+	@RequestMapping(value = "/manage2", method = RequestMethod.GET)
+	public String manage2(HttpSession session,Model model) {
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		
+
+		model.addAttribute("sellist2",kindao.select_class(kincode));
+		model.addAttribute("sellist3",kindao.all_child(kincode));
+		model.addAttribute("sellist4",kindao.class_info(kincode));
+
+		return "/manage2";
+	}
+	
+	@RequestMapping(value = "/update_class", method = RequestMethod.POST)
+	public String update_class(ChildrenVO cv) {
+		
+		kindao.update_class(cv);
+		
+		return "manage2";
+		
+	}
+	
+	
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public void upload_post(HttpServletRequest request) {
+		int encode = Integer.parseInt(request.getParameter("encode"));
+		waitdao.update_state(encode);
+	}
+	
+	
+
+	@RequestMapping(value = "/status_modify", method = RequestMethod.POST)
+	public String status_modify(HttpServletRequest request,EnrollVO ev) {
+
+		
+		managedao.modify_status(ev);
+		
+		return "/tmenu6";
+	}
+	
+	@RequestMapping(value = "/final_enroll", method = RequestMethod.POST)
+	public String final_enroll(HttpServletRequest request,EnrollVO ev) {
+
+		
+		managedao.p_manage_enroll(ev);
+		
+		return "/tmenu6";
+	}
+	
+	
 	
 	
 	@RequestMapping(value = "/enroll_page2", method = RequestMethod.POST)
@@ -186,11 +303,13 @@ public class InaController {
 	
 	@Inject	ChildrenDAO childdao;
 	@Inject	KindergartenDAO kindao;
+	@Inject WaitingDAO waitdao;
+	@Inject EnrollManageDAO managedao;
 	
 	//아이 등록하는 메소드
 	@RequestMapping(value="/insertChild", method = RequestMethod.POST)
 	public String insert_Child(HttpServletRequest r,ChildrenVO cv){
-			
+
 		//주민번호 합쳐주기
 		String cidnum = r.getParameter("cidnum1")+r.getParameter("cidnum2");
 		cv.setCidnum(cidnum);
@@ -205,9 +324,20 @@ public class InaController {
 		int gcode = childdao.checkGid(memid);
 		cv.setGcode(gcode);
 		
-		//임시값
-		cv.setKincode(10);
-		cv.setClcode(5);
+		// kincode
+		if(cv.getCstate().equals("미재학")) {
+			cv.setKincode(0);
+		}
+		else {
+		int kincode = Integer.parseInt(r.getParameter("kincode2"));
+		cv.setKincode(kincode);
+		}
+
+		System.out.println("test:"+cv.getCstate());
+		
+
+
+		cv.setClcode(1);
 		
 		childdao.insertChild(cv);
 		System.out.println("아이추가 완료");
@@ -234,6 +364,23 @@ public class InaController {
 		return "redirect:enroll_page5";
 	}
 	
+	@RequestMapping(value="/make_class",method=RequestMethod.POST)
+	public String search_kinder2(ClassVO cv){
+			
+		kindao.make_class(cv);
+		
+		return "redirect:manage2";
+		
+	}
+	
+	@RequestMapping(value="/del_enroll",method=RequestMethod.POST)
+	public String del_enroll(HttpServletRequest request){
+			
+		int encode = Integer.parseInt(request.getParameter("encode"));
+		managedao.enroll_delete(encode);
+		
+		return "gmenu9";
+	}
 	
 	
 }

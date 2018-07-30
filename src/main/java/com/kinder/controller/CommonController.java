@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kinder.domain.ClassVO;
 import com.kinder.domain.GuardianVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
@@ -31,7 +31,6 @@ import com.kinder.dto.LoginDTO;
 import com.kinder.persistence.KindergartenDAO;
 import com.kinder.persistence.MemberDAO;
 import com.kinder.service.MemberService;
-import com.mysql.cj.Session;
 
 /**
  * Handles requests for the application home page.
@@ -81,6 +80,7 @@ public class CommonController {
 		if(vo == null) return;
 		model.addAttribute("memberVO", vo);
 	}
+	
 	@RequestMapping(value = "/tmain", method = RequestMethod.GET)
 	public String teachermenu(HttpSession session) {
 		MemberVO vo = (MemberVO)(session.getAttribute("tlogin"));
@@ -89,6 +89,7 @@ public class CommonController {
 		return "tmain";
 	}
 	
+	
 	@RequestMapping(value = "/tlogin", method = RequestMethod.GET)
 	public void teachlogin(@ModelAttribute("dto") LoginDTO dto,HttpSession session,Model model) {
 		if(session.getAttribute("joincheck")=="joinok") {
@@ -96,6 +97,7 @@ public class CommonController {
 			model.addAttribute("jointest","ok");
 		}
 		session.setAttribute("joinsort", 1);
+
 	}
 	
 	@RequestMapping(value = "/tloginPost", method = RequestMethod.POST)
@@ -219,7 +221,13 @@ public class CommonController {
 			//선생님일경우, 선생님 table 정보 입력
 			tv.setKincode(Integer.parseInt(r.getParameter("kincode2")));
 			tv.setMemid(r.getParameter("memid"));
-			tv.setTmaster(Integer.parseInt(r.getParameter("tmaster")));
+			if(r.getParameter("tmaster").equals("0")) {
+				tv.setTmaster(false);
+			}
+			else {
+				tv.setTmaster(true);
+			}
+			
 			dao.insertTeacher(tv);
 			session.setAttribute("joincheck", "joinok");
 			return "redirect:tlogin";
@@ -330,6 +338,9 @@ public class CommonController {
 		return kgv;
 		
 	}
+
+	
+
 	
 	
 }

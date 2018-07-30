@@ -7,10 +7,10 @@
   <mapper namespace="com.kinder.mapper.ina.inaMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
   
 
-  <!-- 회원가입시 member insert(공통) -->
+  <!--아이 insert-->
  <insert id="ina_insertChild">
-  insert into children(gcode,kincode,clcode,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution) values 
-  (#{gcode},#{kincode},#{clcode},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution})
+  insert into children(gcode,kincode,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution,cstate,clcode) values 
+  (#{gcode},#{kincode},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution},#{cstate},#{clcode})
  </insert>
 
 <!-- memid로 gcode 찾는 sql -->
@@ -66,12 +66,12 @@ select cname from children where ccode=#{ccode}
 
 <!--  아이의 입소신청 어린이집 갯수 출력 -->
 <select id="search_kinnum" resultType="int">
-select count(*) from enroll where ccode=#{ccode}
+select count(*) from enroll where ccode=#{ccode} and (statcode != 5 or statcode != 6)
 </select>
 
 <!-- 같은 어린이집에 입소 못하게 count -->
 <select id="same_kinder" resultType="int">
-select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode}
+select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode} and (statcode != 5 or statcode != 6)
 </select>
 
 
@@ -84,4 +84,108 @@ select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode}
 <select id="result_enroll" resultType="EnrollVO">
 select encode,statcode,date_add(enlog,interval +7 day) enlog from enroll where ccode=#{ccode} and kincode=#{kincode}
 </select>
-  </mapper>
+
+
+<!-- 대기목록 전체 -->
+<select id="wait_list" resultType="map">
+select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} order by e.encode 
+</select>  
+
+
+<!-- 취소된건 제외, 대기 목록 select -->
+<select id="wait_list2" resultType="map">
+<![CDATA[
+select e.encode,c.cname,k.kinname,k.kincode,e.hopedate,c.crank,s.status,date_add(e.enlog,interval +7 day) enlog from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode<5 or e.statcode=8) order by e.encode
+]]>
+</select>
+
+<!-- 취소된 대기목록 select -->
+<select id="wait_list3" resultType="map">
+<![CDATA[
+select e.encode,c.cname,k.kinname,e.hopedate,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode=5 or e.statcode=6) order by e.encode
+]]>
+</select>
+
+
+<!-- 어린이집 입소순번 쿼리....아직 대기중인 사람들 중(취소,입소완료처리된사람들은 xxx) 몇번쨰인지 rank 구하기... -->
+<select id="wait_list4" resultType="map">
+<![CDATA[
+SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,crank,enlog
+FROM
+(SELECT e.encode,c.cname,c.crank,e.enlog
+FROM
+enroll e,children c,kindergarten k where e.ccode=c.ccode and e.kincode=k.kincode and (e.statcode<5 or e.statcode=8) and  k.kincode=#{kincode} order by crank desc,enlog
+) t,
+( SELECT @RNUM := 0 ) R
+
+]]>
+</select>
+
+<!-- 입소신청 완료된 건 -->
+<select id="wait_list5" resultType="map">
+select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and e.statcode=7
+</select>  
+
+
+<!-- 입소상태 서류 제출로 update  -->
+<update id="update_state">
+update enroll set statcode=8 where encode=#{encode}
+</update>
+
+<!-- 해당 어린이집에서 대기관리하기 -->
+<select id="enroll_list" resultType="map">
+<![CDATA[
+SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,hopedate,crank,en,status,ccode
+FROM
+(SELECT e.encode,c.cname,e.hopedate,c.crank,date_add(e.enlog,interval +7 day) en,s.status,c.ccode
+FROM
+enroll e,children c,status_code s,kindergarten k where e.ccode=c.ccode and e.statcode=s.statcode and k.kincode=e.kincode and k.kincode=#{kincode} and (s.statcode<5 or s.statcode=8) order by c.crank desc,e.enlog
+) t,
+( SELECT @RNUM := 0 ) R
+]]>
+</select>
+
+<!-- 입소 처리 완료된 아이 출력(어린이집입장) -->
+<select id="enroll_list2" resultType="map">
+<![CDATA[
+select e.encode,c.cname,c.crank,e.hopedate,s.status
+from enroll e,children c,status_code s,kindergarten k
+where e.ccode=c.ccode and s.statcode=e.statcode and e.kincode=k.kincode and k.kincode=#{kincode} and s.statcode=7;
+]]>
+</select>
+
+
+<!-- 대기 취소 된 아이 출력(어린이집입장) -->
+<select id="enroll_list3" resultType="map">
+<![CDATA[
+select e.encode,c.cname,c.crank,e.hopedate,s.status
+from enroll e,children c,status_code s,kindergarten k
+where e.ccode=c.ccode and s.statcode=e.statcode and e.kincode=k.kincode and k.kincode=#{kincode} and (s.statcode=5 or s.statcode=6);
+]]>
+</select>
+
+
+<!-- 선생님-> 아이 대기 현황 update -->
+<update id="enroll_state_modify">
+update enroll set statcode=#{statcode} where encode=#{encode}
+</update>
+
+
+
+<!-- 입소완료 프로시저 -->
+<update id="p_manage_enroll" statementType="CALLABLE">
+{call p_manage_enroll(#{kincode},#{ccode})}
+</update>
+
+<update id="del_enroll">
+update enroll set statcode=5 where encode=#{encode}
+</update>
+
+
+
+
+</mapper>

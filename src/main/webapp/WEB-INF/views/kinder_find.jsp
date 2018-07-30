@@ -65,7 +65,7 @@ function selkinder(dat) {
 	$.get("search_kinder2",	{kincode: dat}).done(function(data,state){
 		var name = data.kinname;
 		var address = data.kinaddress;
-		window.opener.document.twin.kincode.value = name+"("+address+")";
+		window.opener.document.twin.kincode_1.value = name+"("+address+")";
 		window.opener.document.twin.kincode2.value = dat;
 		self.close();
 	});

@@ -24,23 +24,47 @@ public class GuangwooController {
 		
 		return "/gmenu11";
 	}
-	
+	@RequestMapping(value = "/gmenu11a", method = RequestMethod.GET)
+	public String gmenu11a() {
+		
+		return "/gmenu11a";
+	}
+	@RequestMapping(value = "/gmenu11b", method = RequestMethod.GET)
+	public String gmenu11b() {
+		
+		return "/gmenu11b";
+	}
+	@RequestMapping(value = "/gmenu11c", method = RequestMethod.GET)
+	public String gmenu11c() {
+		
+		return "/gmenu11c";
+	}
 	@RequestMapping(value = "/gmenu12", method = RequestMethod.GET)
 	public String gmenu12() {
 		
 		return "/gmenu12";
 	}
 	
-	@RequestMapping(value = "/gmenu13", method = RequestMethod.GET)
-	public String gmenu13() {
-		
-		return "/gmenu13";
-	}
 	
 	@RequestMapping(value = "/tmenu8", method = RequestMethod.GET)
 	public String tmenu8() {
 		
 		return "/tmenu8";
+	}
+	@RequestMapping(value = "/tmenu8a", method = RequestMethod.GET)
+	public String tmenu8a() {
+		
+		return "/tmenu8a";
+	}
+	@RequestMapping(value = "/tmenu8b", method = RequestMethod.GET)
+	public String tmenu8b() {
+		
+		return "/tmenu8b";
+	}
+	@RequestMapping(value = "/tmenu8c", method = RequestMethod.GET)
+	public String tmenu8c() {
+		
+		return "/tmenu8c";
 	}
 	
 	@RequestMapping(value = "/tmenu9", method = RequestMethod.GET)
@@ -61,11 +85,4 @@ public class GuangwooController {
 		return "/tmenu11";
 	}
 	
-	@RequestMapping(value = "/tmenu12", method = RequestMethod.GET)
-	public String tmenu12() {
-		
-		return "/tmenu12";
-	}
-	
-
 }

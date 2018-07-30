@@ -22,6 +22,41 @@ function enrollform() {
 
 }
 
+function enrollform2() {
+	
+	var recode = "${recode}";
+	var kincode = "${kincode}";
+	var popUrl = "enroll_form?recode="+recode+"&kincode="+kincode;	//팝업창에 출력될 페이지 URL
+	window.open(popUrl,'','height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes');
+
+
+}
+
+$(function(){
+	var reopen = "${reinfo.reopen}";
+	var reopen2 = new Date(reopen).getTime();
+	
+    var now = new Date().getTime();
+
+    var renum = "${reinfo.renum}";
+    var renum_2 = "${reinfo.renum_2}";
+    
+    if((renum-renum_2)==0){
+    	document.getElementById("demo").innerHTML = "모집이 마감되었습니다.";
+    }else{
+    	   if(now<reopen2){
+    	    	 document.getElementById("demo").innerHTML = "<button class='button button4' type='button' onclick='enrollform()'>신청하기</button>";
+    	    }
+    	    else if(now>reopen2){
+    	    	 document.getElementById("demo").innerHTML = "<button class='button button4' type='button' onclick='enrollform2()'>신청하기</button>"
+    	    }
+    	    
+    }
+    
+    
+ 
+});
+
 
 </script>
 <style>
@@ -132,8 +167,9 @@ table.type05 td {
         <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br>모집인원</th>
         <td style="height: 90px;"><br>${reinfo.renum}명</td>
         <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br>모집 일자</th>
-        <td style="height: 90px; text-align: center;">${reinfo.reopen}<br><br>
-        <button class='button button4' type='button' onclick='enrollform()'>신청하기</button></td>        
+        <td style="height: 90px; text-align: center;">${reinfo.reopen}<br>
+            <p id="demo" style="font-size:30px">
+        </p></td>        
     </tr>
     <tr>
         <th scope="row">주소</th>

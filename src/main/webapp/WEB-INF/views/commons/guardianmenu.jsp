@@ -76,7 +76,6 @@ $(function(){
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/guangwo/gmenu11">운행정보</a></li>
 	         <li><a href="/kinder/guangwo/gmenu12">운행교사정보</a></li>
-	         <li><a href="/kinder/guangwo/gmenu13">차량관리</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

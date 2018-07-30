@@ -8,6 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>자유게시판</h1>
+<h1>예방접종 병원</h1>
 </body>
 </html>

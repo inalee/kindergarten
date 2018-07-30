@@ -68,4 +68,10 @@ public class KindergartenDAOImpl implements KindergartenDAO{
 	public List<Map<String, Object>> class_info(int kincode) {
 		return sqlSession.selectList(namespace+".class_info", kincode);
 	}
+
+	
+	@Override
+	public KindergartenVO select_all_kinder(int kincode) {
+		return sqlSession.selectOne(namespace+".select_all_kinder", kincode);
+	}
 }

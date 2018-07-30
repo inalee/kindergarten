@@ -70,6 +70,10 @@ $(document).ready(function() {
 	});//end ready
 </script>
 <style>
+body{
+font-family: 'Jeju Gothic', sans-serif;	
+}
+
 #headdiv{
 position: relative;
 margin: auto;
@@ -146,7 +150,7 @@ font-weight: bold;
 
     border-collapse: collapse;
     width: 95%;
- 	font-size:11pt;
+ 	font-size:12pt;
  	margin: auto; 
  	position: relative;
  	background-color: #fff;
@@ -419,10 +423,10 @@ float: none;
 <div id="discript_2">
 <img src="http://www.clker.com/cliparts/a/K/l/k/C/w/light-blue-warning-sign-md.png" style="float: left; height: 170px; margin-left: 20px;">
 <ul>
-<li><b>제출된 자료를 꼼꼼히 검토해주세요.</b></li><br>
-<li><b>부적절한 자료를 제출하였거나, 자료 제출 기간이 넘어간 신청건에 대해서는 취소처리가 가능합니다.</b></li>
+<li>제출된 자료를 꼼꼼히 검토해주세요.</li><br>
+<li>부적절한 자료를 제출하였거나, 자료 제출 기간이 넘어간 신청건에 대해서는 취소처리가 가능합니다.</li>
 <br>
-<li><b>입소대기승인관리 부주의로 인해 발생한 손해 및 사고의 책임은 모두 담당 직원에게 있습니다.</b></li>
+<li>입소대기승인관리 부주의로 인해 발생한 손해 및 사고의 책임은 모두 담당 직원에게 있습니다.</li>
 </ul>
 <br>
 <h4 style="margin-left: 10px; margin-top: 20px; ">※입소 신청 후 승인 절차</h4>

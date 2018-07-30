@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.kinder.mapper.hojungMapper">
+  
+  <select id="getTime" resultType="string">
+  select now()
+  </select>
+  
+  <!-- 어린이집 키워드 통합검색 조건 -->
+  <sql id="search">
+  		<if test="sigungucode != 0">
+  			and k.sigungucode=#{sigungucode}
+  		</if>
+		<if test="kinkind_lists != null">
+			<foreach collection="kinkind_lists" item="kinkindcode" separator="or" open="and(" close=")">k.kinkindcode=#{kinkindcode}</foreach>
+  		</if>
+  		<if test="vacancy != 0">
+  			and (k.kinmax-k.kincurrent>0)
+  		</if>
+  		<if test="kinshuttle != 0">
+  			and k.kinshuttle=1
+  		</if>
+  </sql>
+  
+  <!-- 어린이집 키워드 통합검색 -->
+  <select id="selectKinders_kw" resultType="com.kinder.domain.KindergartenVO">
+  <![CDATA[select k.kincode, k.sido, s.sigungu, k.kinname, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome
+  from kindergarten k, kinkind kk, sigungu s
+  where k.sigungucode=s.sigungucode and k.kinkindcode=kk.kinkindcode 
+	  and k.kinname like CONCAT('%',#{kinname},'%') 
+	  and k.kinmax between ]]>
+	  <foreach collection="kinmax" item="i" separator="and">#{i}</foreach>
+  <include refid="search"></include>
+  <![CDATA[order by s.sigungu, k.kinname, kk.kinkind]]>
+  </select>
+  
+  <!-- 어린이집 지도 통합검색 -->
+  <select id="selectKinders_map" resultType="com.kinder.domain.KindergartenVO">
+  select k.kincode, k.sido, s.sigungu, k.kinname, k.kinaddress, k.kinphone, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome
+  from kindergarten k, kinkind kk, sigungu s
+  where k.sigungucode=s.sigungucode and k.kinkindcode=kk.kinkindcode 
+  and k.kinname like CONCAT('%',#{kinname},'%') and k.sigungucode=#{sigungucode}
+  order by s.sigungu, k.kinname, kk.kinkind
+  </select>
+
+
+  </mapper>

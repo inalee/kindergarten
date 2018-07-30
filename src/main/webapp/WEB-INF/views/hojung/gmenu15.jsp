@@ -8,6 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>지역별 찾기</h1>
+<h1>어린이집 후기</h1>
 </body>
 </html>

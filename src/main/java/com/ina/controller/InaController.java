@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
+import com.ina.domain.regular_recruitVO;
 import com.ina.persistence.ChildrenDAO;
 import com.ina.persistence.EnrollManageDAO;
+import com.ina.persistence.RegularDAO;
 import com.ina.persistence.WaitingDAO;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.ClassVO;
@@ -47,6 +49,13 @@ public class InaController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	
+	@Inject	ChildrenDAO childdao;
+	@Inject	KindergartenDAO kindao;
+	@Inject WaitingDAO waitdao;
+	@Inject EnrollManageDAO managedao;
+	@Inject RegularDAO regudao;
+	
+	
 	@RequestMapping(value = "/gmenu4", method = RequestMethod.GET)
 	public String gmenu4() {
 		
@@ -54,8 +63,10 @@ public class InaController {
 	}
 
 	@RequestMapping(value = "/gmenu6", method = RequestMethod.GET)
-	public String gmenu6() {
+	public String gmenu6(Model model) {
 		
+		model.addAttribute("list",regudao.list_regular_par());
+
 		return "/gmenu6";
 	}
 	
@@ -67,14 +78,26 @@ public class InaController {
 	}
 	
 	@RequestMapping(value = "/regular", method = RequestMethod.GET)
-	public String regular() {
+	public String regular(Model model,HttpSession session) {
 		
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		model.addAttribute("regular_list",regudao.list_regular(kincode));
+
 		return "/regular";
 	}
 	
 	
 	@RequestMapping(value = "/detail_regular_enroll", method = RequestMethod.GET)
-	public String detail_regular_enroll() {
+	public String detail_regular_enroll(HttpServletRequest request,Model model) {
+		int recode = Integer.parseInt(request.getParameter("recode"));
+		int kincode = Integer.parseInt(request.getParameter("kincode"));
+	
+		model.addAttribute("recode",recode);
+		model.addAttribute("kincode",kincode);
+		model.addAttribute("reinfo",regudao.detail_regular(recode));
+		model.addAttribute("kininfo",regudao.kinder_info(kincode));
+		
 		
 		return "/detail_regular_enroll";
 	}
@@ -132,8 +155,12 @@ public class InaController {
 	}
 	
 	@RequestMapping(value = "/tmenu7", method = RequestMethod.GET)
-	public String tmenu7() {
+	public String tmenu7(Model model,HttpSession session) {
 		
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		model.addAttribute("kinder_info",kindao.select_all_kinder(kincode));
+
 		return "/tmenu7";
 	}
 
@@ -148,6 +175,35 @@ public class InaController {
 		
 		return "/upload";
 	}
+	
+	@RequestMapping(value = "/coomingsoon", method = RequestMethod.GET)
+	public String coomingsoon(HttpServletRequest request,Model model) {
+		
+		int recode = Integer.parseInt(request.getParameter("recode"));
+		model.addAttribute("reinfo",regudao.detail_regular(recode));
+		
+		int kincode = Integer.parseInt(request.getParameter("kincode"));
+		model.addAttribute("kininfo",regudao.kinder_info(kincode));
+		
+		
+		return "/coomingsoon";
+	}
+	
+	@RequestMapping(value = "/enroll_form", method = RequestMethod.GET)
+	public String enroll_form(HttpSession session,Model model, HttpServletRequest request) {
+		MemberVO vo = (MemberVO)session.getAttribute("glogin");
+		int gcode = childdao.checkGid(vo.getMemid());
+		model.addAttribute("ChildVO",childdao.childInfo(gcode));
+		
+		int recode = Integer.parseInt(request.getParameter("recode"));
+		model.addAttribute("reinfo",regudao.detail_regular(recode));
+		
+		int kincode = Integer.parseInt(request.getParameter("kincode"));
+		model.addAttribute("kininfo",regudao.kinder_info(kincode));
+		
+		return "/enroll_form";
+	}
+	
 	
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
 	public String manage(HttpSession session,Model model) {
@@ -301,10 +357,7 @@ public class InaController {
 		return "/enroll_page";
 	}
 	
-	@Inject	ChildrenDAO childdao;
-	@Inject	KindergartenDAO kindao;
-	@Inject WaitingDAO waitdao;
-	@Inject EnrollManageDAO managedao;
+
 	
 	//아이 등록하는 메소드
 	@RequestMapping(value="/insertChild", method = RequestMethod.POST)
@@ -382,5 +435,13 @@ public class InaController {
 		return "gmenu9";
 	}
 	
+	
+	@RequestMapping(value="/make_regular",method=RequestMethod.POST)
+	public String make_regular(regular_recruitVO rrv) {
+		
+		regudao.make_regular(rrv);
+		
+		return "redirect:regular";
+	}
 	
 }

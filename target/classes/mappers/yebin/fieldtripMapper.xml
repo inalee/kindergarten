@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yebin.mapper.fieldtripMapper">
+
+<insert id="insertCategory">
+ insert into category (catemain, catesub) values (#{catemain}, #{catesub});
+</insert>
+
+<insert id="insertCandidates" statementType="CALLABLE">
+{call fc_insertCandidates('창의적체험활동', '역사체험', '강원', '고성군', 20180101, 20180808, '테스트 주소', 30, 1, '테스트 타이트으으으을', 'www.eeee.com')};
+</insert>
+</mapper>

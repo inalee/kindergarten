@@ -34,6 +34,12 @@ function mod_stat(pencode,pstatcode){
 	}
 </script>
 <style>
+body{
+
+    font-family: 'Jeju Gothic', sans-serif;	
+}
+
+
 #headdiv{
 position: relative;
 margin: auto;
@@ -43,25 +49,9 @@ margin-top: 50px;
 }
 
 
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-	opacity: 0.8;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-
-
 table.type04 {
 	width: 1050px;
-	font-size: 15px;
+	font-size: 17px;
     border-collapse: separate;
     border-spacing: 1px;
     text-align: left;
@@ -92,6 +82,8 @@ table.type04 td {
     background-color: white;
     color: black;
     border: 2px solid #E6E6E6;
+  font-family: 'Jeju Gothic', sans-serif;	
+    
 }
 
 .button4:hover {background-color: #e7e7e7;}
@@ -134,11 +126,11 @@ padding-left: 50px;
 <img src="http://p5cdn4static.sharpschool.com/UserFiles/Servers/Server_3017789/Image/News%20Article%20Photos/Kindergarten%20Pic.jpg" style="float: left; height: 200px; margin-left: 20px;">
 <ul>
 <li style="list-style: none; font-size: 25px;"><b>${teacher.kinname}</li><br>
-<li>─ 주소 : 서울특별시 강남구 개포로 311 902동 111호(개포동, 우성9차아파트)</li>
+<li>─ 주소　:　${kinder_info.kinaddress}</li>
 <br>
-<li>─ 정원 : 100명</li>
+<li>─ 정원　:　${kinder_info.kinmax} 명</li>
 <br>
-<li>─ 현원 : 20명</li>
+<li>─ 현원　:　${kinder_info.kincurrent} 명</li>
 </b>
 </ul>
 
@@ -146,20 +138,21 @@ padding-left: 50px;
 </div>
 
 <div id="contains">
-<form action="make_class" method="POST">
+<form action="make_regular" method="POST">
+<input type="hidden" name="kincode" value="${teacher.kincode}">
+<input type="hidden" name="sigungucode" value="${kinder_info.sigungucode}">
 <table class="type04">
-
     <tr>
         <th scope="row">어린이집 이름</th>
         <td>${teacher.kinname}</td>
          <th scope="row">모집인원</th>
-        <td><input type="number">　　명</td>
+        <td><input type="number" name="renum">　　명</td>
     </tr>
     <tr>
         <th scope="row">모집 일자</th>
-        <td><input type="datetime-local"></td>
+        <td><input type="datetime-local" name="reopen"></td>
  			 <th scope="row">비고</th>
-        <td><input type="text"></td>
+        <td><input type="text" name="redetail"></td>
     </tr>
     <tr>
          <th scope="row" colspan="4" style="text-align: center; border-bottom: none;"><button type="submit" style="width: 200px; height: 60px;  margin-top: 15px; font-size: 20px;" class="button2 button4">등록</button></th>

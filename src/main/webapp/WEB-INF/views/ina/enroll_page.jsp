@@ -34,6 +34,13 @@ function info(pname,pgen,page,paddress,pidnum1,pidnum2,pccode) {
 </script>
 </head>
 <style>
+
+body{
+
+font-family: 'Jeju Gothic', sans-serif;	
+}
+
+
 .container {
       width: 1300px;
     position: relative;
@@ -126,6 +133,8 @@ margin-top: 180px;
 
 #childform button{
 margin: 0;
+font-family: 'Jeju Gothic', sans-serif;	
+
 
 }
 
@@ -151,7 +160,7 @@ margin: auto;
 
     border-collapse: collapse;
     width: 95%;
- 	font-size:11pt;
+ 	font-size:12pt;
  	margin: auto; 
  	position: relative;
 
@@ -300,7 +309,7 @@ color: red;
 </div>
 
 	    <input type="hidden" name="ccode" id="ccode">
-	        <table width="1000" height="280" cellpadding="0" style="border-collapse:collapse; font-size:11pt; font-family: 'Nanum Gothic', sans-serif; text-align: left; margin: auto; position: relative; margin-bottom: 0;">
+	        <table width="1000" height="280" cellpadding="0" style="border-collapse:collapse; font-size:12pt;  text-align: left; margin: auto; position: relative; margin-bottom: 0;">
 	    	
 	            <tr class="register" height="30">
 	                <td width="5%" align="center">○</td>

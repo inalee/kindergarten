@@ -42,6 +42,13 @@ function calculate(val){
 </script>
 </head>
 <style>
+
+body{
+
+    font-family: 'Jeju Gothic', sans-serif;	
+}
+
+
 .container {
       width: 1300px;
     position: relative;
@@ -138,13 +145,13 @@ table.type05 th {
    width: 250px;
     padding: 10px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
     vertical-align: top;
     border-bottom: 1px solid #ccc;
     background: #efefef;
 }
 table.type05 td {
-	 font-size: 15px;
+	 font-size: 17px;
     padding: 10px;
     vertical-align: top;
     border-bottom: 1px solid #ccc;
@@ -185,7 +192,7 @@ text-align:center;
   color: black;
   text-align: center;
   font-size: x-large;
-
+  font-family: 'Jeju Gothic', sans-serif;	
   width: 400px;
   transition: all 0.1s;
   cursor: pointer;

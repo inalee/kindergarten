@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:include page="../commons/teachermenu.jsp" flush="true" ></jsp:include>
 <!DOCTYPE html>
 <html>
@@ -30,6 +31,11 @@ function upclass(pccode,pclcode) {
 
 </script>
 <style>
+body{
+font-family: 'Jeju Gothic', sans-serif;	
+}
+
+
 #headdiv{
 position: relative;
 margin: auto;
@@ -106,17 +112,19 @@ width: 95%;
   	<th>-</th>
   	<th>신청 페이지</th>
   </tr>
-
+<c:forEach items="${regular_list}" var="i">
+<fmt:formatDate var="date_re" value="${i.redate}" pattern="yyyy-MM-dd" />
   <tr>
-    <td>1</td>
-	<td>2017-11-11</td>
-    <td>2018-11-11 12:00:00</td>
-    <td>5명</td>
-    <td>0명</td>
-    <td>어쩌고저쩌고</td>
+    <td>${i.recode}</td>
+	<td>${date_re}</td>
+    <td>${i.reopen}</td>
+    <td>${i.renum} 명</td>
+    <td>${i.renum_2} 명</td>
+    <td>${i.redetail}</td>
     <td>[자세히 보기]</td>
     <td><a href="#"><img style="width: 30px; height: 30px;" src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2/128/mouse-cursor-circle-blue-512.png"></a>
   </tr>
+  </c:forEach>
 </table>
 </div>
 </div>

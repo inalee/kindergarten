@@ -65,6 +65,9 @@ $(document).ready(function() {
 	
 </script>
 <style>
+body{
+font-family: 'Jeju Gothic', sans-serif;	
+}
 #headdiv{
 position: relative;
 margin: auto;
@@ -141,7 +144,7 @@ font-weight: bold;
 
     border-collapse: collapse;
     width: 100%;
- 	font-size:11pt;
+ 	font-size:12pt;
  	margin: auto; 
  	position: relative;
  	background-color: #fff;

@@ -73,6 +73,9 @@ $(document).ready(function() {
 	});//end ready
 </script>
 <style>
+body{
+    font-family: 'Jeju Gothic', sans-serif;	
+}
 #headdiv{
 position: relative;
 margin: auto;
@@ -149,7 +152,7 @@ font-weight: bold;
 
     border-collapse: collapse;
     width: 95%;
- 	font-size:11pt;
+ 	font-size:12pt;
  	margin: auto; 
  	position: relative;
  	background-color: #fff;
@@ -205,11 +208,13 @@ list-style: square;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 15px;
+    font-size: 14px;
     margin: 4px 2px;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
+    font-family: 'Jeju Gothic', sans-serif;	
+
 }
 
 

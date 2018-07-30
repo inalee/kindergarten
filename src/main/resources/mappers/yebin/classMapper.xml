@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yebin.mapper.classMapper">
+
+
+	<!-- 선생님 memid로 반 불러와서, 반 아이들  수 카운트 -->
+	<select id="countingKids" resultType="Map">
+		select c.clname, count(ch.cname) as numOfkids
+		from teacher t, member m, class c, children ch, kindergarten k
+		where m.memid = t.memid
+		and k.kincode = t.kincode
+		and k.kincode = c.kincode
+		and c.tecode = t.tecode
+		and c.clcode = ch.clcode
+		and k.kincode = ch.kincode
+		and m.memid= #{memid};
+		
+	</select>
+
+
+</mapper>

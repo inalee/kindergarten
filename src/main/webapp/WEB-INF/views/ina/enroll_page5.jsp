@@ -18,6 +18,9 @@
 </script>
 </head>
 <style>
+body{
+    font-family: 'Jeju Gothic', sans-serif;	
+}
 .container {
       width: 1300px;
     position: relative;
@@ -99,7 +102,7 @@ margin-top: 180px;
 
 table.type04 {
 	width: 1050px;
-	font-size: 15px;
+	font-size: 16px;
     border-collapse: separate;
     border-spacing: 1px;
     text-align: left;
@@ -149,6 +152,8 @@ text-align:center;
 
 
 .button {
+
+font-family: 'Jeju Gothic', sans-serif;	
 width: 300px; 
 height: 80px;
 font-size: 20px;

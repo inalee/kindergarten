@@ -1,0 +1,412 @@
+@charset "UTF-8";
+/* * {border: thin solid red;}  */
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.page_name {
+	margin: 0 auto;
+	margin-top: 50px;
+	background-color: #8e8e8e;
+	border-left: solid 4px #8e8e8e;
+	border-right: solid 4px #8e8e8e;
+	border-top: solid 4px #8e8e8e;
+	padding-bottom: 2px;
+	width:800px;
+}
+
+.page_name h2 {
+	margin: 0;
+	margin-bottom: -18px;
+	padding: 5px;
+	color: #ffffff;
+}
+
+.page_name .sp1 {
+	background-color: #ffffff;
+	font-size: 17px;
+	padding: 2px 5px 3px 5px;
+	cursor: default;
+}
+
+.page_name .sp2 {
+	background-color: #d7d7d7;
+	font-size: 17px;
+	padding: 2px 17px 3px 17px;
+	margin-left: -4px;
+	
+}
+
+.page_name .sp2:hover {
+	background-color: #ffffff;
+	cursor: pointer;
+}
+
+.page_name .sp3 {
+	background-color: #ffffff;
+	font-size: 17px;
+	padding: 2px 17px 3px 17px;
+	margin-left: -4px;
+	
+	cursor: default;
+}
+
+.page_name .sp4 {
+	background-color: #d7d7d7;
+	font-size: 17px;
+	padding: 2px 5px 3px 5px;
+}
+
+.page_name .sp4:hover {
+	background-color: #ffffff;
+	cursor: pointer;
+}
+
+.kinder_search {
+	margin: 0 auto;
+	margin-bottom: 50px;
+	border-bottom: solid 4px #8e8e8e;
+	border-left: solid 4px #8e8e8e;
+	border-right: solid 4px #8e8e8e;
+	width:800px;
+}
+
+.kinder_search ul {
+	list-style-type: none;
+	padding: 10px;
+	margin: 0;
+}
+
+.kinder_search ul p {
+	margin: 0;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.kinder_search ul li {
+	display: inline-block;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.kinder_search select {
+	outline: none;
+	height: 30px;
+	width: 100px;
+}
+
+.kinder_search input[type="text"], .kinder_search input[type="search"] {
+	outline: none;
+	height: 26px;
+	width: 200px;
+/* 	margin-top: -5px; */
+}
+
+.kinder_search ul:first-child .basis:nth-last-child(1) {
+	height: 30px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.btn {
+    border: none;
+    color: white;
+    padding: 4px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 0;
+    margin-right:5px;
+/*     -webkit-transition-duration: 0.4s; */
+/*     transition-duration: 0.4s; */
+    cursor: pointer;
+    outline: none;
+}
+
+.search_btn {
+	float: right;
+	background-color: #ffffff;
+    color: black;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    -webkit-transition: all 0.3 ease;
+  	transition: all 0.3 ease;
+}
+
+.search_btn:hover {
+    color: #888888;
+    border: 1px solid #888888;
+}
+
+.search_btn:active {
+	box-shadow: 0 1px #666;
+  	transform: translateY(1px);
+}
+
+.kinder_search summary::-webkit-details-marker {
+    display: none;
+}
+
+.kinder_search details[open] summary:after {
+	content: "-";
+}
+
+.kinder_search summary {
+	color: #828282; 
+	font-size: 14px;
+	outline: none;
+}
+
+.kinder_search summary:after {
+	content: "+"; 
+	color: #828282; 
+	float: left; 
+	font-size: 20px; 
+	margin: -5px 6px 0 0; 
+	padding: 0; 
+	text-align: center; 
+	width: 20px;
+}
+
+.kinder_search details li {
+	font-size: 15px;
+	display: block;
+	margin: 5px;
+}
+
+/* checkbox */
+.kinder_search details input[type="checkbox"] {
+	vertical-align: middle;
+	background: red;
+}
+
+/* The container */
+.container {
+    display: inline-block;
+    position: relative;
+    padding-left: 24px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    height: 14px;
+    width: 14px;
+    background-color: #fffff;
+    border: 1px solid #c0c0c0;
+    border-radius: 10%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #e6e6e6;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #80bfff;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 5px;
+    top: 3px;
+    width: 4px;
+    height: 7px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+
+/*화살표*/
+i {
+    border: solid #9d9d9d;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+
+/* 정원 range slider */
+.headcount-slider {
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+    height: 20px;
+    display: inline-block;
+}
+
+.headcount-slider input {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 100%;
+    outline: none;
+    height: 5px;
+    margin: 0;
+    padding: 0;
+    border-radius: 8px;
+    
+    -webkit-appearance: none;
+    background: #80bfff;
+    outline: none;
+/*     opacity: 0.7; */
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+/*슬라이더 조정버튼*/
+.headcount-slider input::-webkit-slider-thumb {
+    pointer-events: all;
+    position: relative;
+    z-index: 1;
+    outline: 0;
+    -webkit-appearance: none;
+    height: 17px;
+    width: 17px;
+    border-radius: 12px;
+    background-color: white;
+    border: 1px solid #c0c0c0;
+    cursor: pointer;
+}
+
+.search_result {
+	border-top: 1px solid #bbbbbb;
+}
+
+.search_result:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* search_keyword.jsp */
+#search_cnt {
+	text-align: center;
+	margin-left: -670px;
+	margin-bottom: 15px;
+}
+
+.detail_kinder {
+	cursor: pointer;
+}
+
+.homepageimg1 {
+	width: 25px;
+	padding: 2px;
+	border: 1px solid black;
+	border-radius: 5px;
+	opacity: 0.35;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+
+/* search_map.jsp */
+/* 지도 검색 리스트 */
+.kinder_list {
+	float: left;
+    width: 30.3%;
+    height: 500px;
+    padding: 10px 0 10px 0;
+    overflow-Y: scroll;
+}
+
+.kinder_list p {
+	font-size: 14px;
+	color: #bbbbbb;
+}
+
+.kinder_list table {
+	width: 100%;
+}
+
+.kinder_list hr {
+	clear: both;
+	height: 1px;
+	color: #bbbbbb;
+    border-color: #bbbbbb;
+    background-color: #bbbbbb;
+    border-width: 0;
+    
+}
+
+.kinder_list table tr:nth-child(-n+5) td {
+	padding: 0 10px 0 10px;
+}
+
+.kinder_list table tr:first-child td {
+	font-size: 16px;
+	font-weight: bold;
+	color: #666;
+	cursor: pointer;
+}
+
+.kinder_list table tr:not(:first-child) td {
+	font-size: 13px;
+	color: #666;
+}
+
+.homepageimg2 {
+	width: 20px;
+	padding: 2px;
+	margin-left: 4px;
+	border: 1px solid black;
+	border-radius: 5px;
+	opacity: 0.35;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+/* 다음 지도 */
+#map {
+	float: right;
+	width: 67%;
+	height:500px;    
+    padding: 10px;
+    border-left: 1px solid #bbbbbb;
+}
+
+.marker {
+	width: 47px;
+	margin: 0 -8px 0 -11px;
+	vertical-align: middle;
+}

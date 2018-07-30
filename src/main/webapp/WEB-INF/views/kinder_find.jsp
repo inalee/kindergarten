@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>통합검색</title>
-<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
-<c:url var="kinder_search" value="resources/hjcss/kinder_search.css"></c:url>
+<c:url var="search_kinder" value="resources/hjcss/search_kinder.css"></c:url>
+<link href="${search_kinder}" rel="stylesheet" type="text/css" />
 <link href="${kinder_search}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -75,11 +75,6 @@ function selkinder(dat) {
 }
 </script>
 <style>
-body{
-
-    font-family: 'Jeju Gothic', sans-serif;	
-}
-
 #contain4{
 	width: 1200px;
 	position: relative; 
@@ -117,11 +112,11 @@ body{
 </head>
 <body>
 
-<div class="page_name">
+<div class="page_name" style="margin-top: 10px; width:700px;">
 	<h2>통합검색</h2><br>
 </div>
 	
-<div class="kinder_search">
+<div class="kinder_search" style="width:700px;">
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 	<ul style="margin-bottom: 0;">
 		<li class="basis"><p>시도</p>

@@ -11,7 +11,7 @@ import com.kinder.domain.ClassVO;
 import com.kinder.domain.ChildrenVO;
 
 @Repository
-public class ChildrenDAOImpl implements ChildrenDAO {
+public class JChildrenDAOImpl implements JChildrenDAO {
 
 	@Inject
 	private SqlSession session;

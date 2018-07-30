@@ -21,6 +21,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.sun.net.httpserver.Filter;
 
 public class JsonParse {
 
@@ -34,8 +35,8 @@ public class JsonParse {
 		return new JsonParse();
 	}
 
-	// MongoDB Insert 메서드
-	public void insert(String dbname, String colname, String jsonString, boolean dateExist) {
+	// MongoDB InsertWithDate 메서드
+	public void insertWithDate(String dbname, String colname, String jsonString, String dateKeyName) {
 		MongoCollection<Document> col = MongoUtil.getCollection(dbname, colname);
 		jsParser = new JSONParser();
 		jsObject = new JSONObject();
@@ -50,9 +51,36 @@ public class JsonParse {
 			doc = new Document(jsObject);
 			System.out.println(jsObject);
 			col.insertOne(doc);
-			if(dateExist) {
-				col.updateOne(Filters.eq("DATETIME","null"), Updates.set("DATETIME",new Date()));				
-			}
+			col.updateOne(Filters.eq(dateKeyName, "null"), Updates.set(dateKeyName,new Date()));				
+			
+		} catch (ParseException e) {
+			e.getMessage();
+		}
+		System.out.println("변환된 스트링 저장: " + jsonString);
+	
+		FindIterable<Document> findIter = col.find();
+		Iterator<Document> iter = findIter.iterator();
+		List<Document> list = Lists.newArrayList(iter);
+		 System.out.println("find 결과 :" + list);
+
+	}
+	
+	// MongoDB Insert 메서드
+	public void insert(String dbname, String colname, String jsonString) {
+		MongoCollection<Document> col = MongoUtil.getCollection(dbname, colname);
+		jsParser = new JSONParser();
+		jsObject = new JSONObject();
+
+		if (jsonString.contains("'")) {
+			jsonString = jsonString.replaceAll("'", "\"");
+		}
+
+		try {
+			jsObject = (JSONObject) jsParser.parse(jsonString);
+//			System.out.println("jsonObj :" + jsObject);
+			doc = new Document(jsObject);
+			System.out.println(jsObject);
+			col.insertOne(doc);
 		} catch (ParseException e) {
 			e.getMessage();
 		}
@@ -77,7 +105,22 @@ public class JsonParse {
 //		System.out.println("find 결과 :" + list);
 		return list;
 	}
+	
+	// db.findDate() 메서드
+	public List<Document> findRecentDate(String dbname, String colname, String memid) {
+		MongoCollection<Document> col = MongoUtil.getCollection(dbname, colname);
+		jsParser = new JSONParser();
+		jsObject = new JSONObject();
 
+		FindIterable<Document> findIter = col.find(Filters.eq("memid", memid)).sort(Document.parse("{searchDate : -1}"));
+		Iterator<Document> iter = findIter.iterator();
+		List<Document> list = Lists.newArrayList(iter);
+		System.out.println("find 결과 :" + list);
+		return list;
+	}
+
+//	find({memid : 'teacher'}).sort({searchDate : -1})
+	
 	// db.aggregate() 메서드
 	public List<Document> aggregate(String dbname, String colname, String jsonString) {
 		MongoCollection<Document> col = MongoUtil.getCollection(dbname, colname);

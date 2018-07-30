@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:include page="../commons/guardianmenu.jsp" flush="true" ></jsp:include>
 <!DOCTYPE html>
 <html>
@@ -8,26 +11,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-function upclass(pccode,pclcode) {
-
-  var pkincode = "${teacher.kincode}";
-	if (confirm("해당 아동의 반을 지정하시겠습니까?") == true){   
-		
-		$.post("update_class", {ccode:pccode,clcode:pclcode,kincode:pkincode}, function(result){
-			alert("반 등록이 완료되었습니다.");
-			location.reload();
-	    });
-		
-
-	}else{   
-	    return;
-	}
-
-	
-}
 
 </script>
 <style>
+body{
+    font-family: 'Jeju Gothic', sans-serif;	
+    }
+    
 #headdiv{
 position: relative;
 margin: auto;
@@ -83,7 +73,7 @@ margin: auto;
 margin-top: 50px;
 position: relative;
 width: 95%;
-
+margin-bottom: 70px;
 }
 
 #contain2{
@@ -222,16 +212,17 @@ table.type04 td {
 	<th>신청 페이지</th>
   </tr>
 
+<c:forEach items="${list}" var="i">
   <tr>
-    <td>1</td>
-	<td>천사어린이집</td>
-	<td>서울특별시 강남구</td>
-    <td>2018-11-11 12:00:00</td>
-    <td>5명</td>
-    <td>어쩌고</td>
-    <td><a href="detail_regular_enroll"><img style="width: 30px; height: 30px;" src="http://atonofcows.x10.mx/assets/circle.png"></a>
- 
+    <td>${i.recode}</td>
+	<td>${i.kinname}</td>
+	<td>${i.sigungu}</td>
+    <td>${i.reopen}</td>
+    <td>${i.renum}</td>
+    <td>${i.redetail}</td>
+    <td><a href="detail_regular_enroll?recode=${i.recode}&kincode=${i.kincode}"><img style="width: 30px; height: 30px;" src="http://atonofcows.x10.mx/assets/circle.png"></a>
   </tr>
+  </c:forEach>
 </table>
 </div>
 </div>

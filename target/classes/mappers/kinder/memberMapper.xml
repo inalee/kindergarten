@@ -71,7 +71,8 @@ select kinname,kinaddress from kindergarten where kincode=#{kincode}
 
 <!-- 선생님으로 로그인하면 어린이집 정보 가져오기  -->
 <select id="selteacher" resultType="TeacherVO">
-	select teacher.memid as memid, kindergarten.kinname as kinname, kindergarten.kincode,teacher.tmaster as tmaster from teacher, kindergarten where teacher.kincode = kindergarten.kincode and teacher.memid = #{memid};
+	select teacher.memid as memid, kindergarten.kinname as kinname, kindergarten.kincode,teacher.tmaster as tmaster
+	from teacher, kindergarten where teacher.kincode = kindergarten.kincode and teacher.memid = #{memid};
 </select>
 
 
@@ -117,5 +118,10 @@ from class cl,member m,teacher t,kindergarten k,children c where c.clcode=cl.clc
 and m.memid=t.memid and k.kincode=cl.kincode and k.kincode=#{kincode}
  group by cl.clcode,m.memname,cl.clname,cl.clage
 </select>
+
+<select id="select_all_kinder" resultType="KindergartenVO">
+select * from kindergarten where kincode=#{kincode}
+</select>
+
 
   </mapper>

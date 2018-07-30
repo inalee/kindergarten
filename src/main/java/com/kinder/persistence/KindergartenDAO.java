@@ -30,4 +30,8 @@ public interface KindergartenDAO {
    public List<Map<String, Object>> all_child (int kincode);
    
    public List<Map<String, Object>> class_info (int kincode);
+   
+   public KindergartenVO select_all_kinder (int kincode);
+   
+   
 }

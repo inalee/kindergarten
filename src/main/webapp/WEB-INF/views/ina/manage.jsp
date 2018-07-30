@@ -26,6 +26,10 @@ $(function(){
 </script>
 </head>
 <style>
+
+body{
+font-family: 'Jeju Gothic', sans-serif;	
+}
 .container {
       width: 1300px;
     position: relative;
@@ -54,7 +58,7 @@ margin-top: 60px;
 
 table.type04 {
 	width: 1050px;
-	font-size: 15px;
+	font-size: 17px;
     border-collapse: separate;
     border-spacing: 1px;
     text-align: left;
@@ -67,7 +71,6 @@ table.type04 {
 table.type04 th {
     width: 150px;
     padding: 15px;
-    font-weight: bold;
     vertical-align: top;
     border-bottom: 1px solid #ccc;
 }
@@ -85,6 +88,7 @@ table.type04 td {
     background-color: white;
     color: black;
     border: 2px solid #E6E6E6;
+    font-family: 'Jeju Gothic', sans-serif;	
 }
 
 .button4:hover {background-color: #e7e7e7;}

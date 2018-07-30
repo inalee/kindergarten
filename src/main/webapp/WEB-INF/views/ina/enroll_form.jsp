@@ -2,15 +2,19 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<jsp:include page="../commons/guardianmenu.jsp" flush="true" ></jsp:include>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+  <meta name="author" content="http://wistrap.blogspot.co.id/">
+  <meta content='Creative button style example' name='description'/>
+  <meta content='creative button, button css style, css button effect, creative button style' name='keywords'/>
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-
 function info(pname,pgen,page,paddress,pidnum1,pidnum2,pccode) {
 	
 	  $("#cname").val(pname);
@@ -30,17 +34,19 @@ function info(pname,pgen,page,paddress,pidnum1,pidnum2,pccode) {
 	  $("#cidnum2").val(pidnum2);
 	  $("#ccode").val(pccode);
 }
-
 </script>
 </head>
 <style>
 
 body{
-
-font-family: 'Jeju Gothic', sans-serif;	
+/* 	background-color: #FFE70A; */
+		background-image: url('resources/images/cute4.gif');
+	 height: 100%;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    font-family: 'Jeju Gothic', sans-serif;	
 }
-
-
 .container {
       width: 1300px;
     position: relative;
@@ -49,58 +55,6 @@ font-family: 'Jeju Gothic', sans-serif;
   }
   
 
-  .progressbar {
-      counter-reset: step;
-  }
-  
-  .progressbar li {
-      list-style-type: none;
-      width: 20%;
-      float: left;
-      font-size: 12px;
-      position: relative;
-      text-align: center;
-      text-transform: uppercase;
-      color: #7d7d7d;
-  }
-  .progressbar li:before {
-      width: 30px;
-      height: 30px;
-      content: counter(step);
-      counter-increment: step;
-      line-height: 30px;
-      border: 2px solid #7d7d7d;
-      display: block;
-      text-align: center;
-      margin: 0 auto 10px auto;
-      border-radius: 50%;
-      background-color: white;
-  }
-  .progressbar li:after {
-      width: 100%;
-      height: 2px;
-      content: '';
-      position: absolute;
-      background-color: #7d7d7d;
-      top: 15px;
-      left: -50%;
-      z-index: -1;
-  }
-  .progressbar li:first-child:after {
-      content: none;
-  }
-  .progressbar li.active {
-      color: #4374D9;
-  }
-  .progressbar li.active:before {
-      border-color: #4374D9;
- 
-        
-  }
-  .progressbar li.active + li:after {
-      background-color: #4374D9;
- 
-  }
 
 #header{
 position: relative;
@@ -111,35 +65,39 @@ width: 1300px;
 }
 
 #contain2{
-width: 1200px;
-
-/* border: solid thin black; */
+width: 1300px;
+border: dashed 2px white;
+padding: 70px;
 position: relative; 
 margin: auto;
-margin-top: 180px;
-
+margin-top: 70px;
+text-align: center;
+font-family: 'Jeju Gothic', sans-serif;	
+box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+margin-bottom: 30px;
 }
 
 #childform {
+	margin-left: -40px;
 	position: relative;
 	width: 1100px;
-	height: 450px;
+	height: 470px;
 	background: #FFFFFF;
 	margin: 0 auto 0;
 	padding: 45px;
 	text-align: center;
+	opacity: 0.95;
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	margin-bottom: 80px;
 }
 
 #childform button{
 margin: 0;
-font-family: 'Jeju Gothic', sans-serif;	
-
 
 }
 
 #contain3{
-width: 1200px;
+width: 1300px;
 position: relative; 
 margin: auto;
 }
@@ -159,35 +117,39 @@ margin: auto;
 #mychild {
 
     border-collapse: collapse;
-    width: 95%;
- 	font-size:12pt;
+    width: 100%;
  	margin: auto; 
  	position: relative;
-
+ 	opacity: 0.9;
 }
 
 #mychild th{
 
-background-color: #D9E5FF;
+background-color: #FFCD12;
+font-size: 20px;
 }
 
 
 #mychild th, #mychild td {
-    padding: 8px;
+    padding: 16px;
     text-align: center;
+
+}
+
+#mychild td{
+	font-size: 18px;
     border-bottom: 1px solid #ddd;
 }
 
 #mychild tr:hover {
-background-color:#EBF3FB;
+background-color:white;
 }
 
 
 
 
 #btnid{
-
-text-align:center;
+	text-align:center;
  	margin: auto; 
  	position: relative;
  	margin-top: 100px;
@@ -195,80 +157,48 @@ text-align:center;
 }
 
 
-.button {
-  display: inline-block;
-  border-radius: 4px;
-  background-color: #FAECC5;
-  border: none;
-  color: black;
-  text-align: center;
-  font-size: x-large;
 
-  width: 400px;
-  transition: all 0.1s;
-  cursor: pointer;
-
-  height: 60px;
+.animate
+{
+	transition: all 0.1s;
+	-webkit-transition: all 0.1s;
 }
 
-.button span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
-
-.button span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
+.action-button
+{
+	position: relative;
+	padding: 20px 60px;
+	  margin: 0px 10px 10px 0px;
+	border-radius: 3px;
+	font-size: 25px;
+	text-decoration: none;	
+	color: #F6F6F6;
 }
 
 
-.button:hover span {
-  padding-right: 25px;
+
+
+.yellow
+{
+	background-color: #f1c40f;
+	border-bottom: 5px solid #f39c12;
+	text-shadow: 0px -2px #f39c12;
 }
 
-.button:hover span:after {
-  opacity: 1;
-  right: 0;	
-}
-
-#modibtn{
-
-}
-
-#childform a,#childform a:visited{
-
-color: red;
-
-}
-
-#modia:hover {
-    background-color: #C4DBF0;
+.action-button:active
+{
+	transform: translate(0px,5px);
+  -webkit-transform: translate(0px,5px);
+	border-bottom: 1px solid;
 }
 
 </style>
 <body>
-<div id="header">
-<h2>입소신청하기</h2>
-<hr style="width: 4.5cm; float: left; margin-top: 0;">
-</div>
-<br>
-  <div class="container">
-      <ul class="progressbar">
-          <li class="active"><p style="font-weight: bolder; font-size: 13px;">아동선택</li>
-          <li>추가정보입력</li>
-          <li>입소 어린이집 검색·선택</li>
-          <li>희망 입소일 선택</li>          
-          <li>입소대기확정</li>
-  </ul>
-</div>
+
+ 
 <div id="contain2">
-<h4 style=" margin-left: 30px;">1.　　입소할 아동을 선택해주세요.</h4><br>
+<h1>${kininfo.kinname} 정기 모집 입소 신청하기</h1>
+<br>
 <form action="enroll_page2" method="post" name="twin">
 
 <c:choose>
@@ -280,6 +210,7 @@ color: red;
     </c:when>
  <c:otherwise>
   <div id="contain3">
+  
    <table id="mychild">
   <tr>
     <th>-</th>
@@ -305,11 +236,14 @@ color: red;
 
 <div id="childform">
 <div id="titlediv" style="border-bottom:double;    width: 280px; margin: 0 auto; position: relative;  margin-bottom: 50px;">
-<h3 style="margin-bottom: 10px; margin-top: 10px;">입소 신청 아동 기본 정보</h3>
+<h2 style="margin-bottom: 10px; margin-top: 10px;">입소 신청 아동 기본 정보</h2>
 </div>
 
 	    <input type="hidden" name="ccode" id="ccode">
-	        <table width="1000" height="280" cellpadding="0" style="border-collapse:collapse; font-size:12pt;  text-align: left; margin: auto; position: relative; margin-bottom: 0;">
+	        
+	        
+	        
+	        <table width="900" height="250" cellpadding="5" style="border-collapse:collapse; font-size:12pt;  text-align: left; margin: auto; position: relative; margin-bottom: 0;">
 	    	
 	            <tr class="register" height="30">
 	                <td width="5%" align="center">○</td>
@@ -358,14 +292,22 @@ color: red;
 	            <tr height="7">
 	                <td colspan="3"><hr /></td>
 	            </tr>
+	            	             <tr class="register" height="30">
+	                <td width="5%" align="center">○</td>
+	                <td width="20%">입소 희망일</td>
+	              <td>
+	            <input type="date" id="rehopedate" name="rehopedate" required="required" style="width: 200px;" /></td>
+	       	</tr>
+
+	            <tr height="7">
+	                <td colspan="3"><hr /></td>
+	            </tr>
 	        </table>
 	        <br />
-			<a href="#" id="modia" style="margin-left: 820px; font-size: 15px; text-decoration: none;">▶아이 정보 수정하기</a>
-				<div id="btnid">
-	<button class="button"><span>다음 단계</span></button>
+
+	            				<div id="btnid">
+	 <a href="#" class="action-button shadow animate yellow">신청하기</a>
 	</div>
-
-
 	</div>
 </form>
 </div>

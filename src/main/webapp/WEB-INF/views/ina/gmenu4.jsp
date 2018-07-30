@@ -83,6 +83,9 @@ function addrCheck() {
 
 </script>
 <style type="text/css">
+body{
+    font-family: 'Jeju Gothic', sans-serif;	
+}
 select:disabled{
     background: #BDBDBD;
 }
@@ -119,7 +122,7 @@ input[type="radio"]{
 	<h1>내 아이 등록하기</h1>
 	
 	    <form action="/kinder/insertChild" method="post" name="twin">
-	        <table width="800" height="380" cellpadding="0" style="border-collapse:collapse; font-size:11pt; font-family: 'Nanum Gothic', sans-serif; text-align: left;">
+	        <table width="800" height="380" cellpadding="0" style="border-collapse:collapse; font-size:12pt; text-align: left;">
 	       
 	            <tr height="7">
 	                <td colspan="3"><hr /></td>
@@ -220,7 +223,7 @@ input[type="radio"]{
 	                <td width="5%" align="center">*</td>
 	                <td width="20%">유치원 정보</td>
 	               	                <td>
-		                <button type="button" id="findkin" onclick="findkinder()">유치원 찾기</button>
+		                <button type="button" id="findkin" onclick="findkinder()" style="font-family: 'Jeju Gothic', sans-serif;">유치원 찾기</button>
 		                <input type="text" disabled="disabled" id="kincode_1" name="kincode_1" style="width: 400px; height: 20px;">
 		                <input type="hidden" id="kincode2" name="kincode2">
 	                </td>

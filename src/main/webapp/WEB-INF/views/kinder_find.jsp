@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>통합검색</title>
+<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <c:url var="kinder_search" value="resources/hjcss/kinder_search.css"></c:url>
 <link href="${kinder_search}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -73,6 +75,11 @@ function selkinder(dat) {
 }
 </script>
 <style>
+body{
+
+    font-family: 'Jeju Gothic', sans-serif;	
+}
+
 #contain4{
 	width: 1200px;
 	position: relative; 

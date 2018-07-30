@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.kinder.domain.ClassVO;
 import com.jiwon.dto.AttendDTO;
 import com.jiwon.mongo.MongoAttendCheck;
-import com.jiwon.persistence.ChildrenDAO;
+import com.jiwon.persistence.JChildrenDAO;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.TeacherVO;
 
@@ -32,7 +32,7 @@ import com.kinder.domain.TeacherVO;
 public class JiwonController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JiwonController.class);
-	@Inject ChildrenDAO jdao;
+	@Inject JChildrenDAO jdao;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */

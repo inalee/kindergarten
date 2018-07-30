@@ -7,6 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+
+body{
+
+font-family: 'Jeju Gothic', sans-serif;	
+}
+
 #headdiv{
 position: relative;
 margin: auto;
@@ -18,7 +24,7 @@ margin-top: 50px;
 
 .phead{
 text-align: center;
-font-weight: bold;
+
 }
 
 
@@ -128,7 +134,7 @@ font-size: 20px;
   color: white;
   padding: 16px 32px;
   text-align: center;
-
+	font-family: 'Jeju Gothic', sans-serif;	
   margin: 4px 2px;
   opacity: 0.6;
   transition: 0.3s;

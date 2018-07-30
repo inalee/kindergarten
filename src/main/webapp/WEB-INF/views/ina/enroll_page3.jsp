@@ -93,6 +93,10 @@ function checkkind(){
 </script>
 </head>
 <style>
+
+body{
+    font-family: 'Jeju Gothic', sans-serif;	
+}
 .container {
       width: 1300px;
     position: relative;
@@ -174,7 +178,7 @@ margin-top: 180px;
 
 table.type04 {
 	width: 1050px;
-	font-size: 15px;
+	font-size: 16px;
     border-collapse: separate;
     border-spacing: 1px;
     text-align: left;
@@ -232,7 +236,7 @@ text-align:center;
   color: black;
   text-align: center;
   font-size: x-large;
-
+  font-family: 'Jeju Gothic', sans-serif;	
   width: 400px;
   transition: all 0.1s;
   cursor: pointer;
@@ -287,12 +291,13 @@ margin: auto;
 }
 
 #mychild{
-
+	
     border-collapse: collapse;
     width: 90%;
- 	font-size:11pt;
+ 	font-size:12pt;
  	margin: auto; 
  	position: relative;
+ 
 
 }
 
@@ -317,7 +322,7 @@ background-color:#EBF3FB;
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-  
+    font-family: 'Jeju Gothic', sans-serif;	
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -415,7 +420,7 @@ background-color:#EBF3FB;
 <hr class="my-hr3">
   <div id="contain3">
 
-   <table id="mychild">
+   <table id="mychild" >
 
  
 </table>

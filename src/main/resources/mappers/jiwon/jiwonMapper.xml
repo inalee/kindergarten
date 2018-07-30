@@ -12,4 +12,10 @@
    <select id="getClassMember" resultType="ChildrenVO">
   		select ccode, cname from children where clcode = #{clcode}
   </select>
+    <select id="getKinderList" resultType="int">
+  	select k.kincode from kindergarten k, class c where c.kincode = k.kincode  group by kincode order by kincode
+  </select>
+  <insert id="insertACheck">
+  	insert into attend (atdate, ccode, atstime, atetime, atstate) values(#{atdate},#{ccode},#{atstime},#{atetime},#{atstate})
+  </insert>
   </mapper>

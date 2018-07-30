@@ -74,7 +74,7 @@ table button {margin:5px;}
 
    	  var list = new Array(); 
    	  <c:forEach items="${clmem}" var="item">
-   	  	list.push("${item.ccode}","${item.state}");
+   	  	list.push("${item.ccode}","${item.atstate}");
    	  </c:forEach>
    	  var state = new Array();
    	  state = [0, 0, 0, 0, 0];
@@ -91,10 +91,10 @@ table button {margin:5px;}
         data.addColumn('string', '상태');
         data.addColumn('number', '인원');
         data.addRows([
-          ['출석', state[1]],
           ['결석', state[0]],
-          ['하원', state[2]],
-          ['지각', state[3]],
+          ['출석', state[1]],
+          ['지각', state[2]],
+          ['하원', state[3]],
           ['기타', state[4]]
         ]);
 
@@ -141,7 +141,7 @@ $(function(){
 				state[1]++;
 			}else{
 				state[0]--;
-				state[3]++;
+				state[2]++;
 			}
 			drawChart();
 		});
@@ -165,10 +165,10 @@ $(function(){
 				if(list[i*2] == ccode){
 					if(list[i*2+1] == 1){
 						state[1]--;
-						state[2]++;
+						state[3]++;
 					}else{
-						state[3]--;
-						state[2]++;
+						state[2]--;
+						state[3]++;
 					}
 				}
 			}
@@ -215,16 +215,16 @@ $(function(){
 					<table width=100%;>
 						<tr><th>이름 </th><th>상태</th><th> </th></tr>
 						<c:forEach items="${clmem}" var="i">
-							<c:if test="${i.state == 0}">
+							<c:if test="${i.atstate == 0}">
 								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">미출석</td><td id="atCheck_${i.ccode}"><button class="attend" value="${i.ccode}">출석</button></td></tr>
 							</c:if>
-							<c:if test="${i.state == 1 || i.state == 3}">
+							<c:if test="${i.atstate == 1 || i.atstate == 2}">
 								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">출석</td><td id="atCheck_${i.ccode}"><button class="leave" value="${i.ccode}">하원</button></td></tr>
 							</c:if>
 <%-- 							<c:if test="${i.state == 3}"> --%>
 <%-- 								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">지각</td><td id="atCheck_${i.ccode}"><button class="leave" value="${i.ccode}">하원</button></td></tr> --%>
 <%-- 							</c:if> --%>
-							<c:if test="${i.state eq 2}">
+							<c:if test="${i.atstate eq 3}">
 								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">하원</td><td id="atCheck_${i.ccode}"><button value="${i.ccode}" disabled="disabled">하원</button></td></tr>
 							</c:if>
 						</c:forEach>

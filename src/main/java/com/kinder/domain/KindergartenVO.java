@@ -6,8 +6,10 @@ public class KindergartenVO {
 	private int kincode;
 	private String sido;
 	private int sigungucode;
+	private String sigungu;
 	private String kinname;
 	private int kinkindcode;
+	private String kinkind;
 	private String zipcode;
 	private String kinaddress;
 	private String kinphone;
@@ -24,7 +26,6 @@ public class KindergartenVO {
 	private double kinla;
 	private double kinlo;
 	private String kinspec;
-	
 	public int getKincode() {
 		return kincode;
 	}
@@ -43,6 +44,12 @@ public class KindergartenVO {
 	public void setSigungucode(int sigungucode) {
 		this.sigungucode = sigungucode;
 	}
+	public String getSigungu() {
+		return sigungu;
+	}
+	public void setSigungu(String sigungu) {
+		this.sigungu = sigungu;
+	}
 	public String getKinname() {
 		return kinname;
 	}
@@ -54,6 +61,12 @@ public class KindergartenVO {
 	}
 	public void setKinkindcode(int kinkindcode) {
 		this.kinkindcode = kinkindcode;
+	}
+	public String getKinkind() {
+		return kinkind;
+	}
+	public void setKinkind(String kinkind) {
+		this.kinkind = kinkind;
 	}
 	public String getZipcode() {
 		return zipcode;
@@ -133,9 +146,6 @@ public class KindergartenVO {
 	public void setKinpermit(Date kinpermit) {
 		this.kinpermit = kinpermit;
 	}
-
-	
-	
 	public double getKinla() {
 		return kinla;
 	}
@@ -155,18 +165,20 @@ public class KindergartenVO {
 		this.kinspec = kinspec;
 	}
 	
-	
-	
-	public KindergartenVO(int kincode, String sido, int sigungucode, String kinname, int kinkindcode, String zipcode,
-			String kinaddress, String kinphone, String kinfax, int kinroom, int kinarea, int kinplay, int kinteacher,
-			int kinmax, int kincurrent, boolean kinshuttle, String kinhome, Date kinpermit, double kinla, double kinlo,
-			String kinspec) {
+	public KindergartenVO() {
+	}
+	public KindergartenVO(int kincode, String sido, int sigungucode, String sigungu, String kinname, int kinkindcode,
+			String kinkind, String zipcode, String kinaddress, String kinphone, String kinfax, int kinroom, int kinarea,
+			int kinplay, int kinteacher, int kinmax, int kincurrent, boolean kinshuttle, String kinhome, Date kinpermit,
+			double kinla, double kinlo, String kinspec) {
 		super();
 		this.kincode = kincode;
 		this.sido = sido;
 		this.sigungucode = sigungucode;
+		this.sigungu = sigungu;
 		this.kinname = kinname;
 		this.kinkindcode = kinkindcode;
+		this.kinkind = kinkind;
 		this.zipcode = zipcode;
 		this.kinaddress = kinaddress;
 		this.kinphone = kinphone;
@@ -184,9 +196,7 @@ public class KindergartenVO {
 		this.kinlo = kinlo;
 		this.kinspec = kinspec;
 	}
-	public KindergartenVO() {
-		
-	}
+	
 	
 	
 }

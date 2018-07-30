@@ -15,7 +15,7 @@
 	
 		var popUrl = "kinder_find";	//팝업창에 출력될 페이지 URL
 
-		var popOption = "width=720, height=220";    //팝업창 옵션(optoin)
+		var popOption = "width=750, height=220";    //팝업창 옵션(optoin)
 
 		window.open(popUrl,"",popOption);
 

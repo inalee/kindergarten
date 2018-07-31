@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -144,9 +145,8 @@ public class JiwonController {
 								String time =(Date) document.get("date") + "";
 								String lt = time.split(" ")[3];
 								dto.setAtetime(lt);
-								k=1;
 							}
-							if(document.get("state").equals("attend") && k==1) {
+							if(document.get("state").equals("attend")) {
 								dto.setCcode(vo.getCcode());
 								dto.setAtdate(today);
 								String time =(Date) document.get("date") + "";
@@ -157,7 +157,9 @@ public class JiwonController {
 								}else {
 									dto.setAtstate(1);
 								}
+								if(Objects.isNull(dto.getAtetime())) dto.setAtetime("20:00:00");
 							}
+							k=1;
 						}
 					}
 					if(k==-1) {

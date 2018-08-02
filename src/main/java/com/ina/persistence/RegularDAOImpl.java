@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import com.ina.domain.Regular_finalVO;
 import com.ina.domain.regular_recruitVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.SearchCri;
@@ -54,8 +56,8 @@ public class RegularDAOImpl implements RegularDAO{
 	}
 	
 	@Override
-	public void regular_final(int re_encode) {
-		sqlSession.update(namespace+".regular_fin",re_encode);
+	public void regular_final(Regular_finalVO rf) {
+		sqlSession.update(namespace+".regular_fin",rf);
 		
 	}
 	

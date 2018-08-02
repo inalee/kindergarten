@@ -11,27 +11,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-function fin_enroll(pkincode,pccode){
-
-	
-	alert("해당 아동의 입소를 확정하시겠습니까?");
-	
-	$.post("final_enroll", {ccode:pccode,kincode:pkincode}, function(result){
-		alert("입소가 완료되었습니다.");
-		location.reload();
-    });
-	
-	
-}
-function mod_stat(pencode,pstatcode){
-		alert("상태를 변경하시겠습니까?");
-		
-		$.post("status_modify", {encode:pencode,statcode:pstatcode}, function(result){
-			alert("변경이 완료되었습니다.");
-			location.reload();
-	    });
-
-	}
 </script>
 <style>
 body{

@@ -26,11 +26,11 @@ function fin_enroll(pkincode,pccode){
 
 
 
-function fin_enroll2(prencode){
+function fin_enroll2(prencode,pccode,pkincode){
 
 	
 	alert("해당 아동의 입소를 확정하시겠습니까?");
-	$.post("final_enroll2", {re_encode:prencode}, function(result){
+	$.post("final_enroll2", {re_encode:prencode,ccode:pccode,kincode:pkincode}, function(result){
 		alert("입소가 완료되었습니다.");
 		location.reload();
     });
@@ -553,7 +553,7 @@ float: none;
     <td>${i.restate}</td>
     <td>${date_re2}</td>
     <td><button type="button" class="button button2" onclick="uploadfile()">보기</button><br></td>
-    <td><button class="button button4" type="button" onclick="fin_enroll2(${i.re_encode})">입소확정</button><br>
+    <td><button class="button button4" type="button" onclick="fin_enroll2(${i.re_encode},${i.ccode},${i.kincode})">입소확정</button><br>
     <button class="button button3" type="button" onclick="mod_stat2(${i.re_encode})">입소취소</button></td>
 </form>
   </tr>

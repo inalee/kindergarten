@@ -3,6 +3,7 @@ package com.ina.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.ina.domain.Regular_finalVO;
 import com.ina.domain.regular_recruitVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.SearchCri;
@@ -21,7 +22,7 @@ public interface RegularDAO {
 	
 	public List<Map<String, Object>> list_del_regular(int gcode);
 	
-	public void regular_final(int re_encode);
+	public void regular_final(Regular_finalVO rf);
 	
 	public List<Map<String, Object>> final_list(int kincode);
 	

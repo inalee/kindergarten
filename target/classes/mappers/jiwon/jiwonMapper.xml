@@ -18,4 +18,7 @@
   <insert id="insertACheck">
   	insert into attend (atdate, ccode, atstime, atetime, atstate) values(#{atdate},#{ccode},#{atstime},#{atetime},#{atstate})
   </insert>
+  <select id="getAttendByMonth" resultType="AttendDTO"><!-- 0801 추가 -->
+  	select a.atdate, a.ccode, a.atstate from attend a, class c, children ch where atdate like concat(#{atmonth},'%') and c.clcode=ch.clcode and ch.ccode = a.ccode and ch.clcode=#{clcode} order by atdate;
+  </select>
   </mapper>

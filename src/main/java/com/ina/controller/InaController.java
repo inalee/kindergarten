@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
 import com.ina.domain.RegularEnrollVO;
+import com.ina.domain.Regular_finalVO;
 import com.ina.domain.regular_recruitVO;
 import com.ina.persistence.ChildrenDAO;
 import com.ina.persistence.EnrollManageDAO;
@@ -308,9 +309,9 @@ public class InaController {
 	}
 	
 	@RequestMapping(value = "/final_enroll2", method = RequestMethod.POST)
-	public String final_enroll2(HttpServletRequest request) {
-			int re_encode = Integer.parseInt(request.getParameter("re_encode"));
-			regudao.regular_final(re_encode);
+	public String final_enroll2(HttpServletRequest request,Regular_finalVO rf) {
+			
+			regudao.regular_final(rf);
 			
 		return "/tmenu6";
 	}

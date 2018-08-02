@@ -181,9 +181,8 @@ update enroll set statcode=5 where encode=#{encode}
 </update>
 
 <!--  정기 모집 insert -->
-<insert id="regular_enroll">
-insert into regular_recruit(kincode,sigungucode,renum,reopen,redetail) 
-values(#{kincode},#{sigungucode},#{renum},#{reopen},#{redetail})
+<insert id="regular_enroll" statementType="CALLABLE">
+{call p_regular_upload(#{sigungucode},#{renum},#{reopen},#{redetail},#{kincode})}
 </insert>
 
 <!--  정기모집 목록 select -->
@@ -243,7 +242,7 @@ where r.kincode=k.kincode and s.sigungucode=r.sigungucode and ki.kinkindcode=k.k
 call p_regular_insert(#{ccode},#{recode},#{rehopedate});
 </insert>
 
-<!-- 정기모집 신청 list -->
+<!--  신청 list -->
 <select id="select_regular" resultType="map">
 <![CDATA[
 select re.re_encode,c.cname,k.kinname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog 
@@ -281,7 +280,7 @@ and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 
 <!-- 정기모집 신청 list(선생님) -->
 <select id="sel_regular_list_te" resultType="map">
 <![CDATA[
-select re.re_encode,c.cname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog,rre.recode,rre.redate
+select re.re_encode,c.cname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog,rre.recode,rre.redate,c.ccode
 from guardian g,children c,kindergarten k,regular_code res,regular_enroll re,regular_recruit rre
 where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
 and re.re_statecode=res.re_statecode and g.gcode=c.gcode and k.kincode=#{kincode} and re.re_statecode<=2 order by rre.recode
@@ -289,8 +288,8 @@ and re.re_statecode=res.re_statecode and g.gcode=c.gcode and k.kincode=#{kincode
 </select>
 
 <!--  정기모집 입소완료 -->
-<update id="regular_fin">
-update regular_enroll set re_statecode=3 where re_encode=#{re_encode}
+<update id="regular_fin" statementType="CALLABLE">
+call p_regular_enroll(#{kincode},#{ccode},#{re_encode})
 </update>
 
 <!--  정기모집 입소 완료된 list -->

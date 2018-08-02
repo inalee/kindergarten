@@ -1,8 +1,5 @@
 package com.jiwon.dto;
 
-import java.sql.Time;
-import java.util.Date;
-
 public class AttendDTO {
 	private int ccode;
 	private String cname;
@@ -11,8 +8,14 @@ public class AttendDTO {
 	private String atstime;
 	private String atetime;
 	private String atdate;
+	private String atmonth;
 	
-	
+	public String getAtmonth() {
+		return atmonth;
+	}
+	public void setAtmonth(String atmonth) {
+		this.atmonth = atmonth;
+	}
 	public String getAtdate() {
 		return atdate;
 	}

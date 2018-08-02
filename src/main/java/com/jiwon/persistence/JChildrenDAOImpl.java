@@ -38,4 +38,9 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	public void insertACheck(AttendDTO dto) throws Exception {
 		session.insert(namespace + ".insertACheck", dto);
 	}
+
+	@Override
+	public List<AttendDTO> getAttendByMonth(AttendDTO dto) throws Exception {
+		return session.selectList(namespace + ".getAttendByMonth", dto);
+	}
 }

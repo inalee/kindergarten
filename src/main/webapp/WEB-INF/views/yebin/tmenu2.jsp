@@ -7,4 +7,4 @@
 <head>
 <jsp:include page="../commons/teachermenu.jsp" flush="true" ></jsp:include>
 </head>
-<iframe id='fieldtripHelper' src="http://localhost:8080/kinder/yebin/fieldtrip" style="width: 100%;  height: 100vh;" ></iframe>
+<iframe id='fieldtripHelper' src="/kinder/yebin/fieldtrip" style="width: 100%;  height: 100vh;" ></iframe>

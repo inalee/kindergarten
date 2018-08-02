@@ -154,7 +154,7 @@ padding-left: 50px;
 <body>
 <div id="headdiv">
 
-<h2>┃ 입소대기신청안내</h2>
+<h2>┃ 입소신청 수시모집 안내</h2>
 <br>
 <div id="discript">
 <p class="phead">어린이집 원장은 입소대기자를 실시간으로 공개하여 투명하게 운영하고</p>

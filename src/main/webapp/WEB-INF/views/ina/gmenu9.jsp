@@ -27,6 +27,24 @@ function del_enroll(pencode){
 	
 }
 
+
+function del_enroll_re(prencode){
+	
+	if (confirm("신청을 취소하시겠습니까?") == true){   
+		$.post("del_enroll2", {re_encode: prencode}, function(result){
+			alert("신청이 취소되었습니다.");
+			location.reload();
+	    });
+	
+	}else{   
+	    return;
+	}
+	
+}
+
+
+
+
 function uploadfile(data){
 
 	var popUrl = "upload?encode="+data;	//팝업창에 출력될 페이지 URL
@@ -36,6 +54,18 @@ function uploadfile(data){
 	window.open(popUrl,"",popOption);
 
 }
+
+
+function re_uploadfile(data){
+
+	var popUrl = "upload2?re_encode="+data;	//팝업창에 출력될 페이지 URL
+
+	var popOption = "width=650, height=150";    //팝업창 옵션(optoin)
+
+	window.open(popUrl,"",popOption);
+
+}
+
 
 
 $(document).ready(function() {
@@ -328,7 +358,7 @@ float: none;
 </head>
 <body>
 <div id="headdiv">
-<h2>┃ 입소대기 신청현황</h2>
+<h2>┃ 입소신청현황</h2>
 <br>
 <div id="discript_2">
 <img src="https://library.sfsu.edu/sites/default/files/alert_300.gif" style="float: left; height: 220px; margin-left: 20px;">
@@ -339,6 +369,8 @@ float: none;
 <li><b>같은 어린이집에 중복 대기 신청 불가</b></li>
 <br>
 <li><b>정해진 기일 이내에 입소 대기 순위 관련 서류를 제출하지 않을 시, 자동으로 입소 대기가 취소됩니다.</b></li>
+<br>
+<li style="color: red;"><b>신청 이후,한달 이내로 반드시 입소처리 되는 정기모집과는 달리,<br> 수시모집은 해당 어린이집의 상황에 따라 특정 기한 없이 입소처리가 진행된다는 점 유의 바랍니다.</b>
 </ul>
 <br>
 <h4 style="margin-left: 10px; margin-top: 20px; ">※입소 신청 후 승인 절차</h4>
@@ -357,39 +389,15 @@ float: none;
 <div class="tab-wrapper">
   
   <ul class="tab-menu">
-    <li class="active">전체보기</li>
-    <li>대기현황</li>
+
+   <li class="active">수시모집현황</li>
+    <li>정기모집현황</li>
     <li>완료현황</li>
     <li>취소현황</li>
   </ul>
 	
   <div class="tab-content">
-    <div>
-      <table id="mychild">
-  <tr>
-
-	<th>번호</th>
-    <th>아동 이름</th>
-    <th>어린이집</th>
-    <th>입소희망일</th>
-	<th>신청일</th>
-    <th>상태</th>    
-   
-  </tr>
-
-<c:forEach items="${wait1}" var="i">
- <fmt:formatDate var="date_re" value="${i.enlog}" pattern="yyyy-MM-dd" />
-  <tr>
-    <td>${i.encode}</td>
-	<td>${i.cname}</td>
-    <td>${i.kinname}</td>
-    <td>${i.hopedate}</td>
-    <td>${date_re}</td>
-    <td>${i.status}</td>
-  </tr>
-</c:forEach>
-</table>
-</div>
+  
     <div>
           <table id="mychild">
   <tr>
@@ -434,6 +442,48 @@ float: none;
 </table>
  
     </div>
+    
+       <div>
+          <table id="mychild">
+  <tr>
+	<th>번호</th>
+    <th>아동 이름</th>
+    <th>어린이집</th>
+    <th>입소희망일</th>
+    <th>상태</th> 
+    <th>자료제출기한</th>      
+    <th>-</th>        
+  </tr>
+
+<c:forEach items="${regular_wait}" var="i">
+
+<fmt:formatDate var="date_re2" value="${i.enlog}" pattern="yyyy-MM-dd HH:mm:ss" />
+  <tr>
+  	<form>
+	<input type="hidden" id="encode" name="re_encode" value="${i.re_encode}">
+    <td>${i.re_encode}</td>
+	<td>${i.cname}</td>
+    <td>${i.kinname}</td>
+    <td>${i.rehopedate}</td>
+    <td>${i.restate}</td>
+    <td>${date_re2}</td>
+ 	<c:choose>
+ 	<c:when test="${i.restate eq '신청완료'}">
+ 	<td><button type="button" class="button button2" onclick="re_uploadfile(re_encode.value)">자료제출</button><br>
+    <button class="button button3" type="button" onclick="del_enroll_re(re_encode.value)">신청취소</button></td>
+ 	</c:when>
+ 	<c:otherwise>
+ 	<td><button class="button button3" type="button" onclick="del_enroll_re(re_encode.value)">신청취소</button></td>
+ 	</c:otherwise>
+ 	</c:choose>
+ 	</form>
+  </tr>
+
+</c:forEach>
+</table>
+ 
+    </div>
+    
        <div>
  <table id="mychild">
   <tr>
@@ -442,7 +492,7 @@ float: none;
     <th>어린이집</th>
     <th>입소희망일</th>
     <th>상태</th>    
-   
+     <th>구분</th>    
   </tr>
 
 <c:forEach items="${wait5}" var="i">
@@ -452,6 +502,17 @@ float: none;
     <td>${i.kinname}</td>
     <td>${i.hopedate}</td>
     <td>${i.status}</td>
+    <td>수시모집</td>
+  </tr>
+</c:forEach>
+<c:forEach items="${regular_wait2}" var="k">
+  <tr>
+    <td>${k.re_encode}</td>
+	<td>${k.cname}</td>
+    <td>${k.kinname}</td>
+    <td>${k.rehopedate}</td>
+    <td>${k.restate}</td>
+    <td>정기모집</td>
   </tr>
 </c:forEach>
 </table>
@@ -466,7 +527,7 @@ float: none;
     <th>어린이집</th>
     <th>입소희망일</th>
     <th>취소 사유</th>    
-   
+   <th>구분</th>
   </tr>
 
 <c:forEach items="${wait3}" var="i">
@@ -476,6 +537,17 @@ float: none;
     <td>${i.kinname}</td>
     <td>${i.hopedate}</td>
     <td style="color: red;">${i.status}</td>
+    <td>수시모집</td>
+  </tr>
+</c:forEach>
+<c:forEach items="${regular_wait3}" var="t">
+  <tr>
+    <td>${t.re_encode}</td>
+	<td>${t.cname}</td>
+    <td>${t.kinname}</td>
+    <td>${t.rehopedate}</td>
+    <td style="color: red;">${t.restate}</td>
+    <td>정기모집</td>
   </tr>
 </c:forEach>
 

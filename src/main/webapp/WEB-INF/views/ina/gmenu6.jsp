@@ -11,6 +11,35 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+function search_btn() {
+	
+	var psigungu = $("#sigungu").val();
+	var pkinkind = $("#kinkind").val();
+	var pkinname = $("#kinname").val();
+	
+	var target = document.getElementById("sigungu");
+	var sigunguname = target.options[target.selectedIndex].text;
+	
+	var target2 = document.getElementById("kinkind");
+	var kinkindname = target2.options[target2.selectedIndex].text;
+	
+	
+	$.get("search_regular",	{ sigungucode: psigungu, kinkindcode:pkinkind, kinname:pkinname }).done(function(data,state){
+	
+		
+		$("#mychild").empty();
+	 	$("#mychild").append("<tr><th>번호</th><th>구분</th><th>어린이집 이름</th><th>주소 </th><th>모집 일자</th><th>모집 인원</th><th>비고</th><th>신청 페이지</th></tr>");
+		
+		for (var i = 0; i < data.length; i++) {
+		
+			date=new Date(data[i].reopen-32400000);
+			$("#mychild").append("<tr>"+
+					"<td>"+data[i].recode+"</td><td>"+data[i].kinkind+"</td><td>"+data[i].kinname+"</td><td>"+data[i].sigungu+"</td><td>"+date.getFullYear()+"년 "+(date.getMonth()+1)+"월 "+date.getDate()+"일</td>"+   
+				    "<td>"+data[i].renum+"명</td><td>"+data[i].redetail+"</td><td><a href='detail_regular_enroll?recode="+data[i].recode+"&kincode="+data[i].kincode+"'><img style='width: 30px; height: 30px;' src='http://atonofcows.x10.mx/assets/circle.png'></a></td></tr>");
+		}
+
+	});
+}
 
 </script>
 <style>
@@ -140,7 +169,7 @@ table.type04 td {
 </head>
 <body>
 <div id="headdiv">
-<h2>┃정기모집 공고</h2>
+<h2>┃입소신청 정기모집 공고</h2>
 <div id="contain2">
 <table class="type04">
     <tr>
@@ -204,8 +233,9 @@ table.type04 td {
 		<table id="mychild">
   		<tr>
 	<th>번호</th>
+	  <th>구분</th>
     <th>어린이집 이름</th>
-    <th>주소 </th>
+    <th>주소</th>
     <th>모집 일자</th>  
     <th>모집 인원</th>
   	<th>비고</th>
@@ -213,11 +243,13 @@ table.type04 td {
   </tr>
 
 <c:forEach items="${list}" var="i">
+<fmt:formatDate var="date_re2" value="${i.reopen}" pattern="yyyy년 M월 d일" />
   <tr>
     <td>${i.recode}</td>
+    <td>${i.kinkind}</td>
 	<td>${i.kinname}</td>
 	<td>${i.sigungu}</td>
-    <td>${i.reopen}</td>
+    <td>${date_re2}</td>
     <td>${i.renum}</td>
     <td>${i.redetail}</td>
     <td><a href="detail_regular_enroll?recode=${i.recode}&kincode=${i.kincode}"><img style="width: 30px; height: 30px;" src="http://atonofcows.x10.mx/assets/circle.png"></a>

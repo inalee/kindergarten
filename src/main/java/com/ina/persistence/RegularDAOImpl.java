@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import com.ina.domain.regular_recruitVO;
 import com.kinder.domain.KindergartenVO;
+import com.kinder.domain.SearchCri;
 
 
 
@@ -47,4 +48,34 @@ public class RegularDAOImpl implements RegularDAO{
 		return sqlSession.selectOne(namespace+".all_kinder",kincode);
 	}
 	
+	@Override
+	public List<Map<String, Object>> list_del_regular(int gcode) {
+		return sqlSession.selectList(namespace+".list_del_regular",gcode);
+	}
+	
+	@Override
+	public void regular_final(int re_encode) {
+		sqlSession.update(namespace+".regular_fin",re_encode);
+		
+	}
+	
+	@Override
+	public List<Map<String, Object>> final_list(int kincode) {
+		return sqlSession.selectList(namespace+".regular_fin_list",kincode);
+	}
+	
+	@Override
+	public void no_file(int re_encode) {
+		sqlSession.update(namespace+".no_file",re_encode);
+	}
+	
+	@Override
+	public List<Map<String, Object>> cancel_list(int kincode) {
+		return sqlSession.selectList(namespace+".cancel_list",kincode);
+	}
+	
+	@Override
+	public List<Map<String, Object>> search_regular(SearchCri cri) {
+		return sqlSession.selectList(namespace+".search_kinder_regular",cri);
+	}
 }

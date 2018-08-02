@@ -164,10 +164,10 @@ table.type05 td {
 			<p style="padding-left: 73px; font-size: 13px;">※모집 신청 양식은 모집 일자에 맞추어 자동으로 업데이트 됩니다. </p>
 <table class="type05">
     <tr>
-        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br>모집인원</th>
-        <td style="height: 90px;"><br>${reinfo.renum}명</td>
-        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br>모집 일자</th>
-        <td style="height: 90px; text-align: center;">${reinfo.reopen}<br>
+        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br><br>신청인원 /<br> 모집인원</th>
+        <td style="height: 90px;"><br><br><br>${reinfo.renum_2}명 / ${reinfo.renum}명</td>
+        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br><br>모집 일자</th>
+        <td style="height: 90px; text-align: center;"><br>${reinfo.reopen}<br>
             <p id="demo" style="font-size:30px">
         </p></td>        
     </tr>

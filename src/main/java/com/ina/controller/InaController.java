@@ -21,18 +21,22 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
+import com.ina.domain.RegularEnrollVO;
 import com.ina.domain.regular_recruitVO;
 import com.ina.persistence.ChildrenDAO;
 import com.ina.persistence.EnrollManageDAO;
 import com.ina.persistence.RegularDAO;
+import com.ina.persistence.RegularEnrollDAO;
 import com.ina.persistence.WaitingDAO;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.ClassVO;
 import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
+import com.kinder.domain.SearchCri;
 import com.kinder.domain.TeacherVO;
 import com.kinder.persistence.KindergartenDAO;
 
@@ -54,7 +58,7 @@ public class InaController {
 	@Inject WaitingDAO waitdao;
 	@Inject EnrollManageDAO managedao;
 	@Inject RegularDAO regudao;
-	
+	@Inject RegularEnrollDAO reguenrolldao;
 	
 	@RequestMapping(value = "/gmenu4", method = RequestMethod.GET)
 	public String gmenu4() {
@@ -64,8 +68,15 @@ public class InaController {
 
 	@RequestMapping(value = "/gmenu6", method = RequestMethod.GET)
 	public String gmenu6(Model model) {
+		SearchCri cri = new SearchCri();
 		
-		model.addAttribute("list",regudao.list_regular_par());
+		cri.setKinkindcode(0);
+		cri.setKinname("");
+		cri.setSigungucode(0);
+		
+		List<Map<String, Object>> lm = regudao.search_regular(cri);
+		
+		model.addAttribute("list",lm);
 
 		return "/gmenu6";
 	}
@@ -134,11 +145,13 @@ public class InaController {
 		}
 
 
-
-		model.addAttribute("wait1",waitdao.wait_list(gcode));
+		
 		model.addAttribute("wait2",lm);
 		model.addAttribute("wait3",waitdao.wait_list3(gcode));
 		model.addAttribute("wait5",waitdao.wait_list5(gcode));		
+		model.addAttribute("regular_wait",waitdao.regular_wait(gcode));
+		model.addAttribute("regular_wait2",waitdao.regular_wait2(gcode));
+		model.addAttribute("regular_wait3",regudao.list_del_regular(gcode));
 		
 		
 		return "/gmenu9";
@@ -151,6 +164,9 @@ public class InaController {
 		model.addAttribute("kinlist",managedao.enroll_list(kincode));
 		model.addAttribute("kinlist2",managedao.enroll_list2(kincode));
 		model.addAttribute("kinlist3",managedao.enroll_list3(kincode));
+		model.addAttribute("regular_list",waitdao.regular_wait3(kincode));
+		model.addAttribute("regular_list2",regudao.final_list(kincode));
+		model.addAttribute("regular_list3",regudao.cancel_list(kincode));
 		return "/tmenu6";
 	}
 	
@@ -174,6 +190,18 @@ public class InaController {
 	public String upload() {
 		
 		return "/upload";
+	}
+	
+	@RequestMapping(value = "/upload2", method = RequestMethod.GET)
+	public String upload2() {
+		
+		return "/upload2";
+	}
+	
+	@RequestMapping(value = "/regular_list", method = RequestMethod.GET)
+	public String regular_list() {
+		
+		return "/regular_list";
 	}
 	
 	@RequestMapping(value = "/coomingsoon", method = RequestMethod.GET)
@@ -242,6 +270,12 @@ public class InaController {
 		waitdao.update_state(encode);
 	}
 	
+	@RequestMapping(value = "/upload2", method = RequestMethod.POST)
+	public void upload_post2(HttpServletRequest request) {
+		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
+		waitdao.update_regular_state(re_encode);
+	}
+	
 	
 
 	@RequestMapping(value = "/status_modify", method = RequestMethod.POST)
@@ -253,12 +287,31 @@ public class InaController {
 		return "/tmenu6";
 	}
 	
+	@RequestMapping(value = "/status_modify2", method = RequestMethod.POST)
+	public String status_modify2(HttpServletRequest request) {
+		
+		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
+		regudao.no_file(re_encode);
+		
+		return "/tmenu6";
+	}
+	
+	
+	
 	@RequestMapping(value = "/final_enroll", method = RequestMethod.POST)
 	public String final_enroll(HttpServletRequest request,EnrollVO ev) {
 
 		
 		managedao.p_manage_enroll(ev);
 		
+		return "/tmenu6";
+	}
+	
+	@RequestMapping(value = "/final_enroll2", method = RequestMethod.POST)
+	public String final_enroll2(HttpServletRequest request) {
+			int re_encode = Integer.parseInt(request.getParameter("re_encode"));
+			regudao.regular_final(re_encode);
+			
 		return "/tmenu6";
 	}
 	
@@ -436,6 +489,16 @@ public class InaController {
 	}
 	
 	
+	@RequestMapping(value="/del_enroll2",method=RequestMethod.POST)
+	public String del_enroll2(HttpServletRequest request){
+			
+		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
+		managedao.regular_delete(re_encode);
+		
+		return "gmenu9";
+	}
+	
+	
 	@RequestMapping(value="/make_regular",method=RequestMethod.POST)
 	public String make_regular(regular_recruitVO rrv) {
 		
@@ -444,4 +507,41 @@ public class InaController {
 		return "redirect:regular";
 	}
 	
+	@RequestMapping(value="insert_regular",method=RequestMethod.POST)
+	public String insert_regular(HttpServletRequest request) throws ParseException {
+
+		
+		int recode = Integer.parseInt(request.getParameter("recode"));
+		int ccode = Integer.parseInt(request.getParameter("ccode"));
+	
+		
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = request.getParameter("rehopedate");
+		Date rehopedate = transFormat.parse(date);
+
+		RegularEnrollVO rv = new RegularEnrollVO();
+		
+		rv.setCcode(ccode);
+		rv.setRecode(recode);
+		rv.setRehopedate(rehopedate);
+		
+		reguenrolldao.insert_regular(rv);
+		
+		int kincode = Integer.parseInt(request.getParameter("kincode"));
+		
+		return "redirect:enroll_form?recode="+recode+"&kincode="+kincode;
+	}
+	
+	
+	@RequestMapping(value="search_regular",method=RequestMethod.GET)
+	public @ResponseBody List<Map<String, Object>> search_regular(SearchCri cri,Model model) {
+		
+		
+		List<Map<String, Object>> lm = regudao.search_regular(cri);
+		
+		
+		
+		return lm;
+	
+	}
 }

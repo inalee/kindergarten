@@ -308,15 +308,20 @@ i {
     cursor: pointer;
 }
 
-.search_result {
-	border-top: 1px solid #bbbbbb;
+/* number */
+.kinder_search details input[type="number"]  {
+	width: 40px;
+	height: 16px;
+	text-align: center;
+	outline: none;
 }
 
-.search_result:after {
-    content: "";
-    display: table;
-    clear: both;
+.kinder_search details input[type="number"]::-webkit-outer-spin-button,
+.kinder_search details input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
+
 
 /* search_keyword.jsp */
 #search_cnt {
@@ -341,6 +346,16 @@ i {
 
 
 /* search_map.jsp */
+.search_result {
+	border-top: 1px solid #bbbbbb;
+}
+
+.search_result:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 /* 지도 검색 리스트 */
 .kinder_list {
 	float: left;

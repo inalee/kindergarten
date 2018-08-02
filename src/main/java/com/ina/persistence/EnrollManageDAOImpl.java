@@ -50,5 +50,8 @@ public class EnrollManageDAOImpl implements EnrollManageDAO{
 	public void enroll_delete(int encode) {
 		sqlSession.update(namespace+".del_enroll",encode);
 	}
-	
+@Override
+	public void regular_delete(int re_encode) {
+		sqlSession.update(namespace+".del_regular",re_encode);
+	}	
 }

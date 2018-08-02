@@ -56,7 +56,7 @@ function selectKinders() {
 
 <div class="page_name">
 	<h2>통합검색</h2><br>
-	<a href="search_keyword"><span class="sp4">검색으로 찾기</span></a>
+	<a href="search_keyword_gmenu"><span class="sp4">검색으로 찾기</span></a>
 	<span class="sp3">지역별 찾기</span>
 </div>
 	

@@ -7,6 +7,12 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+<!-- 추가
+	xmlns:task="http://www.springframework.org/schema/task"
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+ -->
+
+
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -41,6 +47,12 @@
 <!-- 	<beans:bean id="uploadPath" class="java.lang.String"> -->
 <!-- 		<beans:constructor-arg value="C:\\sts-bundle\\upload"></beans:constructor-arg> -->
 <!-- 	</beans:bean> -->
+	
+	<!-- 추가
+		<context:component-scan base-package="org.utils" />
+	    <task:scheduler id="checkTime" pool-size="10" />
+	    <task:annotation-driven scheduler="checkTime" />
+	 -->
 	
 	<context:component-scan base-package="com.kinder.controller" />
 	<context:component-scan base-package="com.guangwoo.controller" />

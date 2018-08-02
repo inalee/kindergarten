@@ -91,6 +91,7 @@ margin: auto;
 margin-top: 50px;
 position: relative;
 width: 95%;
+margin-bottom: 50px;
 
 }
 
@@ -110,7 +111,7 @@ width: 95%;
 	<th>신청 인원</th>      
   	<th>비고</th>
   	<th>-</th>
-  	<th>신청 페이지</th>
+
   </tr>
 <c:forEach items="${regular_list}" var="i">
 <fmt:formatDate var="date_re" value="${i.redate}" pattern="yyyy-MM-dd" />
@@ -121,9 +122,8 @@ width: 95%;
     <td>${i.renum} 명</td>
     <td>${i.renum_2} 명</td>
     <td>${i.redetail}</td>
-    <td>[자세히 보기]</td>
-    <td><a href="#"><img style="width: 30px; height: 30px;" src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2/128/mouse-cursor-circle-blue-512.png"></a>
-  </tr>
+    <td>[수정][삭제]</td>
+     </tr>
   </c:forEach>
 </table>
 </div>

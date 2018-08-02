@@ -9,6 +9,8 @@
 	<typeAliases>
 		<package name="com.kinder.domain"/>
 		<package name="com.jiwon.domain"/>
+		<package name="com.jiwon.dto"/>
 		<package name="com.ina.domain"/>
+		<package name="com.hojung.domain"/>
 	</typeAliases>
 </configuration>

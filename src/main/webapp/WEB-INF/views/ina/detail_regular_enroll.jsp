@@ -22,6 +22,41 @@ function enrollform() {
 
 }
 
+function enrollform2() {
+	
+	var recode = "${recode}";
+	var kincode = "${kincode}";
+	var popUrl = "enroll_form?recode="+recode+"&kincode="+kincode;	//팝업창에 출력될 페이지 URL
+	window.open(popUrl,'','height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes');
+
+
+}
+
+$(function(){
+	var reopen = "${reinfo.reopen}";
+	var reopen2 = new Date(reopen).getTime();
+	
+    var now = new Date().getTime();
+
+    var renum = "${reinfo.renum}";
+    var renum_2 = "${reinfo.renum_2}";
+    
+    if((renum-renum_2)==0){
+    	document.getElementById("demo").innerHTML = "모집이 마감되었습니다.";
+    }else{
+    	   if(now<reopen2){
+    	    	 document.getElementById("demo").innerHTML = "<button class='button button4' type='button' onclick='enrollform()'>신청하기</button>";
+    	    }
+    	    else if(now>reopen2){
+    	    	 document.getElementById("demo").innerHTML = "<button class='button button4' type='button' onclick='enrollform2()'>신청하기</button>"
+    	    }
+    	    
+    }
+    
+    
+ 
+});
+
 
 </script>
 <style>
@@ -129,11 +164,12 @@ table.type05 td {
 			<p style="padding-left: 73px; font-size: 13px;">※모집 신청 양식은 모집 일자에 맞추어 자동으로 업데이트 됩니다. </p>
 <table class="type05">
     <tr>
-        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br>모집인원</th>
-        <td style="height: 90px;"><br>${reinfo.renum}명</td>
-        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br>모집 일자</th>
-        <td style="height: 90px; text-align: center;">${reinfo.reopen}<br><br>
-        <button class='button button4' type='button' onclick='enrollform()'>신청하기</button></td>        
+        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br><br>신청인원 /<br> 모집인원</th>
+        <td style="height: 90px;"><br><br><br>${reinfo.renum_2}명 / ${reinfo.renum}명</td>
+        <th style="height: 90px; background-color: #F7F8E0;" scope="row"><br><br>모집 일자</th>
+        <td style="height: 90px; text-align: center;"><br>${reinfo.reopen}<br>
+            <p id="demo" style="font-size:30px">
+        </p></td>        
     </tr>
     <tr>
         <th scope="row">주소</th>

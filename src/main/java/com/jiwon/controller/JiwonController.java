@@ -19,9 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kinder.domain.ClassVO;
 import com.jiwon.dto.AttendDTO;
+import com.jiwon.dto.CalendarDTO;
 import com.jiwon.mongo.MongoAttendCheck;
 import com.jiwon.persistence.JChildrenDAO;
 import com.kinder.domain.ChildrenVO;
@@ -112,6 +114,49 @@ public class JiwonController {
 		TeacherVO vo = (TeacherVO)s.getAttribute("teacher");
 		MongoAttendCheck.insertLeave(vo.getKincode(), Integer.parseInt(r.getParameter("clcode")), Integer.parseInt(r.getParameter("ccode")));
 		return "/tmenu5";
+	}
+	@RequestMapping(value="/getAttendState", method = RequestMethod.POST)
+	public @ResponseBody List<CalendarDTO> getAttendState(HttpServletRequest r) throws Exception {
+
+		List<CalendarDTO> ac = new ArrayList<>();
+		//System.out.println(r.getParameter("date"));
+		AttendDTO dto = new AttendDTO();
+		dto.setClcode(Integer.parseInt(r.getParameter("clcode")));
+		dto.setAtmonth(r.getParameter("pmonth"));
+		//dto.setAtmonth("2018-07");
+		ArrayList<AttendDTO> at = (ArrayList<AttendDTO>) dao.getAttendByMonth(dto);
+		CalendarDTO cd = new CalendarDTO();
+		int[] state = {0, 0 , 0};
+		int j=0;
+		for (AttendDTO i : at) {
+			if(j != Integer.parseInt(i.getAtdate().split("-")[2])) {
+				if(j != 0) {
+					cd.setAbsent(state[0]);
+					cd.setAttend(state[1]);
+					cd.setLate(state[2]);
+					ac.add(cd);
+				}
+				cd = new CalendarDTO();
+				j = Integer.parseInt(i.getAtdate().split("-")[2]);
+				cd.setDate(j);
+				state[0]=0;
+				state[1]=0;
+				state[2]=0;
+			}
+			if(i.getAtstate() == 0)
+				state[0]++;
+			else if(i.getAtstate() == 1)
+				state[1]++;
+			else state[2]++;
+			
+			System.out.println(i.getAtdate() +"// state : "+ j);
+		}
+		
+		cd.setAbsent(state[0]);
+		cd.setAttend(state[1]);
+		cd.setLate(state[2]);
+		ac.add(cd);
+		return ac;
 	}
 	@Scheduled(cron="0 0 21 * * *")
 	public void checkTime() throws Exception {

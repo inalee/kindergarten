@@ -97,7 +97,7 @@ table button {margin:5px;}
 .ShopContainer .atd_calendar ul {margin:0; padding:0;}
 .ShopContainer .atd_calendar ul li .d {font-size:13px; color:#333;}
 .ShopContainer .atd_calendar ul li .giveaway {display:inline-block; width:48px; height:48px; background:url('/images/icon/icon_giveaway.png') no-repeat; position:absolute; right:5px; top:5px;}
-.ShopContainer .atd_calendar ul li .ac {margin:1px; background-color: #998A00;}
+.ShopContainer .atd_calendar ul li .ac {margin:1px; background-color: #FFE08C;  text-align:center; color: #4B2C00}
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -216,20 +216,30 @@ $(function(){
 	}
 	// Get the element with id="defaultOpen" and click on it
 	document.getElementById("defaultOpen").click();
-
-	var d = new Date();
-	var thisMonth = d.getMonth()+1;
-	var atmonth = d.getFullYear() + "-" + thisMonth;
-	$("#thisMonth").append(atmonth);
-	drawCalendar();
-
+	
 });
+function writeAttendState(pmonth){
+	var url = unescape(location.href); 
+	var clcode = (url.substring(url.indexOf("=")+1,url.length));
+	$.post("getAttendState", {clcode:clcode, pmonth : pmonth}).done(function(data, state){
+	       // alert("Data: " + data[0].date + "\nStatus: " + data[0].attend);
+	        for ( var i=0; i<data.length; i++) {
+	        	var day = "#day_" + data[i].date;
+				$(day).append("<h6 class='ac'>출석 : "+ data[i].attend+"</h6>");
+				$(day).append("<h6 class='ac'>지각 : "+ data[i].late+"</h6>");
+				$(day).append("<h6 class='ac'>결석 : "+ data[i].absent+"</h6>");
+			}
+	        
+	    });
+	 
+}
 function drawCalendar(){
 	var d = new Date();
 	var thisMonth = d.getMonth()+1;
 	var atmonth = d.getFullYear() + "-" + thisMonth;
-	var afterMonth = new Date(new Date(d.getFullYear(), d.getMonth()+2, 0));
-	var lastday = afterMonth.getDate();
+	if(thisMonth <10) var pmonth = d.getFullYear() + "-0" + thisMonth;
+	else var pmonth = atmonth;
+	var lastday = (new Date(new Date(d.getFullYear(), d.getMonth()+1, 0))).getDate();
 	$("#thisMonth").empty();
 	$(".atd_calendar ul").empty();
 	$("#thisMonth").append(atmonth);
@@ -239,10 +249,10 @@ function drawCalendar(){
 		$(".atd_calendar ul").append("<li><span class='d'></span></li>");
 	}
 	for(var i=0; i<lastday; i++){
-		$(".atd_calendar ul").append("<li><span class='d'>"+(i+1)+"</span></li>");
+		$(".atd_calendar ul").append("<li id=day_"+(i+1)+"><span class='d'>"+(i+1)+"</span></li>");
 	}
-	
-	
+	writeAttendState(pmonth);
+
 }
 	function drawPrevCalendar(){
 		var mon = $("#thisMonth").text();
@@ -251,6 +261,8 @@ function drawCalendar(){
 		var lastMonth = new Date ( new Date( d.getFullYear(), d.getMonth() , 1 ).setDate( new Date( d.getFullYear(), d.getMonth() , 1 ).getDate() - 1 ) );
 		var thisMonth = lastMonth.getMonth()+1;
 		var atmonth = lastMonth.getFullYear() + "-" + thisMonth;
+		if(thisMonth <10) var pmonth = d.getFullYear() + "-0" + thisMonth;
+		else var pmonth = atmonth;
 		var lastday = lastMonth.getDate();
 		$("#thisMonth").empty();
 		$(".atd_calendar ul").empty();
@@ -260,9 +272,9 @@ function drawCalendar(){
 			$(".atd_calendar ul").append("<li><span class='d'></span></li>");
 		}
 		for(var i=0; i<lastday; i++){
-			$(".atd_calendar ul").append("<li><span class='d'>"+(i+1)+"</span></li>");
+			$(".atd_calendar ul").append("<li id=day_"+(i+1)+"><span class='d'>"+(i+1)+"</span></li>");
 		}
-		
+		writeAttendState(pmonth);
 	}
 	function drawNextCalendar(){
 		var mon = $("#thisMonth").text();
@@ -271,6 +283,8 @@ function drawCalendar(){
 	 	var afterMonth = new Date(new Date(d.getFullYear(), d.getMonth()+2, 0) + 1);
 		var thisMonth = afterMonth.getMonth()+1;
 		var atmonth = afterMonth.getFullYear() + "-" + thisMonth;
+		if(thisMonth <10) var pmonth = d.getFullYear() + "-0" + thisMonth;
+		else var pmonth = atmonth;
 		$("#thisMonth").empty();
 		$(".atd_calendar ul").empty();
 		$("#thisMonth").append(atmonth);
@@ -280,9 +294,9 @@ function drawCalendar(){
 			$(".atd_calendar ul").append("<li><span class='d'></span></li>");
 		}
 		for(var i=0; i<lastday; i++){
-			$(".atd_calendar ul").append("<li><span class='d'>"+(i+1)+"</span></li>");
+			$(".atd_calendar ul").append("<li id=day_"+(i+1)+"><span class='d'>"+(i+1)+"</span></li>");
 		}
-		
+		writeAttendState(pmonth);
 	}
 	function leaveCheck(ccode){
 		//var ccode = this.value;
@@ -313,6 +327,15 @@ function drawCalendar(){
 	    }
 	    document.getElementById(tabName).style.display = "block";
 	    evt.currentTarget.className += " active";
+	    if(tabName == 'atMonth'){
+
+		    var d = new Date();
+			var thisMonth = d.getMonth()+1;
+			var atmonth = d.getFullYear() + "-" + thisMonth;
+			$("#thisMonth").append(atmonth);
+			drawCalendar();
+	   
+	    }
 	}
 	
 </script>

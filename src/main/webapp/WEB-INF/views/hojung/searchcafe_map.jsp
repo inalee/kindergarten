@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>어린이집 찾기</title>
+<title>키즈카페 예약</title>
 <c:url var="search_kinder" value="resources/hjcss/search_kinder.css"></c:url>
 <link href="${search_kinder}" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
@@ -55,8 +55,8 @@ function selectKinders() {
 <body>
 
 <div class="page_name">
-	<h2>통합검색</h2><br>
-	<a href="search_keyword_gmenu"><span class="sp4">검색으로 찾기</span></a>
+	<h2>키즈카페 검색</h2><br>
+	<a href="searchcafe_keyword"><span class="sp4">검색으로 찾기</span></a>
 	<span class="sp3">지역별 찾기</span>
 </div>
 	

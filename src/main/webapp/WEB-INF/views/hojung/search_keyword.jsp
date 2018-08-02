@@ -207,8 +207,8 @@ function detailkinder(kincode){
 						<input value="0" min="0" max="300" step="0.5" type="range" oninput="updateHeadcountLabels()" class="slider" >
 						<input value="300" min="0" max="300" step="0.5" type="range" oninput="updateHeadcountLabels()" class="slider" >
 					</div>
-					&nbsp;&nbsp;<input type="number" id="capacity_min" value="0" min="0" onchange="updateSlider()"  style="width: 40px; height: 16px; text-align: center;">명 ~
-					<input type="number" id="capacity_max" value="300" max="300" onchange="updateSlider()" style="width: 40px; height: 16px; text-align: center;">명
+					&nbsp;&nbsp;<input type="number" id="capacity_min" value="0" min="0" onchange="updateSlider()">명 ~
+					<input type="number" id="capacity_max" value="300" max="300" onchange="updateSlider()">명
           		</li>
           		<li>
 

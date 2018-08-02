@@ -81,18 +81,10 @@ $(function(){
 	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">어린이집 정보</a>
 	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/search_keyword">어린이집 찾기</a></li>
+	         <li><a href="/kinder/hojung/search_keyword_gmenu">어린이집 찾기</a></li>
 	         <li><a href="/kinder/hojung/gmenu15">어린이집 후기</a></li>
 	       </ul>
 	     </li>
-	     <li class="sub-menu-parent" tab-index="0">
-	       <a href="#">커뮤니티</a>
-	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/gmenu16">어린이집 후기</a></li>
-	         <li><a href="/kinder/hojung/gmenu17">자유게시판</a></li>
-	         <li><a href="/kinder/hojung/gmenu18">중고장터</a></li>
-	       </ul>
-	      </li>
 	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">아이맞춤추천</a>
 	       <ul class="sub-menu">
@@ -103,7 +95,7 @@ $(function(){
 	      <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">주변시설 예약</a>
 	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/gmenu16">키즈카페</a></li>
+	         <li><a href="/kinder/hojung/searchcafe_keyword_gmenu">키즈카페</a></li>
 	         <li><a href="/kinder/hojung/gmenu17">예방접종 병원</a></li>
 	       </ul>
 	      </li>

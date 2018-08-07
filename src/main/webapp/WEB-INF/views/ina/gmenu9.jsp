@@ -49,7 +49,7 @@ function uploadfile(data){
 
 	var popUrl = "upload?encode="+data;	//팝업창에 출력될 페이지 URL
 
-	var popOption = "width=650, height=150";    //팝업창 옵션(optoin)
+	var popOption = "width=450, height=450";    //팝업창 옵션(optoin)
 
 	window.open(popUrl,"",popOption);
 
@@ -60,7 +60,7 @@ function re_uploadfile(data){
 
 	var popUrl = "upload2?re_encode="+data;	//팝업창에 출력될 페이지 URL
 
-	var popOption = "width=650, height=150";    //팝업창 옵션(optoin)
+	var popOption = "width=450, height=450";   //팝업창 옵션(optoin)
 
 	window.open(popUrl,"",popOption);
 

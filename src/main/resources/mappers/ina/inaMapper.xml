@@ -125,18 +125,31 @@ select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,ch
 and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and e.statcode=7
 </select>  
 
+<!--  파일 주소 down -->
+<select id="file_down" resultType="EnrollVO">
+select enfile,enorigin from enroll where encode=#{encode}
+</select>
+
+
+
+<!--  파일 주소 down(정기) -->
+<select id="file_down2" resultType="RegularEnrollVO">
+select refile,reorigin from regular_enroll where re_encode=#{re_encode}
+</select>
+
+
 
 <!-- 입소상태 서류 제출로 update  -->
-<update id="update_state">
-update enroll set statcode=8 where encode=#{encode}
+<update id="update_state" statementType="CALLABLE">
+call p_upload_file(#{encode},#{enfile},#{enorigin})
 </update>
 
 <!-- 해당 어린이집에서 대기관리하기 -->
 <select id="enroll_list" resultType="map">
 <![CDATA[
-SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,hopedate,crank,en,status,ccode
+SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,hopedate,crank,en,status,ccode,enfile
 FROM
-(SELECT e.encode,c.cname,e.hopedate,c.crank,date_add(e.enlog,interval +7 day) en,s.status,c.ccode
+(SELECT e.encode,c.cname,e.hopedate,c.crank,date_add(e.enlog,interval +7 day) en,s.status,c.ccode,e.enfile
 FROM
 enroll e,children c,status_code s,kindergarten k where e.ccode=c.ccode and e.statcode=s.statcode and k.kincode=e.kincode and k.kincode=#{kincode} and (s.statcode<5 or s.statcode=8) order by c.crank desc,e.enlog
 ) t,
@@ -261,9 +274,11 @@ and re.re_statecode=res.re_statecode and g.gcode=c.gcode and re.re_statecode=3 a
 </select>
 
 <!--  정기모집 자료제출 -->
-<update id="update_file_regular">
-update regular_enroll set re_statecode=2 where re_encode=#{re_encode}
+<update id="update_file_regular" statementType="CALLABLE">
+call p_upload_file_regular(#{re_encode},#{refile},#{reorigin})
 </update>
+
+
 <!-- 정기모집 취소 -->
 <update id="del_regular">
 update regular_enroll set re_statecode=4 where re_encode=#{re_encode}
@@ -280,7 +295,7 @@ and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 
 <!-- 정기모집 신청 list(선생님) -->
 <select id="sel_regular_list_te" resultType="map">
 <![CDATA[
-select re.re_encode,c.cname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog,rre.recode,rre.redate,c.ccode
+select re.re_encode,c.cname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog,rre.recode,rre.redate,c.ccode,re.refile
 from guardian g,children c,kindergarten k,regular_code res,regular_enroll re,regular_recruit rre
 where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
 and re.re_statecode=res.re_statecode and g.gcode=c.gcode and k.kincode=#{kincode} and re.re_statecode<=2 order by rre.recode
@@ -312,4 +327,10 @@ from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,reg
 where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
 and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 or re.re_statecode=5) and k.kincode=#{kincode} order by  re.re_encode
 </select>
+
+
+<delete id="del_regular_2" statementType="CALLABLE">
+call p_delete_regular(#{recode})
+</delete>
+
 </mapper>

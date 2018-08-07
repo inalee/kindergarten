@@ -27,7 +27,7 @@
   
   <!-- 어린이집 키워드 통합검색 -->
   <select id="selectKinders_kw" resultType="com.kinder.domain.KindergartenVO">
-  <![CDATA[select k.kincode, k.sido, s.sigungu, k.kinname, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome
+  <![CDATA[select k.kincode, k.sido, s.sigungu, k.kinname, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome, k.kincode2
   from kindergarten k, kinkind kk, sigungu s
   where k.sigungucode=s.sigungucode and k.kinkindcode=kk.kinkindcode 
 	  and k.kinname like CONCAT('%',#{kinname},'%') 

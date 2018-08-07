@@ -26,6 +26,7 @@ public class KindergartenVO {
 	private double kinla;
 	private double kinlo;
 	private String kinspec;
+	private long kincode2;
 	public int getKincode() {
 		return kincode;
 	}
@@ -164,13 +165,16 @@ public class KindergartenVO {
 	public void setKinspec(String kinspec) {
 		this.kinspec = kinspec;
 	}
-	
-	public KindergartenVO() {
+	public long getKincode2() {
+		return kincode2;
+	}
+	public void setKincode2(long kincode2) {
+		this.kincode2 = kincode2;
 	}
 	public KindergartenVO(int kincode, String sido, int sigungucode, String sigungu, String kinname, int kinkindcode,
 			String kinkind, String zipcode, String kinaddress, String kinphone, String kinfax, int kinroom, int kinarea,
 			int kinplay, int kinteacher, int kinmax, int kincurrent, boolean kinshuttle, String kinhome, Date kinpermit,
-			double kinla, double kinlo, String kinspec) {
+			double kinla, double kinlo, String kinspec, long kincode2) {
 		super();
 		this.kincode = kincode;
 		this.sido = sido;
@@ -195,8 +199,11 @@ public class KindergartenVO {
 		this.kinla = kinla;
 		this.kinlo = kinlo;
 		this.kinspec = kinspec;
+		this.kincode2 = kincode2;
 	}
 	
-	
+	public KindergartenVO() {
+		
+	}
 	
 }

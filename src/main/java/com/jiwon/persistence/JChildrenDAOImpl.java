@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kinder.domain.ClassVO;
 import com.jiwon.dto.AttendDTO;
+import com.jiwon.dto.ChildrenDTO;
 import com.kinder.domain.ChildrenVO;
 
 @Repository
@@ -42,5 +43,15 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	@Override
 	public List<AttendDTO> getAttendByMonth(AttendDTO dto) throws Exception {
 		return session.selectList(namespace + ".getAttendByMonth", dto);
+	}
+
+	@Override
+	public List<ChildrenVO> getChildrenList(String memid) throws Exception {
+		return session.selectList(namespace + ".getChildrenList", memid);
+	}
+
+	@Override
+	public ChildrenDTO getChildInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getChildInfo", ccode);
 	}
 }

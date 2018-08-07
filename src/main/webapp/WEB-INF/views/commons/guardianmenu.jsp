@@ -88,6 +88,7 @@ $(function(){
 	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">아이맞춤추천</a>
 	       <ul class="sub-menu">
+	         <li><a href="/kinder/jiwon/gmenu21">출석 정보</a></li>
 	         <li><a href="/kinder/jiwon/gmenu19">영상 추천</a></li>
 	         <li><a href="/kinder/jiwon/gmenu20">도서 추천</a></li>
 	       </ul>

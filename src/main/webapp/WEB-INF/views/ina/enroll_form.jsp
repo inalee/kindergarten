@@ -15,6 +15,9 @@
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+
+
 function info(pname,pgen,page,paddress,pidnum1,pidnum2,pccode) {
 	
 	  $("#cname").val(pname);
@@ -34,6 +37,29 @@ function info(pname,pgen,page,paddress,pidnum1,pidnum2,pccode) {
 	  $("#cidnum2").val(pidnum2);
 	  $("#ccode").val(pccode);
 }
+
+
+function regular_enroll(val1,val3) {
+
+	if (val3=="") {
+		alert("입소 희망일을 선택해주세요.");	
+	}
+	else{
+		var val2 = "${param.recode}";
+		var val4 = "${param.kincode}";
+		
+		$.post("insert_regular",{ ccode: val1, recode:val2, rehopedate:val3,kincode:val4 },function(){
+			alert("정기모집 신청이 완료되었습니다.");
+			window.close();
+			opener.parent.location.reload();
+		});
+		
+	}
+	
+
+}
+
+
 </script>
 </head>
 <style>
@@ -199,7 +225,7 @@ background-color:white;
 <div id="contain2">
 <h1>${kininfo.kinname} 정기 모집 입소 신청하기</h1>
 <br>
-<form action="enroll_page2" method="post" name="twin">
+<form action="regular_enroll" method="post" name="twin">
 
 <c:choose>
   <c:when test="${empty ChildVO}">
@@ -240,9 +266,7 @@ background-color:white;
 </div>
 
 	    <input type="hidden" name="ccode" id="ccode">
-	        
-	        
-	        
+
 	        <table width="900" height="250" cellpadding="5" style="border-collapse:collapse; font-size:12pt;  text-align: left; margin: auto; position: relative; margin-bottom: 0;">
 	    	
 	            <tr class="register" height="30">
@@ -296,7 +320,7 @@ background-color:white;
 	                <td width="5%" align="center">○</td>
 	                <td width="20%">입소 희망일</td>
 	              <td>
-	            <input type="date" id="rehopedate" name="rehopedate" required="required" style="width: 200px;" /></td>
+	            <input type="date" id="rehopedate" name="rehopedate" required="required" style="width: 200px;"  /></td>
 	       	</tr>
 
 	            <tr height="7">
@@ -306,7 +330,7 @@ background-color:white;
 	        <br />
 
 	            				<div id="btnid">
-	 <a href="#" class="action-button shadow animate yellow">신청하기</a>
+	 <a class="action-button shadow animate yellow" onclick="regular_enroll(ccode.value,rehopedate.value)">신청하기</a>
 	</div>
 	</div>
 </form>

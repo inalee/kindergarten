@@ -16,8 +16,8 @@
 		and c.tecode = t.tecode
 		and c.clcode = ch.clcode
 		and k.kincode = ch.kincode
-		and m.memid= #{memid};
-		
+		and m.memid= #{memid}
+		group by c.clcode;
 	</select>
 
 

@@ -104,11 +104,12 @@ margin-top: 30px;
 
 <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px">
   <h3 class="w3-bar-item" style="font-weight: bold;">[Step]</h3>
+  <button class="w3-bar-item w3-button tablink" style="display: none;" id="id0" onclick="openStep(event, 'step1', 'id0')"></button>
   <button class="w3-bar-item w3-button tablink" id="id1" onclick="openStep(event, 'step1', 'id1')">1. 체험학습 분류</button>
   <button class="w3-bar-item w3-button tablink" id="id2" onclick="openStep(event, 'step2', 'id2')" disabled="disabled">2. 지역/날짜/인원 선택</button>
   <button class="w3-bar-item w3-button tablink" id="id3" onclick="openStep(event, 'step3', 'id3')" disabled="disabled">3. 체험학습 검색</button>
   <button class="w3-bar-item w3-button tablink" id="id4" onclick="openStep(event, 'step4', 'id4')" disabled="disabled">4. 체험학습 후보지 저장</button>
-  <button class="w3-bar-item w3-button tablink" id="id5" onclick="openStep(event, 'step5', 'id5')" disabled="disabled">5. 후보지 줄이기</button>
+  <button class="w3-bar-item w3-button tablink" id="id5" onclick="openStep(event, 'step5', 'id5')" disabled="disabled">5. 체험학습 프로그램 선정</button>
   <button class="w3-bar-item w3-button tablink" id="id6" onclick="openStep(event, 'step6', 'id6')" disabled="disabled">6. 주변 관광지 찾기</button>
   <button class="w3-bar-item w3-button tablink" id="id7" onclick="openStep(event, 'step7', 'id7')" disabled="disabled">7. 체험학습 준비물 체크</button>
   <button class="w3-bar-item w3-button tablink" id="id8" onclick="openStep(event, 'step8', 'id8')" disabled="disabled">8. 원장님 승인 받기</button>
@@ -134,6 +135,12 @@ margin-top: 30px;
   </div>
   
   <script>
+  
+  // 선택한 포스트/테이블태그 및 기타 저장소 
+  var posts=[];
+  var tableTags=[];
+  var postsattr = new Array();
+  
 // 1. 체험학습 분류 - 몽고DB에 저장된 program-category 가져오기 
 $(function() {
 		$.ajax({
@@ -141,7 +148,6 @@ $(function() {
 			type: 'get',
 			dataType: 'json',
 			success: function(data) {
-			
 				var tempArr = [];
 				for(var i = 0; i < data.length; i++){
 					if(tempArr.length == 0){
@@ -205,35 +211,52 @@ $(function() {
 
 // 2. 지역/날짜/인원 선택 - 몽고DB에 저장된 areacode 가져오고 / Mysql에 저장된 담당 선생님 반 이름/인원 가져오기
   $(function() {
-  	$('#loadAreacodebt').on('click', function() { 
-  		$.ajax({
-  			url: '/kinder/getAreacode',
-  			type: 'get',
-  			dataType: 'json',
-  			success: function(data) {
+  	$('#loadAreacodebt').on('click', function(event) { 
+  		
+  		if($('#cateMain').val() == "---대분류---"){
+  			alert("대분류는 필수 사항 입니다.");
+  				$(function(){
+				openStep(event, 'step1', 'id0');
+  				})
   			
-  				var tempArr = [];
-  				for(var i = 0; i < data.length; i++){
-  					if(tempArr.length == 0){
-  						tempArr.push(data[i].zone);
-  						$('#zone').append("<option>"+data[i].zone+"</option>")
-  					}else{
-  						var dupliFlag = true;
-  						for (var j = 0; j < tempArr.length; j++){
-  							if(tempArr[j] == data[i].zone){
-  								dupliFlag = false;
-  								break;
-  						}
-  					}
-  						if(dupliFlag){
-  						tempArr.push(data[i].zone);
-  						$('#zone').append("<option>"+data[i].zone+"</option>")
-  						}
-  				}
-  			}
-  				
-  			}
-  		})
+  		}else{
+  			
+  			$(function(){
+				openStep(event, 'step2', 'id2');
+				$('#id2').attr('disabled', false);
+  				})
+  			
+  	  		$.ajax({
+  	  			url: '/kinder/getAreacode',
+  	  			type: 'get',
+  	  			dataType: 'json',
+  	  			success: function(data) {
+  	  			
+  	  				var tempArr = [];
+  	  				for(var i = 0; i < data.length; i++){
+  	  					if(tempArr.length == 0){
+  	  						tempArr.push(data[i].zone);
+  	  						$('#zone').append("<option>"+data[i].zone+"</option>")
+  	  					}else{
+  	  						var dupliFlag = true;
+  	  						for (var j = 0; j < tempArr.length; j++){
+  	  							if(tempArr[j] == data[i].zone){
+  	  								dupliFlag = false;
+  	  								break;
+  	  						}
+  	  					}
+  	  						if(dupliFlag){
+  	  						tempArr.push(data[i].zone);
+  	  						$('#zone').append("<option>"+data[i].zone+"</option>")
+  	  						}
+  	  				}
+  	  			}
+  	  				
+  	  			}
+  	  		})
+  		}
+  		
+
   		
   		//Mysql에 저장된 담당 선생님 반 이름/인원 가져오기
   		$.ajax({
@@ -246,12 +269,12 @@ $(function() {
   						alert('아직 선생님 담당 학급이 없습니다.')
   					}else{
   						$("#class").append("<option>"+item.clname+"</option>")
-  	  					$("#class").change(function() {
+  	  					$("#person").append("<option>"+"--반선택--"+"</option>")
+  						$("#class").change(function() {
   	  						if(item.clname == $('#class').val()){
+								$("#person").empty();
   	  							$("#person").append("<option>"+item.numOfkids+"</option>")
-  	  		  					}else{
-  	  		  						$("#person").empty();
-  	  		  					}	
+  	  		  					}
   						})
   					}
   					
@@ -259,7 +282,6 @@ $(function() {
 				})	
 			}
   		})
-  		
   		
   		
   	})
@@ -283,6 +305,7 @@ $(function() {
   			}
   		})
   })
+  
   })
   </script>
 
@@ -304,20 +327,33 @@ $(function() {
 	<script>
 	// 3. 체험학습 검색 - 조건에 맞춰 검색데이터 불러오는 ajax
 	$(function() {
-		$("#searchbt").on('click', function() {
+		$("#searchbt").on('click', function(event) {
+		
+			// 테이블태그, 포스트 배열 초기화
+			posts.splice(0,posts.length);
+			tableTags.splice(0,tableTags.length);
+			
+		
+	
+			$(function(){
+				openStep(event, 'step3', 'id3');
+				$('#id3').attr('disabled', false);
+  				})
+			
+			
 			$(".square").remove();
 			$("#uldata").empty();
 			$("#noSearchedData").empty();
 			$("#step3").append("<ul id='noSearchedData'></ul><div class='square'><div class='spin'></div><p>Loading..</p></div>")
 			$.ajax({
-				url: '/kinder/getSerchedResult',
+				url: '/kinder/getSearchResult',
 				type: 'get',
 				data: {
 					term : $('input[type=radio][name=selector]:checked').val(),
-					zone : $('#zone').val() == "---지역---" ? "지역없음" : $('#zone').val(),
-					city : $('#city').val() == "---도시---" ? "도시없음" : $('#city').val(),
+					zone : $('#zone').val() == "---지역---" ? "전국" : $('#zone').val(),
+					city : $('#city').val() == "---도시---" ? "전체" : $('#city').val(),
 					date : $('#month').val(),
-					person : $('#person').val() == "" ? "인원없음" : $('#person').val()
+					person : ($('#person').val() == "--반선택--" || $('#person').val() == "") ? "0" : $('#person').val()
 				},
 				dataType: 'json',
 				success: function(data) {
@@ -341,53 +377,70 @@ $(function() {
 							+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
 							+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
-							+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+")'>"
+							+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+", "+i+")'>"
 							+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
-// 							+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td>"+data[i].address+"</td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+							+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
 // 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
-							+ "</table>") 
-					}
+							+ "</table>")
+							$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
+
+						}
 						
 					}
 				}
 		})	
-	})		
+		
+		})		
 	})	
 	
 	
 	// 3. 체험학습 검색 - 관심 등록 버튼 토글
-	var posts= [];
-	var tableTags=[];
-	var saveAllData= [];
+	
+// 	var saveAllData= new Array();
+// 	var strings = null;
+// 		    strings = "{'title' : '"+$(getTitle).text()+"', 'website' : '"+$('#web'+num).attr('href')+"', 'address' : '"+$('#address'+num).text()+"', 'apply' : '"+$('#apply'+num).text()+"', 'do' : '"+$('#do'+num).text()+"'}"	
+// 			tableTags.push($(tableid).text()+"★");
+// 			saveAllData.push($("#web"+num).attr("href"), $("#address"+num).text(), $("#apply"+num).text(), $("#do"+num).text());
+// 			alert(saveAllData);
+// 			alert(tableTags)
+// 			var test = text.split('관심등록');
+// 			var test = text.split(/'관심등록'|'웹사이트'|'주소'|'모집기간'|'등록기간'|/);
+// 			alert(test)
+//	 				tableTags.splice(tableTags.indexOf($(tableid).text()+"★"));
 	
 	var j = 0;
-	function toggle_bt(img_id) {
+	function toggle_bt(img_id, num) {
 		var obj = img_id;
 		var stick = Number($(obj).closest("button").data('id'));
 		var tableid = '#' + $(obj).closest("table").attr("id");
 		var idForJq = '#'+ $(obj).closest("button").attr("id");
 		var getTitle = '#' + $(tableid).find("td").attr("id");
+		var jsonid = '#json' + num;
+		
 		j = j + stick;
+		
 		if (!obj) return;
 		if (j % 2 != 0) {
 			obj.src = "${images}yebin-click-after.jpg";
 			posts.push($(getTitle).text());
-			tableTags.push($(tableid).text());
-			alert(tableTags)
+			tableTags.push($(jsonid).text());
+			alert(tableTags);
 			$(idForJq).data('id', 0); 
 			j = 0;
+			
 		} else {
 			obj.src = "${images}yebin-click-before.jpg";
 			if($.inArray($(getTitle).text(), posts) != -1){
-				posts.splice(posts.indexOf($(getTitle).text()),1);	
-				tableTags.splice(tableTags.indexOf($(tableid).text()));
+				posts.splice(posts.indexOf($(getTitle).text()),1);
+				tableTags.splice(tableTags.indexOf($(jsonid).text()), 1);
 				$(idForJq).data('id', 1); 
-				alert(tableTags)
+				alert(tableTags)	
 			}
-		}
+				
+			}
 		}
 	
 	</script>
@@ -405,36 +458,38 @@ $(function() {
   // 4. 체험학습 후보지 저장
   $('#selection').on('click', function() {
 	  $("#selectedPg").empty();
+	  $("#selectedTable").empty();
 	  $("#selectedPg").append("<table id='selectedTable' frame='void' border='1' width= 40% border-style='solid' border-width='3px'"
 			  + "style='margin: 0 auto; text-align: left; vertical-align: middle;'></table>")
 			  
-	setTimeout(function() {
+// 	setTimeout(function() {
 		  $("#selectedPg").append("<p style='font-size: 30px;'>선택하신 후보지가 맞나요? <br/> [저장 후 검색]을 눌러 세부 검색을 진행합니다."+"</p>")
 	      $("#selectedPg").append("<p style='font-size: 20px; color: blue;'>저장 된 후보지는 다음 체험학습지 선정 시 유용히 활용됩니다."+"</p>")
 	 	  $("#selectedTable").append("<tr><td style='text-align: center; background-color: #ffeb3b; font-size: 25px'>관심있게 본 프로그램 목록[총 "+posts.length+"개]</td></tr>")
 	  for(var i in posts){
 		    $("#selectedTable").append("<tr></br><td class= 'keywordAll' id='keyword"+i+"' style='font-size: 18px;'>"+posts[i]+"</td></tr>")
 	  }	 
-		 }, 1000);
+// 		 }, 1000);
 })
 
-// jQuery.ajaxSettings.traditional = true;
-
-// 	$(function() {
-// 		$("#saveList").on('click', function() {
-// 			$(posts).each(
-// 					)
+	// 4. 체험학습 후보지 저장 - 키워드 controller로 전송
+	$(function() {
+		$("#saveList").on('click', function() {	
 			
-			
-// 			$.ajax({
-// 				url : '/kinder/postSaveList',
-// 				type : 'post',
-// 				data : {
-// 					keywords: posts // 배열로 보냄
-// 				}
-// 			})
-// 		})
-// 	})
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : '/kinder/postSaveList',
+				type : 'post',
+				data : {
+					keywords: posts, // 배열로 보냄
+					jsondata : tableTags
+				},
+				success: function(data) {
+					alert(data);
+				}
+			})
+		})
+	})
 
   
 //   // 4. 체험학습 후보지 저장

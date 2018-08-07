@@ -66,9 +66,9 @@ $(function(){
 	     <a href="#">입소신청</a>
 	       <ul class="sub-menu">
 	       	 <li><a href="/kinder/ina/gmenu4">내 아이 등록하기</a></li>
-	      	 <li><a href="/kinder/ina/gmenu6">정기모집</a></li>
-	         <li><a href="/kinder/ina/gmenu8">신청하기</a></li>
-	         <li><a href="/kinder/ina/gmenu9">대기현황</a></li>
+	      	 <li><a href="/kinder/ina/gmenu6">정기모집</a></li>      	 
+	         <li><a href="/kinder/ina/gmenu8">수시모집</a></li>
+	         <li><a href="/kinder/ina/gmenu9">신청현황</a></li>   
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">
@@ -81,21 +81,14 @@ $(function(){
 	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">어린이집 정보</a>
 	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/search_keyword">어린이집 찾기</a></li>
+	         <li><a href="/kinder/hojung/search_keyword_gmenu">어린이집 찾기</a></li>
 	         <li><a href="/kinder/hojung/gmenu15">어린이집 후기</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">
-	       <a href="#">커뮤니티</a>
-	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/gmenu16">어린이집 후기</a></li>
-	         <li><a href="/kinder/hojung/gmenu17">자유게시판</a></li>
-	         <li><a href="/kinder/hojung/gmenu18">중고장터</a></li>
-	       </ul>
-	      </li>
-	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">아이맞춤추천</a>
 	       <ul class="sub-menu">
+	         <li><a href="/kinder/jiwon/gmenu21">출석 정보</a></li>
 	         <li><a href="/kinder/jiwon/gmenu19">영상 추천</a></li>
 	         <li><a href="/kinder/jiwon/gmenu20">도서 추천</a></li>
 	       </ul>
@@ -103,7 +96,7 @@ $(function(){
 	      <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">주변시설 예약</a>
 	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/gmenu16">키즈카페</a></li>
+	         <li><a href="/kinder/hojung/searchcafe_keyword_gmenu">키즈카페</a></li>
 	         <li><a href="/kinder/hojung/gmenu17">예방접종 병원</a></li>
 	       </ul>
 	      </li>

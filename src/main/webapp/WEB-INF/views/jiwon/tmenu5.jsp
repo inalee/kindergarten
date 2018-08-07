@@ -87,6 +87,9 @@ table button {margin:5px;}
     border: 1px solid #ccc;
     border-top: none;
 }
+.tds{
+	width:30%;
+}
 
 .ShopContainer .atd_month {width:977px; height:105px; text-align:center; border:1px solid #e1e4e8; border-bottom:0; padding-top:30px; position:relative;}
 .ShopContainer .atd_month .num {font-size:32px; font-weight:800; color:#333; vertical-align:middle; padding:0 18px; letter-spacing:-1px;}
@@ -138,7 +141,8 @@ table button {margin:5px;}
         			   'titleTextStyle':{fontSize : 20, bold : true},
         			   'fontSize' : 12,
                        'width':550,
-                       'height':450
+                       'height':450,
+                       'colors': ['#F15F5F', '#6799FF', '#D1B2FF', '#FAED7D', '#f6c7b6']
                        };
         
         // Instantiate and draw our chart, passing in some options.
@@ -360,16 +364,16 @@ function drawCalendar(){
 				<ul style="margin-top:10px">
 				<li>
 					<table width=100%;>
-						<tr><th>이름 </th><th>상태</th><th> </th></tr>
+						<tr><th>이름 </th><th colspan="2">상태</th></tr>
 						<c:forEach items="${clmem}" var="i">
 							<c:if test="${i.atstate == 0}">
-								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">미출석</td><td id="atCheck_${i.ccode}"><button class="attend" value="${i.ccode}">출석</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tds">미출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate == 1 || i.atstate == 2}">
-								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">출석</td><td id="atCheck_${i.ccode}"><button class="leave" value="${i.ccode}">하원</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="leave" value="${i.ccode}">하원</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate eq 3}">
-								<tr><td>${i.cname}</td><td id="atText_${i.ccode}">하원</td><td id="atCheck_${i.ccode}"><button value="${i.ccode}" disabled="disabled">하원</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">하원</td><td id="atCheck_${i.ccode}" class="tds"><button value="${i.ccode}" disabled="disabled">하원</button></td></tr>
 							</c:if>
 						</c:forEach>
 					</table>	
@@ -400,141 +404,7 @@ function drawCalendar(){
 						<!-- 출석체크되면 li에 클래스 "ac" 추가 -->					
 						<div class="atd_calendar">
 							<ul>
-<!-- 								<li> -->
-<!-- 									<span class="d">1</span><br> -->
-<!-- 									<h6 class="ac">출석 : 7</h6> -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">2</span> -->
-<!-- 									<h6 class="ac">출석 : 5</h6> -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">3</span> -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">4</span> -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">5</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">6</span> -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">7</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">8</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">9</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">10</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">11</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">12</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">13</span> -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">14</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">15</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">16</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">17</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">18</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">19</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">20</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">21</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">22</span>	 -->
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">23</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">24</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">25</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">26</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">27</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">28</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">29</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">30</span> -->
-	
-<!-- 								</li> -->
-	
-<!-- 								<li> -->
-<!-- 									<span class="d">31</span> -->
-	
-<!-- 								</li> -->
-<!-- 								<li><span class="d"></span></li><li><span class="d"></span></li><li><span class="d"></span></li><li><span class="d"></span></li> -->
+
 							</ul>
 							<div class="clear"></div>
 						</div>

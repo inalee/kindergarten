@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,18 +15,24 @@ import javax.servlet.http.HttpSession;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kinder.domain.ClassVO;
+import com.kinder.domain.MemberVO;
 import com.jiwon.dto.AttendDTO;
 import com.jiwon.dto.CalendarDTO;
 import com.jiwon.mongo.MongoAttendCheck;
 import com.jiwon.persistence.JChildrenDAO;
+import com.jiwon.service.JapiService;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.TeacherVO;
 
@@ -36,7 +43,14 @@ import com.kinder.domain.TeacherVO;
 public class JiwonController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JiwonController.class);
+	
+	Calendar c = Calendar.getInstance();
+	int month = c.get(Calendar.MONTH)+1 ;
+	String today = c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DATE);
+	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	
 	@Inject JChildrenDAO dao;
+			JapiService apiservice;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -51,8 +65,48 @@ public class JiwonController {
 	public String gmenu20() {
 		
 		return "/gmenu20";
+	} 
+	@RequestMapping(value = "/gmenu21", method = RequestMethod.GET)
+	public void gmenu21(HttpSession session) throws Exception {
+		MemberVO vo = (MemberVO)session.getAttribute("glogin");
+		session.setAttribute("children", dao.getChildrenList(vo.getMemid()));
 	}
 	
+	@RequestMapping(value = "/getChildAttendInfo", method = RequestMethod.GET)
+	public String getChildAttendInfo(HttpServletRequest r) throws Exception {
+		//System.out.println(r.getParameter("ccode"));
+		String late = today + "T10:30:00Z";
+		r.setAttribute("chInfo", dao.getChildInfo(Integer.parseInt(r.getParameter("ccode"))));
+		List<Document> list = MongoAttendCheck.findChildAt(Integer.parseInt(r.getParameter("ccode")), today);
+		int k = -1;
+		String time;
+		AttendDTO dto = new AttendDTO();
+		for (Document document : list) {
+			//System.out.println(document.get("date").toString().split(" ")[3]);
+			time = document.get("date").toString().split(" ")[3];
+			if(document.get("state").equals("leave")) {
+				r.setAttribute("state", "leave");
+				dto.setAtetime(time);
+				k = 1;
+			}else if(document.get("state").equals("attend")) {
+				dto.setAtstime(time);
+				if(k==-1) {
+					if(((Date)document.get("date")).compareTo(format.parse(late)) > 0) {
+						r.setAttribute("state", "late");
+					}else {
+						r.setAttribute("state", "attend");
+					}
+					k = 1;
+				}
+			}
+		}
+		if(k==-1) {
+			r.setAttribute("state", "absent");
+		}
+		r.setAttribute("time", dto);
+		
+		return "/gmenu21";
+	}
 	@RequestMapping(value = "/tmenu5", method = RequestMethod.GET)
 	public void tmenu5(Model model, HttpSession session) throws Exception {
 		
@@ -63,10 +117,6 @@ public class JiwonController {
 	}
 	@RequestMapping(value = "/getClassMember", method = RequestMethod.GET)
 	public String getClassMember(Model model, HttpSession session, HttpServletRequest r) throws Exception {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		Calendar c = Calendar.getInstance();
-		int month = c.get(Calendar.MONTH)+1 ;
-		String today = c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DATE);
 		
 		List<ChildrenVO> child = dao.getClassMember(Integer.parseInt(r.getParameter("clcode")));
 		List<Document> list = MongoAttendCheck.findAttend(Integer.parseInt(r.getParameter("clcode")), today);
@@ -149,7 +199,7 @@ public class JiwonController {
 				state[1]++;
 			else state[2]++;
 			
-			System.out.println(i.getAtdate() +"// state : "+ j);
+			//System.out.println(i.getAtdate() +"// state : "+ j);
 		}
 		
 		cd.setAbsent(state[0]);
@@ -158,12 +208,9 @@ public class JiwonController {
 		ac.add(cd);
 		return ac;
 	}
-	@Scheduled(cron="0 0 21 * * *")
+	
+	@Scheduled(cron="0 0 20 * * *")
 	public void checkTime() throws Exception {
-		Calendar c = Calendar.getInstance();
-		int month = c.get(Calendar.MONTH)+1 ;
-		String today = c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DATE);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		
 		String late = today + "T10:30:00Z";
 
@@ -177,7 +224,7 @@ public class JiwonController {
 			System.out.println(i);	
 			cl = dao.getClassList(i);
 			for (ClassVO j : cl) {
-				System.out.println("clcode : " + j.getClcode());
+				//System.out.println("clcode : " + j.getClcode());
 				child = dao.getClassMember(j.getClcode());
 				list = MongoAttendCheck.findAttend(j.getClcode(), today);
 				int k;
@@ -219,4 +266,15 @@ public class JiwonController {
 		}
 		
 	}
+	
+	@RequestMapping(value = "/getSearch", method = RequestMethod.GET)
+	public ResponseEntity<String> getSerchedResult(@RequestParam String query) throws Exception {
+		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+		
+		StringBuffer sb = apiservice.youtubeService(query);
+		return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+	
 }

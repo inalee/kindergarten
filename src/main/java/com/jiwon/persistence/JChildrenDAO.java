@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kinder.domain.ClassVO;
 import com.jiwon.dto.AttendDTO;
+import com.jiwon.dto.ChildrenDTO;
 import com.kinder.domain.ChildrenVO;
 
 
@@ -14,4 +15,6 @@ public interface JChildrenDAO {
 	public List<Integer> getKinderList() throws Exception;
 	public void insertACheck(AttendDTO dto) throws Exception;
 	public List<AttendDTO> getAttendByMonth(AttendDTO dto) throws Exception;
+	public List<ChildrenVO> getChildrenList(String memid) throws Exception;
+	public ChildrenDTO getChildInfo(int ccode) throws Exception;
 }

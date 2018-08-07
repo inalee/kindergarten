@@ -8,8 +8,8 @@
 <meta charset="UTF-8">
 <title>통합검색</title>
 <c:url var="search_kinder" value="resources/hjcss/search_kinder.css"></c:url>
-<link href="${search_kinder}" rel="stylesheet" type="text/css" />
-<link href="${kinder_search}" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
+<link href="${search_kinder}" rel="stylesheet" type="text/css" />	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 function search_btn() {
@@ -25,7 +25,7 @@ function search_btn() {
 	$.get("search_kinder",	{ sigungucode: psigungu, kinkind:0, kinname:pkinname }).done(function(data,state){
 
 		$("#total").remove();
-		$("#contain3").before("<h5 id='total' style='padding-left: 60px;'>총 "+data.length+"개의 어린이집이 검색되었습니다.</h5>"); 
+		$("#contain3").before("<h5 id='total' style='text-align: center; margin-left:-450px;'>총 "+data.length+"개의 어린이집이 검색되었습니다.</h5>"); 
 		$("#mychild").empty();
 		$("#mychild").append(" <tr><th>위치</th><th>어린이집</th><th>유형</th><th>정원</th><th>현원</th><th>-</th></tr>");
 		
@@ -75,6 +75,10 @@ function selkinder(dat) {
 }
 </script>
 <style>
+body{
+font-family: 'Jeju Gothic', sans-serif;	
+}
+
 #contain4{
 	width: 1200px;
 	position: relative; 

@@ -32,7 +32,7 @@ public class HojungController {
 	@Inject
 	private KinderService kservice;
 	
-	@RequestMapping(value = "/search_keyword", method = RequestMethod.GET)
+	@RequestMapping(value = "/search_keyword_gmenu", method = RequestMethod.GET)
 	public String search_keyword() {
 		
 		return "/search_keyword";
@@ -72,16 +72,22 @@ public class HojungController {
 //		model.addAttribute("list", service.listAll());
 //	}
 	
+	@RequestMapping(value = "/searchcafe_keyword_gmenu", method = RequestMethod.GET)
+	public String searchcafe_keyword() {
+		
+		return "/searchcafe_keyword";
+	}
+	
+	@RequestMapping(value = "/searchcafe_map", method = RequestMethod.GET)
+	public String searchcafe_map() {
+		
+		return "/searchcafe_map";
+	}
+	
 	@RequestMapping(value = "/gmenu15", method = RequestMethod.GET)
 	public String gmenu15() {
 		
 		return "/gmenu15";
-	}
-	
-	@RequestMapping(value = "/gmenu16", method = RequestMethod.GET)
-	public String gmenu16() {
-		
-		return "/gmenu16";
 	}
 	
 	@RequestMapping(value = "/gmenu17", method = RequestMethod.GET)

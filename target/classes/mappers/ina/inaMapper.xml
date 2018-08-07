@@ -86,11 +86,6 @@ select encode,statcode,date_add(enlog,interval +7 day) enlog from enroll where c
 </select>
 
 
-<!-- 대기목록 전체 -->
-<select id="wait_list" resultType="map">
-select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
-and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} order by e.encode 
-</select>  
 
 
 <!-- 취소된건 제외, 대기 목록 select -->
@@ -186,9 +181,8 @@ update enroll set statcode=5 where encode=#{encode}
 </update>
 
 <!--  정기 모집 insert -->
-<insert id="regular_enroll">
-insert into regular_recruit(kincode,sigungucode,renum,reopen,redetail) 
-values(#{kincode},#{sigungucode},#{renum},#{reopen},#{redetail})
+<insert id="regular_enroll" statementType="CALLABLE">
+{call p_regular_upload(#{sigungucode},#{renum},#{reopen},#{redetail},#{kincode})}
 </insert>
 
 <!--  정기모집 목록 select -->
@@ -211,4 +205,111 @@ select * from regular_recruit where kincode=#{kincode} order by recode
 select * from kindergarten where kincode=#{kincode}
 </select>
 
+
+<!-- 정기등록 된 어린이집 검색하기 -->
+<select id="search_kinder_regular"  resultType="map">
+select r.recode,k.kinname,s.sigungu,r.renum,r.reopen,r.redetail,r.redate,k.kincode,ki.kinkind 
+from regular_recruit r,kindergarten k,sigungu s,kinkind ki 
+where r.kincode=k.kincode and s.sigungucode=r.sigungucode and ki.kinkindcode=k.kinkindcode
+	<if test="sigungucode != null">
+		<choose>
+		<!-- kinkind 선택 / kinname은 선택 X -->
+		<when test="kinkindcode != 0 and kinname == ''">
+		and s.sigungucode=#{sigungucode} and ki.kinkindcode=#{kinkindcode} 
+		</when>
+		<!-- kinkind 선택 / kinname 선택  -->
+		<when test="kinkindcode != 0 and kinname != ''">
+			and s.sigungucode=#{sigungucode} and ki.kinkindcode=#{kinkindcode} and k.kinname like CONCAT('%',#{kinname},'%')
+		</when>
+		<!--  kinkind 선택 X / kinname 은 선택  -->
+			<when test="kinkindcode == 0 and kinname != ''">
+			and s.sigungucode=#{sigungucode} and k.kinname like CONCAT('%',#{kinname},'%')
+			</when>
+			<!-- 전체 -->
+			<when test="sigungucode == 0 and kinkindcode == 0 and kinname ==''">
+				
+			</when>
+			<otherwise>
+			and s.sigungucode=#{sigungucode}
+			</otherwise>
+		</choose>
+		order by r.recode;
+	</if>
+
+</select>
+
+<insert id="regular_insert" statementType="CALLABLE">
+call p_regular_insert(#{ccode},#{recode},#{rehopedate});
+</insert>
+
+<!--  신청 list -->
+<select id="select_regular" resultType="map">
+<![CDATA[
+select re.re_encode,c.cname,k.kinname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog 
+from guardian g,children c,kindergarten k,regular_code res,regular_enroll re,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and g.gcode=#{gcode} and re.re_statecode<=2 order by re.re_encode
+]]>
+</select>
+
+<!-- 정기모집 신청 완료된애들 -->
+<select id="select_regular2" resultType="map">
+select re.re_encode,c.cname,k.kinname,re.rehopedate,re.re_log,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre 
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and re.re_statecode=3 and g.gcode=#{gcode} order by re.re_encode
+</select>
+
+<!--  정기모집 자료제출 -->
+<update id="update_file_regular">
+update regular_enroll set re_statecode=2 where re_encode=#{re_encode}
+</update>
+<!-- 정기모집 취소 -->
+<update id="del_regular">
+update regular_enroll set re_statecode=4 where re_encode=#{re_encode}
+</update>
+
+<!-- 정기모집 취소된 목록 -->
+<select id="list_del_regular" resultType="map">
+select re.re_encode,c.cname,k.kinname,re.rehopedate,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 or re.re_statecode=5) and g.gcode=#{gcode} order by re.re_encode
+</select>
+
+<!-- 정기모집 신청 list(선생님) -->
+<select id="sel_regular_list_te" resultType="map">
+<![CDATA[
+select re.re_encode,c.cname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog,rre.recode,rre.redate,c.ccode
+from guardian g,children c,kindergarten k,regular_code res,regular_enroll re,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and k.kincode=#{kincode} and re.re_statecode<=2 order by rre.recode
+]]>
+</select>
+
+<!--  정기모집 입소완료 -->
+<update id="regular_fin" statementType="CALLABLE">
+call p_regular_enroll(#{kincode},#{ccode},#{re_encode})
+</update>
+
+<!--  정기모집 입소 완료된 list -->
+<select id="regular_fin_list" resultType="map">
+select re.re_encode,c.cname,re.rehopedate,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre 
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and re.re_statecode=3 and k.kincode=#{kincode} order by re.re_encode
+</select>
+
+<!-- 자료 미제출 update -->
+<update id="no_file">
+update regular_enroll set re_statecode=5 where re_encode=#{re_encode}
+</update>
+
+<!-- 정기모집 취소된 list -->
+<select id="cancel_list" resultType="map">
+select re.re_encode,c.cname,re.rehopedate,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 or re.re_statecode=5) and k.kincode=#{kincode} order by  re.re_encode
+</select>
 </mapper>

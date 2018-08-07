@@ -1,0 +1,251 @@
+/*
+  Add an initial background-image to .backgroundTransition container. This image
+  should match the first image passed into the plugin's 'background' array.
+  Adding this here ensures that there is a background image loaded on page load,
+  while waiting for document.ready().
+ */
+/*
+  The following css is merely to style the white container in the middle of the page.
+*/
+.content {
+    margin-top: 50px;
+    width: 728px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    background-color: rgba(0,0,0,.3);
+    color:#fff;
+}
+
+.page  {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	left: 50%;
+	top: 50%;
+	margin-left: -250px;
+	margin-top: -250px;
+	}
+	
+.form {
+  position: relative;
+  z-index: 10;
+  background: #FFFFFF;
+  max-width: 270px;
+  margin: 0 auto 0;
+  padding: 45px;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.24);
+  border-radius: 5px;
+}
+
+.form ul {
+	list-style-type: none;
+	padding: 10px;
+	margin: 0;
+}
+
+.form ul li {
+	margin-bottom: 10px;
+}
+
+.form ul li:nth-of-type(1) {
+	margin-right: 17px;
+}
+
+.form ul li:nth-of-type(1), li:nth-of-type(2), li:nth-of-type(5), li:nth-of-type(6) {
+	display: inline-block;
+}
+
+.form ul p {
+	margin: 0 0 3px 0;
+	font-size: 13px;
+	font-weight: bold;
+}
+.form ul span {
+	margin: 0 0 0 3px;
+	font-size: 16px;
+}
+
+.form select {
+	padding: 5px;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border-radius: 5px;
+}
+
+.form select::-ms-expand {
+	display: none;
+}
+
+.form .si {
+	outline: none;
+	height: 35px;
+	width: 111.5px;
+	border: 1px solid rgb(169, 169, 169);
+	background: url(../images/selectbox1.png) no-repeat 95% 50%; /*화살표 아이콘 추가*/
+}
+
+.form input[type="search"] {
+	outline: none;
+	height: 35px;
+	width: 100%;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid rgb(169, 169, 169);
+}
+
+.form input[type="date"] {
+	outline: none;
+	height: 24px;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid rgb(169, 169, 169);
+}
+
+input[type="date"]::-webkit-outer-spin-button,
+input[type="date"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form .time {
+	outline: none;
+	height: 32px;
+	width: 50px;
+	background: url(../images/selectbox2.png) no-repeat 95% 50%; /*화살표 아이콘 추가*/
+}
+
+/* .form input[type="number"] { */
+/* 	outline: none; */
+/* 	height: 26px; */
+/* 	width: 40px; */
+/* 	text-align: center; */
+/* } */
+
+.form input[type="button"] {
+	outline: none;
+	height: 35px;
+	width: 100%;
+	background: url(../images/selectbox1.png) no-repeat 98% 50%;
+	background-color: #ffffff;
+	border: 1px solid rgb(169, 169, 169);
+	border-radius: 5px;
+	cursor: pointer;
+	text-align: left;
+}
+
+#personnum {
+	position: absolute;
+	height: 81px;
+	width: 228px;
+	padding: 9px;
+	border: 1px solid rgb(169, 169, 169);
+	border-radius: 5px;
+	background-color: #fff;
+	display: none;
+}
+
+/* #pnum, tr, td { */
+/* 	border: 1px solid black; */
+/* 	border-collapse: 1px; */
+/* } */
+
+#pnum {
+	width: 100%;
+}
+
+#pnum tr td:first-child {
+	font-size: 15px;
+	width: 58%;
+}
+
+#pnum tr:last-child td {
+	text-align: right;
+}
+
+.minus {
+	width: 27px;
+	height: 27px;
+	border: none;
+	background: url(../images/bnt_minus.png) no-repeat;
+	background-size: 27px, 27px;
+	vertical-align: middle;
+	outline: none;
+	cursor: pointer;
+	margin-bottom: 1px;
+}
+
+.plus {
+	width: 27px;
+	height: 27px;
+	border: none;
+	background: url(../images/bnt_plus.png) no-repeat;
+	background-size: 27px, 27px;
+	vertical-align: middle;
+	outline: none;
+	cursor: pointer;
+}
+
+.count {
+	width: 20px;
+	font-weight: bold;
+	font-size: 15px;
+	border: none;
+	text-align: center;
+}
+
+.count::-webkit-outer-spin-button,
+.count::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#pnum p {
+	color: rgb(169, 169, 169);
+	cursor: pointer;
+}
+
+
+
+
+
+
+/* search_btn */
+.form ul:first-child .basis:nth-last-child(1) {
+	height: 30px;
+	width: 100%;
+	margin: 40px 0 -20px 0;
+}
+
+.btn {
+    border: none;
+    color: white;
+    padding: 4px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    margin: 0;
+    margin-right:-10px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search_btn {
+	float: right;
+	background-color: #5baeae;
+    border: 1px solid #489393;
+    -webkit-transition: all 0.3 ease;
+  	transition: all 0.3 ease;
+}
+
+.search_btn:hover {
+    background-color: #79bdbd;
+}
+
+.search_btn:active {
+	box-shadow: 0 1px #666;
+  	transform: translateY(1px);
+}
+

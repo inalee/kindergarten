@@ -1,6 +1,6 @@
 package com.yebin.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class FieldtripVO {
 
@@ -67,10 +67,6 @@ public class FieldtripVO {
 
 	public int getCatecpde() {
 		return catecode;
-	}
-
-	public void setCatecpde(int catecpde) {
-		this.catecode = catecpde;
 	}
 
 	public int getArcode() {
@@ -191,6 +187,15 @@ public class FieldtripVO {
 
 	public void setFttitle(String fttitle) {
 		this.fttitle = fttitle;
+	}
+
+	@Override
+	public String toString() {
+		return "FieldtripVO [ftcode=" + ftcode + ", tcode=" + tcode + ", catecode=" + catecode + ", arcode=" + arcode
+				+ ", ftstart=" + ftstart + ", ftend=" + ftend + ", ftaddr=" + ftaddr + ", ftweb=" + ftweb
+				+ ", ftperson=" + ftperson + ", ftcost=" + ftcost + ", tecode=" + tecode + ", ftdate=" + ftdate
+				+ ", revcode=" + revcode + ", ftchoice=" + ftchoice + ", ftremarks=" + ftremarks + ", mtrcode="
+				+ mtrcode + ", fttitle=" + fttitle + "]";
 	}
 
 }

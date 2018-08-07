@@ -252,6 +252,7 @@ public class CommonController {
 		vo.setMemsort(1);
 		if(dao.nLogin(vo) != null){
 			vo.setMemname(dao.nLogin(vo).getMemname());
+			vo.setMemaddress(dao.nLogin(vo).getMemaddress());
 			model.addAttribute("memberVO",vo);
 			hs.setAttribute("exist",false);
 			return "tmain";
@@ -288,6 +289,7 @@ public class CommonController {
 		vo.setMemsort(0);
 		if(dao.nLogin(vo) != null){
 			vo.setMemname(dao.nLogin(vo).getMemname());
+			vo.setMemaddress(dao.nLogin(vo).getMemaddress());
 			model.addAttribute("memberVO",vo);
 			hs.setAttribute("exist",false);
 			return "gmain";

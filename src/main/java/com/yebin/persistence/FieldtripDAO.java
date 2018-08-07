@@ -1,9 +1,9 @@
 package com.yebin.persistence;
 
-import com.yebin.domain.FieldtripVO;
+import java.util.Map;
 
 public interface FieldtripDAO {
 	
-	public void insertCandidates(FieldtripVO fieldvo);
+	public void insertCandidates(Map<String, Object> params);
 
 }

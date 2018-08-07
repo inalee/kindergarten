@@ -31,4 +31,7 @@ public interface RegularDAO {
 	public List<Map<String, Object>> cancel_list(int kincode);
 	
 	public List<Map<String, Object>> search_regular(SearchCri cri);
+	
+	public void delete_regular(int recode);
+	
 }

@@ -80,4 +80,11 @@ public class RegularDAOImpl implements RegularDAO{
 	public List<Map<String, Object>> search_regular(SearchCri cri) {
 		return sqlSession.selectList(namespace+".search_kinder_regular",cri);
 	}
+
+	
+	@Override
+	public void delete_regular(int recode) {
+		sqlSession.selectList(namespace+".del_regular_2",recode);
+	}
+
 }

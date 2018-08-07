@@ -11,6 +11,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+
+function file_down(pencode,refile){
+
+	if(refile==''){
+		alert("등록된 자료가 없습니다.");	
+		}else{
+			location.href = "down_file?encode="+pencode;
+		}
+
+}
+
+
+function file_down2(prencode,refile){
+
+	if(refile==''){
+	alert("등록된 자료가 없습니다.");	
+	}else{
+		location.href = "down_file2?re_encode="+prencode;
+	}
+
+}
+
+
 function fin_enroll(pkincode,pccode){
 
 	
@@ -481,10 +504,10 @@ float: none;
     <form>
 <table id="mychild">
   <tr>
+  	<th>입소순번</th>
 	<th>번호</th>
     <th>아동 이름</th>
     <th>입소희망일</th>
-	<th>입소순번</th>
 	<th>우선순위 배점</th>
     <th>상태</th> 
     <th>자료제출기한</th>      
@@ -497,14 +520,15 @@ float: none;
 <tr>
 	<form>
 	<input type="hidden" id="encode" name="encode" value="${i.encode}">
+	<input type="hidden" id="enfile" name="enfile" value="${i.enfile}">
+	<td>${ranking}번</td>
     <td>${i.encode}</td>
 	<td>${i.cname}</td>
     <td>${i.hopedate}</td>
-    <td>${ranking}번</td>
     <td>${i.crank}</td>
     <td>${i.status}</td>
     <td>${date_re2}</td>
-    <td><button type="button" class="button button2" onclick="uploadfile()">보기</button><br></td>
+    <td><button type="button" class="button button2" onclick="file_down(${i.encode},enfile.value)">보기</button><br></td>
     <c:choose>
     <c:when test="${i.status eq '대기확정'}">
     <td><button class="button button4" type="button" onclick="fin_enroll(${teacher.kincode},${i.ccode})">입소확정</button></td>
@@ -545,6 +569,7 @@ float: none;
   <tr>
 	<form>
 	<input type="hidden" id="encode" name="re_encode" value="${i.re_encode}">
+		<input type="hidden" id="refile" name="refile" value="${i.refile}">
 	<td>${i.recode}</td>
     <td>${i.re_encode}</td>
     <td>${date_re3}</td>
@@ -552,7 +577,7 @@ float: none;
     <td>${i.rehopedate}</td>
     <td>${i.restate}</td>
     <td>${date_re2}</td>
-    <td><button type="button" class="button button2" onclick="uploadfile()">보기</button><br></td>
+    <td><button type="button" class="button button2" onclick="file_down2(${i.re_encode},refile.value)">보기</button><br></td>
     <td><button class="button button4" type="button" onclick="fin_enroll2(${i.re_encode},${i.ccode},${i.kincode})">입소확정</button><br>
     <button class="button button3" type="button" onclick="mod_stat2(${i.re_encode})">입소취소</button></td>
 </form>

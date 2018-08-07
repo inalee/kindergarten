@@ -25,7 +25,7 @@ function search_btn() {
 	$.get("search_kinder",	{ sigungucode: psigungu, kinkind:0, kinname:pkinname }).done(function(data,state){
 
 		$("#total").remove();
-		$("#contain3").before("<h5 id='total' style='text-align: center; margin-left:-450px;'>총 "+data.length+"개의 어린이집이 검색되었습니다.</h5>"); 
+		$("#contain3").before("<h5 id='total' style='text-align: center; margin-left:-450px; margin-top:-20px;'>총 "+data.length+"개의 어린이집이 검색되었습니다.</h5>"); 
 		$("#mychild").empty();
 		$("#mychild").append(" <tr><th>위치</th><th>어린이집</th><th>유형</th><th>정원</th><th>현원</th><th>-</th></tr>");
 		
@@ -77,12 +77,16 @@ function selkinder(dat) {
 <style>
 body{
 font-family: 'Jeju Gothic', sans-serif;	
+padding: 0;
+margin: 0;
+margin-top: -10px;
 }
 
 #contain4{
 	width: 1200px;
 	position: relative; 
 	margin: auto;
+
 }
 #mychild{
 
@@ -116,11 +120,11 @@ font-family: 'Jeju Gothic', sans-serif;
 </head>
 <body>
 
-<div class="page_name" style="margin-top: 10px; width:700px;">
+<div class="page_name" style="margin-top: 10px; width:100%;">
 	<h2>통합검색</h2><br>
 </div>
 	
-<div class="kinder_search" style="width:700px;">
+<div class="kinder_search" style="width:100%;">
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 	<ul style="margin-bottom: 0;">
 		<li class="basis"><p>시도</p>

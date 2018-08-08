@@ -45,6 +45,29 @@
   and k.kinname like CONCAT('%',#{kinname},'%') and k.sigungucode=#{sigungucode}
   order by s.sigungu, k.kinname, kk.kinkind
   </select>
+  
+  <!-- 키즈카페 예약 불가 리스트 -->
+  <select id="unfitKidscafes" resultType="java.lang.Integer">
+  <![CDATA[select kc.cfcode
+  from kidscafe kc, cfres_summary cs
+  where kc.cfcode=cs.cfcode and kc.cfname like CONCAT('%',#{cfname},'%')
+  and cs.cfresdate=#{cfresdate}]]>
+  <if test="personnum != 0">
+	and kc.numperhour-cs.sum_cfresnum lt #{cfresnum}
+  </if>
+  <if test="sigungucode != 0">
+	and kc.sigungucode=#{sigungucode}
+  </if>
+  <foreach collection="cfrestime_lists" item="cfrestime" separator="or" open="and(" close=")">cs.cfrestime=#{cfrestime}</foreach>
+  <![CDATA[group by kc.cfcode
+  order by kc.cfname]]>
+  </select>
 
 
   </mapper>
+  
+  
+  
+  
+  
+  

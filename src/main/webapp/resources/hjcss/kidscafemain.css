@@ -234,14 +234,15 @@ input[type="date"]::-webkit-inner-spin-button {
 
 .search_btn {
 	float: right;
-	background-color: #5baeae;
+	background-color: #489393;
     border: 1px solid #489393;
     -webkit-transition: all 0.3 ease;
   	transition: all 0.3 ease;
 }
 
 .search_btn:hover {
-    background-color: #79bdbd;
+    background-color: #58adad;
+    border: 1px solid #58adad;
 }
 
 .search_btn:active {

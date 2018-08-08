@@ -1,8 +1,10 @@
 package com.hojung.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscafeunfitCri;
 import com.hojung.domain.KinsearchCri;
+import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
+import com.hojung.service.KidscafeService;
 import com.hojung.service.KinderService;
 import com.kinder.domain.KindergartenVO;
 
@@ -27,10 +33,14 @@ public class HojungController {
 	private static final Logger logger = LoggerFactory.getLogger(HojungController.class);
 	
 	@Inject
-	private KinderDAO dao;
+	private KinderDAO kdao;
+	@Inject
+	private KidscafeDAO kcdao;
 	
 	@Inject
 	private KinderService kservice;
+	@Inject
+	private KidscafeService kcservice;
 	
 	@RequestMapping(value = "/search_keyword_gmenu", method = RequestMethod.GET)
 	public String search_keyword() {
@@ -72,16 +82,37 @@ public class HojungController {
 //		model.addAttribute("list", service.listAll());
 //	}
 	
-	@RequestMapping(value = "/searchcafe_keyword_gmenu", method = RequestMethod.GET)
-	public String searchcafe_keyword() {
+	@RequestMapping(value = "/kidscafe_main_gmenu", method = RequestMethod.GET)
+	public String kidscafe_main() {
 		
-		return "/searchcafe_keyword";
+		return "/kidscafe_main";
 	}
 	
-	@RequestMapping(value = "/searchcafe_map", method = RequestMethod.GET)
-	public String searchcafe_map() {
+	/*  */
+	@RequestMapping(value = "/kidscafe_select", method = RequestMethod.POST)
+	public String kidscafe_select(HttpServletRequest request, Model model) throws Exception {
 		
-		return "/searchcafe_map";
+		int [] cfrestime_lists = new int[Integer.parseInt(request.getParameter("endtime"))-Integer.parseInt(request.getParameter("starttime"))];
+		int index = 0;
+		KidscafeunfitCri cri = new KidscafeunfitCri();
+		
+		cri.setSigungucode(Integer.parseInt(request.getParameter("sigungucode")));
+		cri.setCfname(request.getParameter("cfname"));
+		cri.setCfresdate(request.getParameter("cfresdate"));
+		for (int i = Integer.parseInt(request.getParameter("starttime")); i < Integer.parseInt(request.getParameter("endtime")); i++) {
+			cfrestime_lists[index]=i;
+			index++;
+		}
+		cri.setCfrestime_lists(cfrestime_lists);
+		cri.setCfresnum(Integer.parseInt(request.getParameter("count1"))+Integer.parseInt(request.getParameter("count2")));
+
+		System.out.println("================="+cri);
+		
+		kcservice.unfitKidscafes(cri);
+		
+		System.out.println(kcservice.unfitKidscafes(cri));
+		
+		return "/kidscafe_list";
 	}
 	
 	@RequestMapping(value = "/gmenu15", method = RequestMethod.GET)

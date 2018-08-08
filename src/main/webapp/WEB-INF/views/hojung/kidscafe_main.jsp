@@ -8,8 +8,8 @@
 <meta charset="UTF-8">
 <title>키즈카페 예약</title>
 
-<c:url var="demo" value="resources/hjcss/demo.css"></c:url>
-<link href="${demo}" rel="stylesheet" type="text/css" />
+<c:url var="kidscafemain" value="resources/hjcss/kidscafemain.css"></c:url>
+<link href="${kidscafemain}" rel="stylesheet" type="text/css" />
 <c:url var="backgroundTransition" value="resources/hjcss/backgroundTransition.css"></c:url>
 <link href="${backgroundTransition}" rel="stylesheet" type="text/css" />
 
@@ -100,13 +100,12 @@
 	}
 	
 	function possibleEndtime() {
-		var starttime = document.getElementById("starttime").value+1;
+		starttime = Number(document.getElementById("starttime").value)+1;
 		
 		$('#endtime').empty();
 		 
-		for(var i = starttime; i < 22; i++){
-// 			alert(i)
-            var option = $("<option value="+(i+1)+">"+(i+1)+"</option>");
+		for(var i = starttime; i < 23; i++){
+            var option = $("<option value="+i+">"+i+"</option>");
             $('#endtime').append(option);
         }
 	}
@@ -118,7 +117,7 @@
 <!--        </div> -->
 	<div class="page">
 	  <div class="form">
-		<form class="" action="" method="">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+		<form action="kidscafe_select" method="post">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 			<ul>
 				<li class="basis"><p>시도</p>
 					<select class="si" title="시도 선택">
@@ -127,7 +126,7 @@
 		            </select>
 				</li>
 				<li class="basis"><p>시군구</p>
-					<select class="si" title="시군구 선택" id="sigungucode">
+					<select class="si" title="시군구 선택" id="sigungucode" name="sigungucode">
 		              <option disabled="disabled">== 선택 ==</option>
 		              <option value="0" selected="selected">전체</option>
 		              <option value="1">강남구</option>
@@ -158,13 +157,13 @@
 		            </select>
 				</li>
 				<li class="basis"><p>키즈카페명</p>
-		          <input type="search" id="" title="키즈카페명을 입력하세요." placeholder="카페명"/>
+		          <input type="search" id="cfname" name="cfname" title="키즈카페명을 입력하세요." placeholder="카페명"/>
 		        </li>
 		        <li class="basis"><p>날짜</p>
-		          <input type="date" id="cfresdate" title="날짜를 선택하세요." min="" value="" />
+		          <input type="date" id="cfresdate" name="cfresdate" title="날짜를 선택하세요."/>
 		        </li>
 		        <li class="basis"><p>시작시간</p>
-		          <select class="time" id="starttime" title="시작시간을 선택하세요." onchange="">
+		          <select class="time" id="starttime" name="starttime" title="시작시간을 선택하세요." onchange="possibleEndtime()">
 		          	<c:forEach begin="09" end="21" var="i">
 		          		<option value="${i}">${i}</option>
 		          	</c:forEach>
@@ -172,7 +171,7 @@
 		          <span>시부터</span>
 		        </li>
 		        <li class="basis"><p>종료시간</p>
-		          <select class="time" id="endtime" title="종료시간을 선택하세요.">
+		          <select class="time" id="endtime" name="endtime" title="종료시간을 선택하세요.">
 		          	<c:forEach begin="10" end="22" var="i">
 		          		<option value="${i}">${i}</option>
 		          	</c:forEach>
@@ -187,7 +186,7 @@
 		          			<td>성인</td>
 		          			<td>
 		          				<button type="button" class="minus" onclick="minus1();"></button>
-					          	<input type="number" value="0" class="count" id="count1">
+					          	<input type="number" value="0" class="count" id="count1" name="count1" >
 							    <button type="button" class="plus" onclick="plus1();"></button>
 		          			</td>
 		          		</tr>
@@ -195,7 +194,7 @@
 		          			<td>어린이</td>
 		          			<td>
 		          				<button type="button" class="minus" onclick="minus2();"></button>
-					          	<input type="number" value="0" class="count" id="count2">
+					          	<input type="number" value="0" class="count" id="count2" name="count2" >
 							    <button type="button" class="plus" onclick="plus2();"></button>
 		          			</td>
 		          		</tr>
@@ -206,10 +205,9 @@
 		          </div>
 		        </li>
 		        <li class="basis">
-		        	<button class="btn search_btn" onclick="#">검색</button>
+		        	<button class="btn search_btn">검색</button>
 		        </li>
 			</ul>
-
 	    </form>
 	  </div>
 	</div>

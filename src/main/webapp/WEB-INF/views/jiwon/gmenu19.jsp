@@ -1,13 +1,208 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page="../commons/guardianmenu.jsp" flush="true" ></jsp:include>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
+<c:url var="search" value="resources/js/search.js"></c:url>
 <meta charset="UTF-8">
+<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Insert title here</title>
 </head>
+<style>
+li { list-style : none;}
+.cont{
+	margin : 0px auto;
+	margin-top : 10px;
+	width : 95%;
+	background-color: #FFFFD2;
+	border-radius: 5%;
+	padding:0px;
+}
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+#search_box{
+	max-width: 300px;
+	margin:20px;
+}
+#search_box input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+
+#search_box button {
+    
+    width: 20%;
+    padding: 10px;
+    background: #E8DB6B;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+}
+
+#search_box button:hover {
+    background: #C4B747;
+}
+
+</style>
 <body>
+<script>
+var reVideo = new Array();
+var baVideo = new Array();
+var seVideo = new Array();
+//var ccode;
+	function search(ccode){
+		//alert(ccode);
+		 var query = document.getElementById('query').value;
+		 $.get("youtubeApi",{"q" : query},function(data, state){
+			query = !query? "어린이" : query;
+			$("#ul_search").empty();
+			$("#ul_search").append("<li><h3>["+query+"] 검색 결과</h3><li>");
+		   for(var i = 0; i < data.items.length; i++){
+			   var title = data.items[i].snippet.title;
+			   if(title.length > 20) title = title.substring(0,20) + "...";
+			   seVideo[i*4] = title; 
+			   seVideo[i*4+1] = data.items[i].snippet.channelId; 
+			   seVideo[i*4+2] = data.items[i].id.videoId;
+			   seVideo[i*4+3] = query;
+	            $("#ul_search").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='javascript:clickVideo(3, "+i+","+ccode+")'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
+		   }
+		 });
+	}
+	function openTab(ccode) {
+		//alert(ccode);
+		$("#search_box").empty();
+		$("#search_box").append("<input id='query' type='text'/><button onclick='search("+ccode+")'><i class='fa fa-search'></i></button>");
+		$("#ul_search").empty();
+		$.get("youtubeApi",{"q" : ""},function(data, state){
+			$("#ul_base").empty();
+			$("#ul_base").append("<li><h3>킨더가든 추천 영상</h3></li>");
+			   for(var i = 0; i < data.items.length; i++){
+				   var title = data.items[i].snippet.title;
+				   if(title.length > 20) title = title.substring(0,20) + "...";
+				   baVideo[i*3] = title; 
+				   baVideo[i*3+1] = data.items[i].snippet.channelId; 
+				   baVideo[i*3+2] = data.items[i].id.videoId;
+				   $("#ul_base").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='javascript:clickVideo(1, "+i+","+ccode+")'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
+				   //$("#ul_base").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='http://www.youtube.com/watch?v="+data.items[i].id.videoId+"'target='_blank'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
+			}
+		});
+		$.get("youtubeApiRecent",{"q" : ""},function(data, state){
+			$("#ul_recent").empty();
+			$("#ul_recent").append("<li><h3>최근 본 ㅇㅇ와 비슷한 영상</h3></li>");
+			   for(var i = 0; i < data.items.length; i++){
+				   var title = data.items[i].snippet.title;
+				   if(title.length > 20) title = title.substring(0,20) + "...";
+				   reVideo[i*3] = title; 
+				   reVideo[i*3+1] = data.items[i].snippet.channelId; 
+				   reVideo[i*3+2] = data.items[i].id.videoId;
+				   $("#ul_recent").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='javascript:clickVideo(2, "+i+","+ccode+")'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
+			}
+		});
+		var i, tabcontent, tablinks;    
+		tabcontent = document.getElementsByClassName("tabcontent");
+	    $(".tabcontent").show();	    
+	}
+	
+	function clickVideo(num, i,ccode){
+		//alert(ccode);
+		if(num == 1){
+			vname = baVideo[i*3]; 
+			vchannel = baVideo[i*3+1];
+			vid = baVideo[i*3+2];
+			keyword = null;
+		}
+		if(num == 2){
+			vname = reVideo[i*3]; 
+			vchannel = reVideo[i*3+1];
+			vid = reVideo[i*3+2];
+			keyword = null;
+		}
+		if(num == 3){
+			vname = seVideo[i*4]; 
+			vchannel = seVideo[i*4+1];
+			vid = seVideo[i*4+2];
+			keyword = seVideo[i*4+3];
+			//alert(keyword);
+		}
+		$.post("insertVideo", {ccode:ccode, vname : vname, vchannel : vchannel, vid : vid, vkeyword:keyword }).done(function(data, state){
+			console.log("success");
+			
+			window.open("http://www.youtube.com/watch?v="+vid ,"_blank");
+		})	
+		
+	}
+</script>
+
 <h1>영상 추천</h1>
+
+	<div class="gmenu19" style="width:98%; margin:0px auto">
+		<div class="tab">
+		  <c:forEach items="${children}" var="i">
+		  	 <button class="tablinks" onclick="openTab(${i.ccode})">${i.cname}</button>
+		  </c:forEach>
+		</div>
+		<div class="tabcontent">
+			<div id="search_box">
+<!-- 	    		<input id="query" value="강아지" type="text" name="search2"/> -->
+<!-- 				<button onclick="search()"><i class="fa fa-search"></i></button> -->
+			</div>
+	        <div>
+		        <ul id="ul_search" class="cont">
+		        </ul>
+		        <ul id="ul_recent" class="cont">
+		        </ul>
+		        <ul id="ul_base" class="cont">
+		        </ul>
+	        </div>
+        </div>
+	</div>
 </body>
 </html>

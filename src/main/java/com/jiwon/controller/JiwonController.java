@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kinder.domain.ClassVO;
 import com.kinder.domain.MemberVO;
+import com.jiwon.domain.VideoVO;
 import com.jiwon.dto.AttendDTO;
 import com.jiwon.dto.CalendarDTO;
 import com.jiwon.mongo.MongoAttendCheck;
@@ -50,17 +52,56 @@ public class JiwonController {
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	@Inject JChildrenDAO dao;
-			JapiService apiservice;
+	@Inject	JapiService apiservice;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	
-	@RequestMapping(value = "/gmenu19", method = RequestMethod.GET)
-	public String gmenu19() {
-		
-		return "/gmenu19";
-	}
-	
+		@RequestMapping(value = "/gmenu19", method = RequestMethod.GET)
+		public String gmenu19(HttpSession session) throws Exception {
+			if(Objects.isNull(session.getAttribute("children"))) {
+				MemberVO vo = (MemberVO)session.getAttribute("glogin");
+				session.setAttribute("children", dao.getChildrenList(vo.getMemid()));
+			}
+			return "/gmenu19";
+		}
+		@RequestMapping(value = "/insertVideo", method = RequestMethod.POST)
+		public String insertVideo(HttpServletRequest r, @ModelAttribute("VideoVO") VideoVO vo) throws Exception {
+			dao.insertVideoInfo(vo);
+			if(!Objects.isNull(vo.getVkeyword()))
+			System.out.println("keyword : "+vo.getVkeyword());
+			return "/gmenu19";
+		}
+		@RequestMapping(value = "/youtubeApi", method = RequestMethod.GET)
+		public ResponseEntity<String> youtubeApi(HttpServletRequest r) throws Exception {
+			 HttpHeaders responseHeaders = new HttpHeaders();
+			 responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+			 
+			 String clientId = "AIzaSyD3VvQ9ybvDJAvsYm6pIsjZhrJ9qdDqpME";//애플리케이션 클라이언트 아이디값";
+			 String query = r.getParameter("q");
+			 query = query.equals("") ? "어린이" : query;
+			 
+			 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video",
+					   clientId, query); // json 결과
+			 StringBuffer sb = apiservice.youtubeService(apiURL);
+			// System.out.println("pre :" + res.toString());
+			 
+			 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
+		}
+		@RequestMapping(value = "/youtubeApiRecent", method = RequestMethod.GET)
+		public ResponseEntity<String> youtubeApiRecent(HttpServletRequest r) throws Exception {
+			 HttpHeaders responseHeaders = new HttpHeaders();
+			 responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+			 
+			 String clientId = "AIzaSyD3VvQ9ybvDJAvsYm6pIsjZhrJ9qdDqpME";//애플리케이션 클라이언트 아이디값";
+			 String voId = "zvWvz7OqBc4";
+			 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&relatedToVideoId=%s&type=video&maxResults=4&safeSearch=strict",
+					   clientId, voId); // json 결과
+			 StringBuffer sb = apiservice.youtubeService(apiURL);
+			// System.out.println("pre :" + res.toString());
+			 
+			 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
+		}
 	@RequestMapping(value = "/gmenu20", method = RequestMethod.GET)
 	public String gmenu20() {
 		

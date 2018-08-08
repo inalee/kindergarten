@@ -3,6 +3,7 @@ package com.jiwon.persistence;
 import java.util.List;
 
 import com.kinder.domain.ClassVO;
+import com.jiwon.domain.VideoVO;
 import com.jiwon.dto.AttendDTO;
 import com.jiwon.dto.ChildrenDTO;
 import com.kinder.domain.ChildrenVO;
@@ -17,4 +18,5 @@ public interface JChildrenDAO {
 	public List<AttendDTO> getAttendByMonth(AttendDTO dto) throws Exception;
 	public List<ChildrenVO> getChildrenList(String memid) throws Exception;
 	public ChildrenDTO getChildInfo(int ccode) throws Exception;
+	public void insertVideoInfo(VideoVO vo) throws Exception;
 }

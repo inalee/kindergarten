@@ -34,4 +34,8 @@
 	<select id="getChildInfo" resultType="ChildrenDTO">
 		select k.kinname, cl.clname, ch.cname, ch.ccode from kindergarten k, class cl, children ch where ch.ccode=#{ccode} and k.kincode=cl.kincode and cl.clcode=ch.clcode
 	</select>
+<!--  영상을 클릭하면 영상 정보 저장 -->
+  <insert id="insertVideoInfo">
+  	insert into videoinfo(ccode, vname, vchannel, vid, vkeyword) values(#{ccode},#{vname},#{vchannel},#{vid}, #{vkeyword})
+  </insert>
   </mapper>

@@ -286,7 +286,8 @@ public class InaController {
 	
 
 		String filePath = "C:\\dev\\file\\";
-	
+
+		
 		    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
 	        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 	         
@@ -299,6 +300,7 @@ public class InaController {
 	        File file = new File(filePath);
 	        if(file.exists() == false){
 	            file.mkdirs();
+	            System.out.println("없음");
 	        }
 	         
 	        while(iterator.hasNext()){
@@ -343,7 +345,9 @@ public class InaController {
 		String originNmae = ev.getEnorigin();
 
 		 byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\dev\\file\\"+storedFileName));
-
+		 	
+		   
+		 
 		    response.setContentType("application/octet-stream");
 		    response.setContentLength(fileByte.length);
 	
@@ -353,7 +357,6 @@ public class InaController {
 		    	
 		    response.getOutputStream().flush();
 		    response.getOutputStream().close();
-
 
 	}
 	

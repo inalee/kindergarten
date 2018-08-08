@@ -104,6 +104,20 @@ public class InaController {
 		return "/gmenu8";
 	}
 	
+	@RequestMapping(value = "/testpage", method = RequestMethod.GET)
+	public String testpage() {
+		
+		return "/testpage";
+	}
+	
+	
+	
+	@RequestMapping(value = "/safety_gmenu", method = RequestMethod.GET)
+	public String safety_gmenu() {
+		
+		return "/safety_gmenu";
+	}
+	
 	@RequestMapping(value = "/regular", method = RequestMethod.GET)
 	public String regular(Model model,HttpSession session) {
 		

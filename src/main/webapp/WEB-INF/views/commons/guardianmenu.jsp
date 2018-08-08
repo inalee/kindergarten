@@ -83,7 +83,7 @@ $(function(){
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/hojung/search_keyword_gmenu">어린이집 찾기</a></li>
 	         <li><a href="/kinder/hojung/gmenu15">어린이집 후기</a></li>
-	         <li><a href="/kinder/hojung/safety_gmenu">어린이집 안전정보</a></li>
+	         <li><a href="/kinder/ina/safety_gmenu">어린이집 안전정보</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

@@ -368,6 +368,7 @@ i {
 .kinder_list p {
 	font-size: 14px;
 	color: #bbbbbb;
+	padding-left: 10px;
 }
 
 .kinder_list table {
@@ -384,8 +385,8 @@ i {
     
 }
 
-.kinder_list table tr:nth-child(-n+5) td {
-	padding: 0 10px 0 10px;
+.kinder_list table tr:nth-child(-n+5) td:first-child {
+	padding: 0 8px 0 8px;
 }
 
 .kinder_list table tr:first-child td {
@@ -425,3 +426,63 @@ i {
 	margin: 0 -8px 0 -11px;
 	vertical-align: middle;
 }
+
+.content {
+	padding:5px; 
+	height: auto;
+	width: 280px;
+}
+
+.content ul li {
+	display: block;
+	
+}
+
+.content ul li:first-child {
+	font-size: 18px;
+	font-weight: bold;
+	color: #666;
+	cursor: pointer;
+}
+
+.content ul li:not(:first-child) {
+	font-size: 13px;
+	color: #666;
+	margin-bottom: 5px;
+}
+
+.content ul li:nth-child(5) {
+	color: #0080ff;
+}
+
+.content ul li:nth-child(5) a {
+	color: green;
+	word-break: break-all;
+}
+
+.content ul li:last-child {
+	text-align: right;
+}
+
+.content ul hr {
+	clear: both;
+	height: 3px;
+	color: #bbbbbb;
+    border-color: #bbbbbb;
+    background-color: #bbbbbb;
+    border-width: 0;
+}
+
+.content button {
+	font-size: 12px;
+	background-color: #ffffff;
+	border: 1px solid #bbbbbb;
+	padding : 3px;
+	outline: none;
+	cursor: pointer;
+}
+
+
+
+
+

@@ -120,7 +120,6 @@ input[type="radio"]{
 <div id="wrapper2">
 	<div id="childform">
 	<h1>내 아이 등록하기</h1>
-	
 	    <form action="/kinder/insertChild" method="post" name="twin">
 	        <table width="800" height="380" cellpadding="0" style="border-collapse:collapse; font-size:12pt; text-align: left;">
 	       

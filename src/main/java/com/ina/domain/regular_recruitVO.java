@@ -16,6 +16,7 @@ public class regular_recruitVO {
 	
 	
 
+
 	public regular_recruitVO(int recode, int kincode, int sigungucode, int renum, int renum_2, String reopen,
 			String redetail, Date redate) {
 		super();
@@ -32,9 +33,11 @@ public class regular_recruitVO {
 
 
 
+
 	public int getRecode() {
 		return recode;
 	}
+
 
 
 
@@ -46,9 +49,11 @@ public class regular_recruitVO {
 
 
 
+
 	public int getKincode() {
 		return kincode;
 	}
+
 
 
 
@@ -60,9 +65,11 @@ public class regular_recruitVO {
 
 
 
+
 	public int getSigungucode() {
 		return sigungucode;
 	}
+
 
 
 
@@ -74,9 +81,11 @@ public class regular_recruitVO {
 
 
 
+
 	public int getRenum() {
 		return renum;
 	}
+
 
 
 
@@ -88,9 +97,11 @@ public class regular_recruitVO {
 
 
 
+
 	public int getRenum_2() {
 		return renum_2;
 	}
+
 
 
 
@@ -102,9 +113,11 @@ public class regular_recruitVO {
 
 
 
+
 	public String getReopen() {
 		return reopen;
 	}
+
 
 
 
@@ -116,9 +129,11 @@ public class regular_recruitVO {
 
 
 
+
 	public String getRedetail() {
 		return redetail;
 	}
+
 
 
 
@@ -130,6 +145,7 @@ public class regular_recruitVO {
 
 
 
+
 	public Date getRedate() {
 		return redate;
 	}
@@ -137,9 +153,11 @@ public class regular_recruitVO {
 
 
 
+
 	public void setRedate(Date redate) {
 		this.redate = redate;
 	}
+
 
 
 

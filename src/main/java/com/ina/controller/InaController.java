@@ -2,17 +2,32 @@ package com.ina.controller;
 
 
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +37,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
@@ -33,6 +50,7 @@ import com.ina.persistence.EnrollManageDAO;
 import com.ina.persistence.RegularDAO;
 import com.ina.persistence.RegularEnrollDAO;
 import com.ina.persistence.WaitingDAO;
+import com.ina.service.CommonUtils;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.ClassVO;
 import com.kinder.domain.KindergartenVO;
@@ -87,6 +105,20 @@ public class InaController {
 	public String gmenu8() {
 		
 		return "/gmenu8";
+	}
+	
+	@RequestMapping(value = "/testpage", method = RequestMethod.GET)
+	public String testpage() {
+		
+		return "/testpage";
+	}
+	
+	
+	
+	@RequestMapping(value = "/safety_gmenu", method = RequestMethod.GET)
+	public String safety_gmenu() {
+		
+		return "/safety_gmenu";
 	}
 	
 	@RequestMapping(value = "/regular", method = RequestMethod.GET)
@@ -266,15 +298,161 @@ public class InaController {
 	
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public void upload_post(HttpServletRequest request) {
-		int encode = Integer.parseInt(request.getParameter("encode"));
-		waitdao.update_state(encode);
+	
+	public void upload_post(HttpServletRequest request) throws IllegalStateException, IOException {
+	
+
+		String filePath = "C:\\dev\\file\\";
+
+		
+		    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+	        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+	         
+	        MultipartFile multipartFile = null;
+	        String originalFileName = null;
+	        String originalFileExtension = null;
+	        String storedFileName = null;
+	      
+	         
+	        File file = new File(filePath);
+	        if(file.exists() == false){
+	            file.mkdirs();
+	            System.out.println("없음");
+	        }
+	         
+	        while(iterator.hasNext()){
+	            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+	            if(multipartFile.isEmpty() == false){
+	            	 logger.info("------------- file start -------------");
+	            	 logger.info("name : "+multipartFile.getName());
+	            	 logger.info("filename : "+multipartFile.getOriginalFilename());
+	            	 logger.info("size : "+multipartFile.getSize());
+	            	 logger.info("-------------- file end --------------\n");
+
+
+	                originalFileName = multipartFile.getOriginalFilename();
+	                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+	                logger.info("storedFileName : "+storedFileName);
+	                file = new File(filePath + storedFileName);
+	                multipartFile.transferTo(file);
+	                
+	        		String enfile = storedFileName;
+	        		
+	        		int encode = Integer.parseInt(request.getParameter("encode"));
+	        		
+	        		EnrollVO ev = new EnrollVO();
+	        		ev.setEncode(encode);
+	        		ev.setEnfile(enfile);
+	        		ev.setEnorigin(multipartFile.getOriginalFilename());
+	        		waitdao.update_state(ev);
+	        		
+	                
+	            }
+	        }
+		
 	}
 	
+	@RequestMapping(value = "/down_file", method = RequestMethod.GET)
+	public void down_file(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		int encode = Integer.parseInt(request.getParameter("encode"));
+		
+		EnrollVO ev = managedao.down_file(encode);
+		String storedFileName = ev.getEnfile();
+		String originNmae = ev.getEnorigin();
+
+		 byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\dev\\file\\"+storedFileName));
+		 	
+		   
+		 
+		    response.setContentType("application/octet-stream");
+		    response.setContentLength(fileByte.length);
+	
+		    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originNmae,"UTF-8")+"\";");
+		    response.setHeader("Content-Transfer-Encoding", "binary");
+		    response.getOutputStream().write(fileByte);
+		    	
+		    response.getOutputStream().flush();
+		    response.getOutputStream().close();
+
+	}
+	
+	
 	@RequestMapping(value = "/upload2", method = RequestMethod.POST)
-	public void upload_post2(HttpServletRequest request) {
+	public void upload_post2(HttpServletRequest request) throws IllegalStateException, IOException {
+		
+		String filePath = "C:\\dev\\file\\";
+		
+	    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+         
+        MultipartFile multipartFile = null;
+        String originalFileName = null;
+        String originalFileExtension = null;
+        String storedFileName = null;
+      
+         
+        File file = new File(filePath);
+        if(file.exists() == false){
+            file.mkdirs();
+        }
+         
+        while(iterator.hasNext()){
+            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            if(multipartFile.isEmpty() == false){
+            	 logger.info("------------- file start -------------");
+            	 logger.info("name : "+multipartFile.getName());
+            	 logger.info("filename : "+multipartFile.getOriginalFilename());
+            	 logger.info("size : "+multipartFile.getSize());
+            	 logger.info("-------------- file end --------------\n");
+
+
+                originalFileName = multipartFile.getOriginalFilename();
+                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+                logger.info("storedFileName : "+storedFileName);
+                file = new File(filePath + storedFileName);
+                multipartFile.transferTo(file);
+             
+        		
+        		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
+        		
+        		RegularEnrollVO rev = new RegularEnrollVO();
+        		rev.setRe_encode(re_encode);
+        		rev.setRefile(storedFileName);
+        		rev.setReorigin(multipartFile.getOriginalFilename());
+        		waitdao.update_regular_state(rev);
+        	
+                
+            }
+        }
+        
+        
+
+	}
+	
+	
+	@RequestMapping(value = "/down_file2", method = RequestMethod.GET)
+	public void down_file2(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
-		waitdao.update_regular_state(re_encode);
+		
+		RegularEnrollVO rev = waitdao.select_files(re_encode);
+		String storedFileName = rev.getRefile();
+		String originNmae = rev.getReorigin();
+
+		 byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\dev\\file\\"+storedFileName));
+
+		    response.setContentType("application/octet-stream");
+		    response.setContentLength(fileByte.length);
+	
+		    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originNmae,"UTF-8")+"\";");
+		    response.setHeader("Content-Transfer-Encoding", "binary");
+		    response.getOutputStream().write(fileByte);
+		    	
+		    response.getOutputStream().flush();
+		    response.getOutputStream().close();
+
+
 	}
 	
 	
@@ -501,12 +679,19 @@ public class InaController {
 	
 	
 	@RequestMapping(value="/make_regular",method=RequestMethod.POST)
-	public String make_regular(regular_recruitVO rrv) {
+	public String make_regular(regular_recruitVO rrv) throws ParseException {
+
+		String reopen = rrv.getReopen();
+	    LocalDateTime localDate = LocalDateTime.parse(reopen);
+	    String reopen2 = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		
+	    rrv.setReopen(reopen2);
+	     
 		regudao.make_regular(rrv);
-		
 		return "redirect:regular";
 	}
+	
+	
 	
 	@RequestMapping(value="insert_regular",method=RequestMethod.POST)
 	public String insert_regular(HttpServletRequest request) throws ParseException {
@@ -545,4 +730,136 @@ public class InaController {
 		return lm;
 	
 	}
-}
+	
+	
+	@RequestMapping(value="del_regular",method=RequestMethod.GET)
+	public String del_regular(HttpServletRequest request) {
+		
+		int recode = Integer.parseInt(request.getParameter("recode"));
+		regudao.delete_regular(recode);
+		
+		return "regular";
+	}
+	
+	
+	@RequestMapping(value="crawling_list",method=RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> crawling_list(Model model,HttpServletRequest request) {
+		Elements emts = null;
+		Elements emts2 = null;
+		
+		String kincode2 = request.getParameter("kincode2");
+		HashMap<String, String> contains = new HashMap<>();
+		String url = "http://info.childcare.go.kr/info/pnis/search/preview/SafetyEducationCheckSlPu.jsp?flag=AE&STCODE_POP="+kincode2;
+		String name = null;
+		System.out.println(url);
+		
+		String src = null;
+		String src2 = null;
+		
+		try {
+			// img 태그들을 emts
+			emts = Jsoup.connect(url).get().select("table th");
+
+			
+			for (Element e : emts) {
+				// 경로에서 파일이름만 추출
+				src = e.text();
+//
+//					System.out.println(src);
+					if(src.equals("이수 인원")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);
+				
+					}
+					else if(src.equals("소방대피 훈련 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);
+					}
+					else if(src.equals("훈련일자")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);
+					}
+					else if(src.equals("가스점검 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						contains.put("가스점검일",e.nextElementSibling().nextElementSibling().nextElementSibling().text());
+					}
+					else if(src.equals("소방안전 점검 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						contains.put("소방안전 점검일",e.nextElementSibling().nextElementSibling().nextElementSibling().text());
+					}
+					else if(src.equals("전기설비 점검 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						contains.put("전기설비 점검일",e.nextElementSibling().nextElementSibling().nextElementSibling().text());
+					}
+					else if(src.equals("점검여부")) { //전기안전점검관리
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						Element e2 = e.nextElementSibling().nextElementSibling().nextElementSibling();
+						contains.put("전기안전점검관리점검일자",e2.text());
+						contains.put("점검결과",e2.nextElementSibling().nextElementSibling().text());
+					}	
+
+			}
+			
+
+			
+			emts2 = Jsoup.connect(url).get().select("table td");
+			
+			for (Element e2 : emts2) {
+				src2 = e2.text();
+				
+				if(src2.equals("어린이집 안전공제회")) {
+					contains.put("공제회가입현황", e2.nextElementSibling().nextElementSibling().text());	
+				}
+				else if(src2.equals("영유아 생명·신체보상(의무가입)")) {
+					contains.put("영유아 생명·신체보상(의무가입) 해당여부", e2.nextElementSibling().text());
+					contains.put("영유아 생명·신체보상(의무가입)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("영유아 생명·신체보상(의무가입) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("화재(의무가입)")) {
+					contains.put("화재(의무가입) 해당여부", e2.nextElementSibling().text());
+					contains.put("화재(의무가입)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("화재(의무가입) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("보육교직원 생명·신체")) {
+					contains.put("보육교직원 생명·신체 해당여부", e2.nextElementSibling().text());
+					contains.put("보육교직원 생명·신체", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("보육교직원 생명·신체 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("가스배상 책임(집단급식소 운영)")) {
+					contains.put("가스배상 책임(집단급식소 운영) 해당여부", e2.nextElementSibling().text());
+					contains.put("가스배상 책임(집단급식소 운영)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("가스배상 책임(집단급식소 운영) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("놀이시설 안전(옥외놀이터 설치)")) {
+					contains.put("놀이시설 안전(옥외놀이터 설치) 해당여부", e2.nextElementSibling().text());
+					contains.put("놀이시설 안전(옥외놀이터 설치)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("놀이시설 안전(옥외놀이터 설치) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("통학버스 책임(차량운행시설)")) {
+					contains.put("통학버스 책임(차량운행시설) 해당여부", e2.nextElementSibling().text());
+					contains.put("통학버스 책임(차량운행시설)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("통학버스 책임(차량운행시설) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("통학버스 종합(차량운행시설)")) {
+					contains.put("통학버스 종합(차량운행시설) 해당여부", e2.nextElementSibling().text());
+					contains.put("통학버스 종합(차량운행시설)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("통학버스 종합(차량운행시설) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+			}
+
+		} catch (Exception e) {
+
+		}
+
+			
+			return contains;
+	}
+	
+	
+	
+	}
+

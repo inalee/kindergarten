@@ -8,6 +8,9 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.ina.domain.EnrollVO;
+import com.ina.domain.RegularEnrollVO;
+
 
 
 @Repository
@@ -41,8 +44,8 @@ public class WaitingDAOImpl implements WaitingDAO{
 	}
 		
 	@Override
-	public void update_state(int encode) {
-		sqlSession.update(namespace+".update_state",encode);
+	public void update_state(EnrollVO ev) {
+		sqlSession.update(namespace+".update_state",ev);
 	}
 	
 	@Override
@@ -56,12 +59,19 @@ public class WaitingDAOImpl implements WaitingDAO{
 	}
 	
 	@Override
-	public void update_regular_state(int re_encode) {
-		sqlSession.update(namespace+".update_file_regular",re_encode);
+	public void update_regular_state(RegularEnrollVO rev) {
+		sqlSession.update(namespace+".update_file_regular",rev);
 	}
+	
 	
 	@Override
 	public List<Map<String, Object>> regular_wait3(int kincode) {
 		return sqlSession.selectList(namespace+".sel_regular_list_te",kincode);
 	}
+	
+	@Override
+	public RegularEnrollVO select_files(int re_encode) {
+		return sqlSession.selectOne(namespace+".file_down2",re_encode);
+	}
+	
 }

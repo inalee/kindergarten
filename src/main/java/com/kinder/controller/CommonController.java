@@ -1,6 +1,5 @@
 package com.kinder.controller;
 
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -257,6 +256,7 @@ public class CommonController {
 		//고유 ID가 DB에 존재하면서 선생님으로 등록되었을 경우 로그인 성공
 		if(dao.nLogin(vo) != null){
 			vo.setMemname(dao.nLogin(vo).getMemname());
+			vo.setMemaddress(dao.nLogin(vo).getMemaddress());
 			model.addAttribute("memberVO",vo);
 			hs.setAttribute("exist",false);
 			return "tmain";
@@ -298,6 +298,7 @@ public class CommonController {
 		vo.setMemsort(0);
 		if(dao.nLogin(vo) != null){
 			vo.setMemname(dao.nLogin(vo).getMemname());
+			vo.setMemaddress(dao.nLogin(vo).getMemaddress());
 			model.addAttribute("memberVO",vo);
 			hs.setAttribute("exist",false);
 			return "gmain";

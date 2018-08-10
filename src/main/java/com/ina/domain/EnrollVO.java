@@ -10,10 +10,14 @@ public class EnrollVO {
 	private int statcode;
 	private Date hopedate;
 	private Date enlog;
-
+	private String enfile;
+	private String enorigin;
+ 
+	
 	
 
-	public EnrollVO(int encode, int ccode, int kincode, int statcode, Date hopedate, Date enlog) {
+	public EnrollVO(int encode, int ccode, int kincode, int statcode, Date hopedate, Date enlog, String enfile,
+			String enorigin) {
 		super();
 		this.encode = encode;
 		this.ccode = ccode;
@@ -21,7 +25,10 @@ public class EnrollVO {
 		this.statcode = statcode;
 		this.hopedate = hopedate;
 		this.enlog = enlog;
+		this.enfile = enfile;
+		this.enorigin = enorigin;
 	}
+
 
 
 
@@ -31,9 +38,11 @@ public class EnrollVO {
 
 
 
+
 	public void setEncode(int encode) {
 		this.encode = encode;
 	}
+
 
 
 
@@ -43,9 +52,11 @@ public class EnrollVO {
 
 
 
+
 	public void setCcode(int ccode) {
 		this.ccode = ccode;
 	}
+
 
 
 
@@ -55,9 +66,11 @@ public class EnrollVO {
 
 
 
+
 	public void setKincode(int kincode) {
 		this.kincode = kincode;
 	}
+
 
 
 
@@ -67,9 +80,11 @@ public class EnrollVO {
 
 
 
+
 	public void setStatcode(int statcode) {
 		this.statcode = statcode;
 	}
+
 
 
 
@@ -79,9 +94,11 @@ public class EnrollVO {
 
 
 
+
 	public void setHopedate(Date hopedate) {
 		this.hopedate = hopedate;
 	}
+
 
 
 
@@ -91,9 +108,39 @@ public class EnrollVO {
 
 
 
+
 	public void setEnlog(Date enlog) {
 		this.enlog = enlog;
 	}
+
+
+
+
+	public String getEnfile() {
+		return enfile;
+	}
+
+
+
+
+	public void setEnfile(String enfile) {
+		this.enfile = enfile;
+	}
+
+
+
+
+	public String getEnorigin() {
+		return enorigin;
+	}
+
+
+
+
+	public void setEnorigin(String enorigin) {
+		this.enorigin = enorigin;
+	}
+
 
 
 

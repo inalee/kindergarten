@@ -78,7 +78,7 @@ function showDetail(){
 <c:url var="img_lv" value="resources/images/leave.png"></c:url>
 <c:url var="img_as" value="resources/images/absent.png"></c:url>
 
-<h1>출석 정보</h1>
+<h1 style="text-align: center;">출석 확인</h1>
 <ul>
 <!--  커밋해야함   -->
 	<li class="column" style="vertical-align: top;">
@@ -98,8 +98,8 @@ function showDetail(){
 			</c:forEach>
 		</ul>
 	</li>
-	<li class="column" style="width:40%;vertical-align:top">
-		<div>
+	<li class="column" style="width:40%;vertical-align:top;margin-top : 10px">
+		<div style="">
 <!-- 			<ul><li style="font-size:1.8em; font-weight: bold"></li></ul> -->
 			<ul>
 				<li>
@@ -118,7 +118,7 @@ function showDetail(){
 			</ul>
 		</div>
 	</li>
-	<li class="column" id="cdetail"style="width:40%;vertical-align:top; margin-left: 60px">
+	<li class="column" id="cdetail"style="width:40%;vertical-align:top; margin-top : 10px; margin-left: 60px">
 		
 	</li>
 </ul>

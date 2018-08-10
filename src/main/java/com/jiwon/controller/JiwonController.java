@@ -81,7 +81,26 @@ public class JiwonController {
 		 query = query.equals("") ? "어린이" : query;
 		 String[] queries = query.split(" ");
 		 query = String.join("%20", queries);
-		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=viewCount",
+		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=rating",
+				   clientId, query); // json 결과
+		 StringBuffer sb= apiservice.youtubeService(apiURL);
+		 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+	@RequestMapping(value = "/youtubeApiBase", method = RequestMethod.GET)
+	public ResponseEntity<String> youtubeApiBase(HttpServletRequest r) throws Exception {
+		 HttpHeaders responseHeaders = new HttpHeaders();
+		 responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+		 
+		 String clientId = "AIzaSyD3VvQ9ybvDJAvsYm6pIsjZhrJ9qdDqpME";//애플리케이션 클라이언트 아이디값";
+		 String query = dao.getKeyword(Integer.parseInt(r.getParameter("ccode")));
+		 System.out.println("Qeury : " + r.getParameter("ccode"));
+		 if(Objects.isNull(query)) {
+			query = dao.getInterest(Integer.parseInt(r.getParameter("ccode")));
+			query = Objects.isNull(query)? "어린이" : query;
+		 }
+		 String[] queries = query.split(" ");
+		 query = String.join("%20", queries);
+		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=rating",
 				   clientId, query); // json 결과
 		 StringBuffer sb= apiservice.youtubeService(apiURL);
 		 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
@@ -116,6 +135,13 @@ public class JiwonController {
 		 StringBuffer sb= apiservice.youtubeService(apiURL);
 
 		 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+	@RequestMapping(value = "/getPopV", method = RequestMethod.GET)
+	public @ResponseBody List<VideoVO> getPopV(HttpServletRequest r) throws Exception {
+		List<VideoVO> list = new ArrayList<>(); 
+		list = dao.getPopVInfo();
+		
+		return list;
 	}
 	
 	@RequestMapping(value = "/gmenu20", method = RequestMethod.GET)

@@ -21,4 +21,7 @@ public interface JChildrenDAO {
 	public void insertVideoInfo(VideoVO vo) throws Exception;
 	public VideoVO getRecentVInfo(int ccode) throws Exception;
 	public VideoVO getFreqChInfo(int ccode) throws Exception;
+	public List<VideoVO> getPopVInfo() throws Exception;
+	public String getKeyword(int ccode) throws Exception;
+	public String getInterest(int ccode) throws Exception;
 }

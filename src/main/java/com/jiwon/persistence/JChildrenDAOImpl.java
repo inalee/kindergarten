@@ -70,4 +70,20 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	public VideoVO getFreqChInfo(int ccode) throws Exception {
 		return session.selectOne(namespace + ".getFreqChInfo", ccode);
 	}
+
+	@Override
+	public List<VideoVO> getPopVInfo() throws Exception {
+		return session.selectList(namespace + ".getPopVInfo");
+	}
+
+	@Override
+	public String getKeyword(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getKeyword",ccode);
+	}
+
+	@Override
+	public String getInterest(int ccode) throws Exception {
+		// TODO Auto-generated method stub
+		return session.selectOne(namespace + ".getInterest",ccode);
+	}
 }

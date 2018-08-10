@@ -11,6 +11,33 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+
+$(document).ready(function(){
+
+    var list = $(".list tr");
+    var numToShow = 2;
+    var button = $("#next");
+    var numInList = list.length;
+    list.hide();
+    if (numInList > numToShow) {
+      button.show();
+    }
+    list.slice(0, numToShow).show();
+
+    button.click(function(){
+        var showing = list.filter(':visible').length;
+        list.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = list.filter(':visible').length;
+        if (nowShowing >= numInList) {
+          button.hide();
+        }
+    });
+
+});
+
+
+
+
 function search_btn() {
 	
 	var psigungu = $("#sigungu").val();
@@ -230,6 +257,8 @@ table.type04 td {
 </table>
 <hr class="my-hr3">
  <div id="contains">
+    <div class="wrapper">
+  	 <ul class="list">
 		<table id="mychild">
   		<tr>
 	<th>번호</th>
@@ -256,6 +285,9 @@ table.type04 td {
   </tr>
   </c:forEach>
 </table>
+  <button id="next">Show More</button>
+</ul>
+</div>
 </div>
 </div>
 </div>

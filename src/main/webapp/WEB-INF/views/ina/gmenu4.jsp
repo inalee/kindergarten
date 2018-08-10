@@ -104,7 +104,7 @@ input[type="radio"]{
 #childform {
 	position: relative;
 	width: 800px;
-	height: 720px;
+	height: 650px;
 	background: #FFFFFF;
 	margin: 0 auto 0;
 	padding: 45px;
@@ -175,21 +175,6 @@ input[type="radio"]{
 	        
 	            </tr>
 	               <tr height="7">
-	                <td colspan="3"><hr /></td>
-	            </tr>
-	             <tr class="register" height="30">
-	                <td width="5%" align="center">*</td>
-	                <td width="20%">성격</td>
-	                <td><input type="number" name="pscode" placeholder="ex>활달함" required="required" /></td>
-	              <tr height="7">
-	                <td colspan="3"><hr /></td>
-	            </tr>
-	             <tr class="register" height="30">
-	                <td width="5%" align="center">*</td>
-	                <td width="20%">취미</td>
-	                <td><input type="number" name="hcode" placeholder="ex>독서" required="required" /></option>
-	            </select></td>
-	              <tr height="7">
 	                <td colspan="3"><hr /></td>
 	            </tr>
 	             <tr class="register" height="30">

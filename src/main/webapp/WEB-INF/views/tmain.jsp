@@ -48,8 +48,7 @@ body #bgimg .image-top {
 </style>
 <body>
 <div id='bgimg'>
-<h1>선생님 메인입니다.</h1>
-<h2>${teacher.kinname}</h2>
+<h1 style="margin: 300px;">${teacher.kinname} ${tlogin.memname}선생님, 반갑습니다.</h1>
 </div>
 </body>
 </html>

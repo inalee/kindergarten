@@ -32,6 +32,11 @@ public class FieldtripServiceImpl implements FieldtripService{
 		
 	}
 
+	@Override
+	public void updateFtChoice(FieldtripVO fieldVO) {
+		fieldDAO.updateFieldtrip(fieldVO);
+	}
+
 	
 	
 }

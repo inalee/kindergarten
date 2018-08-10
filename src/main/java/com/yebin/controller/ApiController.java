@@ -13,6 +13,7 @@ import org.bson.Document;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,9 +32,6 @@ import com.yebin.util.JsonParse;
 
 @RestController
 public class ApiController {
-
-	@Inject
-	ClassService classService;
 
 	@Inject
 	ApiService apiService;
@@ -69,7 +67,7 @@ public class ApiController {
 
 	// MongoDB-category 코드 가져오기
 	@RequestMapping(value = "/getProgramCategory", method = RequestMethod.GET)
-	public @ResponseBody List<Document> getProgramCategory() {
+	public List<Document> getProgramCategory() {
 		mongoService.defaultSetting("kinder", "programCategory");
 		List<Document> cateList = mongoService.findAll();
 		return cateList;
@@ -77,40 +75,36 @@ public class ApiController {
 
 	// MongoDB-areaCode 가져오기
 	@RequestMapping(value = "/getAreacode", method = RequestMethod.GET)
-	public @ResponseBody List<Document> getAreacode() {
+	public List<Document> getAreacode() {
 		mongoService.defaultSetting("kinder", "areacode");
 		List<Document> areacodeList = mongoService.findAll();
 		return areacodeList;
 	}
 
-	// MongoDB-감성단어 가져오기
+	// Google Natural Language API-감성단어 가져오기
 	@RequestMapping(value = "/getEmotionWords", method = RequestMethod.GET, produces = "application/json; charset=utf8")
-	public @ResponseBody String getEmotionWords() {
+	public String getEmotionWords() {
 		String RequestJson = "집가긴 싫은데 그냥 아무것도 안하고 쉬고싶다. 에어컨 더 세게 틀고싶다";
 		StringBuffer sb = apiService.naturalLangService(RequestJson);
 		return sb.toString();
 	}
 
-	// MySql-담당 선생님의 반 이름/인원 가져오기
-	@RequestMapping(value = "/postCountingkids", method = RequestMethod.POST)
-	public @ResponseBody List<Object> postCountingkids(HttpSession hs) {
-		MemberVO vo = (MemberVO) hs.getAttribute("tlogin");
-		List<Object> list = classService.countingKids(vo);
 
-		return list;
-	}
 
 	// NAVER 검색 API-검색하기
 	@RequestMapping(value = "/getSearch", method = RequestMethod.GET, produces = "application/json; charset=utf8")
-	public @ResponseBody String getSearch(@RequestParam String keyword) {
+	public String getSearch(@RequestParam String keyword) {
 		StringBuffer response = apiService.searchKeywords(keyword);
 		return response.toString();
 	}
-
+	
 	// MySql - 사용자가 선택한 체험학습 후보지 저장
 	@RequestMapping(value = "/postSaveList", method = RequestMethod.POST)
 	public ResponseEntity<String> postSaveList(@RequestParam String[] keywords, @RequestParam String[] jsondata, HttpSession hs) {
-
+		
+//		HttpHeaders responseHeaders = new HttpHeaders();
+//		responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+		
 		// MongoDB에서 임시저장한 분류 가져오기
 		mongoService.defaultSetting("kinder", "condTempSave");
 		MemberVO memVO = (MemberVO) hs.getAttribute("tlogin");
@@ -139,7 +133,6 @@ public class ApiController {
 					Map<String, Object> temp = comMap.get(m);
 					fieldVO.setFtweb(temp.get("website").toString());
 					fieldVO.setFtaddr(temp.get("address").toString());
-
 					String[] doSplit = null;
 					doSplit = temp.get("do").toString().split("~");
 
@@ -156,9 +149,8 @@ public class ApiController {
 				}
 			}
 		}
-		
-		return new ResponseEntity<String>("저장이 완료 되었습니다.", HttpStatus.OK);
-		
+	
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

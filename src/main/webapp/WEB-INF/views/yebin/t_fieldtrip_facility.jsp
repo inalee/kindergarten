@@ -1,4 +1,4 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -17,18 +17,12 @@
 <link href="${radio}" rel="stylesheet" type="text/css"/>
 <link href="${loading}" rel="stylesheet" type="text/css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5f223662ebf0e3a3b6c8816122c75d43&libraries=services,clusterer,drawing"></script>
 
 <style>
 body{
   margin-top: 0px;
   font-family: 'Jeju Gothic', serif;
-  line-height: 1.6;
-  text-align: center;
-}
-
-h4{
-  font-family: 'Jeju Gothic', serif;
+  line-height: 1.6
 }
 
 .w3-container{
@@ -101,36 +95,7 @@ margin-top: 30px;
 	
 }
 
-.answerNo{background-color: #2196f3; border: none; color: white; padding: 5px 12px; border-radius : 10px;text-align: center;font-size: 15px;}
-.answerYes{background-color: #2196f3; border: none; color: white; padding: 5px 12px; border-radius : 10px;text-align: center;font-size: 15px;}
 
-.btInfoOpen{
-	border: none;
-	width: 100%;
-	background-color: #f9f9f9;
-}
-
-.desti{
- margin: auto;
- margin-top: 10px;
-/*  width: %; */
- height:100px;
- padding: 10px;
- color: gray;
- border-color: #ffeb3b;
- border: 3px solid;
-}
-
-.desti td{
- border: 10px;
- font-size: 100%;
- width:200px;
-}
-
-.destiImg{
-	height: 100px;
-
-}
 
 </style>
 </head>
@@ -233,8 +198,6 @@ $(function() {
 	})
 })
 </script>	
-
-
  
   
 <!-- 2. 지역/날짜/인원 선택 -->
@@ -576,7 +539,7 @@ $(function() {
 	  
 	  $("#selectedPg").empty();
 	  $("#selectedTable").empty();
-	  $("#selectedPg").append("<table id='selectedTable' frame='void' width= 60% border-style='solid' border-width='3px'"
+	  $("#selectedPg").append("<table id='selectedTable' frame='void' width= 40% border-style='solid' border-width='3px'"
 			  + "style='margin: 0 auto; text-align: left; vertical-align: middle;'></table>")
 	  $("#selectedPg").append("<p style='font-size: 30px;'>선택하신 후보지가 맞나요? <br/> [저장 후 검색]을 눌러 블로그 검색을 진행합니다."+"</p>")
 	  $("#selectedPg").append("<p style='font-size: 20px; color: blue;'>저장 된 후보지는 다음 체험학습지 선정 시 유용히 활용됩니다."+"</p>")
@@ -588,7 +551,6 @@ $(function() {
 	  $("#selectedTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
 	  })
 
-	  
 	// 4. 체험학습 후보지 저장 - 키워드 controller로 전송
 	$(function() {
 		$("#saveList").on('click', function(event) {	
@@ -617,43 +579,33 @@ $(function() {
   
   
   <div id="step5" class="w3-container step">
-    <p class="headline">Q.[여기어때] 버튼을 누르면 블로그 후기를 확인할 수 있습니다.<br> 블로그 후기를 충분히 확인하고, 동그라미 버튼을 눌러 최종 선택 해주세요.</p>
+    <p class="headline">Q.[여기어때] 버튼을 누르면 블로그 후기를 확인할 수 있습니다.</p>
  	 <hr style="border: 2px solid lightgray;"/>
  	  <ul id="detailSearch" style="margin-left: 0%; padding-bottom: 3%">
   	</ul>
-<!--   	<ul id="detailResult" style="margin-left: 0%; padding-bottom: 3%"> -->
-<!--   	</ul> -->
- 	 <button type="button" class="btNext" data-num=5 id="test">다음</button>
+  	<ul id="detailResult" style="margin-left: 0%; padding-bottom: 3%">
+  	</ul>
+ 	 <button type="button" class="btNext" data-num=5>다음</button>
   </div>
   <script>
 // 5. 체험학습 후보지 검색 진행
 $('#selection').on('click', function() {
 	  $("#detailSearch").empty();
 	  $("#detailTable").empty();
-	  $("#detailSearch").append("<table id='detailTable' frame='void' width= 60% border-style='solid' border-width='3px'"
+	  $("#detailSearch").append("<table id='detailTable' frame='void' width= 40% border-style='solid' border-width='3px'"
 			  + "style='margin: 0 auto; text-align: left; vertical-align: middle;'></table>")
 	  $("#detailTable").append("<tr><td colspan='2' style='text-align: center; background-color: #ffeb3b; font-size: 25px'>관심있게 본 프로그램 목록[총 "+posts.length+"개]</td></tr>")
 	  $("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
-	  
 	  for(var i in posts){
-		  	
-		    $("#detailTable").append("<tr id='tr"+i+"'></br><td class= 'keywordAll' id='keyword"+i+"' style='font-size: 18px;'><input type='radio' style='vertical-align: middle; width:40px;height:30px;border:1px;' name='radioPs' name='radioPs' value='"+posts[i]+"'>&nbsp;"+posts[i]
+		    $("#detailTable").append("<tr id='tr"+i+"'></br><td class= 'keywordAll' id='keyword"+i+"' style='font-size: 18px;'>"+posts[i]
 		    +"</td><td style ='text-align:right;'><button class='btForselection' id='btForselection"+i+"' onclick='searchAbtIt(btForselection"+i+", keyword"+i+", tr"+i+", "+i+")'>여기어때?</button></td></tr>")
-			$("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
 	  }
-// 	  $("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
+	  $("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
 })
 
-
-
-
-// 키워드로 검색 진행
 function searchAbtIt(buttonId, keywordId, trId, num) {
 	var btid = buttonId;
 	var keyid = keywordId;
-	
-	
-	
 // 	alert($(btid).attr('id'));
 // 	alert($(keyid).text());
 	
@@ -665,111 +617,22 @@ function searchAbtIt(buttonId, keywordId, trId, num) {
 			keyword : $(keyid).text()
 		},
 		success: function(data){
-			
+				$(trId).after("<tr class = 'trchild'><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>")
 				for(var i = 0; i < data.items.length; i++){
-					var url = data.items[i].link;
-					$(trId).after("<tr class = 'trchild'><td colspan='2'><br><button style=' background-color: #f1f1f1; border:0; outline:0; width: 100%; text-align: left;' onclick='blogOpen((\""+url+"\"))'>[블로그] "+data.items[i].title+"</button><p style='font-size: 10px;'>"+data.items[i].description+"</p></td></tr>");
-// 				$(trId).after("<tr class = 'trchild'><td><a style='color : blue;' href='"+data.items[i].link+"'>"+data.items[i].title+"</a></td></tr>");
+				$(trId).after("<tr class = 'trchild'><td><a style='color : blue;' href='"+data.items[i].link+"'>"+data.items[i].title+"</a></td></tr>");
 			}
-				
+				$(trId).after("<tr class = 'trchild'><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>")
 		}
+		
+
 	
 	})
 }
-
-//팝업으로 블로그 확인하기
-function blogOpen(url){
-
-	var popUrl = url;	//팝업창에 출력될 페이지 URL
-
-	var popOption = "width=900, height="+ screen.height;    //팝업창 옵션(optoin)
-
-	window.open(popUrl,"",popOption);
-
-}
-
-
-// 다음페이지 이동
-$(function() {
-	$("#test").on('click', function(event) {	
-		
-		var radiVal = $("input:radio[name=radioPs]:checked").val();
-		console.log(radiVal);
-		if( typeof radiVal !== "undefined" ){
-		var cfmtext = confirm( radiVal+"을(를) 최종 체험학습지로 선정합니다.")
-			if(cfmtext == true){
-				
-				$.ajax({
-					url:"/kinder/postSaveFinalChoice",
-					type:"post",
-					data:{
-						ftChoice : radiVal
-					},
-					success: function() {
-						console.log(" DB 저장 완료")
-					}
-				})
-				
-				$(function(){
-					openStep(event, 'step6', 'id6');
-					$('#id6').attr('disabled', false);
-				  })
-			}else{ return false;}
-		}else{alert("동그라미 버튼을 눌러 최종 학습지를 선정 해주세요!")}
-	})
-})
-
   </script>
   
   <div id="step6" class="w3-container step">
-  <p class="headline">Q.이 단계만 거치면 코스 선정이 모두 완료됩니다!<br>관광지 목록이나 지도의 Marker를 눌러 관광지를 선택하세요.</p>
- 	 <hr style="border: 2px solid lightgray;"/>
   <button type="button" class="btNext" data-num=6>다음</button>
-  
-
-  <iframe id='fieldtripHelper' src='/test.jsp' frameborder=0  style='margin-left:4%; width: 100%;  height: 100vh;'></iframe>"
-  
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <div id="step7" class="w3-container step">
   <button type="button" class="btNext" data-num=7>다음</button>
   </div>

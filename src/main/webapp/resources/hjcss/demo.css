@@ -199,8 +199,11 @@ input[type="date"]::-webkit-inner-spin-button {
 .count::-webkit-outer-spin-button,
 .count::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    -moz-appearance: none;
+   appearance: none;
     margin: 0;
 }
+
 
 #pnum p {
 	color: rgb(169, 169, 169);

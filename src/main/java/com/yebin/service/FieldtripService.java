@@ -8,5 +8,6 @@ import com.yebin.domain.FieldtripVO;
 public interface FieldtripService {
 	
 	public void findnInsertCandidates(FieldtripVO fieldVO, MemberVO memVO, CategoryVO cateVO, AreacodeVO areaVO);
-
+	public void updateFtChoice(FieldtripVO fieldVO);
+	
 }

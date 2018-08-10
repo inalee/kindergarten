@@ -44,10 +44,6 @@
 	</interceptors>
 	
 	<context:component-scan base-package="com.kinder.controller" />
-	<context:component-scan base-package="com.guangwoo.controller" />
-	<context:component-scan base-package="com.hojung.controller" />
-	<context:component-scan base-package="com.ina.controller" />
 	<context:component-scan base-package="com.yebin.controller" />
-	<context:component-scan base-package="com.jiwon.controller" />
 	
 </beans:beans>

@@ -14,6 +14,7 @@ public class JsonParse {
 
 		JSONParser jsParser = new JSONParser();
 		JSONObject jsObj = new JSONObject();
+		String tempStr = null;
 
 		// 타이틀로 키&값을 찾을 수 있는 맵
 		Map<String, Map<String, Object>> completeMap = new HashMap<>();
@@ -24,7 +25,11 @@ public class JsonParse {
 		for (int i = 0; i < arrays.length; i++) {
 			
 			jsonMap = new TreeMap<>();
-			
+//			'title' : '[강원] Clue, Time, Speed ', 'website' 
+			if (arrays[i].contains("\"")) {
+				arrays[i] = arrays[i].replaceAll("\"", "");
+			}
+
 			if (arrays[i].contains("'")) {
 				arrays[i] = arrays[i].replaceAll("'", "\"");
 			}
@@ -35,7 +40,7 @@ public class JsonParse {
 				e.printStackTrace();
 			}
 			
-			for (Object key : jsObj.keySet()) { // 1번째 키
+			for (Object key : jsObj.keySet()) {
 				System.out.println("키 : " + key.toString() + " 값:" + jsObj.get(key));
 				jsonMap.put(key.toString(), jsObj.get(key));
 			}

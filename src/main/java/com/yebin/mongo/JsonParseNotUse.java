@@ -23,16 +23,16 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import com.sun.net.httpserver.Filter;
 
-public class JsonParse {
+public class JsonParseNotUse {
 
 	private JSONParser jsParser;
 	private JSONObject jsObject;
 	private Document doc;
 	
-	private JsonParse() {}
+	private JsonParseNotUse() {}
 	
-	public static JsonParse getInstance() {
-		return new JsonParse();
+	public static JsonParseNotUse getInstance() {
+		return new JsonParseNotUse();
 	}
 
 	// MongoDB InsertWithDate 메서드

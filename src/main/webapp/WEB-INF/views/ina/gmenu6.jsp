@@ -250,7 +250,7 @@ table.type04 td {
 	<td>${i.kinname}</td>
 	<td>${i.sigungu}</td>
     <td>${date_re2}</td>
-    <td>${i.renum}</td>
+    <td>${i.renum}명</td>
     <td>${i.redetail}</td>
     <td><a href="detail_regular_enroll?recode=${i.recode}&kincode=${i.kincode}"><img style="width: 30px; height: 30px;" src="http://atonofcows.x10.mx/assets/circle.png"></a>
   </tr>

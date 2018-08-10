@@ -67,7 +67,7 @@ function search_btn() {
 			onclick='javascript:calculate((\""+data[i].kinname+"\"))'
 			$("#mychild").append("<tr id='trresult'>"+
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinphone+"</td><td>"+data[i].kinspec+"</td>"+   
-				    "<td><a href='#' onclick='layer_open((\"modal\"),"+data[i].kincode+")'><img style='width:50px; height:50px;' src='https://static8.depositphotos.com/1003938/1045/v/950/depositphotos_10451115-stock-illustration-funny-cartoon-builder.jpg'></a></td></tr>");
+				    "<td><a href='#' onclick='layer_open((\"modal\"),"+data[i].kincode2+",(\""+data[i].kinname+"\")"+",(\""+data[i].kinaddress+"\"))'><img style='width:50px; height:50px;' src='https://static8.depositphotos.com/1003938/1045/v/950/depositphotos_10451115-stock-illustration-funny-cartoon-builder.jpg'></a></td></tr>");
 		
 		}
 		
@@ -76,8 +76,110 @@ function search_btn() {
 }
 
 //Layer Popup
-function layer_open(obj,obj2) {
+function layer_open(obj,obj2,obj3,obj4) {
 
+	$.get("crawling_list",{kincode2:obj2}, function(result){
+
+		var map = new Map();
+		map = result;
+		console.log(map);
+		
+		//이수인원
+		$("#d1").empty();
+		$("#d1").append(map['이수 인원']);
+
+		//안전교육 훈련일자
+		$("#d2").empty();
+	 	$("#d2").append(map['훈련일자']);
+
+		//가스 점검일
+		$("#d3").empty();
+	 	$("#d3").append(map['가스점검일']);
+	 	
+		//소방 안전 점검
+		$("#d4").empty();
+	 	$("#d4").append(map['소방안전 점검일']);
+	
+		//전기설비 점검일
+		$("#d5").empty();
+	 	$("#d5").append(map['전기설비 점검일']);
+	 	
+		//전기안전점검관리점검일자
+			$("#d6").empty();
+		 	$("#d6").append(map['전기안전점검관리점검일자']);
+		 	
+			//결과
+			$("#d7").empty();
+		 	$("#d7").append(map['점검결과']);
+
+
+	 	
+		//공제회가입현황/대상
+		$("#d8").empty();
+	 	$("#d8").append(map['공제회가입현황']);
+	 	
+		//영유아 생명·신체보상(의무가입)
+		$("#table_div").empty();
+	 	$("#table_div").append(
+	 			"<tr><th>구분</th><th>해당 여부</th><th>가입 여부</th><th>업체명</th></tr>"+
+	 		    "<tr><td>영유아 생명·신체보상(의무가입)</td>"+
+	 		   "<td>"+map['영유아 생명·신체보상(의무가입) 해당여부']+"</td>"+
+	 		   "<td>"+map['영유아 생명·신체보상(의무가입)']+"</td>"+
+	 		   "<td>"+map['영유아 생명·신체보상(의무가입) 업체명']+"</td></tr>"+
+	 		   
+	 		    "<tr><td>화재(의무가입)</td>"+
+		 		 "<td>"+map['화재(의무가입) 해당여부']+"</td>"+
+		 		 "<td>"+map['화재(의무가입)']+"</td>"+
+		 		 "<td>"+map['화재(의무가입) 업체명']+"</td></tr>"+		
+		 		 
+		 		 
+		 		    "<tr><td>보육교직원 생명·신체</td>"+
+			 		 "<td>"+map['보육교직원 생명·신체 해당여부']+"</td>"+
+			 		 "<td>"+map['보육교직원 생명·신체']+"</td>"+
+			 		 "<td>"+map['보육교직원 생명·신체 업체명']+"</td></tr>"+	
+			 		 
+
+			 		"<tr><td>가스배상 책임(집단급식소 운영)</td>"+
+				    "<td>"+map['가스배상 책임(집단급식소 운영) 해당여부']+"</td>"+
+				 	"<td>"+map['가스배상 책임(집단급식소 운영)']+"</td>"+
+			 		"<td>"+map['가스배상 책임(집단급식소 운영) 업체명']+"</td></tr>"+	
+			 		 
+			 		 
+				 	
+			 		"<tr><td>놀이시설 안전(옥외놀이터 설치)</td>"+
+				    "<td>"+map['놀이시설 안전(옥외놀이터 설치) 해당여부']+"</td>"+
+				 	"<td>"+map['놀이시설 안전(옥외놀이터 설치)']+"</td>"+
+				 	"<td>"+map['놀이시설 안전(옥외놀이터 설치) 업체명']+"</td></tr>"+
+				 	
+		
+			 		"<tr><td>통학버스 책임(차량운행시설)</td>"+
+				    "<td>"+map['통학버스 책임(차량운행시설) 해당여부']+"</td>"+
+				 	"<td>"+map['통학버스 책임(차량운행시설)']+"</td>"+
+				 	"<td>"+map['통학버스 책임(차량운행시설) 업체명']+"</td></tr>"+				 	
+				 	
+				 	
+			 		"<tr><td>통학버스 종합(차량운행시설)</td>"+
+				    "<td>"+map['통학버스 종합(차량운행시설) 해당여부']+"</td>"+
+				 	"<td>"+map['통학버스 종합(차량운행시설)']+"</td>"+
+				 	"<td>"+map['통학버스 종합(차량운행시설) 업체명']+"</td></tr>"	 	
+	 	);
+	 	
+	 	
+	// 어린이집 이름
+	$("#kin_name").empty();
+	$("#kin_name").append(obj3);
+	
+	//어린이집 이름 + 주소
+	$("#kindetail").empty();
+	$("#kindetail").append(obj4+"에 위치한 "+obj3+"은");
+	});
+	
+
+
+
+	
+	
+	
     var temp = $('#' + obj);
     var bg = temp.parent().parent().find('.bg').hasClass('bg');
     if(bg) {
@@ -368,7 +470,6 @@ margin-top: 20px;
 
 #content_safe{
 width: 100%;
-
 padding: 20px;
 }
 
@@ -473,74 +574,31 @@ padding: 20px;
 							
 					<img src='http://kodiklip.com/wp-content/uploads/2014/11/Safety-Icon.png' style="width: 70px; height: 70px; float: left;">　
 					<br>
-					<h2 style="float: left;">역삼가애어린이집</h2>
-					
+					<h2 style="float: left;" id="kin_name"></h2>
+
 					<a href="" class="ico_com popcls" style="color: black;">[닫기]</a>
 				</div>
 				<div id="content_safe">
-					<p>강남구 역삼동에 위치한 역삼가애어린이집은 <font style="color: #F29661;">최근 3년간 보수교육 이수를 받은 원장 및 보육교사</font>가 총<font style="color: #F29661;">6명</font>입니다.</p>
+					<p id="kindetail"></p><p><font style="color: #F29661;">최근 3년간 보수교육 이수를 받은 원장 및 보육교사</font>가 총 <font style="color: #F29661;" id="d1">6명</font>입니다.</p>
 					
-					<p>또한 <font style="color: #F29661;">2018-03-28</font>에 <font style="color: #F29661;">안전교육 실시 현황 및 소방대피 훈련</font>을 실시하였네요.</p>
+					<p>또한 <font style="color: #F29661;" id="d2">2018-03-28</font>에 <font style="color: #F29661;">안전교육 실시 현황 및 소방대피 훈련</font>을 실시하였네요.</p>
 					<br>
-					<p>안전점검 실시 현황을 살펴보면 <font style="color: #F29661;">가스점검</font>은 <font style="color: #F29661;">2017-05-19</font>,<font style="color: #F29661;">소방안전 점검</font>은 <font style="color: #F29661;">2017-05-22</font>에,</p>
-					<p>마지막으로 <font style="color: #F29661;">전기설비 점검</font>은 <font style="color: #F29661;">2017-05-16</font>에 실시되었습니다.</p>
+					<p>안전점검 실시 현황을 살펴보면 <font style="color: #F29661;">가스점검</font>은 <font style="color: #F29661;" id="d3">2017-05-19</font>,<font style="color: #F29661;">소방안전 점검</font>은 <font style="color: #F29661;" id="d4">2017-05-22</font>,</p>
+					<p>마지막으로 <font style="color: #F29661;">전기설비 점검</font>은 <font style="color: #F29661;" id="d5">2017-05-16</font>에 실시되었습니다.</p>
 					<br>
-					<p><font style="color: #F29661;">전기안전점검관리</font>는 <font style="color: #F29661;">2018-03-02</font>에 시행되었으며,점검결과로 <font style="color: #F29661;">적합</font>을 받았습니다.</p>
-					<p>공제회 가입 현황을 보면,<font style="color: #F29661;">어린이집 안전공제회</font>의 대상자이며 현재 <font style="color: #F29661;">가입</font> 상태입니다.</p>
+					<p><font style="color: #F29661;">전기안전점검관리</font>는 <font style="color: #F29661;" id="d6"></font>에 시행되었으며,점검결과는 <font style="color: #F29661;" id="d7">적합</font> 입니다.</p>
+					<p>공제회 가입 현황을 보면,<font style="color: #F29661;">어린이집 안전공제회</font>의 대상자이며 현재 <font style="color: #F29661;" id="d8">가입</font> 상태입니다.</p>
 					<br>
-					<p>역삼가애어린이집의 <font style="color: #CC3D3D;">보험별 가입 상세 현황</font>은 다음과 같습니다.</p>
+					<p><font style="color: #CC3D3D;">보험별 가입 상세 현황</font>은 다음과 같습니다.</p>
 				</div>
-				<div id="content_safe">
-			
+				<div id="content_safe" style="margin-top: -25px;">
 			<table id="table_div">
   <tr>
     <th>구분</th>
     <th>해당 여부</th>
     <th>가입 여부</th>
-    <th>업체명</th>
   </tr>
-  <tr>
-    <td>영유아 생명·신체보상(의무가입)</td>
-    <td>대상</td>
-    <td>가입</td>
-    <td>어린이집안전공제회</td>    
-  </tr>
-  <tr>
-    <td>화재(의무가입)</td>
-    <td>대상</td>
-    <td>가입</td>
-    <td>어린이집안전공제회</td>    
-  </tr>
-  <tr>
-    <td>보육교직원 생명·신체</td>
-    <td>대상</td>
-    <td>가입</td>
-    <td>어린이집안전공제회</td>    
-  </tr>
-    <tr>
-    <td>가스배상 책임(집단급식소 운영)</td>
-    <td>대상</td>
-    <td>가입</td>
-    <td>어린이집안전공제회</td>    
-  </tr>
-      <tr>
-    <td>놀이시설 안전(옥외놀이터 설치)</td>
-    <td>미대상</td>
-    <td>가입</td>
-    <td></td>    
-  </tr>
-   <tr>
-    <td>통학버스 책임(차량운행시설)</td>
-    <td>미대상</td>
-    <td>미가입</td>
-    <td></td>    
-  </tr>
-     <tr>
-    <td>통학버스 종합(차량운행시설)</td>
-    <td>미대상</td>
-    <td>미가입</td>
-    <td></td>    
-  </tr>
+
 </table>
 	<p style="float: right; font-size: 12px; color: #003399; margin-right: 45px;">정보제공:어린이집정보공개포탈</p>
 				</div>

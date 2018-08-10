@@ -2,17 +2,29 @@ package com.ina.controller;
 
 
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +34,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
@@ -33,6 +47,7 @@ import com.ina.persistence.EnrollManageDAO;
 import com.ina.persistence.RegularDAO;
 import com.ina.persistence.RegularEnrollDAO;
 import com.ina.persistence.WaitingDAO;
+import com.ina.service.CommonUtils;
 import com.kinder.domain.ChildrenVO;
 import com.kinder.domain.ClassVO;
 import com.kinder.domain.KindergartenVO;
@@ -266,15 +281,158 @@ public class InaController {
 	
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public void upload_post(HttpServletRequest request) {
-		int encode = Integer.parseInt(request.getParameter("encode"));
-		waitdao.update_state(encode);
+	
+	public void upload_post(HttpServletRequest request) throws IllegalStateException, IOException {
+	
+
+		String filePath = "C:\\dev\\file\\";
+	
+		    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+	        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+	         
+	        MultipartFile multipartFile = null;
+	        String originalFileName = null;
+	        String originalFileExtension = null;
+	        String storedFileName = null;
+	      
+	         
+	        File file = new File(filePath);
+	        if(file.exists() == false){
+	            file.mkdirs();
+	        }
+	         
+	        while(iterator.hasNext()){
+	            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+	            if(multipartFile.isEmpty() == false){
+	            	 logger.info("------------- file start -------------");
+	            	 logger.info("name : "+multipartFile.getName());
+	            	 logger.info("filename : "+multipartFile.getOriginalFilename());
+	            	 logger.info("size : "+multipartFile.getSize());
+	            	 logger.info("-------------- file end --------------\n");
+
+
+	                originalFileName = multipartFile.getOriginalFilename();
+	                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+	                logger.info("storedFileName : "+storedFileName);
+	                file = new File(filePath + storedFileName);
+	                multipartFile.transferTo(file);
+	                
+	        		String enfile = storedFileName;
+	        		
+	        		int encode = Integer.parseInt(request.getParameter("encode"));
+	        		
+	        		EnrollVO ev = new EnrollVO();
+	        		ev.setEncode(encode);
+	        		ev.setEnfile(enfile);
+	        		ev.setEnorigin(multipartFile.getOriginalFilename());
+	        		waitdao.update_state(ev);
+	        		
+	                
+	            }
+	        }
+		
 	}
 	
+	@RequestMapping(value = "/down_file", method = RequestMethod.GET)
+	public void down_file(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		int encode = Integer.parseInt(request.getParameter("encode"));
+		
+		EnrollVO ev = managedao.down_file(encode);
+		String storedFileName = ev.getEnfile();
+		String originNmae = ev.getEnorigin();
+
+		 byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\dev\\file\\"+storedFileName));
+
+		    response.setContentType("application/octet-stream");
+		    response.setContentLength(fileByte.length);
+	
+		    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originNmae,"UTF-8")+"\";");
+		    response.setHeader("Content-Transfer-Encoding", "binary");
+		    response.getOutputStream().write(fileByte);
+		    	
+		    response.getOutputStream().flush();
+		    response.getOutputStream().close();
+
+
+	}
+	
+	
 	@RequestMapping(value = "/upload2", method = RequestMethod.POST)
-	public void upload_post2(HttpServletRequest request) {
+	public void upload_post2(HttpServletRequest request) throws IllegalStateException, IOException {
+		
+		String filePath = "C:\\dev\\file\\";
+		
+	    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+         
+        MultipartFile multipartFile = null;
+        String originalFileName = null;
+        String originalFileExtension = null;
+        String storedFileName = null;
+      
+         
+        File file = new File(filePath);
+        if(file.exists() == false){
+            file.mkdirs();
+        }
+         
+        while(iterator.hasNext()){
+            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            if(multipartFile.isEmpty() == false){
+            	 logger.info("------------- file start -------------");
+            	 logger.info("name : "+multipartFile.getName());
+            	 logger.info("filename : "+multipartFile.getOriginalFilename());
+            	 logger.info("size : "+multipartFile.getSize());
+            	 logger.info("-------------- file end --------------\n");
+
+
+                originalFileName = multipartFile.getOriginalFilename();
+                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+                logger.info("storedFileName : "+storedFileName);
+                file = new File(filePath + storedFileName);
+                multipartFile.transferTo(file);
+             
+        		
+        		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
+        		
+        		RegularEnrollVO rev = new RegularEnrollVO();
+        		rev.setRe_encode(re_encode);
+        		rev.setRefile(storedFileName);
+        		rev.setReorigin(multipartFile.getOriginalFilename());
+        		waitdao.update_regular_state(rev);
+        	
+                
+            }
+        }
+        
+        
+
+	}
+	
+	
+	@RequestMapping(value = "/down_file2", method = RequestMethod.GET)
+	public void down_file2(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		int re_encode = Integer.parseInt(request.getParameter("re_encode"));
-		waitdao.update_regular_state(re_encode);
+		
+		RegularEnrollVO rev = waitdao.select_files(re_encode);
+		String storedFileName = rev.getRefile();
+		String originNmae = rev.getReorigin();
+
+		 byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\dev\\file\\"+storedFileName));
+
+		    response.setContentType("application/octet-stream");
+		    response.setContentLength(fileByte.length);
+	
+		    response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originNmae,"UTF-8")+"\";");
+		    response.setHeader("Content-Transfer-Encoding", "binary");
+		    response.getOutputStream().write(fileByte);
+		    	
+		    response.getOutputStream().flush();
+		    response.getOutputStream().close();
+
+
 	}
 	
 	
@@ -501,12 +659,19 @@ public class InaController {
 	
 	
 	@RequestMapping(value="/make_regular",method=RequestMethod.POST)
-	public String make_regular(regular_recruitVO rrv) {
+	public String make_regular(regular_recruitVO rrv) throws ParseException {
+
+		String reopen = rrv.getReopen();
+	    LocalDateTime localDate = LocalDateTime.parse(reopen);
+	    String reopen2 = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		
+	    rrv.setReopen(reopen2);
+	     
 		regudao.make_regular(rrv);
-		
 		return "redirect:regular";
 	}
+	
+	
 	
 	@RequestMapping(value="insert_regular",method=RequestMethod.POST)
 	public String insert_regular(HttpServletRequest request) throws ParseException {
@@ -544,5 +709,15 @@ public class InaController {
 		
 		return lm;
 	
+	}
+	
+	
+	@RequestMapping(value="del_regular",method=RequestMethod.GET)
+	public String del_regular(HttpServletRequest request) {
+		
+		int recode = Integer.parseInt(request.getParameter("recode"));
+		regudao.delete_regular(recode);
+		
+		return "regular";
 	}
 }

@@ -2,7 +2,7 @@ package com.hojung.domain;
 
 import java.util.Arrays;
 
-public class KidscafeunfitCri {
+public class KidscafesearchCri {
 	
 	int sigungucode;
 	String cfname;
@@ -10,10 +10,10 @@ public class KidscafeunfitCri {
 	int[] cfrestime_lists;
 	int cfresnum;
 	
-	public KidscafeunfitCri() {
+	public KidscafesearchCri() {
 	}
 
-	public KidscafeunfitCri(int sigungucode, String cfname, String cfresdate, int[] cfrestime_lists, int cfresnum) {
+	public KidscafesearchCri(int sigungucode, String cfname, String cfresdate, int[] cfrestime_lists, int cfresnum) {
 		super();
 		this.sigungucode = sigungucode;
 		this.cfname = cfname;
@@ -64,7 +64,7 @@ public class KidscafeunfitCri {
 
 	@Override
 	public String toString() {
-		return "KidscafeunfitCri [sigungucode=" + sigungucode + ", cfname=" + cfname + ", cfresdate=" + cfresdate
+		return "KidscafesearchCri [sigungucode=" + sigungucode + ", cfname=" + cfname + ", cfresdate=" + cfresdate
 				+ ", cfrestime_lists=" + Arrays.toString(cfrestime_lists) + ", cfresnum=" + cfresnum + "]";
 	}
 	

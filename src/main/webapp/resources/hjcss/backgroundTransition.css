@@ -11,7 +11,7 @@ body .backgroundTransition {
   overflow: hidden;
   background-size: cover;
   background-position: center center;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 body .backgroundTransition .image-bottom, body .backgroundTransition .image-top {

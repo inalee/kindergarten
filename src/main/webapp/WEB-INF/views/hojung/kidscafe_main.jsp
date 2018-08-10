@@ -43,12 +43,23 @@
 		});
 	  $('#cfresdate').val(new Date().toDateInputValue());
 	  document.getElementById('cfresdate').min = new Date().toDateInputValue();
+	  
+	  
+	  // cfresnum에 인원수 반영
+	  document.getElementById("cfresnum").value = "성인 "
+			+ document.getElementById("count1").value + "명, 어린이 "
+			+ document.getElementById("count2").value + "명";
+
+	  
+	
 	
   });
   
-
   
-	// 성인 인원수 +,- 함수
+  
+  
+
+	//성인 인원수 +,- 함수
 	var count1 = 0;
 	function plus1() {
 		if (count1 < 10) {
@@ -98,18 +109,18 @@
 				+ document.getElementById("count2").value + "명";
 		$('#personnum').hide();
 	}
-	
+
+	//starttime에 따른 endtime 설정
 	function possibleEndtime() {
-		starttime = Number(document.getElementById("starttime").value)+1;
-		
+		starttime = Number(document.getElementById("starttime").value) + 1;
+
 		$('#endtime').empty();
-		 
-		for(var i = starttime; i < 23; i++){
-            var option = $("<option value="+i+">"+i+"</option>");
-            $('#endtime').append(option);
-        }
+
+		for (var i = starttime; i < 23; i++) {
+			var option = $("<option value="+i+">" + i + "</option>");
+			$('#endtime').append(option);
+		}
 	}
-	
 </script>
 <body>
    <div class="backgroundTransition">
@@ -117,7 +128,8 @@
 <!--        </div> -->
 	<div class="page">
 	  <div class="form">
-		<form action="kidscafe_select" method="post">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+	  <img alt='logo' src='resources/images/kidscafe_logo.png' style='width: 300px; margin-bottom: 15px;'>
+		<form action="kidscafe" method="get">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 			<ul>
 				<li class="basis"><p>시도</p>
 					<select class="si" title="시도 선택">

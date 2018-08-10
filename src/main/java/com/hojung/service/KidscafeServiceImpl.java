@@ -6,7 +6,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.hojung.domain.KidscafeunfitCri;
+import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KinsearchCri;
 import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
@@ -19,8 +20,8 @@ public class KidscafeServiceImpl implements KidscafeService {
 	private KidscafeDAO dao;
 
 	@Override
-	public List<Integer> unfitKidscafes(KidscafeunfitCri cri) throws Exception {
-		return dao.unfitKidscafes(cri);
+	public List<KidscafeVO> selectKidscafes(KidscafesearchCri cri) throws Exception {
+		return dao.selectKidscafes(cri);
 	}
 
 }

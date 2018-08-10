@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hojung.domain.KidscafeVO;
-import com.hojung.domain.KidscafeunfitCri;
+import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KinsearchCri;
 import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
@@ -76,25 +76,20 @@ public class HojungController {
 		return kservice.selectKinders_map(cri);//list로 리턴
 	}
 	
-//	@RequestMapping(value="/select_kinders", method=RequestMethod.GET)
-//	public void selectKinders(Model model) throws Exception{
-//		
-//		model.addAttribute("list", service.listAll());
-//	}
-	
-	@RequestMapping(value = "/kidscafe_main_gmenu", method = RequestMethod.GET)
+	@RequestMapping(value = "/kidscafe_gmenu", method = RequestMethod.GET)
 	public String kidscafe_main() {
 		
 		return "/kidscafe_main";
 	}
 	
-	/*  */
-	@RequestMapping(value = "/kidscafe_select", method = RequestMethod.POST)
+	/* 예약 조건에 맞는 카페 list로 반환  */
+	@RequestMapping(value = "/kidscafe", method = RequestMethod.GET)
 	public String kidscafe_select(HttpServletRequest request, Model model) throws Exception {
 		
+		//조건 cri에 넣기
 		int [] cfrestime_lists = new int[Integer.parseInt(request.getParameter("endtime"))-Integer.parseInt(request.getParameter("starttime"))];
 		int index = 0;
-		KidscafeunfitCri cri = new KidscafeunfitCri();
+		KidscafesearchCri cri = new KidscafesearchCri();
 		
 		cri.setSigungucode(Integer.parseInt(request.getParameter("sigungucode")));
 		cri.setCfname(request.getParameter("cfname"));
@@ -105,12 +100,15 @@ public class HojungController {
 		}
 		cri.setCfrestime_lists(cfrestime_lists);
 		cri.setCfresnum(Integer.parseInt(request.getParameter("count1"))+Integer.parseInt(request.getParameter("count2")));
-
 		System.out.println("================="+cri);
 		
-		kcservice.unfitKidscafes(cri);
+		//예약 조건에 맞는 kidscafe 리스트
+//		List<KidscafeVO> Kidscafe_list = kcservice.selectKidscafes(cri);
+//		for (KidscafeVO kc : Kidscafe_list) {
+//			System.out.println(kc.getCfpermit());
+//		}
 		
-		System.out.println(kcservice.unfitKidscafes(cri));
+		model.addAttribute("kidscafe_list", kcservice.selectKidscafes(cri));
 		
 		return "/kidscafe_list";
 	}

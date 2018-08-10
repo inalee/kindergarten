@@ -42,7 +42,14 @@
 <!-- 	<beans:bean id="uploadPath" class="java.lang.String"> -->
 <!-- 		<beans:constructor-arg value="C:\\sts-bundle\\upload"></beans:constructor-arg> -->
 <!-- 	</beans:bean> -->
-	
+
+
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <beans:property name="maxUploadSize" value="100000000" />
+        <beans:property name="maxInMemorySize" value="100000000" />
+    </beans:bean>
+
+
 	<context:component-scan base-package="com.kinder.controller" />
 	<context:component-scan base-package="com.guangwoo.controller" />
 	<context:component-scan base-package="com.hojung.controller" />
@@ -50,4 +57,6 @@
 	<context:component-scan base-package="com.yebin.controller" />
 	<context:component-scan base-package="com.jiwon.controller" />
 	
+
+
 </beans:beans>

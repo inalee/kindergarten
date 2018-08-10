@@ -7,7 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.hojung.domain.KidscafeunfitCri;
+import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscafesearchCri;
 
 @Repository
 public class KidscafeDAOImpl implements KidscafeDAO {
@@ -23,8 +24,8 @@ public class KidscafeDAOImpl implements KidscafeDAO {
 	}
 
 	@Override
-	public List<Integer> unfitKidscafes(KidscafeunfitCri cri) throws Exception {
-		return sqlSession.selectList(namespace+".unfitKidscafes",cri);
+	public List<KidscafeVO> selectKidscafes(KidscafesearchCri cri) throws Exception {
+		return sqlSession.selectList(namespace+".selectKidscafes",cri);
 	}
 	
 }

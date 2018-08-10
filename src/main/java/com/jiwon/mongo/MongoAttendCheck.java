@@ -47,4 +47,22 @@ public class MongoAttendCheck {
 		}
 		return new ArrayList<>();
 	}
+	public static List<Document> findChildAt(int ccode, String today){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		MongoCollection<Document> col = MongoUtil.getCollection("kinder", "atcheck");
+		FindIterable<Document> findIter;
+		String start = today + "T00:00:00Z";
+		String end = today + "T23:59:59Z";
+		try {
+			findIter = col.find(Filters.and(Filters.gte("date", format.parse(start)), Filters.lte("date", format.parse(end)), Filters.eq("ccode", ccode))).sort(new Document("date", -1));
+			Iterator<Document> iter = findIter.iterator();
+			List<Document> list = Lists.newArrayList(iter);
+			//System.out.println("find 결과 :" + list);
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
+
+	}
 }

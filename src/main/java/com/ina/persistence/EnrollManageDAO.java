@@ -19,4 +19,6 @@ public interface EnrollManageDAO {
 	public void enroll_delete(int encode);
 	
 	public void regular_delete(int re_encode);
+	
+	public EnrollVO down_file (int encode);
 }

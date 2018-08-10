@@ -11,6 +11,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+function detailkinder(kincode){
+	
+	var popUrl = "http://info.childcare.go.kr/info/pnis/search/preview/SummaryInfoSlPu.jsp?flag=YJ&STCODE_POP="+kincode;	//팝업창에 출력될 페이지 URL
+	var popOption = "width=600, height=700 top=50 left=300";    //팝업창 옵션(optoin)
+	window.open(popUrl,"",popOption);	
+
+}
 
 function search_btn() {
 	
@@ -60,7 +67,7 @@ function search_btn() {
 
 			$("#mychild").append("<tr id='trresult'><td><input type='hidden' id='kins' name='kins'><input type='radio' id='info_kinder' onclick='javascript:calculate((\""+data[i].kinname+"\"))' name='info_kinder' value='"+data[i].kincode+"'></td>"+
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinmax+"명</td><td>"+data[i].kincurrent+"명</td>"+   
-				    "<td><a href='#'>[상세보기]</a></td></tr>");
+				    "<td><button class='buttonh button6' onclick='detailkinder("+data[i].kincode2+");'>"+"자세히보기"+"</button></td></tr>");
 		}
 		
 		});
@@ -341,6 +348,37 @@ background-color:#EBF3FB;
 }
 
 .button4:hover {background-color: #e7e7e7;}
+
+
+.button6 {
+    background-color: #008CBA;
+    color: white; 
+    border: 2px solid #008CBA;
+}
+
+.button6:hover {
+    background-color: white;
+    color: black;
+}
+
+.buttonh {
+	height: 25px;
+    background-color: #C7D3ED; /* Green */
+    border: none;
+    color: black;
+	opacity: 0.8;
+    text-align: center;	
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-family: 'Jeju Gothic', sans-serif;	
+
+}
+
 
 </style>
 <body>

@@ -27,7 +27,7 @@
   
   <!-- 어린이집 키워드 통합검색 -->
   <select id="selectKinders_kw" resultType="com.kinder.domain.KindergartenVO">
-  <![CDATA[select k.kincode, k.sido, s.sigungu, k.kinname, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome
+  <![CDATA[select k.kincode, k.sido, s.sigungu, k.kinname, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome, k.kincode2
   from kindergarten k, kinkind kk, sigungu s
   where k.sigungucode=s.sigungucode and k.kinkindcode=kk.kinkindcode 
 	  and k.kinname like CONCAT('%',#{kinname},'%') 
@@ -39,28 +39,33 @@
   
   <!-- 어린이집 지도 통합검색 -->
   <select id="selectKinders_map" resultType="com.kinder.domain.KindergartenVO">
-  select k.kincode, k.sido, s.sigungu, k.kinname, k.kinaddress, k.kinphone, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome
+  select k.kincode, k.sido, s.sigungu, k.kinname, k.kinaddress, k.kinphone, kk.kinkind, k.kinroom, k.kinmax, k.kincurrent, k.kinteacher, k.kinhome, k.kinla, k.kinlo, k.kincode2
   from kindergarten k, kinkind kk, sigungu s
   where k.sigungucode=s.sigungucode and k.kinkindcode=kk.kinkindcode 
   and k.kinname like CONCAT('%',#{kinname},'%') and k.sigungucode=#{sigungucode}
   order by s.sigungu, k.kinname, kk.kinkind
   </select>
   
-  <!-- 키즈카페 예약 불가 리스트 -->
-  <select id="unfitKidscafes" resultType="java.lang.Integer">
-  <![CDATA[select kc.cfcode
+  <!-- 예약 조건에 따른 예약 가능 키즈카페 select (전체 카페 list - 조건에 맞지 않는 카페 list = 조건에 맞는 카페 list) -->
+  <select id="selectKidscafes" resultType="com.hojung.domain.KidscafeVO">
+  <![CDATA[select * from kidscafe 
+  where cfname like CONCAT('%',#{cfname},'%')
+  and numperhour >= #{cfresnum}]]>
+  <if test="sigungucode != 0">
+	and sigungucode=#{sigungucode}
+  </if>
+  <![CDATA[and cfcode not in (select kc.cfcode
   from kidscafe kc, cfres_summary cs
   where kc.cfcode=cs.cfcode and kc.cfname like CONCAT('%',#{cfname},'%')
-  and cs.cfresdate=#{cfresdate}]]>
-  <if test="personnum != 0">
-	and kc.numperhour-cs.sum_cfresnum lt #{cfresnum}
-  </if>
+  and cs.cfresdate=#{cfresdate}
+  and kc.numperhour-cs.sum_cfresnum < #{cfresnum}]]>
   <if test="sigungucode != 0">
 	and kc.sigungucode=#{sigungucode}
   </if>
   <foreach collection="cfrestime_lists" item="cfrestime" separator="or" open="and(" close=")">cs.cfrestime=#{cfrestime}</foreach>
-  <![CDATA[group by kc.cfcode
-  order by kc.cfname]]>
+  
+  <![CDATA[group by kc.cfcode)
+  order by cfcode]]>
   </select>
 
 

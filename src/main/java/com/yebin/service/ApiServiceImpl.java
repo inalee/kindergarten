@@ -8,38 +8,98 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 
+import javax.inject.Inject;
+
+import org.bson.Document;
 import org.springframework.stereotype.Service;
+
+import com.yebin.util.JsonParse;
 
 @Service
 public class ApiServiceImpl implements ApiService {
+	
+
+	
+	@Inject
+	MongoService mongoService;
 
 	@Override
 	public StringBuffer programService(String term, String zone, String city, String date, String person) throws Exception {
 		
 		System.out.println("[분류]"+term+" [지역]"+zone+" [도시]"+city+" [운영시작일]"+date+" [인원]"+person);	  
-		// 창의 프로그램 api 주소 : "https://www.crezone.net/api/program/list.php";
-		StringBuilder urlBuilder = new StringBuilder("https://www.crezone.net/api/program/list.php?count=100&post_modified:desc"); /*URL*/
-		urlBuilder.append("&" + URLEncoder.encode("term","UTF-8") + "=" + URLEncoder.encode(term, "UTF-8"));
-		if(!zone.equals("지역없음")) {
-			urlBuilder.append("&" + URLEncoder.encode("zone","UTF-8") + "=" + URLEncoder.encode(zone, "UTF-8"));	
-			urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(city, "UTF-8"));			
-		}
-		urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));	
+
 		String line = "";
 		StringBuffer sb = new StringBuffer();
+		
+		if( (!zone.equals("전국")) && city.equals("전체")) {
+			mongoService.defaultSetting("kinder", "areacode");
+			String projectionStr = "{zone : 0, _id: 0}";
+			List<Document> cityList = mongoService.findwithFilter(projectionStr, "zone", zone);
+			Map<Object, Object> map = mongoService.bsonToJson(cityList);
+			
+			for(Object key : map.keySet()) {
+				StringBuilder urlBuilder = new StringBuilder("https://www.crezone.net/api/program/list.php?count=100&post_modified:desc"); /*URL*/
+				urlBuilder.append("&" + URLEncoder.encode("term","UTF-8") + "=" + URLEncoder.encode(term, "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("zone","UTF-8") + "=" + URLEncoder.encode(zone, "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(map.get(key).toString(), "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));
+			
+				// url 읽어오기
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL(urlBuilder.toString()).openStream(), "utf-8"))) {
+					// html을 String으로 parsing
+					while ((line = br.readLine()) != null) {
+						
+						if(!line.equals("[]")) {
+							System.out.println(line);
+							System.out.println(line.length() +" "+ line.lastIndexOf("]"));
+							if(line.length() == line.lastIndexOf("]")+1) {
+								line = line.substring(1, line.lastIndexOf("]"));
+								sb.append(line + ",");							
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Get_Page 예외 : " + e.getMessage());
+				}	
 
-		// url 읽어오기
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL(urlBuilder.toString()).openStream(), "utf-8"))) {
-			// html을 String으로 parsing
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Get_Page 예외 : " + e.getMessage());
+			
+			String string = "[" + sb.substring(0, sb.lastIndexOf(",")) +"]";
+			System.out.println(string);
+			sb.setLength(0);
+			sb.append(string);
+			System.out.println("전체 조회 : "+sb.toString());
+			
+			return sb;
+			
+		}else {
+			// 창의 프로그램 api 주소 : "https://www.crezone.net/api/program/list.php";
+			StringBuilder urlBuilder = new StringBuilder("https://www.crezone.net/api/program/list.php?count=100&post_modified:desc"); /*URL*/
+			urlBuilder.append("&" + URLEncoder.encode("term","UTF-8") + "=" + URLEncoder.encode(term, "UTF-8"));
+			urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));
+			if(!zone.equals("전국")) {
+				urlBuilder.append("&" + URLEncoder.encode("zone","UTF-8") + "=" + URLEncoder.encode(zone, "UTF-8"));	
+				urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(city, "UTF-8"));			
+			}
+			
+			// url 읽어오기
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL(urlBuilder.toString()).openStream(), "utf-8"))) {
+				// html을 String으로 parsing
+				while ((line = br.readLine()) != null) {
+						sb.append(line);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Get_Page 예외 : " + e.getMessage());
+			}	
+
 		}
 		
+		System.out.println("그냥 조회 : " +sb.toString());
 		return sb;
 	}
 

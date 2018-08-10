@@ -115,7 +115,7 @@ function selectKinders() {
 				} else {
 					homepage=data[i].kinhome;
 				}
-				$("#tbody").append("<tr><td>"+(i+1)+"</td><td>"+data[i].sido+"&nbsp;"+data[i].sigungu+"</td><td style='font-weight:bold;'><a title='자세히 보기' class='detail_kinder' onclick='detailkinder();'>"+data[i].kinname+"</a></td><td>"+data[i].kinkind+"</td><td>"+data[i].kinroom+"</td><td>"+data[i].kinmax+"</td><td>"+data[i].kincurrent+"</td><td>"+data[i].kinteacher+"</td><td>"+homepage+"</td></tr>")
+				$("#tbody").append("<tr><td>"+(i+1)+"</td><td>"+data[i].sido+"&nbsp;"+data[i].sigungu+"</td><td style='font-weight:bold;'><a title='자세히 보기' class='detail_kinder' onclick='detailkinder("+data[i].kincode2+");'>"+data[i].kinname+"</a></td><td>"+data[i].kinkind+"</td><td>"+data[i].kinroom+"</td><td>"+data[i].kinmax+"</td><td>"+data[i].kincurrent+"</td><td>"+data[i].kinteacher+"</td><td>"+homepage+"</td></tr>")
 				
 			}
 		} else {
@@ -129,7 +129,7 @@ function selectKinders() {
 function detailkinder(kincode){
 	
 	var popUrl = "http://info.childcare.go.kr/info/pnis/search/preview/SummaryInfoSlPu.jsp?flag=YJ&STCODE_POP="+kincode;	//팝업창에 출력될 페이지 URL
-	var popOption = "width=600, height=700 top=50 left=300";    //팝업창 옵션(optoin)
+	var popOption = "width=810, height=940 top=50 left=300";    //팝업창 옵션(optoin)
 	window.open(popUrl,"",popOption);	
 
 }

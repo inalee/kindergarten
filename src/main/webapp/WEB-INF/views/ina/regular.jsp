@@ -29,6 +29,16 @@ function upclass(pccode,pclcode) {
 	
 }
 
+function del_regular(val) {
+	
+	alert("해당 정기모집 공고를 삭제하시겠습니까?");
+	$.get("del_regular",{recode:val},function(result){
+		alert("삭제가 완료되었습니다.");
+		location.reload();
+	});
+	
+}
+
 </script>
 <style>
 body{
@@ -95,6 +105,45 @@ margin-bottom: 50px;
 
 }
 
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+	opacity: 0.8;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+
+.button3 {
+    background-color: #f44336;
+    color: white; 
+    border: 2px solid #f44336;
+}
+
+.button3:hover {
+    background-color: white;
+    color: black;
+}
+
+.button2 {
+    background-color: #008CBA;
+    color: white; 
+    border: 2px solid #008CBA;
+}
+
+.button2:hover {
+    background-color: white;
+    color: black;
+}
+
+
 
 </style>
 </head>
@@ -122,7 +171,8 @@ margin-bottom: 50px;
     <td>${i.renum} 명</td>
     <td>${i.renum_2} 명</td>
     <td>${i.redetail}</td>
-    <td>[수정][삭제]</td>
+    <td><button type="button" class="button button2" onclick="">수정</button>
+    <button class="button button3" type="button" onclick="del_regular(${i.recode})">삭제</button></td>
      </tr>
   </c:forEach>
 </table>

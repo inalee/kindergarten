@@ -55,9 +55,19 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	public ChildrenDTO getChildInfo(int ccode) throws Exception {
 		return session.selectOne(namespace + ".getChildInfo", ccode);
 	}
-	
+
 	@Override
 	public void insertVideoInfo(VideoVO vo) throws Exception {
 		session.insert(namespace + ".insertVideoInfo", vo);
+	}
+
+	@Override
+	public VideoVO getRecentVInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getRecentVInfo", ccode);
+	}
+
+	@Override
+	public VideoVO getFreqChInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getFreqChInfo", ccode);
 	}
 }

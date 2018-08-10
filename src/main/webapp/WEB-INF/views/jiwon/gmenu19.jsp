@@ -17,7 +17,7 @@ li { list-style : none;}
 .cont{
 	margin : 0px auto;
 	margin-top : 10px;
-	width : 95%;
+	width : 96%;
 	background-color: #FFFFD2;
 	border-radius: 5%;
 	padding:0px;
@@ -97,10 +97,12 @@ li { list-style : none;}
 var reVideo = new Array();
 var baVideo = new Array();
 var seVideo = new Array();
+var chVideo = new Array();
 //var ccode;
 	function search(ccode){
 		//alert(ccode);
 		 var query = document.getElementById('query').value;
+		 //alert(query);
 		 $.get("youtubeApi",{"q" : query},function(data, state){
 			query = !query? "어린이" : query;
 			$("#ul_search").empty();
@@ -108,7 +110,7 @@ var seVideo = new Array();
 		   for(var i = 0; i < data.items.length; i++){
 			   var title = data.items[i].snippet.title;
 			   if(title.length > 20) title = title.substring(0,20) + "...";
-			   seVideo[i*4] = title; 
+			   seVideo[i*4] = data.items[i].snippet.title; 
 			   seVideo[i*4+1] = data.items[i].snippet.channelId; 
 			   seVideo[i*4+2] = data.items[i].id.videoId;
 			   seVideo[i*4+3] = query;
@@ -118,37 +120,57 @@ var seVideo = new Array();
 	}
 	function openTab(ccode) {
 		//alert(ccode);
+		$("#ul_freqCh").empty();
+		$("#ul_recent").empty();	
+		$("#ul_base").empty();
 		$("#search_box").empty();
 		$("#search_box").append("<input id='query' type='text'/><button onclick='search("+ccode+")'><i class='fa fa-search'></i></button>");
 		$("#ul_search").empty();
 		$.get("youtubeApi",{"q" : ""},function(data, state){
-			$("#ul_base").empty();
+			
 			$("#ul_base").append("<li><h3>킨더가든 추천 영상</h3></li>");
 			   for(var i = 0; i < data.items.length; i++){
 				   var title = data.items[i].snippet.title;
 				   if(title.length > 20) title = title.substring(0,20) + "...";
-				   baVideo[i*3] = title; 
+				   baVideo[i*3] = data.items[i].snippet.title; 
 				   baVideo[i*3+1] = data.items[i].snippet.channelId; 
 				   baVideo[i*3+2] = data.items[i].id.videoId;
 				   $("#ul_base").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='javascript:clickVideo(1, "+i+","+ccode+")'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
 				   //$("#ul_base").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='http://www.youtube.com/watch?v="+data.items[i].id.videoId+"'target='_blank'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
 			}
 		});
-		$.get("youtubeApiRecent",{"q" : ""},function(data, state){
-			$("#ul_recent").empty();
-			$("#ul_recent").append("<li><h3>최근 본 ㅇㅇ와 비슷한 영상</h3></li>");
+		$.get("youtubeApiRecent", {"ccode" : ccode}, function(data, state){
+			
+			var vname = data[1].vname;
+			if(vname.length>10) vname = vname.substring(0,10)+"...";
+			var data = data[0];					
+			$("#ul_recent").append("<li><h3>최근 본  ["+vname+"] 비슷한 영상</h3></li>");
 			   for(var i = 0; i < data.items.length; i++){
 				   var title = data.items[i].snippet.title;
-				   if(title.length > 20) title = title.substring(0,20) + "...";
-				   reVideo[i*3] = title; 
+				   if(title.length > 20) title = title.substring(0,18) + "...";
+				   reVideo[i*3] = data.items[i].snippet.title; 
 				   reVideo[i*3+1] = data.items[i].snippet.channelId; 
 				   reVideo[i*3+2] = data.items[i].id.videoId;
 				   $("#ul_recent").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='javascript:clickVideo(2, "+i+","+ccode+")'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
 			}
 		});
+		$.get("youtubeApiFreqCh", {"ccode" : ccode}, function(data, state){
+			var chname = data.items[0].snippet.channelTitle;
+			
+			$("#ul_freqCh").append("<li><h3>자주 본 ["+ chname +"] 채널의 다른 영상</h3></li>");
+			for(var i = 0; i < data.items.length; i++){
+			   var title = data.items[i].snippet.title;
+			   if(title.length > 20) title = title.substring(0,20) + "...";
+			   chVideo[i*3] = data.items[i].snippet.title; 
+			   chVideo[i*3+1] = data.items[i].snippet.channelId; 
+			   chVideo[i*3+2] = data.items[i].id.videoId;
+			   $("#ul_freqCh").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='javascript:clickVideo(4, "+i+","+ccode+")'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
+			   //$("#ul_base").append("<li style='display:inline-block; margin-top:10px; margin-bottom:10px'><ul><a href='http://www.youtube.com/watch?v="+data.items[i].id.videoId+"'target='_blank'><li><img src='http://i.ytimg.com/vi/" + data.items[i].id.videoId + "/mqdefault.jpg'/></li><li>"+title+"</li></a></ul></li>");
+			}
+		});
 		var i, tabcontent, tablinks;    
 		tabcontent = document.getElementsByClassName("tabcontent");
-	    $(".tabcontent").show();	    
+	    $(".tabcontent").show();	
 	}
 	
 	function clickVideo(num, i,ccode){
@@ -172,6 +194,13 @@ var seVideo = new Array();
 			keyword = seVideo[i*4+3];
 			//alert(keyword);
 		}
+		if(num == 4){
+			vname = chVideo[i*3]; 
+			vchannel = chVideo[i*3+1];
+			vid = chVideo[i*3+2];
+			keyword = null;
+			//alert(vname);
+		}
 		$.post("insertVideo", {ccode:ccode, vname : vname, vchannel : vchannel, vid : vid, vkeyword:keyword }).done(function(data, state){
 			console.log("success");
 			
@@ -191,13 +220,15 @@ var seVideo = new Array();
 		</div>
 		<div class="tabcontent">
 			<div id="search_box">
-<!-- 	    		<input id="query" value="강아지" type="text" name="search2"/> -->
+<!-- 	    		<input id="query" type="text"/> -->
 <!-- 				<button onclick="search()"><i class="fa fa-search"></i></button> -->
 			</div>
 	        <div>
 		        <ul id="ul_search" class="cont">
 		        </ul>
 		        <ul id="ul_recent" class="cont">
+		        </ul>
+		        <ul id="ul_freqCh" class="cont">
 		        </ul>
 		        <ul id="ul_base" class="cont">
 		        </ul>

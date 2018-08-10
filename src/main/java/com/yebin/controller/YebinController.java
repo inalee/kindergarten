@@ -59,4 +59,10 @@ public class YebinController {
 		
 		return "/t_fieldtripHelper";
 	}
+	
+	@RequestMapping(value = "/fieldtrip_facil", method = RequestMethod.GET)
+	public String fieldtrip_facil() {
+		
+		return "/tmenu3";
+	}
 }

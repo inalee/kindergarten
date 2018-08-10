@@ -248,17 +248,25 @@ public class CommonController {
 	public String tLoginWithKakao(HttpServletRequest request, Model model) throws Exception {
 		HttpSession hs = request.getSession();
 		MemberVO vo = new MemberVO();
+		
+		//카카오에서 받아온 고유 ID가 선생님으로 로그인을 요청했음을 설정
 		vo.setMemid((String)hs.getAttribute("id"));
 		vo.setMemsort(1);
+		
+		//고유 ID가 DB에 존재하면서 선생님으로 등록되었을 경우 로그인 성공
 		if(dao.nLogin(vo) != null){
 			vo.setMemname(dao.nLogin(vo).getMemname());
 			vo.setMemaddress(dao.nLogin(vo).getMemaddress());
 			model.addAttribute("memberVO",vo);
 			hs.setAttribute("exist",false);
 			return "tmain";
+			
+		//고유 ID는 존재하지만 보호자로 등록되어있을 경우 보호자 로그인 요청
 		}else if (dao.checkMemId((String)hs.getAttribute("id")) == 1) {
 			hs.setAttribute("exist",true);
 			return "tlogin";
+			
+		//카카오에서 받아온 고유 ID가 DB에 존재하지 않을 경우 회원가입 화면으로 이동
 		}else {
 			hs.setAttribute("exist",false);
 			return "tJoinWithKakao";			
@@ -271,6 +279,7 @@ public class CommonController {
 			@RequestParam String id, @RequestParam String nickname, @RequestParam String kakaoID, 
 			@RequestParam String token, @RequestParam String thumImg ){
 		
+		// 카카오에서 받아온 정보를 바탕으로 프로그램 이용을 위한 추가 정보를 등록하게 함
 		session.setAttribute("id", id);
 		session.setAttribute("kakaoID", kakaoID);
 		session.setAttribute("thumImg", thumImg);

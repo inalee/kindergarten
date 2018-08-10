@@ -129,7 +129,7 @@ function selectKinders() {
 function detailkinder(kincode){
 	
 	var popUrl = "http://info.childcare.go.kr/info/pnis/search/preview/SummaryInfoSlPu.jsp?flag=YJ&STCODE_POP="+kincode;	//팝업창에 출력될 페이지 URL
-	var popOption = "width=600, height=700 top=50 left=300";    //팝업창 옵션(optoin)
+	var popOption = "width=810, height=940 top=50 left=300";    //팝업창 옵션(optoin)
 	window.open(popUrl,"",popOption);	
 
 }

@@ -6,10 +6,17 @@
 <html>
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <style>
+/* @font-face { */
+/*   font-family: 'Youth'; */
+/*   font-style: normal; */
+/*   font-weight: 400; */
+/*   src: url('//cdn.jsdelivr.net/korean-webfonts/1/orgs/othrs/kywa/Youth/Youth.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/orgs/othrs/kywa/Youth/Youth.woff') format('woff'); */
+/* } */
+
 body, html {
     height: 100%;
     margin: 0;
-        font-family: 'Jeju Gothic', sans-serif;	
+/*     font-family: 'Youth', sans-serif; */
 }
 
 

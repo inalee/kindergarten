@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -17,12 +17,18 @@
 <link href="${radio}" rel="stylesheet" type="text/css"/>
 <link href="${loading}" rel="stylesheet" type="text/css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5f223662ebf0e3a3b6c8816122c75d43&libraries=services,clusterer,drawing"></script>
 
 <style>
 body{
   margin-top: 0px;
   font-family: 'Jeju Gothic', serif;
-  line-height: 1.6
+  line-height: 1.6;
+  text-align: center;
+}
+
+h4{
+  font-family: 'Jeju Gothic', serif;
 }
 
 .w3-container{
@@ -54,7 +60,7 @@ margin-top: 30px;
     background-color: #2196f3; /* blue */
     border: none;
     color: white;
-    padding: 3px 5px;
+    padding: 2px 5px;
     border-radius : 5px;
     text-align: center;
     text-decoration: none;
@@ -95,12 +101,47 @@ margin-top: 30px;
 	
 }
 
+.answerNo{background-color: #2196f3; border: none; color: white; padding: 5px 12px; border-radius : 10px;text-align: center;font-size: 15px;}
+.answerYes{background-color: #2196f3; border: none; color: white; padding: 5px 12px; border-radius : 10px;text-align: center;font-size: 15px;}
 
+.btInfoOpen{
+	border: none;
+	width: 100%;
+	background-color: #f9f9f9;
+}
+
+.desti{
+ margin: auto;
+ margin-top: 10px;
+/*  width: %; */
+ height:100px;
+ padding: 10px;
+ color: gray;
+ border-color: #ffeb3b;
+ border: 3px solid;
+}
+
+.desti td{
+ border: 10px;
+ font-size: 100%;
+ width:200px;
+}
+
+.destiImg{
+	height: 100px;
+
+}
 
 </style>
 </head>
 
 <body>
+<script>
+$(function(){
+	$("#id0").trigger('click');
+		})
+		
+</script>
 
 <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px">
   <h3 class="w3-bar-item" style="font-weight: bold;">[Step]</h3>
@@ -192,6 +233,8 @@ $(function() {
 	})
 })
 </script>	
+
+
  
   
 <!-- 2. 지역/날짜/인원 선택 -->
@@ -264,17 +307,22 @@ $(function() {
   			type: 'POST',
   			dataType: 'json',
   			success: function(data) {
+  				$("#class").empty()
+  				$("#class").append("<option>"+"---반선택---"+"</option>")
   				$.each(data, function(index, item) {
   					if(item.clname == null){
   						alert('아직 선생님 담당 학급이 없습니다.')
   					}else{
   						$("#class").append("<option>"+item.clname+"</option>")
-  	  					$("#person").append("<option>"+"--반선택--"+"</option>")
+  	  					$("#person").append("<option>"+"--반선택 시 자동 입력--"+"</option>")
   						$("#class").change(function() {
   	  						if(item.clname == $('#class').val()){
 								$("#person").empty();
   	  							$("#person").append("<option>"+item.numOfkids+"</option>")
-  	  		  					}
+  	  		  				}else if($('#class').val() == "---반선택---"){
+  	  		  					$("#person").empty();
+  	  		  					$("#person").append("<option>"+"--반선택 시 자동 입력--"+"</option>")	
+  	  		  				}
   						})
   					}
   					
@@ -282,8 +330,6 @@ $(function() {
 				})	
 			}
   		})
-  		
-  		
   	})
   })
 
@@ -304,8 +350,7 @@ $(function() {
   				}		
   			}
   		})
-  })
-  
+  	 })
   })
   </script>
 
@@ -326,6 +371,8 @@ $(function() {
 	
 	<script>
 	// 3. 체험학습 검색 - 조건에 맞춰 검색데이터 불러오는 ajax
+	
+	var state = true;
 	$(function() {
 		$("#searchbt").on('click', function(event) {
 		
@@ -333,66 +380,130 @@ $(function() {
 			posts.splice(0,posts.length);
 			tableTags.splice(0,tableTags.length);
 			
-		
-	
-			$(function(){
-				openStep(event, 'step3', 'id3');
-				$('#id3').attr('disabled', false);
-  				})
-			
-			
-			$(".square").remove();
-			$("#uldata").empty();
-			$("#noSearchedData").empty();
-			$("#step3").append("<ul id='noSearchedData'></ul><div class='square'><div class='spin'></div><p>Loading..</p></div>")
-			$.ajax({
-				url: '/kinder/getSearchResult',
-				type: 'get',
-				data: {
-					term : $('input[type=radio][name=selector]:checked').val(),
-					zone : $('#zone').val() == "---지역---" ? "전국" : $('#zone').val(),
-					city : $('#city').val() == "---도시---" ? "전체" : $('#city').val(),
-					date : $('#month').val(),
-					person : ($('#person').val() == "--반선택--" || $('#person').val() == "") ? "0" : $('#person').val()
-				},
-				dataType: 'json',
-				success: function(data) {
-						
-					if(!data || data =="" || data == null ||data ==" " || data =="[]"){
-						$(".square").remove();
-						$("#uldata").empty();
-						$("#noSearchedData").empty();
-						$("#noSearchedData").append("<p class='headline' id='searchagain' style='margin: 0 auto;'> 조건에 맞는 장소가 없습니다.. ㅠ.ㅠ </p>")
-						$("#noSearchedData").append("<button type='button' class='btNext' data-num=2 id='seachagain'>조건 다시설정하기</button>")
-						$('#seachagain').on('click', function(event) {
-							openStep(event, 'step2', 'id2');
-						})
-					}else{
-						$(".square").remove();
-						$("#noSearchedData").empty();
-						$("#uldata").empty();
-						
-						for(var i=0; i < data.length; i++){
-							$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 600px; float: left; padding: 0.5%; border-radius: 4px'>"
-							+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
-							+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
-							+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+", "+i+")'>"
-							+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
-							+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
-							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
-// 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
-							+ "</table>")
-							$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
+			if($('#city').val() == "---도시---" && !($('#zone').val() == "---지역---")){
+				var cfmtext = confirm("지역 전체를 검색할 경우 속도가 느려질 수 있습니다.")
+				if(cfmtext == true){
+// 					alert(cfmtext)
+					$(function(){
+					openStep(event, 'step3', 'id3');
+					$('#id3').attr('disabled', false);
+					$(".square").remove();
+					$("#uldata").empty();
+					$("#noSearchedData").empty();
+					$("#step3").append("<ul id='noSearchedData'></ul><div class='square'><div class='spin'></div><p>Loading..</p></div>")
+					$.ajax({
+						url: '/kinder/getSearchResult',
+						type: 'get',
+						data: {
+							term : $('input[type=radio][name=selector]:checked').val(),
+							zone : $('#zone').val() == "---지역---" ? "전국" : $('#zone').val(),
+							city : $('#city').val() == "---도시---" ? "전체" : $('#city').val(),
+							date : $('#month').val(),
+							person : ($('#person').val() == "--반선택 시 자동 입력--" || $('#person').val() == "") ? "0" : $('#person').val()
+						},
+						dataType: 'json',
+						success: function(data) {
+								
+							if(!data || data =="" || data == null ||data ==" " || data =="[]"){
+								$(".square").remove();
+								$("#uldata").empty();
+								$("#noSearchedData").empty();
+								$("#noSearchedData").append("<p class='headline' id='searchagain' style='margin: 0 auto;'> 조건에 맞는 장소가 없습니다.. ㅠ.ㅠ </p>")
+								$("#noSearchedData").append("<button type='button' class='btNext' data-num=2 id='seachagain'>조건 다시설정하기</button>")
+								$('#seachagain').on('click', function(event) {
+									openStep(event, 'step2', 'id2');
+								})
+							}else{
+								$(".square").remove();
+								$("#noSearchedData").empty();
+								$("#uldata").empty();
+								
+								for(var i=0; i < data.length; i++){
+									$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 600px; float: left; padding: 0.5%; border-radius: 4px'>"
+									+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
+									+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
+									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
+									+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+", "+i+")'>"
+									+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
+									+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
+									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
+									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+//		 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
+									+ "</table>")
+									$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
 
-						}
-						
-					}
+										}
+									}
+								}
+						})	
+  					})
+				}else{
+// 					alert(cfmtext)	
 				}
-		})	
-		
+			}else{
+				
+				$(function(){
+					openStep(event, 'step3', 'id3');
+					$('#id3').attr('disabled', false);
+				})
+				
+				$(".square").remove();
+				$("#uldata").empty();
+				$("#noSearchedData").empty();
+				$("#step3").append("<ul id='noSearchedData'></ul><div class='square'><div class='spin'></div><p>Loading..</p></div>")
+				$.ajax({
+					url: '/kinder/getSearchResult',
+					type: 'get',
+					data: {
+						term : $('input[type=radio][name=selector]:checked').val(),
+						zone : $('#zone').val() == "---지역---" ? "전국" : $('#zone').val(),
+						city : $('#city').val() == "---도시---" ? "전체" : $('#city').val(),
+						date : $('#month').val(),
+						person : ($('#person').val() == "--반선택 시 자동 입력--" || $('#person').val() == "") ? "0" : $('#person').val()
+					},
+					dataType: 'json',
+					success: function(data) {
+							
+						if(!data || data =="" || data == null ||data ==" " || data =="[]"){
+							$(".square").remove();
+							$("#uldata").empty();
+							$("#noSearchedData").empty();
+							$("#noSearchedData").append("<p class='headline' id='searchagain' style='margin: 0 auto;'> 조건에 맞는 장소가 없습니다.. ㅠ.ㅠ </p>")
+							$("#noSearchedData").append("<button type='button' class='btNext' data-num=2 id='seachagain'>조건 다시설정하기</button>")
+							$('#seachagain').on('click', function(event) {
+								openStep(event, 'step2', 'id2');
+							})
+						}else{
+							$(".square").remove();
+							$("#noSearchedData").empty();
+							$("#uldata").empty();
+							
+							for(var i=0; i < data.length; i++){
+								$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 600px; float: left; padding: 0.5%; border-radius: 4px'>"
+								+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
+								+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
+								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
+								+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+", "+i+")'>"
+								+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
+								+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
+								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
+								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+//	 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
+								+ "</table>")
+								$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
+
+							}
+							
+						}
+					}
+			})	
+			
+			}
+			
+	
+
 		})		
 	})	
 	
@@ -456,25 +567,36 @@ $(function() {
   
   <script>
   // 4. 체험학습 후보지 저장
-  $('#selection').on('click', function() {
+  $('#selection').on('click', function(event) {
+	  
+	  $(function(){
+			openStep(event, 'step4', 'id4');
+			$('#id4').attr('disabled', false);
+	  })
+	  
 	  $("#selectedPg").empty();
 	  $("#selectedTable").empty();
-	  $("#selectedPg").append("<table id='selectedTable' frame='void' border='1' width= 40% border-style='solid' border-width='3px'"
+	  $("#selectedPg").append("<table id='selectedTable' frame='void' width= 60% border-style='solid' border-width='3px'"
 			  + "style='margin: 0 auto; text-align: left; vertical-align: middle;'></table>")
-			  
-// 	setTimeout(function() {
-		  $("#selectedPg").append("<p style='font-size: 30px;'>선택하신 후보지가 맞나요? <br/> [저장 후 검색]을 눌러 세부 검색을 진행합니다."+"</p>")
-	      $("#selectedPg").append("<p style='font-size: 20px; color: blue;'>저장 된 후보지는 다음 체험학습지 선정 시 유용히 활용됩니다."+"</p>")
-	 	  $("#selectedTable").append("<tr><td style='text-align: center; background-color: #ffeb3b; font-size: 25px'>관심있게 본 프로그램 목록[총 "+posts.length+"개]</td></tr>")
+	  $("#selectedPg").append("<p style='font-size: 30px;'>선택하신 후보지가 맞나요? <br/> [저장 후 검색]을 눌러 블로그 검색을 진행합니다."+"</p>")
+	  $("#selectedPg").append("<p style='font-size: 20px; color: blue;'>저장 된 후보지는 다음 체험학습지 선정 시 유용히 활용됩니다."+"</p>")
+	  $("#selectedTable").append("<tr><td style='text-align: center; background-color: #ffeb3b; font-size: 25px'>관심있게 본 프로그램 목록[총 "+posts.length+"개]</td></tr>")
+	   $("#selectedTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
 	  for(var i in posts){
 		    $("#selectedTable").append("<tr></br><td class= 'keywordAll' id='keyword"+i+"' style='font-size: 18px;'>"+posts[i]+"</td></tr>")
-	  }	 
-// 		 }, 1000);
-})
+	  }	
+	  $("#selectedTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
+	  })
 
+	  
 	// 4. 체험학습 후보지 저장 - 키워드 controller로 전송
 	$(function() {
-		$("#saveList").on('click', function() {	
+		$("#saveList").on('click', function(event) {	
+			
+			$(function(){
+				openStep(event, 'step5', 'id5');
+				$('#id5').attr('disabled', false);
+		  })
 			
 			jQuery.ajaxSettings.traditional = true;
 			$.ajax({
@@ -485,64 +607,169 @@ $(function() {
 					jsondata : tableTags
 				},
 				success: function(data) {
-					alert(data);
-				}
+					alert("저장이 완료되었습니다.");
+				},
 			})
 		})
 	})
-
-  
-//   // 4. 체험학습 후보지 저장
-//   $('#selection').on('click', function() {
-// 	  $("#selectedPg").empty();
-// 	  $("#selectedPg").append("<table id='selectedTable' frame='void' width= 40% border-style='solid' border-width='3px'"
-// 			  + "style='margin: 0 auto; text-align:left; vertical-align: middle;'></table>")
-			  
-// 	setTimeout(function() {
-// // 	  $("#selectedPg").append("<p style='font-size: 30px; color: blue;'>[여기어때?] 버튼을 누르시면 인터넷에서 정보를 더 검색합니다."+"</p>")
-// 	  $("#selectedPg").append("<p style='font-size: 30px;'>선생님께서 선택하신 후보지가 맞나요? <br/> 확인 후 [다음]을 눌러 세부 검색을 진행합니다."+"</p>")
-// 		  $("#selectedTable").append("<tr><td colspan=2, style='text-align: center; background-color: #ffeb3b; font-size: 25px'>관심있게 본 프로그램 목록[총 "+posts.length+"개]</td></tr>")
-// 	  for(var i in posts){
-// 		    $("#selectedTable").append("<tr></br><td id='keyword"+i+"' style='font-size: 15px;'>"+posts[i] 
-// 		    +"</td><td style ='text-align:right;'><button class='btForselection' id='btForselection"+i+"' onclick='searchAbtIt(btForselection"+i+", keyword"+i+")'>여기어때?</button></td></tr>")
-// 	  }	 
-// 		 }, 1000);
-// // 	$("#selectedTable").append(tableTags);
-// // +(Number(i)+1)+"." keyword에 들어갔던 번호
-	
-// })
-
-// function searchAbtIt(buttonId, keywordId) {
-// 	var btid = buttonId;
-// 	var keyid = keywordId;
-// // 	alert($(btid).attr('id'));
-// // 	alert($(keyid).text());
-	
-// 	$.ajax({
-// 		url: '/kinder/getSearch',
-// 		type: 'get',
-// 		dataType: 'json',
-// 		data: {
-// 			keyword : $(keyid).text()
-// 		},
-// 		success: function(data){
-// 			document.write(data.items[0].title);
-// 			document.write(data.items[0].link);
-// 		}
-	
-// 	})
-// }
-
   </script>
   
   
   
   <div id="step5" class="w3-container step">
-    <button type="button" class="btNext" data-num=5>다음</button>
+    <p class="headline">Q.[여기어때] 버튼을 누르면 블로그 후기를 확인할 수 있습니다.<br> 블로그 후기를 충분히 확인하고, 동그라미 버튼을 눌러 최종 선택 해주세요.</p>
+ 	 <hr style="border: 2px solid lightgray;"/>
+ 	  <ul id="detailSearch" style="margin-left: 0%; padding-bottom: 3%">
+  	</ul>
+<!--   	<ul id="detailResult" style="margin-left: 0%; padding-bottom: 3%"> -->
+<!--   	</ul> -->
+ 	 <button type="button" class="btNext" data-num=5 id="test">다음</button>
   </div>
+  <script>
+// 5. 체험학습 후보지 검색 진행
+$('#selection').on('click', function() {
+	  $("#detailSearch").empty();
+	  $("#detailTable").empty();
+	  $("#detailSearch").append("<table id='detailTable' frame='void' width= 60% border-style='solid' border-width='3px'"
+			  + "style='margin: 0 auto; text-align: left; vertical-align: middle;'></table>")
+	  $("#detailTable").append("<tr><td colspan='2' style='text-align: center; background-color: #ffeb3b; font-size: 25px'>관심있게 본 프로그램 목록[총 "+posts.length+"개]</td></tr>")
+	  $("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
+	  
+	  for(var i in posts){
+		  	
+		    $("#detailTable").append("<tr id='tr"+i+"'></br><td class= 'keywordAll' id='keyword"+i+"' style='font-size: 18px;'><input type='radio' style='vertical-align: middle; width:40px;height:30px;border:1px;' name='radioPs' name='radioPs' value='"+posts[i]+"'>&nbsp;"+posts[i]
+		    +"</td><td style ='text-align:right;'><button class='btForselection' id='btForselection"+i+"' onclick='searchAbtIt(btForselection"+i+", keyword"+i+", tr"+i+", "+i+")'>여기어때?</button></td></tr>")
+			$("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
+	  }
+// 	  $("#detailTable").append("<tr><td colspan = '2'><hr style='border: 2px solid lightgray;'/></td><tr>");
+})
+
+
+
+
+// 키워드로 검색 진행
+function searchAbtIt(buttonId, keywordId, trId, num) {
+	var btid = buttonId;
+	var keyid = keywordId;
+	
+	
+	
+// 	alert($(btid).attr('id'));
+// 	alert($(keyid).text());
+	
+	$.ajax({
+		url: '/kinder/getSearch',
+		type: 'get',
+		dataType: 'json',
+		data: {
+			keyword : $(keyid).text()
+		},
+		success: function(data){
+			
+				for(var i = 0; i < data.items.length; i++){
+					var url = data.items[i].link;
+					$(trId).after("<tr class = 'trchild'><td colspan='2'><br><button style=' background-color: #f1f1f1; border:0; outline:0; width: 100%; text-align: left;' onclick='blogOpen((\""+url+"\"))'>[블로그] "+data.items[i].title+"</button><p style='font-size: 10px;'>"+data.items[i].description+"</p></td></tr>");
+// 				$(trId).after("<tr class = 'trchild'><td><a style='color : blue;' href='"+data.items[i].link+"'>"+data.items[i].title+"</a></td></tr>");
+			}
+				
+		}
+	
+	})
+}
+
+//팝업으로 블로그 확인하기
+function blogOpen(url){
+
+	var popUrl = url;	//팝업창에 출력될 페이지 URL
+
+	var popOption = "width=900, height="+ screen.height;    //팝업창 옵션(optoin)
+
+	window.open(popUrl,"",popOption);
+
+}
+
+
+// 다음페이지 이동
+$(function() {
+	$("#test").on('click', function(event) {	
+		
+		var radiVal = $("input:radio[name=radioPs]:checked").val();
+		console.log(radiVal);
+		if( typeof radiVal !== "undefined" ){
+		var cfmtext = confirm( radiVal+"을(를) 최종 체험학습지로 선정합니다.")
+			if(cfmtext == true){
+				
+				$.ajax({
+					url:"/kinder/postSaveFinalChoice",
+					type:"post",
+					data:{
+						ftChoice : radiVal
+					},
+					success: function() {
+						console.log(" DB 저장 완료")
+					}
+				})
+				
+				$(function(){
+					openStep(event, 'step6', 'id6');
+					$('#id6').attr('disabled', false);
+				  })
+			}else{ return false;}
+		}else{alert("동그라미 버튼을 눌러 최종 학습지를 선정 해주세요!")}
+	})
+})
+
+  </script>
+  
   <div id="step6" class="w3-container step">
+  <p class="headline">Q.이 단계만 거치면 코스 선정이 모두 완료됩니다!<br>관광지 목록이나 지도의 Marker를 눌러 관광지를 선택하세요.</p>
+ 	 <hr style="border: 2px solid lightgray;"/>
   <button type="button" class="btNext" data-num=6>다음</button>
+  
+
+  <iframe id='fieldtripHelper' src='/test.jsp' frameborder=0  style='margin-left:4%; width: 100%;  height: 100vh;'></iframe>"
+  
   </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <div id="step7" class="w3-container step">
   <button type="button" class="btNext" data-num=7>다음</button>
   </div>

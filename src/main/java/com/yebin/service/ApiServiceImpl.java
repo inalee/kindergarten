@@ -45,42 +45,49 @@ public class ApiServiceImpl implements ApiService {
 				urlBuilder.append("&" + URLEncoder.encode("term","UTF-8") + "=" + URLEncoder.encode(term, "UTF-8"));
 				urlBuilder.append("&" + URLEncoder.encode("zone","UTF-8") + "=" + URLEncoder.encode(zone, "UTF-8"));
 				urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(map.get(key).toString(), "UTF-8"));
-				urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));
+//				urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));
 			
 				// url 읽어오기
 				try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL(urlBuilder.toString()).openStream(), "utf-8"))) {
 					// html을 String으로 parsing
 					while ((line = br.readLine()) != null) {
 						
-						if(!line.equals("[]")) {
+						if(!line.equals("[]") &&  line != null) {
 							System.out.println(line);
 							System.out.println(line.length() +" "+ line.lastIndexOf("]"));
 							if(line.length() == line.lastIndexOf("]")+1) {
 								line = line.substring(1, line.lastIndexOf("]"));
 								sb.append(line + ",");							
 							}
+							
 						}
 					}
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("Get_Page 예외 : " + e.getMessage());
 				}	
 
+				
 			}
 			
-			String string = "[" + sb.substring(0, sb.lastIndexOf(",")) +"]";
-			System.out.println(string);
-			sb.setLength(0);
-			sb.append(string);
-			System.out.println("전체 조회 : "+sb.toString());
-			
-			return sb;
-			
+			if(sb.length() > 0) {
+				String string = "[" + sb.substring(0, sb.lastIndexOf(",")) +"]";
+				System.out.println(string);
+				sb.setLength(0);
+				sb.append(string);
+				System.out.println("전체 조회 : "+sb.toString());				
+				return sb;
+			}else {
+				sb.append("[]");
+				return sb;
+			}
+
 		}else {
 			// 창의 프로그램 api 주소 : "https://www.crezone.net/api/program/list.php";
 			StringBuilder urlBuilder = new StringBuilder("https://www.crezone.net/api/program/list.php?count=100&post_modified:desc"); /*URL*/
 			urlBuilder.append("&" + URLEncoder.encode("term","UTF-8") + "=" + URLEncoder.encode(term, "UTF-8"));
-			urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));
+//			urlBuilder.append("&" + URLEncoder.encode("do_date_start","UTF-8") + "=" + URLEncoder.encode(date, "UTF-8"));
 			if(!zone.equals("전국")) {
 				urlBuilder.append("&" + URLEncoder.encode("zone","UTF-8") + "=" + URLEncoder.encode(zone, "UTF-8"));	
 				urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(city, "UTF-8"));			

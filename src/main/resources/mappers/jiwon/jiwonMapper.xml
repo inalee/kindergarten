@@ -34,4 +34,28 @@
 	<select id="getChildInfo" resultType="ChildrenDTO">
 		select k.kinname, cl.clname, ch.cname, ch.ccode from kindergarten k, class cl, children ch where ch.ccode=#{ccode} and k.kincode=cl.kincode and cl.clcode=ch.clcode
 	</select>
+<!--  영상을 클릭하면 영상 정보 저장 -->
+  <insert id="insertVideoInfo">
+  	insert into videoinfo(ccode, vname, vchannel, vid, vkeyword) values(#{ccode},#{vname},#{vchannel},#{vid}, #{vkeyword})
+  </insert>
+<!-- 	해당 아이가 가장 최근에 본 영상의 정보를 select -->
+<select id="getRecentVInfo" resultType="VideoVO">
+	select * from videoinfo where ccode=#{ccode} order by vdate desc limit 1;
+</select>
+<!-- 	해당 아이가  최근 일주일동안에 가장 자주 본 채널의 정보를 select -->
+<select id="getFreqChInfo" resultType="VideoVO">
+	select vchannel, count(*) as c from videoinfo where ccode=#{ccode} and vdate > date_add(now(), interval -7 day) group by vchannel order by c desc, vdate desc limit 1;  
+</select>
+<!-- 	최근 하루동안 가장 많이 클릭된 영상 정보 select -->
+<select id="getPopVInfo" resultType="VideoVO">
+	select vid, vname, vchannel from (select vid, vname, vchannel, count(*) from videoinfo where vdate > date_add(now(), interval -1 day) group by vid order by count(*) desc, vdate desc limit 4) a;  
+</select>
+<!-- 	검색 키워드 출력 -->
+<select id="getKeyword" resultType="String">
+	select vkeyword, count(vkeyword) as c from videoinfo where vkeyword!="" and ccode=#{ccode} group by vkeyword order by c desc, vdate desc limit 1;
+</select>
+<!-- 	관심사 select  -->
+<select id="getInterest" resultType="String">
+	select cinterest from children where ccode=#{ccode}; 
+</select>
   </mapper>

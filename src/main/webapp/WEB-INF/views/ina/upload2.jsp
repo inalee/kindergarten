@@ -9,7 +9,32 @@
 <link href="http://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+$(function () {
+	$("#upload_file2 button").click(function(){
 
+		event.preventDefault();
+		var frm = $("#upload_file2")[0];
+		var data = new FormData(frm);
+		
+		  $.ajax({
+	            type: "POST",
+	            enctype: 'multipart/form-data',
+	            url: "upload2",
+	            data: data,
+	            processData: false,
+	            contentType: false,
+	            cache: false,
+	            timeout: 600000,
+	            success: function(data){
+		                alert("자료 제출이 완료되었습니다.");		     
+		                window.close();
+		                opener.location.reload();
+	            }
+	           
+	        });
+	});
+	
+});
 
 </script>
 <style type="text/css">
@@ -70,13 +95,11 @@ font-size: 13px;
 </style>
 
 <body>
-
+<form id="upload_file2" enctype="multipart/form-data" method="POST" action="upload2">
 <div id="headline">
 <h4>입소신청관련 자료제출</h4>
 </div>
 <div id="upload">
-
-<form id="upload_file2" enctype="multipart/form-data" method="POST" action="upload2">
 <input name="file" type="file" style="background-color: white; ">
 <input type="hidden" value="${param.re_encode}" name="re_encode">
 <p style="font-size: 12px;">※ 최대 50MB까지 파일을 올리실 수 있습니다. </p>
@@ -88,7 +111,7 @@ font-size: 13px;
 <p>2. 제출기한을 넘겨 제출된 자료는 무효합니다.</p>
 <br><br>
 <center>
-<button type="submit" class='button' >제출하기</button>
+<button type="button" class='button' >제출하기</button>
 </center>
 </form>
 </div>

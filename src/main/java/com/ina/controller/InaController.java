@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,6 +105,20 @@ public class InaController {
 	public String gmenu8() {
 		
 		return "/gmenu8";
+	}
+	
+	@RequestMapping(value = "/testpage", method = RequestMethod.GET)
+	public String testpage() {
+		
+		return "/testpage";
+	}
+	
+	
+	
+	@RequestMapping(value = "/safety_gmenu", method = RequestMethod.GET)
+	public String safety_gmenu() {
+		
+		return "/safety_gmenu";
 	}
 	
 	@RequestMapping(value = "/regular", method = RequestMethod.GET)
@@ -286,7 +303,8 @@ public class InaController {
 	
 
 		String filePath = "C:\\dev\\file\\";
-	
+
+		
 		    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
 	        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 	         
@@ -299,6 +317,7 @@ public class InaController {
 	        File file = new File(filePath);
 	        if(file.exists() == false){
 	            file.mkdirs();
+	            System.out.println("없음");
 	        }
 	         
 	        while(iterator.hasNext()){
@@ -343,7 +362,9 @@ public class InaController {
 		String originNmae = ev.getEnorigin();
 
 		 byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\dev\\file\\"+storedFileName));
-
+		 	
+		   
+		 
 		    response.setContentType("application/octet-stream");
 		    response.setContentLength(fileByte.length);
 	
@@ -353,7 +374,6 @@ public class InaController {
 		    	
 		    response.getOutputStream().flush();
 		    response.getOutputStream().close();
-
 
 	}
 	
@@ -720,4 +740,126 @@ public class InaController {
 		
 		return "regular";
 	}
-}
+	
+	
+	@RequestMapping(value="crawling_list",method=RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> crawling_list(Model model,HttpServletRequest request) {
+		Elements emts = null;
+		Elements emts2 = null;
+		
+		String kincode2 = request.getParameter("kincode2");
+		HashMap<String, String> contains = new HashMap<>();
+		String url = "http://info.childcare.go.kr/info/pnis/search/preview/SafetyEducationCheckSlPu.jsp?flag=AE&STCODE_POP="+kincode2;
+		String name = null;
+		System.out.println(url);
+		
+		String src = null;
+		String src2 = null;
+		
+		try {
+			// img 태그들을 emts
+			emts = Jsoup.connect(url).get().select("table th");
+
+			
+			for (Element e : emts) {
+				// 경로에서 파일이름만 추출
+				src = e.text();
+//
+//					System.out.println(src);
+					if(src.equals("이수 인원")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);
+				
+					}
+					else if(src.equals("소방대피 훈련 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);
+					}
+					else if(src.equals("훈련일자")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);
+					}
+					else if(src.equals("가스점검 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						contains.put("가스점검일",e.nextElementSibling().nextElementSibling().nextElementSibling().text());
+					}
+					else if(src.equals("소방안전 점검 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						contains.put("소방안전 점검일",e.nextElementSibling().nextElementSibling().nextElementSibling().text());
+					}
+					else if(src.equals("전기설비 점검 여부")) {
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						contains.put("전기설비 점검일",e.nextElementSibling().nextElementSibling().nextElementSibling().text());
+					}
+					else if(src.equals("점검여부")) { //전기안전점검관리
+						name = e.nextElementSibling().text();
+						contains.put(src, name);	
+						Element e2 = e.nextElementSibling().nextElementSibling().nextElementSibling();
+						contains.put("전기안전점검관리점검일자",e2.text());
+						contains.put("점검결과",e2.nextElementSibling().nextElementSibling().text());
+					}	
+
+			}
+			
+
+			
+			emts2 = Jsoup.connect(url).get().select("table td");
+			
+			for (Element e2 : emts2) {
+				src2 = e2.text();
+				
+				if(src2.equals("어린이집 안전공제회")) {
+					contains.put("공제회가입현황", e2.nextElementSibling().nextElementSibling().text());	
+				}
+				else if(src2.equals("영유아 생명·신체보상(의무가입)")) {
+					contains.put("영유아 생명·신체보상(의무가입) 해당여부", e2.nextElementSibling().text());
+					contains.put("영유아 생명·신체보상(의무가입)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("영유아 생명·신체보상(의무가입) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("화재(의무가입)")) {
+					contains.put("화재(의무가입) 해당여부", e2.nextElementSibling().text());
+					contains.put("화재(의무가입)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("화재(의무가입) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("보육교직원 생명·신체")) {
+					contains.put("보육교직원 생명·신체 해당여부", e2.nextElementSibling().text());
+					contains.put("보육교직원 생명·신체", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("보육교직원 생명·신체 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("가스배상 책임(집단급식소 운영)")) {
+					contains.put("가스배상 책임(집단급식소 운영) 해당여부", e2.nextElementSibling().text());
+					contains.put("가스배상 책임(집단급식소 운영)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("가스배상 책임(집단급식소 운영) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("놀이시설 안전(옥외놀이터 설치)")) {
+					contains.put("놀이시설 안전(옥외놀이터 설치) 해당여부", e2.nextElementSibling().text());
+					contains.put("놀이시설 안전(옥외놀이터 설치)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("놀이시설 안전(옥외놀이터 설치) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("통학버스 책임(차량운행시설)")) {
+					contains.put("통학버스 책임(차량운행시설) 해당여부", e2.nextElementSibling().text());
+					contains.put("통학버스 책임(차량운행시설)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("통학버스 책임(차량운행시설) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+				else if(src2.equals("통학버스 종합(차량운행시설)")) {
+					contains.put("통학버스 종합(차량운행시설) 해당여부", e2.nextElementSibling().text());
+					contains.put("통학버스 종합(차량운행시설)", e2.nextElementSibling().nextElementSibling().text());
+					contains.put("통학버스 종합(차량운행시설) 업체명", e2.nextElementSibling().nextElementSibling().nextElementSibling().text());
+				}
+			}
+
+		} catch (Exception e) {
+
+		}
+
+			
+			return contains;
+	}
+	
+	
+	
+	}
+

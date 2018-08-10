@@ -78,27 +78,28 @@ function showDetail(){
 <c:url var="img_lv" value="resources/images/leave.png"></c:url>
 <c:url var="img_as" value="resources/images/absent.png"></c:url>
 
-<h1>출석 정보</h1>
+<h1 style="text-align: center;">출석 확인</h1>
 <ul>
+<!--  커밋해야함   -->
 	<li class="column" style="vertical-align: top;">
 		<ul id="chlist">
 			<c:forEach items="${children}" var="i">
 				<li>
-					<c:if test="${i.kincode eq 0}">
+					<c:if test="${i.kincode eq 0 }">
 						<a href="javascript:undefinedKin(${i.ccode})" id="ch_${i.ccode}">${i.cname}</a>
 					</c:if>
-					<c:if test="${i.clcode eq 1}">
-						<a href="javascript:undefindeCl(${i.ccode})" id="ch_${i.ccode}">${i.cname}</a>
+					<c:if test="${i.clcode eq 1 and i.kincode ne 0}">
+						<a href="javascript:undefinedCl(${i.ccode})" id="ch_${i.ccode}">${i.cname}</a>
 					</c:if>
-					<c:if test="${i.kincode ne 0}">
+					<c:if test="${i.kincode ne 0 and i.clcode ne 1}">
 						<a href="getChildAttendInfo?ccode=${i.ccode}" id="ch_${i.ccode}">${i.cname}</a>
 					</c:if>
 				</li>
 			</c:forEach>
 		</ul>
 	</li>
-	<li class="column" style="width:40%;vertical-align:top">
-		<div>
+	<li class="column" style="width:40%;vertical-align:top;margin-top : 10px">
+		<div style="">
 <!-- 			<ul><li style="font-size:1.8em; font-weight: bold"></li></ul> -->
 			<ul>
 				<li>
@@ -117,7 +118,7 @@ function showDetail(){
 			</ul>
 		</div>
 	</li>
-	<li class="column" id="cdetail"style="width:40%;vertical-align:top; margin-left: 60px">
+	<li class="column" id="cdetail"style="width:40%;vertical-align:top; margin-top : 10px; margin-left: 60px">
 		
 	</li>
 </ul>

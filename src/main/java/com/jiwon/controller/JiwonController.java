@@ -1,5 +1,10 @@
 package com.jiwon.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +61,10 @@ public class JiwonController {
 	 * Simply selects the home view to render by returning its name.
 	 * @throws Exception 
 	 */
-	
+	@RequestMapping(value = "/notificationTest", method = RequestMethod.GET)
+	public String notificationTest(HttpSession session) throws Exception {
+		return "/notificationTest";
+	}
 	@RequestMapping(value = "/gmenu19", method = RequestMethod.GET)
 	public String gmenu19(HttpSession session) throws Exception {
 		if(Objects.isNull(session.getAttribute("children"))) {
@@ -81,7 +89,7 @@ public class JiwonController {
 		 query = query.equals("") ? "어린이" : query;
 		 String[] queries = query.split(" ");
 		 query = String.join("%20", queries);
-		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=rating",
+		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=rating&d_catg=320040010",
 				   clientId, query); // json 결과
 		 StringBuffer sb= apiservice.youtubeService(apiURL);
 		 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
@@ -145,10 +153,64 @@ public class JiwonController {
 	}
 	
 	@RequestMapping(value = "/gmenu20", method = RequestMethod.GET)
-	public String gmenu20() {
-		
+	public String gmenu20(HttpSession session) throws Exception {
+		if(Objects.isNull(session.getAttribute("children"))) {
+			MemberVO vo = (MemberVO)session.getAttribute("glogin");
+			session.setAttribute("children", dao.getChildrenList(vo.getMemid()));
+		}
 		return "/gmenu20";
 	} 
+	
+	// 네이버 프록시
+	 @RequestMapping("/naver_book")
+	 public ResponseEntity<String> doNaverProxy2(HttpServletRequest request) throws Exception {
+		 HttpHeaders responseHeaders = new HttpHeaders();
+		  responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+		 String clientId = "Ni5BsQ5Uy1_JOw13JxiV";//애플리케이션 클라이언트 아이디값";
+		 
+		 String clientSecret = "h8HPswVuVi";//애플리케이션 클라이언트 시크릿값";
+		 // 매개변수 처리
+		 // 검색어
+		 String text = request.getParameter("d_titl");
+		 text = URLEncoder.encode((Objects.isNull(text) ? "어린왕자" : text), "UTF-8");
+		 // 검색 개수
+		 String display = request.getParameter("display");
+		 display = Objects.isNull(display) ? "10" : display;
+		 // 검색 대상의 시작 번호
+		 String start = request.getParameter("start");
+		 start = Objects.isNull(start) ? "1" : start;
+		 // 검색 주제
+		 String target = request.getParameter("target");
+		 target = Objects.isNull(target) ? "book_adv" : target;
+		 System.out.println("text : " + text);
+		 System.out.println("target : " + target);
+
+		 String apiURL = String.format("https://openapi.naver.com/v1/search/%s?d_titl=%s&display=%s&start=%s&sort=count",
+		   Objects.isNull(target) ? "book" : target, text, Objects.isNull(display) ? "2" : display,
+		   Objects.isNull(start) ? "1" : start); // json 결과
+		 // String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text;
+		 // // xml 결과
+		 URL url = new URL(apiURL);
+		 HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		 con.setRequestMethod("GET");
+		 con.setRequestProperty("X-Naver-Client-Id", clientId);
+		 con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+		 int responseCode = con.getResponseCode();
+		 BufferedReader br;
+		 if (responseCode == 200) { // 정상 호출
+		  br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		 } else { // 에러 발생
+		  br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		 }
+		 String inputLine;
+		 StringBuffer res = new StringBuffer();
+		 while ((inputLine = br.readLine()) != null) {
+		  res.append(inputLine);
+		 }
+		 System.out.println("pre :" + res.toString());
+		 return new ResponseEntity<String>(res.toString(), responseHeaders, HttpStatus.CREATED);
+	 }
+	
 	@RequestMapping(value = "/gmenu21", method = RequestMethod.GET)
 	public void gmenu21(HttpSession session) throws Exception {
 		if(Objects.isNull(session.getAttribute("children"))) {
@@ -189,7 +251,7 @@ public class JiwonController {
 			r.setAttribute("state", "absent");
 		}
 		r.setAttribute("time", dto);
-		
+		r.setAttribute("teacher", dao.getTeacherInfo(Integer.parseInt(r.getParameter("ccode"))));
 		return "/gmenu21";
 	}
 	@RequestMapping(value = "/tmenu5", method = RequestMethod.GET)
@@ -294,9 +356,8 @@ public class JiwonController {
 		return ac;
 	}
 	
-	@Scheduled(cron="0 25 19 * * *")
+	@Scheduled(cron="0 0 18 * * *")
 	public void checkTime() throws Exception {
-		
 		String late = today + "T10:30:00Z";
 
 		List<Integer> kl = dao.getKinderList();

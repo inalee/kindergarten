@@ -107,12 +107,13 @@ public class InaController {
 		return "/gmenu8";
 	}
 	
-	@RequestMapping(value = "/testpage", method = RequestMethod.GET)
-	public String testpage() {
-		
-		return "/testpage";
-	}
+
 	
+	@RequestMapping(value = "/scroll_test", method = RequestMethod.GET)
+	public String scroll_test() {
+		
+		return "/scroll_test";
+	}
 	
 	
 	@RequestMapping(value = "/safety_gmenu", method = RequestMethod.GET)
@@ -608,6 +609,12 @@ public class InaController {
 		//gcode 찾는 dao 사용
 		int gcode = childdao.checkGid(memid);
 		cv.setGcode(gcode);
+		
+		
+		//성격,취미 
+		cv.setPscode(1);
+		cv.setHcode(1);
+		
 		
 		// kincode
 		if(cv.getCstate().equals("미재학")) {

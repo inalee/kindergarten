@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+    <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
+  <mapper namespace="com.jiwon.mapper.jiwonMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+
+<!--  kincode로 해당 유치원의 반 목록를 불러움 -->
+  <select id="getClassList" resultType="ClassVO">
+  	<![CDATA[select clcode, clname, kincode from class where kincode=#{kincode}]]>
+  </select>
+   <select id="getClassMember" resultType="ChildrenVO">
+  		select ccode, cname from children where clcode = #{clcode}
+  </select>
+<!--   반이 1개 이상 있는 유치원의 목록을 가져옴 -->
+    <select id="getKinderList" resultType="int">
+  	select k.kincode from kindergarten k, class c where c.kincode = k.kincode  group by kincode order by kincode
+  </select>
+<!--   하루의 마지막에 학생들의 출결정보 저장 -->
+  <insert id="insertACheck">
+  	insert into attend (atdate, ccode, atstime, atetime, atstate) values(#{atdate},#{ccode},#{atstime},#{atetime},#{atstate})
+  </insert>
+<!--   해당 반의 한달동안 출결정보를 가져옴 -->
+  <select id="getAttendByMonth" resultType="AttendDTO"><!-- 0801 추가 -->
+  	select a.atdate, a.ccode, a.atstate from attend a, class c, children ch where atdate like concat(#{atmonth},'%') and c.clcode=ch.clcode and ch.ccode = a.ccode and ch.clcode=#{clcode} order by atdate;
+  </select>
+  
+<!--   해당 학부모의 아이 리스트를 가져옴 -->
+	<select id="getChildrenList" resultType="ChildrenVO">
+		select ch.ccode, ch.kincode, ch.clcode, ch.cname from children ch, guardian g where g.memid = #{memid} and ch.gcode = g.gcode;
+	</select>
+<!-- 	해당 아이의 정보를 가져옴 -->
+	<select id="getChildInfo" resultType="ChildrenDTO">
+		select k.kinname, cl.clname, ch.cname, ch.ccode from kindergarten k, class cl, children ch where ch.ccode=#{ccode} and k.kincode=cl.kincode and cl.clcode=ch.clcode
+	</select>
+<!--  영상을 클릭하면 영상 정보 저장 -->
+  <insert id="insertVideoInfo">
+  	insert into videoinfo(ccode, vname, vchannel, vid, vkeyword) values(#{ccode},#{vname},#{vchannel},#{vid}, #{vkeyword})
+  </insert>
+<!-- 	해당 아이가 가장 최근에 본 영상의 정보를 select -->
+<select id="getRecentVInfo" resultType="VideoVO">
+	select * from videoinfo where ccode=#{ccode} order by vdate desc limit 1;
+</select>
+<!-- 	해당 아이가  최근 일주일동안에 가장 자주 본 채널의 정보를 select -->
+<select id="getFreqChInfo" resultType="VideoVO">
+	select vchannel, count(*) as c from videoinfo where ccode=#{ccode} and vdate > date_add(now(), interval -7 day) group by vchannel order by c desc, vdate desc limit 1;  
+</select>
+<!-- 	최근 하루동안 가장 많이 클릭된 영상 정보 select -->
+<select id="getPopVInfo" resultType="VideoVO">
+	select vid, vname, vchannel from (select vid, vname, vchannel, count(*) from videoinfo where vdate > date_add(now(), interval -1 day) group by vid order by count(*) desc, vdate desc limit 4) a;  
+</select>
+<!-- 	검색 키워드 출력 -->
+<select id="getKeyword" resultType="String">
+	select vkeyword, count(vkeyword) as c from videoinfo where vkeyword!="" and ccode=#{ccode} group by vkeyword order by c desc, vdate desc limit 1;
+</select>
+<!-- 	관심사 select  -->
+<select id="getInterest" resultType="String">
+	select cinterest from children where ccode=#{ccode}; 
+</select>
+<!-- 담임선생님 정보 select -->
+<select id="getTeacherInfo" resultType="MemberVO">
+	select m.memname, m.memphone from member m, class cl, children ch, teacher t where m.memid = t.memid and  t.tecode = cl.tecode and cl.clcode = ch.clcode and ch.ccode = #{ccode};
+</select> 
+  </mapper>

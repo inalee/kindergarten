@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
+  <mapper namespace="com.kinder.mapper.ina.inaMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+  
+
+  <!--아이 insert-->
+ <insert id="ina_insertChild">
+  insert into children(gcode,kincode,cname,cgen,caddress,cidnum,cage,pscode,hcode,cinterest,ccaution,cstate,clcode) values 
+  (#{gcode},#{kincode},#{cname},#{cgen},#{caddress},#{cidnum},#{cage},#{pscode},#{hcode},#{cinterest},#{ccaution},#{cstate},#{clcode})
+ </insert>
+
+<!-- memid로 gcode 찾는 sql -->
+<select id="gcode_select" resultType="int">
+select gcode from guardian where memid=#{memid}
+</select>
+
+<!-- gcode 통해서 아이 찿기 -->
+<select id="search_mychild" resultType="ChildrenVO">
+select ccode,gcode,cname,cgen,caddress,cidnum,cage from children where gcode=#{gcode}
+</select>
+
+<!-- 입소대기점수 업데이트 -->
+<update id="update_rank">
+update children
+set crank=#{crank}
+where ccode=#{ccode};
+</update>
+
+<!-- 어린이집 검색하기 -->
+<select id="search_kinder" resultType="KindergartenVO">
+select * from kindergarten
+	<if test="sigungucode != null">
+		<choose>
+		<!-- kinkind 선택 / kinname은 선택 X -->
+		<when test="kinkindcode != 0 and kinname == ''">
+			where sigungucode=#{sigungucode} and kinkindcode=#{kinkindcode} 
+		</when>
+		<!-- kinkind 선택 / kinname 선택  -->
+		<when test="kinkindcode != 0 and kinname != ''">
+			where sigungucode=#{sigungucode} and kinkindcode=#{kinkindcode} and kinname like CONCAT('%',#{kinname},'%')
+		</when>
+		<!--  kinkind 선택 X / kinname 은 선택  -->
+			<when test="kinkindcode == 0 and kinname != ''">
+			where sigungucode=#{sigungucode} and kinname like CONCAT('%',#{kinname},'%')
+			</when>
+		<otherwise>
+			where sigungucode=#{sigungucode} order by kinkindcode
+		</otherwise>
+		</choose>
+	</if>
+</select>
+
+<!-- 어린이집 검색2 -->
+<select id="search_kinder2" resultType="KindergartenVO">
+select kinname,kinaddress from kindergarten where kincode=#{kincode}
+</select>
+
+<!-- 아이 검색 -->
+<select id="search_childname" resultType="String">
+select cname from children where ccode=#{ccode} 
+</select>
+
+<!--  아이의 입소신청 어린이집 갯수 출력 -->
+<select id="search_kinnum" resultType="int">
+select count(*) from enroll where ccode=#{ccode} and (statcode != 5 or statcode != 6)
+</select>
+
+<!-- 같은 어린이집에 입소 못하게 count -->
+<select id="same_kinder" resultType="int">
+select count(*) from enroll where ccode=#{ccode} and kincode=#{kincode} and (statcode != 5 or statcode != 6)
+</select>
+
+
+<!-- 입소신청 프로시저 -->
+<insert id="p_enroll" statementType="CALLABLE">
+{call p_waiting(#{kincode},#{ccode},#{hopedate})}
+</insert>
+
+
+<select id="result_enroll" resultType="EnrollVO">
+select encode,statcode,date_add(enlog,interval +7 day) enlog from enroll where ccode=#{ccode} and kincode=#{kincode}
+</select>
+
+
+
+
+<!-- 취소된건 제외, 대기 목록 select -->
+<select id="wait_list2" resultType="map">
+<![CDATA[
+select e.encode,c.cname,k.kinname,k.kincode,e.hopedate,c.crank,s.status,date_add(e.enlog,interval +7 day) enlog from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode<5 or e.statcode=8) order by e.encode
+]]>
+</select>
+
+<!-- 취소된 대기목록 select -->
+<select id="wait_list3" resultType="map">
+<![CDATA[
+select e.encode,c.cname,k.kinname,e.hopedate,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statcode=5 or e.statcode=6) order by e.encode
+]]>
+</select>
+
+
+<!-- 어린이집 입소순번 쿼리....아직 대기중인 사람들 중(취소,입소완료처리된사람들은 xxx) 몇번쨰인지 rank 구하기... -->
+<select id="wait_list4" resultType="map">
+<![CDATA[
+SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,crank,enlog
+FROM
+(SELECT e.encode,c.cname,c.crank,e.enlog
+FROM
+enroll e,children c,kindergarten k where e.ccode=c.ccode and e.kincode=k.kincode and (e.statcode<5 or e.statcode=8) and  k.kincode=#{kincode} order by crank desc,enlog
+) t,
+( SELECT @RNUM := 0 ) R
+
+]]>
+</select>
+
+<!-- 입소신청 완료된 건 -->
+<select id="wait_list5" resultType="map">
+select e.encode,c.cname,k.kinname,e.hopedate,e.enlog,s.status from guardian g,children c,enroll e,kindergarten k,status_code s where c.ccode=e.ccode and k.kincode=e.kincode 
+and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and e.statcode=7
+</select>  
+
+<!--  파일 주소 down -->
+<select id="file_down" resultType="EnrollVO">
+select enfile,enorigin from enroll where encode=#{encode}
+</select>
+
+
+
+<!--  파일 주소 down(정기) -->
+<select id="file_down2" resultType="RegularEnrollVO">
+select refile,reorigin from regular_enroll where re_encode=#{re_encode}
+</select>
+
+
+
+<!-- 입소상태 서류 제출로 update  -->
+<update id="update_state" statementType="CALLABLE">
+call p_upload_file(#{encode},#{enfile},#{enorigin})
+</update>
+
+<!-- 해당 어린이집에서 대기관리하기 -->
+<select id="enroll_list" resultType="map">
+<![CDATA[
+SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,hopedate,crank,en,status,ccode,enfile
+FROM
+(SELECT e.encode,c.cname,e.hopedate,c.crank,date_add(e.enlog,interval +7 day) en,s.status,c.ccode,e.enfile
+FROM
+enroll e,children c,status_code s,kindergarten k where e.ccode=c.ccode and e.statcode=s.statcode and k.kincode=e.kincode and k.kincode=#{kincode} and (s.statcode<5 or s.statcode=8) order by c.crank desc,e.enlog
+) t,
+( SELECT @RNUM := 0 ) R
+]]>
+</select>
+
+<!-- 입소 처리 완료된 아이 출력(어린이집입장) -->
+<select id="enroll_list2" resultType="map">
+<![CDATA[
+select e.encode,c.cname,c.crank,e.hopedate,s.status
+from enroll e,children c,status_code s,kindergarten k
+where e.ccode=c.ccode and s.statcode=e.statcode and e.kincode=k.kincode and k.kincode=#{kincode} and s.statcode=7;
+]]>
+</select>
+
+
+<!-- 대기 취소 된 아이 출력(어린이집입장) -->
+<select id="enroll_list3" resultType="map">
+<![CDATA[
+select e.encode,c.cname,c.crank,e.hopedate,s.status
+from enroll e,children c,status_code s,kindergarten k
+where e.ccode=c.ccode and s.statcode=e.statcode and e.kincode=k.kincode and k.kincode=#{kincode} and (s.statcode=5 or s.statcode=6);
+]]>
+</select>
+
+
+<!-- 선생님-> 아이 대기 현황 update -->
+<update id="enroll_state_modify">
+update enroll set statcode=#{statcode} where encode=#{encode}
+</update>
+
+
+
+<!-- 입소완료 프로시저 -->
+<update id="p_manage_enroll" statementType="CALLABLE">
+{call p_manage_enroll(#{kincode},#{ccode})}
+</update>
+
+<update id="del_enroll">
+update enroll set statcode=5 where encode=#{encode}
+</update>
+
+<!--  정기 모집 insert -->
+<insert id="regular_enroll" statementType="CALLABLE">
+{call p_regular_upload(#{sigungucode},#{renum},#{reopen},#{redetail},#{kincode})}
+</insert>
+
+<!--  정기모집 목록 select -->
+<select id="regular_list" resultType="regular_recruitVO">
+select * from regular_recruit where kincode=#{kincode} order by recode
+</select>
+
+<!--  (부모페이지) 정기 모집 목록 -->
+<select id="regular_list_par"  resultType="map">
+ select r.recode,k.kinname,s.sigungu,r.renum,r.reopen,r.redetail,r.redate,k.kincode from regular_recruit r,kindergarten k,sigungu s
+ where r.kincode=k.kincode and s.sigungucode=r.sigungucode
+</select>
+
+<!-- 모집페이지 보기 -->
+<select id="regular_detail" resultType="regular_recruitVO">
+ select * from regular_recruit where recode=#{recode}
+</select>
+
+<select id="all_kinder" resultType="KindergartenVO">
+select * from kindergarten where kincode=#{kincode}
+</select>
+
+
+<!-- 정기등록 된 어린이집 검색하기 -->
+<select id="search_kinder_regular"  resultType="map">
+select r.recode,k.kinname,s.sigungu,r.renum,r.reopen,r.redetail,r.redate,k.kincode,ki.kinkind 
+from regular_recruit r,kindergarten k,sigungu s,kinkind ki 
+where r.kincode=k.kincode and s.sigungucode=r.sigungucode and ki.kinkindcode=k.kinkindcode
+	<if test="sigungucode != null">
+		<choose>
+		<!-- kinkind 선택 / kinname은 선택 X -->
+		<when test="kinkindcode != 0 and kinname == ''">
+		and s.sigungucode=#{sigungucode} and ki.kinkindcode=#{kinkindcode} 
+		</when>
+		<!-- kinkind 선택 / kinname 선택  -->
+		<when test="kinkindcode != 0 and kinname != ''">
+			and s.sigungucode=#{sigungucode} and ki.kinkindcode=#{kinkindcode} and k.kinname like CONCAT('%',#{kinname},'%')
+		</when>
+		<!--  kinkind 선택 X / kinname 은 선택  -->
+			<when test="kinkindcode == 0 and kinname != ''">
+			and s.sigungucode=#{sigungucode} and k.kinname like CONCAT('%',#{kinname},'%')
+			</when>
+			<!-- 전체 -->
+			<when test="sigungucode == 0 and kinkindcode == 0 and kinname ==''">
+				
+			</when>
+			<otherwise>
+			and s.sigungucode=#{sigungucode}
+			</otherwise>
+		</choose>
+		order by r.recode;
+	</if>
+
+</select>
+
+<insert id="regular_insert" statementType="CALLABLE">
+call p_regular_insert(#{ccode},#{recode},#{rehopedate});
+</insert>
+
+<!--  신청 list -->
+<select id="select_regular" resultType="map">
+<![CDATA[
+select re.re_encode,c.cname,k.kinname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog 
+from guardian g,children c,kindergarten k,regular_code res,regular_enroll re,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and g.gcode=#{gcode} and re.re_statecode<=2 order by re.re_encode
+]]>
+</select>
+
+<!-- 정기모집 신청 완료된애들 -->
+<select id="select_regular2" resultType="map">
+select re.re_encode,c.cname,k.kinname,re.rehopedate,re.re_log,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre 
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and re.re_statecode=3 and g.gcode=#{gcode} order by re.re_encode
+</select>
+
+<!--  정기모집 자료제출 -->
+<update id="update_file_regular" statementType="CALLABLE">
+call p_upload_file_regular(#{re_encode},#{refile},#{reorigin})
+</update>
+
+
+<!-- 정기모집 취소 -->
+<update id="del_regular">
+update regular_enroll set re_statecode=4 where re_encode=#{re_encode}
+</update>
+
+<!-- 정기모집 취소된 목록 -->
+<select id="list_del_regular" resultType="map">
+select re.re_encode,c.cname,k.kinname,re.rehopedate,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 or re.re_statecode=5) and g.gcode=#{gcode} order by re.re_encode
+</select>
+
+<!-- 정기모집 신청 list(선생님) -->
+<select id="sel_regular_list_te" resultType="map">
+<![CDATA[
+select re.re_encode,c.cname,k.kincode,re.rehopedate,res.restate,date_add(re.re_log,interval +7 day) enlog,rre.recode,rre.redate,c.ccode,re.refile
+from guardian g,children c,kindergarten k,regular_code res,regular_enroll re,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and k.kincode=#{kincode} and re.re_statecode<=2 order by rre.recode
+]]>
+</select>
+
+<!--  정기모집 입소완료 -->
+<update id="regular_fin" statementType="CALLABLE">
+call p_regular_enroll(#{kincode},#{ccode},#{re_encode})
+</update>
+
+<!--  정기모집 입소 완료된 list -->
+<select id="regular_fin_list" resultType="map">
+select re.re_encode,c.cname,re.rehopedate,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre 
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and re.re_statecode=3 and k.kincode=#{kincode} order by re.re_encode
+</select>
+
+<!-- 자료 미제출 update -->
+<update id="no_file">
+update regular_enroll set re_statecode=5 where re_encode=#{re_encode}
+</update>
+
+<!-- 정기모집 취소된 list -->
+<select id="cancel_list" resultType="map">
+select re.re_encode,c.cname,re.rehopedate,res.restate
+from guardian g,children c,regular_enroll re,kindergarten k,regular_code res,regular_recruit rre
+where c.ccode=re.ccode and k.kincode=rre.kincode and rre.recode=re.recode
+and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 or re.re_statecode=5) and k.kincode=#{kincode} order by  re.re_encode
+</select>
+
+
+<delete id="del_regular_2" statementType="CALLABLE">
+call p_delete_regular(#{recode})
+</delete>
+
+
+<select id="sel_child_info" resultType="ChildrenVO">
+select * from children where ccode=#{ccode}
+</select>
+</mapper>

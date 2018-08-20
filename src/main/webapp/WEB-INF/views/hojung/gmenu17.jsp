@@ -8,6 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>예방접종 병원</h1>
+<h1>나의 예약내역</h1>
 </body>
 </html>

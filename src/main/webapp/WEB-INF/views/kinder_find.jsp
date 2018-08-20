@@ -118,7 +118,7 @@ margin-top: -10px;
 
 </style>
 </head>
-<body>
+<body leftmargin="0" topmargin="0">
 
 <div class="page_name" style="margin-top: 10px; width:100%;">
 	<h2>통합검색</h2><br>

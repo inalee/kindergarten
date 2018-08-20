@@ -12,30 +12,6 @@
 <script type="text/javascript">
 
 
-$(document).ready(function(){
-
-    var list = $(".list tr");
-    var numToShow = 2;
-    var button = $("#next");
-    var numInList = list.length;
-    list.hide();
-    if (numInList > numToShow) {
-      button.show();
-    }
-    list.slice(0, numToShow).show();
-
-    button.click(function(){
-        var showing = list.filter(':visible').length;
-        list.slice(showing - 1, showing + numToShow).fadeIn();
-        var nowShowing = list.filter(':visible').length;
-        if (nowShowing >= numInList) {
-          button.hide();
-        }
-    });
-
-});
-
-
 
 
 function search_btn() {
@@ -285,7 +261,7 @@ table.type04 td {
   </tr>
   </c:forEach>
 </table>
-  <button id="next">Show More</button>
+
 </ul>
 </div>
 </div>

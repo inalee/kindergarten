@@ -15,32 +15,10 @@
 
 $(document).ready(function(){
 
-    var list = $(".list tr");
-    var numToShow = 5;
-    var button = $("#next");
-    var numInList = list.length;
-    list.hide();
-    if (numInList > numToShow) {
-      button.show();
-    }
-    list.slice(0, numToShow).show();
-	
-    
-    button.click(function(){
-        var showing = list.filter(':visible').length;
-        list.slice(showing - 1, showing + numToShow).fadeIn();
-        var nowShowing = list.filter(':visible').length;
-        if (nowShowing >= numInList) {
-          button.hide();
-        }
-    });
+  
 
 });
 
-function hoho() {
-	alert("d");
-	
-}
 
 function detailkinder(kincode){
 	
@@ -66,9 +44,13 @@ function search_btn() {
 
 	
 
+	    
+	
+
 	$.get("search_kinder",	{ sigungucode: psigungu, kinkindcode:pkinkind, kinname:pkinname }).done(function(data,state){
 
 		$("#total").remove();
+		$("#next").remove();
 		$("#mychild").empty();
 		$("#mychild").append(" <tr><th>위치</th><th>어린이집</th><th>유형</th><th>전화번호</th><th>구분</th><th>안전정보 공시</th></tr>");
 		
@@ -96,13 +78,39 @@ function search_btn() {
 				var kinkind = "협동";
 			}
 			
-			onclick='javascript:calculate((\""+data[i].kinname+"\"))'
 			$("#mychild").append("<tr id='trresult'>"+
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinphone+"</td><td>"+data[i].kinspec+"</td>"+   
 				    "<td><a href='#' onclick='layer_open((\"modal\"),"+data[i].kincode2+",(\""+data[i].kinname+"\")"+",(\""+data[i].kinaddress+"\"))'><img style='width:50px; height:50px;' src='https://static8.depositphotos.com/1003938/1045/v/950/depositphotos_10451115-stock-illustration-funny-cartoon-builder.jpg'></a></td></tr>");
 		}
-		$("#mychild").after("<button id='next' onclick='hoho()'>Show More</button>"); 
+			$("#mychild").after("<center><button id='next' class='button2 button4'>더보기▽</button></center>"); 
+		
+
+		  var list = $(".list tr");
+		    var numToShow = 10;
+		    var button = $("#next");
+		    var numInList = list.length;
+		    list.hide();
+		    if (numInList > numToShow) {
+		      button.show();
+		    }
+		    list.slice(0, numToShow).show();
+
+		  	
+		    $("#next").click(function(){
+		    
+		        var showing = list.filter(':visible').length;
+		        list.slice(showing - 1, showing + numToShow).fadeIn();
+		        var nowShowing = list.filter(':visible').length;
+		        if (nowShowing >= numInList) {
+		          button.hide();
+		        }
+		    });
+		    
 		});
+	
+	
+
+	    
 	
 }
 
@@ -382,7 +390,7 @@ margin: auto;
  	font-size:12pt;
  	margin: auto; 
  	position: relative;
-
+	margin-bottom: 20px;
 
 }
 
@@ -459,7 +467,20 @@ background-color:#EBF3FB;
 }
 
 
+#next {
 
+border-radius: 7px;
+width: 200px;
+height: 40px;
+position: relative;
+display: inline-block;	
+margin: auto;
+}
+
+#next:hover{
+background-color: #EAEAEA;
+
+} 
 
 *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-text-size-adjust:none;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-font-smoothing: antialiased}
 html,body{height:100%;margin:0;padding:0}
@@ -589,13 +610,13 @@ padding: 20px;
 </table>
 <hr class="my-hr3">
   <div id="contain3">
-   <div class="wrapper">
+
   	 <ul class="list">
 	   <table id="mychild" >
 		</table>
 
 </ul>
-</div>
+
 </div>
 </div>
 </div>

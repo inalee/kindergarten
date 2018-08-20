@@ -46,10 +46,24 @@ body #bgimg .image-top {
 	text-align: center;
 	        font-family: 'Jeju Gothic', sans-serif;	
 }
+
+#contains{
+	margin: auto;
+	position: relative;
+width: 80%;
+height: 80%;
+opacity: 0.2;
+background-color: black;
+margin-top: -200px;
+color: black;
+}
+
 </style>
 <body>
 <div id="bgimg">
+<div id="contains">
 <h1 style="margin: 300px;">행복과 웃음이 가득한 Kindergarten 입니다♥</h1>
+</div>
 </div>
 </body>
 </html>

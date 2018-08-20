@@ -81,7 +81,7 @@ font-size: 18px;
 
 #headline{
 background-color: #FFE400;
-width: 100%;
+width: 440px;
 height: 30px;
 margin-top: -20px;
 padding-left: 10px;

@@ -107,6 +107,20 @@ public class InaController {
 		return "/gmenu8";
 	}
 	
+	@RequestMapping(value = "/test_tmenu", method = RequestMethod.GET)
+	public String test_tmenu() {
+		
+		return "/test_tmenu";
+	}
+	
+	@RequestMapping(value = "/childinfo_tmenu", method = RequestMethod.GET)
+	public String childinfo_tmenu(HttpServletRequest request,Model model) {
+		
+		int ccode = Integer.parseInt(request.getParameter("ccode"));
+		model.addAttribute("info", childdao.sel_child_info(ccode));
+		
+		return "/childinfo_tmenu";
+	}
 
 	
 	@RequestMapping(value = "/scroll_test", method = RequestMethod.GET)

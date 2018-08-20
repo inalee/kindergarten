@@ -333,4 +333,8 @@ and re.re_statecode=res.re_statecode and g.gcode=c.gcode and (re.re_statecode=4 
 call p_delete_regular(#{recode})
 </delete>
 
+
+<select id="sel_child_info" resultType="ChildrenVO">
+select * from children where ccode=#{ccode}
+</select>
 </mapper>

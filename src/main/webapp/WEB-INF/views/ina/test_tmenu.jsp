@@ -2,103 +2,54 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:include page="../commons/teachermenu.jsp" flush="true" ></jsp:include>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-$(function(){
-	
-	var master = "${teacher.tmaster}";
-	
-	if(master=='false'){
-		alert("원장만 접근 가능한 메뉴입니다.");
-		location.href = "/kinder/tmain";
-	}
-	
-});
-
 
 </script>
-</head>
 <style>
-
 body{
 font-family: 'Jeju Gothic', sans-serif;	
 }
-.container {
-      width: 1300px;
-    position: relative;
-	margin: auto;
 
-  }
-  
-
-
-#header{
+#total{
+margin: auto;
 position: relative;
-margin: 50px auto;
-margin-bottom: 30px;
-width: 1300px;
+text-align: center;
+height: 1000px;
+border: thin black solid;
+}
 
+#contain1{
+margin-right:27px;
+border: thin red solid;
+width: 49%;
+float:left;
 }
 
 #contain2{
-width: 1200px;
-/* border: solid thin black; */
-position: relative; 
-margin: auto;
-margin-top: 60px;
 
+border: thin yellow solid;
+width: 49%;
+height: 150px;
+float:left;
 }
-
-table.type04 {
-	width: 1050px;
-	font-size: 17px;
-    border-collapse: separate;
-    border-spacing: 1px;
-    text-align: left;
-    line-height: 1.5;
-    border-top: 1px solid #ccc;
-  margin : auto;
-  position: relative;
-
-}
-table.type04 th {
-    width: 150px;
-    padding: 15px;
-    vertical-align: top;
-    border-bottom: 1px solid #ccc;
-}
-table.type04 td {
-    width: 350px;
-    padding: 15px;
-    vertical-align: top;
-    border-bottom: 1px solid #ccc;
-}
-
-
-
-
-.button4 {
-    background-color: white;
-    color: black;
-    border: 2px solid #E6E6E6;
-    font-family: 'Jeju Gothic', sans-serif;	
-}
-
-.button4:hover {background-color: #e7e7e7;}
-
 </style>
+</head>
 <body>
+<div id="total">
+<div id="contain1">
+
 <div id="header">
 <h2>┃ 반 만들기</h2>
 </div>
-<div id="contain2">
+<div id="contain_2">
 <h4 style=" margin-left: 30px;">생성할 반의 상세정보를 입력해주세요.</h4><br>
 
 <form action="make_class" method="POST">
@@ -119,7 +70,7 @@ table.type04 td {
         </select></td>
     </tr>
     <tr>
-        <th scope="row">상세정보</th>
+        <th scope="row">상세나이</th>
         <td><input type="text" name="clage"></td>
  			 <th scope="row" >담당 선생님</th>
         <td><select style="width: 150px; height: 25px;" name="tecode">
@@ -135,7 +86,11 @@ table.type04 td {
 </form>
 </div>
 
-	
+
+</div>
+<div id="contain2">
+</div>
+</div>
 
 </body>
 </html>

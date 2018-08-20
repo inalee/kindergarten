@@ -67,6 +67,12 @@
   <![CDATA[group by kc.cfcode)
   order by cfcode]]>
   </select>
+  
+  
+  <!-- 키즈카페 예약 상세페이지 -->
+  <select id="selectOneKidscafe" resultType="com.hojung.domain.KidscafeVO">
+  select * from kidscafe where cfcode = #{cfcode}
+  </select>
 
 
   </mapper>

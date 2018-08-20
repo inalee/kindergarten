@@ -11,6 +11,6 @@ public interface KidscafeDAO {
 	
 	public List<KidscafeVO> selectKidscafes(KidscafesearchCri cri) throws Exception;
 	
-
+	public KidscafeVO selectOneKidscafe(int cfcode) throws Exception;
 	
 }

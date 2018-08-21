@@ -34,4 +34,7 @@ public interface RegularDAO {
 	
 	public void delete_regular(int recode);
 	
+	public Map<String, Object> sel_kinder_info(int kincode);
+	
+	public void modify_kinder(KindergartenVO kv);
 }

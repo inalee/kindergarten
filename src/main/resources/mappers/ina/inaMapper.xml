@@ -337,4 +337,18 @@ call p_delete_regular(#{recode})
 <select id="sel_child_info" resultType="ChildrenVO">
 select * from children where ccode=#{ccode}
 </select>
+
+
+<select id="sel_kinder_info"  resultType="map">
+select k.kinname,k.kinaddress,k.kinphone,k.kinroom,k.kinarea,k.kinplay,k.kinteacher,k.kinmax,k.kincurrent,ki.kinkind,k.kinhome
+from kindergarten k, kinkind ki where k.kinkindcode=ki.kinkindcode and k.kincode=#{kincode}
+</select>
+
+
+<!--  어린이집 정보 수정 -->
+<update id="modify_kinder" statementType="CALLABLE">
+call p_upload_kininfo(#{kincode},#{kinaddress},#{kinphone},#{kinroom},#{kinarea},#{kinplay},#{kinteacher},#{kinhome},#{kinmax},#{kincurrent})
+</update>
+
+
 </mapper>

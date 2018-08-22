@@ -1,5 +1,6 @@
 package com.yebin.persistence;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -19,14 +20,27 @@ public class FieldtripDAOImpl implements FieldtripDAO {
 	private static final String namespace = "com.yebin.mapper.fieldtripMapper";
 	
 	@Override
-	public void insertCandidates(Map<String, Object> params) {
-		sqlSession.insert(namespace+".insertCandidates", params);
-	
+	public List<FieldtripVO> insertCandidates(Map<String, Object> params) {
+		List<FieldtripVO> listFvo = sqlSession.selectList(namespace+".insertCandidates", params);
+		return listFvo;
 	}
 
 	@Override
 	public void updateFieldtrip(FieldtripVO fieldVO) {
 		sqlSession.update(namespace+".updateFieldtrip", fieldVO);
+	
 	}
 
+	@Override
+	public List<String> getAddrByFtcode(FieldtripVO fieldVO) {
+		List<String> ftaddr = sqlSession.selectList(namespace+".getAddrByFtcode", fieldVO);
+		return ftaddr;
+	}
+	
+	
+	@Override
+	public void insertTourCourse(Map<String, Object> params) {
+		sqlSession.insert(namespace+".insertTourCourse", params);
+	}
+	
 }

@@ -9,16 +9,21 @@
  insert into category (catemain, catesub) values (#{catemain}, #{catesub});
 </insert>
 
-<insert id="insertCandidates" statementType="CALLABLE" parameterType="map">
+<select id="insertCandidates" statementType="CALLABLE" parameterType="map" resultType="FieldtripVO">
 {call fc_insertCandidates(#{cateVO.catemain}, #{cateVO.catesub}, #{areaVO.ararea}, #{areaVO.arcity}, #{fieldVO.ftperson},
  #{memVO.memid}, #{fieldVO.fttitle}, #{fieldVO.ftstart}, #{fieldVO.ftend}, #{fieldVO.ftweb}, #{fieldVO.ftaddr})};
-</insert>
+</select>
 
-<!-- <select id="seletFtcodeforToken" parameterType="map"> -->
-<!-- select * from fieldtrip where tecode = 2 and fttitle = '[대전] 2018 제11회 주니어닥터' order by ftdate desc limit 1; -->
-<!-- </select> -->
+<select id="getAddrByFtcode" resultType="String">
+select ftaddr from fieldtrip where ftcode = #{ftcode};
+</select>
 
 <update id="updateFieldtrip">
- 
+update fieldtrip set ftchoice = true where ftcode = #{ftcode};
 </update>
+
+<insert id="insertTourCourse" statementType="CALLABLE" parameterType="map">
+call fc_insertTourism(#{tourVO.touraddr}, #{tourVO.tourweb}, #{tourVO.tourremarks}, 1, #{fieldVO.ftcode});
+</insert>
+
 </mapper>

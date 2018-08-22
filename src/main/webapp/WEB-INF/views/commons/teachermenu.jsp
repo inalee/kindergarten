@@ -55,12 +55,12 @@ $(function(){
 	<nav>
 	   <ul>
 	     <li class="sub-menu-parent" tab-index="0">
-	     <a href="#">업무관리</a>
+	     <a href="#">견학 관리</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/yebin/tmenu1">일정 관리</a></li>
-	         <li><a href="/kinder/yebin/tmenu2">체험학습 도우미</a></li>
-	         <li><a href="/kinder/yebin/tmenu3">월간계획안</a></li>
-	         <li><a href="/kinder/yebin/tmenu4">체험학습</a></li>
+	         <li><a href="/kinder/yebin/tmenu2">견학지 선정</a></li>
+	         <li><a href="/kinder/yebin/tmenu3">승인/대기목록</a></li>
+<!-- 	         <li><a href="/kinder/yebin/tmenu4">체험학습</a></li> -->
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">
@@ -93,6 +93,7 @@ $(function(){
 	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">정보수정</a>
 	       <ul class="sub-menu">
+	        <li><a href="/kinder/ina/tmenu_info">어린이집 정보</a></li>
 	         <li><a href="/kinder/hojung/tmenu13">어린이집 정보수정</a></li>
 	       </ul></li>
 	   </ul>

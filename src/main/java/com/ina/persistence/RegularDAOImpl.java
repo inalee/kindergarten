@@ -87,4 +87,15 @@ public class RegularDAOImpl implements RegularDAO{
 		sqlSession.selectList(namespace+".del_regular_2",recode);
 	}
 
+	
+	@Override
+	public Map<String, Object> sel_kinder_info(int kincode) {
+		return sqlSession.selectOne(namespace+".sel_kinder_info",kincode);
+	}
+	
+	@Override
+	public void modify_kinder(KindergartenVO kv) {
+		sqlSession.selectList(namespace+".modify_kinder",kv);
+	}
+	
 }

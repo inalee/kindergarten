@@ -98,8 +98,6 @@
 	
 	//어린이집 목록 불러오기
 	function selectKinders() {
-		//int array send setting
-		jQuery.ajaxSettings.traditional = true;
 		
 		$(".kinder_list").empty();
 		

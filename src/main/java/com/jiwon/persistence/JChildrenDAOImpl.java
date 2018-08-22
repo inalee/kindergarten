@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.kinder.domain.ClassVO;
+import com.kinder.domain.MemberVO;
 import com.jiwon.domain.VideoVO;
 import com.jiwon.dto.AttendDTO;
 import com.jiwon.dto.ChildrenDTO;
@@ -85,5 +86,15 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	public String getInterest(int ccode) throws Exception {
 		// TODO Auto-generated method stub
 		return session.selectOne(namespace + ".getInterest",ccode);
+	}
+
+	@Override
+	public MemberVO getTeacherInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getTeacherInfo", ccode);
+	}
+
+	@Override
+	public ChildrenDTO getChnGInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getChnGInfo", ccode);
 	}
 }

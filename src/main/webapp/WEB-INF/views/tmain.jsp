@@ -44,12 +44,26 @@ body #bgimg .image-top {
 	background-image: url('resources/images/cute6.gif');
 	text-align: center;
 	        font-family: 'Jeju Gothic', sans-serif;	
+	margin: auto;
+	position: relative;
 }
+
+#contains{
+	margin: auto;
+	position: relative;
+width: 80%;
+height: 80%;
+background: rgba(0,0,0,.3);
+margin-top: -200px;
+color: white;
+}
+
 </style>
 <body>
 <div id='bgimg'>
-<h1>선생님 메인입니다.</h1>
-<h2>${teacher.kinname}</h2>
+<div id="contains">
+<h1 style="margin: 300px;">${teacher.kinname} ${tlogin.memname}선생님, 반갑습니다.</h1>
+</div>
 </div>
 </body>
 </html>

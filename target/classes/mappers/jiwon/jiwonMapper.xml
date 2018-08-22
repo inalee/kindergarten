@@ -58,4 +58,12 @@
 <select id="getInterest" resultType="String">
 	select cinterest from children where ccode=#{ccode}; 
 </select>
+<!-- 담임선생님 정보 select -->
+<select id="getTeacherInfo" resultType="MemberVO">
+	select m.memname, m.memphone from member m, class cl, children ch, teacher t where m.memid = t.memid and  t.tecode = cl.tecode and cl.clcode = ch.clcode and ch.ccode = #{ccode};
+</select> 
+<!-- 아이정보 select -->
+<select id="getChnGInfo" resultType="ChildrenDTO">
+	select c.cname, c.cage, c.cidnum, c.cgen, c.caddress, g.grelation, m.memname, m.memage, m.memgen, m.memphone from children c, guardian g, member m where c.ccode=#{ccode} and c.gcode=g.gcode and m.memid=g.memid;
+</select> 
   </mapper>

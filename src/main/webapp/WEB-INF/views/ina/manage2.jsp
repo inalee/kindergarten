@@ -10,6 +10,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+
+function childinfo(data) {
+
+	var popUrl = "childinfo_tmenu?ccode="+data;	//팝업창에 출력될 페이지 URL
+
+	var popOption = "width=600, height=560";    //팝업창 옵션(optoin)
+
+	window.open(popUrl,"",popOption);
+}
+
+
 function upclass(pccode,pclcode) {
 
   var pkincode = "${teacher.kincode}";
@@ -248,7 +259,7 @@ list-style: square;
 		<table id="mychild">
   		<tr>
 	<th>번호</th>
-    <th>아동 이름</th>
+    <th>아동이름</th>
     <th>나이</th>  
     <th>성별</th>
 	<th>주소</th>      
@@ -262,7 +273,7 @@ list-style: square;
   <input type="hidden" name="ccode" value="${i.ccode}">
   <tr>
     <td>${i.ccode}</td>
-	<td>${i.cname}</td>
+	<td style="color:#003399;"><a onclick="childinfo(${i.ccode})" style="cursor:pointer;">${i.cname}</a></td>
     <td>${i.cage}</td>
     <td>${i.cgen}</td>
     <td>${i.caddress}</td>
@@ -285,8 +296,9 @@ list-style: square;
 
 	<th>반 번호</th>
     <th>반 이름</th>
-    <th>담당 교사</th>  
-   <th>연령대</th>      
+    <th>담당 교사</th> 
+    <th>연령대</th>  
+   <th>상세정보</th>      
    	<th>현 인원수</th>
   </tr>
 
@@ -295,6 +307,7 @@ list-style: square;
     <td>${i.clcode}</td>
 	<td>${i.clname}</td>
     <td>${i.memname} 선생님</td>
+    <td>${i.detail}</td>
     <td>${i.clage}</td>
     <td>${i.re}명</td>
   </tr>

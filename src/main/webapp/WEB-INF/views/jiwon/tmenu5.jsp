@@ -3,18 +3,15 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="../commons/teachermenu.jsp" flush="true" ></jsp:include>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><!-- 나중에 삭제 (teachermenu와 중복) -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.tmenu5 * { 
-} 
-
-li{
-	list-style : none;
-}
+.tmenu5 * {} 
+li{	list-style : none;}
 .column {
 	display : inline-block;
 	vertical-align: top;
@@ -24,19 +21,22 @@ table th, td{
 	text-align : center;
 	border : 1px solid #ddd;
 	top: 5px;
+	font-size : 16px;
 }
 table th{
 	background-color: #EBF7FF;
 	width : 33%;
+	padding : 5px;
+	font-size : 18px;
 }
-table button {margin:5px;}
-
 #classlist {
     list-style-type: none;
     margin: 0;
+    margin-right : 5px;
     padding: 0;
-    width: 200px;
+    width: 180px;
     background-color: #f1f1f1;
+    text-align:center;
 }
 
 #classlist li a {
@@ -44,6 +44,7 @@ table button {margin:5px;}
     color: #000;
     padding: 8px 16px;
     text-decoration: none;
+    font-size:18px;
 }
 
 /* Change the link color on hover */
@@ -71,14 +72,10 @@ table button {margin:5px;}
 }
 
 /* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #ddd;
-}
+.tab button:hover { background-color: #ddd;}
 
 /* Create an active/current tablink class */
-.tab button.active {
-    background-color: #ccc;
-}
+.tab button.active {background-color: #ccc;}
 
 /* Style the tab content */
 .tabcontent {
@@ -87,22 +84,44 @@ table button {margin:5px;}
     border: 1px solid #ccc;
     border-top: none;
 }
-.tds{
-	width:30%;
+/* .tds{width:25%;} */
+table button {
+    background-color: white;
+    border: 2px solid #e7e7e7;
+    color: black;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
 }
+
+table button:hover {background-color: #e7e7e7;}
+
+.btn_disabled {background-color: #e7e7e7;}
+
 
 .ShopContainer .atd_month {width:977px; height:105px; text-align:center; border:1px solid #e1e4e8; border-bottom:0; padding-top:30px; position:relative;}
 .ShopContainer .atd_month .num {font-size:32px; font-weight:800; color:#333; vertical-align:middle; padding:0 18px; letter-spacing:-1px;}
 .ShopContainer .atd_month a {display:inline-block; padding-top:6px;}
 .ShopContainer .atd_month .my_count strong {font-size:20px; font-weight:800;}
 .ShopContainer .atd_calendar {width:980px; height:auto; min-height:536px;  background:url('resources/images/bg_calendar.png') no-repeat; padding-top:31px;}
-.ShopContainer .atd_calendar ul li {float:left; width:129.5px; height:91px; padding:10px 0 0 10px; position:relative;}
+.ShopContainer .atd_calendar ul li {float:left; width:139.5px; height:101px; padding:10px 0 0 10px; position:relative;}
 .ShopContainer .atd_calendar ul {margin:0; padding:0;}
 .ShopContainer .atd_calendar ul li .d {font-size:13px; color:#333;}
 .ShopContainer .atd_calendar ul li .giveaway {display:inline-block; width:48px; height:48px; background:url('/images/icon/icon_giveaway.png') no-repeat; position:absolute; right:5px; top:5px;}
 .ShopContainer .atd_calendar ul li .ac {margin:1px; background-color: #FFE08C;  text-align:center; color: #4B2C00}
 </style>
+<c:url var="phone" value="resources/images/tphone.png"></c:url>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
       // Load the Visualization API and the corechart package.
@@ -221,6 +240,23 @@ $(function(){
 	// Get the element with id="defaultOpen" and click on it
 	document.getElementById("defaultOpen").click();
 	
+	$(".chinfo").on("click",function(){
+		//alert(this.value);
+		
+		$.get("getChnGInfo", {"ccode" : this.value}, function(data){
+			document.getElementById('c_name').innerHTML = data.cname;
+			document.getElementById('c_gender').innerHTML = data.cgen;
+			document.getElementById('c_age').innerHTML = data.cage;
+			document.getElementById('c_addr').innerHTML = data.caddress;
+			document.getElementById('g_name').innerHTML = data.memname;
+			document.getElementById('g_relation').innerHTML = data.grelation;
+			document.getElementById('g_tel').innerHTML = "<span style='margin-right:10%;' >"+data.memphone+"</span><a href='tel:" +data.memphone+"'><img width='30px' src='${phone}'/></a>";
+		})
+		$('#info_modal').modal('show');
+		
+	});
+	
+	
 });
 function writeAttendState(pmonth){
 	var url = unescape(location.href); 
@@ -237,6 +273,7 @@ function writeAttendState(pmonth){
 	    });
 	 
 }
+
 function drawCalendar(){
 	var d = new Date();
 	var thisMonth = d.getMonth()+1;
@@ -344,6 +381,7 @@ function drawCalendar(){
 	
 </script>
 </head>
+
 <body>
 <h1 id="className">&nbsp</h1>
 	<ul class="tmenu5">
@@ -364,16 +402,16 @@ function drawCalendar(){
 				<ul style="margin-top:10px">
 				<li>
 					<table width=100%;>
-						<tr><th>이름 </th><th colspan="2">상태</th></tr>
+						<tr><th >이름 </th><th colspan="2">상태</th><th>학생정보</th></tr>
 						<c:forEach items="${clmem}" var="i">
 							<c:if test="${i.atstate == 0}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tds">미출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button></td></tr>
+								<tr><td class="tds" width="15%">${i.cname}</td><td width="15%" id="atText_${i.ccode}"  class="tds">미출석</td><td width="50%" id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button><button class="etc" value="${i.ccode}">기타</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate == 1 || i.atstate == 2}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="leave" value="${i.ccode}">하원</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="leave" value="${i.ccode}">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate eq 3}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">하원</td><td id="atCheck_${i.ccode}" class="tds"><button value="${i.ccode}" disabled="disabled">하원</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">하원</td><td id="atCheck_${i.ccode}" class="tds"><button value="${i.ccode}" class="btn_disabled" disabled="disabled">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 						</c:forEach>
 					</table>	
@@ -389,7 +427,6 @@ function drawCalendar(){
 			<ul>
 			<li>
 			<section class="ShopContainer">
-			<h1>이달의 출석현황</h1>
 						<!-- contents -->
 						<div class="atd_month">
 							<div class="inblock">
@@ -415,5 +452,34 @@ function drawCalendar(){
 		</div>
 		</li>
 	</ul>
+	  <!-- Modal -->
+  <div class="modal fade" id="info_modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align:center">원생 정보</h4>
+        </div>
+        <div class="modal-body">
+  			<table style="width:100%;margin-bottom:10px;">
+  				<tr><th>원생이름</th><td id="c_name" colspan="3"></td></tr>
+  				<tr><th>원생성별</th><td id="c_gender"></td><th>원생나이</th><td id="c_age"></td></tr>
+  				<tr><th>원생주소</th><td id="c_addr" colspan="3"></td></tr>
+  				
+  			</table>
+  			<table style="width:100%;">
+  				<tr><th>보호자이름</th><td id="g_name"></td><th>원생과의 관계</th><td id="g_relation"></td></tr>
+  				<tr><th>연락처</th><td id="g_tel" colspan="3"></td></tr>
+  			</table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </body>
 </html>

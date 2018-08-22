@@ -28,6 +28,7 @@ body {
 	width: 350px;
 	height: 350px;
 	background-color: white;
+	outline: none;
 	z-index: 15;
 	-webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;

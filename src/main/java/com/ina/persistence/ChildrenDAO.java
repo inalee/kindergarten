@@ -28,4 +28,7 @@ public interface ChildrenDAO {
    
    public int same_kin(EnrollBean eb);
    
+   public ChildrenVO sel_child_info(int ccode);
+   
+   
 }

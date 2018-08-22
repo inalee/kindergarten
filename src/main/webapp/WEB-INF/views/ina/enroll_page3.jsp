@@ -36,6 +36,7 @@ function search_btn() {
 	$.get("search_kinder",	{ sigungucode: psigungu, kinkindcode:pkinkind, kinname:pkinname }).done(function(data,state){
 
 		$("#total").remove();
+		$("#next").remove();
 		$("#contain3").before("<h5 id='total' style='padding-left: 60px;'>총 "+data.length+"개의 어린이집이 검색되었습니다.</h5>"); 
 		$("#mychild").empty();
 		$("#mychild").append(" <tr><th>-</th><th>위치</th><th>어린이집</th><th>유형</th><th>정원</th><th>현원</th><th>상세정보</th></tr>");
@@ -69,7 +70,30 @@ function search_btn() {
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinmax+"명</td><td>"+data[i].kincurrent+"명</td>"+   
 				    "<td><button class='buttonh button6' onclick='detailkinder("+data[i].kincode2+");'>"+"자세히보기"+"</button></td></tr>");
 		}
+		$("#mychild").after("<center><button id='next' class='button2 button4'>더보기▽</button></center>"); 
 		
+		  var list = $(".list tr");
+		    var numToShow = 20;
+		    var button = $("#next");
+		    var numInList = list.length;
+		    list.hide();
+		    if (numInList > numToShow) {
+		      button.show();
+		    }
+
+		    list.slice(0, numToShow).show();
+
+		  	
+		    $("#next").click(function(){
+		    
+		        var showing = list.filter(':visible').length;
+		        list.slice(showing - 1, showing + numToShow).fadeIn();
+		        var nowShowing = list.filter(':visible').length;
+		        if (nowShowing >= numInList) {
+		          button.hide();
+		        }
+		    });
+	
 		});
 	
 	
@@ -104,6 +128,17 @@ function checkkind(){
 body{
     font-family: 'Jeju Gothic', sans-serif;	
 }
+#next {
+
+border-radius: 7px;
+width: 200px;
+height: 40px;
+position: relative;
+display: inline-block;	
+margin: auto;
+}
+
+
 .container {
       width: 1300px;
     position: relative;
@@ -230,7 +265,7 @@ table.type04 td {
 text-align:center;
  	margin: auto; 
  	position: relative;
- 	margin-top: 60px;
+ 	margin-top: 100px;
  	margin-bottom: 40px;
 }
 
@@ -304,7 +339,7 @@ margin: auto;
  	font-size:12pt;
  	margin: auto; 
  	position: relative;
- 
+ 	margin-bottom: 20px;
 
 }
 
@@ -457,11 +492,10 @@ background-color:#EBF3FB;
 </table>
 <hr class="my-hr3">
   <div id="contain3">
-
+  	 <ul class="list">
    <table id="mychild" >
-
- 
 </table>
+</ul>
 </div>
 
 	<div id="btnid">

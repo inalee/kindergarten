@@ -113,10 +113,10 @@ where cl.clcode=c.clcode and m.memid=g.memid and g.gcode=c.gcode and k.kincode=c
 
 <!--  반 정보 -->
 <select id="class_info" resultType="map">
-select cl.clcode,m.memname,cl.clname,clage,count(*) re
-from class cl,member m,teacher t,kindergarten k,children c where c.clcode=cl.clcode and cl.tecode=t.tecode 
-and m.memid=t.memid and k.kincode=cl.kincode and k.kincode=#{kincode}
- group by cl.clcode,m.memname,cl.clname,cl.clage
+select cl.clcode,m.memname,cl.clname,cl.clage,ca.detail,count(*) re
+from class cl,member m,teacher t,kindergarten k,children c,classage ca where c.clcode=cl.clcode and cl.tecode=t.tecode 
+and m.memid=t.memid and k.kincode=cl.kincode and cl.agecode=ca.agecode and k.kincode=#{kincode}
+group by cl.clcode,m.memname,cl.clname,cl.clage,ca.detail order by cl.clcode;
 </select>
 
 <select id="select_all_kinder" resultType="KindergartenVO">

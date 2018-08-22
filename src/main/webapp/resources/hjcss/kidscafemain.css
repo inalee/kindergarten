@@ -139,7 +139,7 @@ input[type="date"]::-webkit-inner-spin-button {
 #personnum {
 	position: absolute;
 	height: 81px;
-	width: 228px;
+	width: 260px;
 	padding: 9px;
 	border: 1px solid rgb(169, 169, 169);
 	border-radius: 5px;
@@ -194,6 +194,10 @@ input[type="date"]::-webkit-inner-spin-button {
 	font-size: 15px;
 	border: none;
 	text-align: center;
+	background-color: #ffffff;
+	color: #000000;
+	outline: none;
+	cursor: default;
 }
 
 .count::-webkit-outer-spin-button,

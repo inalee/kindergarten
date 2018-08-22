@@ -11,6 +11,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+
+
+
 function search_btn() {
 	
 	var psigungu = $("#sigungu").val();
@@ -230,6 +233,8 @@ table.type04 td {
 </table>
 <hr class="my-hr3">
  <div id="contains">
+    <div class="wrapper">
+  	 <ul class="list">
 		<table id="mychild">
   		<tr>
 	<th>번호</th>
@@ -256,6 +261,9 @@ table.type04 td {
   </tr>
   </c:forEach>
 </table>
+
+</ul>
+</div>
 </div>
 </div>
 </div>

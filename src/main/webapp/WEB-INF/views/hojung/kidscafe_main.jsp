@@ -50,13 +50,7 @@
 			+ document.getElementById("count1").value + "명, 어린이 "
 			+ document.getElementById("count2").value + "명";
 
-	  
-	
-	
   });
-  
-  
-  
   
 
 	//성인 인원수 +,- 함수

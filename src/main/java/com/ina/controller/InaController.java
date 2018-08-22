@@ -107,12 +107,65 @@ public class InaController {
 		return "/gmenu8";
 	}
 	
-	@RequestMapping(value = "/testpage", method = RequestMethod.GET)
-	public String testpage() {
+	
+	@RequestMapping(value = "/tmenu_info", method = RequestMethod.GET)
+	public String tmenu_info(HttpSession session,Model model) {
 		
-		return "/testpage";
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		System.out.println("kincode:"+kincode);
+		model.addAttribute("kininfo", regudao.sel_kinder_info(kincode));
+		
+		return "/tmenu_info";
 	}
 	
+	
+	@RequestMapping(value = "/tmenu_info_modify", method = RequestMethod.GET)
+	public String tmenu_info_modify(HttpSession session,Model model) {
+		
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		System.out.println("kincode:"+kincode);
+		model.addAttribute("kininfo", regudao.sel_kinder_info(kincode));
+		
+		return "/tmenu_info_modify";
+	}
+	
+	
+	
+	@RequestMapping(value = "/test_tmenu", method = RequestMethod.GET)
+	public String test_tmenu() {
+		
+		return "/test_tmenu";
+	}
+	
+	
+	
+	@RequestMapping(value = "/modify_kinder", method = RequestMethod.POST)
+	public String modify_kinder(KindergartenVO kv) {
+		
+		regudao.modify_kinder(kv);
+		return "redirect:tmenu_info";
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/childinfo_tmenu", method = RequestMethod.GET)
+	public String childinfo_tmenu(HttpServletRequest request,Model model) {
+		
+		int ccode = Integer.parseInt(request.getParameter("ccode"));
+		model.addAttribute("info", childdao.sel_child_info(ccode));
+		
+		return "/childinfo_tmenu";
+	}
+
+	
+	@RequestMapping(value = "/scroll_test", method = RequestMethod.GET)
+	public String scroll_test() {
+		
+		return "/scroll_test";
+	}
 	
 	
 	@RequestMapping(value = "/safety_gmenu", method = RequestMethod.GET)
@@ -608,6 +661,12 @@ public class InaController {
 		//gcode 찾는 dao 사용
 		int gcode = childdao.checkGid(memid);
 		cv.setGcode(gcode);
+		
+		
+		//성격,취미 
+		cv.setPscode(1);
+		cv.setHcode(1);
+		
 		
 		// kincode
 		if(cv.getCstate().equals("미재학")) {

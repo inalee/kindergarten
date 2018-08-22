@@ -18,6 +18,7 @@ body {
  	font-family: 'Jeju Gothic', serif;
 }
 
+
 #maindiv ul{
 	list-style: none;
 	text-align: center;

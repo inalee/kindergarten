@@ -264,8 +264,9 @@ function drawCalendar(){
 	<div id="kidscafe_detail">
 		<div id="kidscafe_photo"><img alt="kidscafe_photo" class="kcimage" src="resources/images/noimage.gif"></div>
 		<ul class="ul_detail">
-			<li><span class="li_detail">주소</span>경기도</li>
-			<li><span class="li_detail">전화번호</span>02</li>
+			<li><span class="li_detail">카페명</span><span style="font-size: 17px; font-weight: bold;">${kidscafe.cfname}</span></li>
+			<li><span class="li_detail">주소</span><span style="width: 83%; float: right;">${kidscafe.address}</span></li>
+			<li><span class="li_detail">전화번호</span>ㅇㅇ</li>
 			<li><span class="li_detail">홈페이지</span>ㅇㅇ</li>
 			<li><span class="li_detail">이용시간</span>ㅇㅇ</li>
 			<li><span class="li_detail">이용정보</span>ㅇㅇ</li>
@@ -316,22 +317,22 @@ function drawCalendar(){
 			<li><span class="li_detail">날짜</span><input type="text" id="res_date" disabled="disabled" value="2018/08/16"></li>
 			<hr>
 			<li><span class="li_detail">시간</span><input type="text" id="res_time" disabled="disabled" value=""></li>
-			<li><span class="li_detail" style="font-size: 15px; display: inline-block; margin-top: 12px; margin-bottom: 15px;">오전</span>
+			<li><span class="li_detail" style="font-size: 15px; display: inline-block; margin-top: 10px;">오전</span>
 				<span style="display: inline-block; width: 400px; float: right;">
 	<!-- 			<button class="res_time" id="10" type="button" onclick="selectTime(this.id);">10:00</button> -->
 				<button class="btn_time" id="10" value="10" type="button" onclick="selectTime(this.id);">10:00<br><p>12/20</p></button>
 				<button class="btn_time" id="11" value="11" type="button" onclick="selectTime(this.id);">11:00<br><p>12/20</p></button>
 				</span>
-				</li>
-				<li><span class="li_detail" style="font-size: 15px; display: inline-block; padding-top: 8px;">오후</span>
-				<span style="display: inline-block; width: 400px; float: right; margin-bottom: 10px;">
+			</li>
+			<li><span class="li_detail" style="font-size: 15px; display: inline-block; padding-top: 8px;">오후</span>
+				<span style="display: inline-block; width: 400px; float: right;">
 				<button class="btn_time" id="12" value="12" onclick="selectTime(this.id);">12:00<br><p>12/20</p></button>
 				<button class="btn_time" id="13" value="13" onclick="selectTime(this.id);">13:00<br><p>12/20</p></button>
 				<button class="btn_time" id="14" value="14" onclick="selectTime(this.id);">14:00<br><p>12/20</p></button>
 				<button class="btn_time" id="15" value="15" onclick="selectTime(this.id);">15:00<br><p>12/20</p></button>
 				<button class="btn_time" id="16" value="16" onclick="selectTime(this.id);">16:00<br><p>12/20</p></button>
-				<button class="btn_time" id="17" value="17" disabled="disabled" title="인원이 ">17:00<br><p>20/20</p></button>
-				<button class="btn_time" id="18" value="18" disabled="disabled" title="만석입니다.">18:00<br><p>20/20</p></button>
+				<button class="btn_time" id="17" value="17" disabled="disabled" title="인원초과입니다. ">17:00<br><p>20/20</p></button>
+				<button class="btn_time" id="18" value="18" disabled="disabled" title="인원초과입니다.">18:00<br><p>20/20</p></button>
 				<button class="btn_time" id="19" value="19" onclick="selectTime(this.id);">19:00<br><p>12/20</p></button>
 				<button class="btn_time" id="20" value="20" onclick="selectTime(this.id);">20:00<br><p>12/20</p></button>
 				<button class="btn_time" id="21" value="21" onclick="selectTime(this.id);">21:00<br><p>12/20</p></button>

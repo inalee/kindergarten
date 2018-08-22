@@ -105,6 +105,9 @@ function selectKinders() {
 	
 	$.get("select_kinder_kw",{"sigungucode":sigungucode, "kinname":kinname, "kinkind_lists":kinkind_lists, "vacancy":vacancy, "kinshuttle":kinshuttle, "kinmax":kinmax}, function(data, state) { 
 // 			alert(data);
+		$("#tbody").empty();
+		$(".pagination ul").empty();
+		
 		if (state == "success") {
 			//성공한 경우
 // 			alert("GET 성공");
@@ -131,8 +134,11 @@ function selectKinders() {
 // 				$("#tbody").append("<tr><td>"+(i+1)+"</td><td>"+data[i].sido+"&nbsp;"+data[i].sigungu+"</td><td style='font-weight:bold;'><a title='자세히 보기' class='detail_kinder' onclick='detailkinder("+data[i].kincode2+");'>"+data[i].kinname+"</a></td><td>"+data[i].kinkind+"</td><td>"+data[i].kinroom+"</td><td>"+data[i].kinmax+"</td><td>"+data[i].kincurrent+"</td><td>"+data[i].kinteacher+"</td><td>"+homepage+"</td></tr>")
 				
 			}
-			// 1페이지로 초기화
-			goPage(1);
+			
+			if(data.length!=0) {
+				// 1페이지로 초기화
+				goPage(1);
+			}
 			
 		} else {
 			//실패한 경우
@@ -192,6 +198,9 @@ function goPage(page) {
 	for (var i = startIndex; i <= endIndex; i++) {
 		$("#tbody").append(selectedData[i]);
 	}
+	
+	//스크롤 위로 
+	$("html").scrollTop(420);
 
 }
 

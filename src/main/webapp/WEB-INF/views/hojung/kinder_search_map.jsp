@@ -64,7 +64,15 @@
 	
 	<div class="search_result">
 		<div class="kinder_list">
-			<p>검색 조건을 입력해주세요.</p>			
+			<div class="listMap">
+				<p>검색 조건을 입력해주세요.</p>
+			</div>
+			<!-- 페이징 -->
+			<div class="paginationMap">
+				<ul>
+				
+				</ul>
+			</div>
 		</div>
 		
 		<div id="map"></div>
@@ -96,46 +104,43 @@
 	map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
 	
 	
+	var kinderData = []; //검색된 데이터 저장
+	var pagination = []; //페이지 배열
+	var currentPage = 1; //현재 페이지
+	
 	//어린이집 목록 불러오기
 	function selectKinders() {
 		
-		$(".kinder_list").empty();
+		$(".listMap").empty();
+		$(".paginationMap ul").empty();
 		
 		var sigungucode=document.getElementById("sigungucode").value;
-		var kinname=document.getElementById("kinname").value;	
+		var kinname=document.getElementById("kinname").value;
 		
 		$.get("select_kinder_map",{"sigungucode":sigungucode, "kinname":kinname}, function(data, state) { 
 //	 			alert(data);
 			if (state == "success") {
 				//성공한 경우
 //	 			alert("GET 성공");
+				kinderData = [];
+				kinderData = data; //검색된 데이터 초기화 및 저장
+				pagination = []; //페이지 배열 초기화
+				infowindow.close(map, selectedMarker); // 윈도인포우 닫기
+				removeMarkers(); // 지도 위의 마커를 모두 제거
+				
 				if(data.length==0){
-					$(".kinder_list").append("<p>검색 결과가 없습니다.</p>");
+					$(".listMap").append("<p>검색 결과가 없습니다.</p>");
 				}
-					
-					infowindow.close(map, selectedMarker); // 윈도인포우 닫기
-					removeMarkers(); // 지도 위의 마커를 모두 제거
-					bounds = new daum.maps.LatLngBounds(); // 지도 범위를 재설정하기 위한 새로운 bounds
-					
-	 				for (var i = 0; i < data.length; i++) {
-// 					for (var i = 0; i < 10; i++) {
-	
-						var homepage;
-						if (data[i].kinhome.startsWith("http")) {
-							homepage="<a href="+data[i].kinhome+" target='_blank' title='"+data[i].kinhome+"'><img alt='홈페이지' class='homepageimg2' src='resources/images/homepage.png'></a>";
-						} else if (data[i].kinhome.startsWith("www.")||data[i].kinhome.startsWith("club.")||data[i].kinhome.startsWith("blog.")||data[i].kinhome.startsWith("cafe.")||(data[i].kinhome.endsWith(".kr")&&data[i].kinhome.indexOf("@")==-1)||(data[i].kinhome.endsWith(".com")&&data[i].kinhome.indexOf("@")==-1)||(data[i].kinhome.endsWith(".net")&&data[i].kinhome.indexOf("@")==-1)) {
-							homepage="<a href='http://"+data[i].kinhome+"' target='_blank' title='"+data[i].kinhome+"'><img alt='홈페이지' class='homepageimg2' src='resources/images/homepage.png'></a>";
-						} else {
-							homepage="";
-						}
-	 					$(".kinder_list").append("<table><tr><td colspan='2'><span title="+data[i].kinname+" onclick=\"kinnameClick("+(i+1)+", "+data[i].kinla+", "+data[i].kinlo+", \'"+data[i].kinname+"\', \'"+data[i].kinaddress+"\', \'"+data[i].kinphone+"\', \'"+data[i].kinhome+"\', \'"+data[i].kincode2+"\')\"><img alt='marker' class='marker' src='resources/images/map_markers/marker"+(i+1)+".png'>"+data[i].kinname+"</span>"+homepage+"</td></tr><tr><td colspan='2'>"+data[i].kinaddress+"</td></tr><tr><td colspan='2'>"+data[i].kinphone+"</td></tr><tr><td>유형 : "+data[i].kinkind+"</td><td>학급(반)수 : "+data[i].kinroom+"</td></tr><tr><td>현/정원 : "+data[i].kincurrent+"/"+data[i].kinmax+"</td><td>교직원수 : "+data[i].kinteacher+"</td></tr><tr height='7'><td colspan='2'><hr /></td></tr></table>");
-	 					
-						// 마커를 생성하고 지도에 표시
-				        makeMarkers(i+1, data[i].kinla, data[i].kinlo, bounds, data[i].kinname, data[i].kinaddress, data[i].kinphone, data[i].kinhome, data[i].kincode2);
-						
-					}
-					// 검색된 장소 위치를 기준으로 지도 범위를 재설정
-		    	    map.setBounds(bounds);
+				
+				// 페이지 배열에 넣기
+				for (var i = 1; i <= ((data.length-1)/10)+1; i++) {
+					pagination.push(i);
+				}
+				
+				if(data.length!=0) {
+					// 1페이지로 초기화
+					goPage(1);
+				}
 				
 			} else {
 				//실패한 경우
@@ -206,7 +211,7 @@
 		
 		// 마커에 mouseover 이벤트를 등록한다
 		daum.maps.event.addListener(marker[num], 'mouseover', function() {
-	        marker[num].setImage(overImage[num]);		
+	        marker[num].setImage(overImage[num]);
 		});
 
 		// 마커에 mouseout 이벤트 등록
@@ -218,7 +223,7 @@
 	
 	// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 	function removeMarkers() {
-		for ( var i = 1; i < marker.length; i++ ) {
+		for ( var i = 0; i < marker.length; i++ ) {
 			marker[i].setMap(null);
 	    }   
 		marker = [];
@@ -264,7 +269,79 @@
 		window.open(popUrl,"",popOption);	
 
 	}	
+	
+	//페이징 함수
+	function goPage(page) {
+		infowindow.close(map, selectedMarker); // 윈도인포우 닫기
+		removeMarkers(); // 지도 위의 마커를 모두 제거
+		
+		currentPage = page;
+		
+		var startPage = parseInt((currentPage-1)/5)*5+1;
+		var endPage = parseInt((currentPage-1)/5)*5+5;
+		if(endPage>pagination.slice(-1)[0]) {
+			endPage = pagination.slice(-1)[0]
+		}
+		
+		$(".paginationMap ul").empty();
+		
+		// 첫번째 페이지 아닐 때
+		if(currentPage!=1) {
+			$(".paginationMap ul").append("<li class='pageFunc' onclick='prevPage()'>&laquo;</li>");
+		}
+		for (var i = startPage; i <= endPage; i++) {
+			if(i==currentPage){
+				$(".paginationMap ul").append("<li id='"+i+"' class='active' onclick='goPage(this.id)'>"+i+"</li>");
+			} else {
+				$(".paginationMap ul").append("<li id='"+i+"' onclick='goPage(this.id)'>"+i+"</li>");
+			}
+		}
+		// 마지막 페이지 아닐 때
+		if(currentPage!=pagination.slice(-1)[0]) {
+			$(".paginationMap ul").append("<li class='pageFunc' onclick='nextPage()'>&raquo;</li>");
+		}
+		
+		// 데이터 append
+		var startIndex = parseInt(currentPage-1)*10;
+		var endIndex = parseInt(currentPage)*10-1;
+		if(endIndex >= kinderData.length) {
+			endIndex = kinderData.length-1;
+		}
+// 	 	alert(startIndex+", "+endIndex)
+		$(".listMap").empty();
+		
+		bounds = new daum.maps.LatLngBounds(); // 지도 범위를 재설정하기 위한 새로운 bounds
+		
+		for (var i = startIndex; i <= endIndex; i++) {
+			var homepage;
+			if (kinderData[i].kinhome.startsWith("http")) {
+				homepage="<a href="+kinderData[i].kinhome+" target='_blank' title='"+kinderData[i].kinhome+"'><img alt='홈페이지' class='homepageimg2' src='resources/images/homepage.png'></a>";
+			} else if (kinderData[i].kinhome.startsWith("www.")||kinderData[i].kinhome.startsWith("club.")||kinderData[i].kinhome.startsWith("blog.")||kinderData[i].kinhome.startsWith("cafe.")||(kinderData[i].kinhome.endsWith(".kr")&&kinderData[i].kinhome.indexOf("@")==-1)||(kinderData[i].kinhome.endsWith(".com")&&kinderData[i].kinhome.indexOf("@")==-1)||(kinderData[i].kinhome.endsWith(".net")&&kinderData[i].kinhome.indexOf("@")==-1)) {
+				homepage="<a href='http://"+kinderData[i].kinhome+"' target='_blank' title='"+kinderData[i].kinhome+"'><img alt='홈페이지' class='homepageimg2' src='resources/images/homepage.png'></a>";
+			} else {
+				homepage="";
+			}
+			// 결과 목록 생성
+			$(".listMap").append("<table><tr><td colspan='2'><span title="+kinderData[i].kinname+" onclick=\"kinnameClick("+i%10+", "+kinderData[i].kinla+", "+kinderData[i].kinlo+", \'"+kinderData[i].kinname+"\', \'"+kinderData[i].kinaddress+"\', \'"+kinderData[i].kinphone+"\', \'"+kinderData[i].kinhome+"\', \'"+kinderData[i].kincode2+"\')\"><img alt='marker' class='marker' src='resources/images/map_markers/marker"+i%10+".png'>"+kinderData[i].kinname+"</span>"+homepage+"</td></tr><tr><td colspan='2'>"+kinderData[i].kinaddress+"</td></tr><tr><td colspan='2'>"+kinderData[i].kinphone+"</td></tr><tr><td>유형 : "+kinderData[i].kinkind+"</td><td>학급(반)수 : "+kinderData[i].kinroom+"</td></tr><tr><td>현/정원 : "+kinderData[i].kincurrent+"/"+kinderData[i].kinmax+"</td><td>교직원수 : "+kinderData[i].kinteacher+"</td></tr><tr height='7'><td colspan='2'><hr /></td></tr></table>");
+			// 마커를 생성하고 지도에 표시
+			makeMarkers(i%10, kinderData[i].kinla, kinderData[i].kinlo, bounds, kinderData[i].kinname, kinderData[i].kinaddress, kinderData[i].kinphone, kinderData[i].kinhome, kinderData[i].kincode2);
+		}
+		// 검색된 장소 위치를 기준으로 지도 범위를 재설정
+	    map.setBounds(bounds);
+		
+		//스크롤 맨 위로 
+		$(".kinder_list").scrollTop(0);
+	}
 
+	// 이전 페이지
+	function prevPage() {
+		goPage(parseInt(currentPage)-1);
+	}
+
+	// 다음 페이지
+	function nextPage() {
+		goPage(parseInt(currentPage)+1);
+	}
 
 </script>
 </body>

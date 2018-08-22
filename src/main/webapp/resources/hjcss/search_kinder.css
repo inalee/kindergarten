@@ -375,6 +375,45 @@ i {
 	cursor: pointer;
 }
 
+/* 페이징_keyword */
+.pagination {
+	text-align: center;
+	font-size: 14px;
+	margin-top: 35px;
+	margin-bottom: 70px;
+}
+
+.pagination ul {
+	list-style-type: none;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+.pagination li {
+    color: #575757;
+    float: left;
+    padding: 4px 11px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.pagination li.active {
+    background-color: #71c6ff;
+    color: white;
+}
+
+.pagination li:hover:not(.active) {
+	background-color: #e7e7e7;
+}
+
+.pagination .pageFunc {
+	border: 1px solid #c0c0c0;
+}
+
+
+
 
 /* search_map.jsp */
 .search_result {
@@ -442,6 +481,39 @@ i {
 	vertical-align: middle;
 	cursor: pointer;
 }
+
+/* 페이징_map */
+.paginationMap {
+	text-align: center;
+	font-size: 14px;
+}
+
+.paginationMap ul {
+	list-style-type: none;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+.paginationMap li {
+    color: #575757;
+    float: left;
+    margin: 0;
+    padding: 0px 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.paginationMap li.active {
+    background-color: #71c6ff;
+    color: white;
+}
+
+.paginationMap li:hover:not(.active) {
+	background-color: #e7e7e7;
+}
+
 
 /* 다음 지도 */
 #map {
@@ -514,42 +586,7 @@ i {
 }
 
 
-/* 페이징 */
-.pagination {
-	text-align: center;
-	font-size: 14px;
-	margin-top: 35px;
-	margin-bottom: 70px;
-}
 
-.pagination ul {
-	list-style-type: none;
-	display: inline-block;
-	padding: 0;
-	margin: 0;
-}
-
-.pagination li {
-    color: #575757;
-    float: left;
-    padding: 4px 11px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color .3s;
-}
-
-.pagination li.active {
-    background-color: #71c6ff;
-    color: white;
-}
-
-.pagination li:hover:not(.active) {
-	background-color: #e7e7e7;
-}
-
-.pagination .pageFunc {
-	border: 1px solid #c0c0c0;
-}
 
 
 

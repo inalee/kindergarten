@@ -69,4 +69,9 @@ public class ChildrenDAOImpl implements ChildrenDAO{
 	public int same_kin(EnrollBean eb) {
 		return sqlSession.selectOne(namespace+".same_kinder",eb);
 	}
+	
+	@Override
+	public ChildrenVO sel_child_info(int ccode) {
+		return sqlSession.selectOne(namespace+".sel_child_info",ccode);
+	}
 }

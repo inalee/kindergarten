@@ -14,6 +14,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+var selectedData = []; //검색된 데이터 저장
+var pagination = []; //페이지 배열
+var currentPage = 1; //현재 페이지
+var viewNum = 20; // 한 페이지에 보여지는 데이터 개수
+
 //슬라이더 오버랩 방지, input 숫자를 슬라이더 위치의 숫자로 업데이트, 색 업데이트
 function updateHeadcountLabels() {
     //avoids slider overlap
@@ -103,8 +108,14 @@ function selectKinders() {
 		if (state == "success") {
 			//성공한 경우
 // 			alert("GET 성공");
+			selectedData = []; //검색된 데이터 초기화
+			pagination = []; //페이지 배열 초기화
 			
 			$("#search_cnt").append("총 "+data.length+"개의 어린이집이 검색되었습니다.");
+			// 페이지 배열에 넣기
+			for (var i = 1; i <= ((data.length-1)/viewNum)+1; i++) {
+				pagination.push(i);
+			}
 			
 			for (var i = 0; i < data.length; i++) {
 				var homepage;
@@ -115,9 +126,14 @@ function selectKinders() {
 				} else {
 					homepage=data[i].kinhome;
 				}
-				$("#tbody").append("<tr><td>"+(i+1)+"</td><td>"+data[i].sido+"&nbsp;"+data[i].sigungu+"</td><td style='font-weight:bold;'><a title='자세히 보기' class='detail_kinder' onclick='detailkinder("+data[i].kincode2+");'>"+data[i].kinname+"</a></td><td>"+data[i].kinkind+"</td><td>"+data[i].kinroom+"</td><td>"+data[i].kinmax+"</td><td>"+data[i].kincurrent+"</td><td>"+data[i].kinteacher+"</td><td>"+homepage+"</td></tr>")
+				// 검색된 데이터 배열에 넣기
+				selectedData.push("<tr><td>"+(i+1)+"</td><td>"+data[i].sido+"&nbsp;"+data[i].sigungu+"</td><td style='font-weight:bold;'><a title='자세히 보기' class='detail_kinder' onclick='detailkinder("+data[i].kincode2+");'>"+data[i].kinname+"</a></td><td>"+data[i].kinkind+"</td><td>"+data[i].kinroom+"</td><td>"+data[i].kinmax+"</td><td>"+data[i].kincurrent+"</td><td>"+data[i].kinteacher+"</td><td>"+homepage+"</td></tr>");
+// 				$("#tbody").append("<tr><td>"+(i+1)+"</td><td>"+data[i].sido+"&nbsp;"+data[i].sigungu+"</td><td style='font-weight:bold;'><a title='자세히 보기' class='detail_kinder' onclick='detailkinder("+data[i].kincode2+");'>"+data[i].kinname+"</a></td><td>"+data[i].kinkind+"</td><td>"+data[i].kinroom+"</td><td>"+data[i].kinmax+"</td><td>"+data[i].kincurrent+"</td><td>"+data[i].kinteacher+"</td><td>"+homepage+"</td></tr>")
 				
 			}
+			// 1페이지로 초기화
+			goPage(1);
+			
 		} else {
 			//실패한 경우
 			alert("GET 실패");
@@ -133,6 +149,88 @@ function detailkinder(kincode){
 	window.open(popUrl,"",popOption);	
 
 }
+
+//페이징 함수
+function goPage(page) {
+	currentPage = page;
+	
+	var startPage = parseInt((currentPage-1)/10)*10+1;
+	var endPage = parseInt((currentPage-1)/10)*10+10;
+	if(endPage>pagination.slice(-1)[0]) {
+		endPage = pagination.slice(-1)[0]
+	}
+	
+	$(".pagination ul").empty();
+	
+	// 첫번째 페이지 아닐 때
+	if(currentPage!=1) {
+		$(".pagination ul").append("<li class='pageFunc' onclick='firstPage()'>&laquo; 처음</li>");
+		$(".pagination ul").append("<li class='pageFunc' onclick='prevPage()'>이전</li>");
+	}
+	for (var i = startPage; i <= endPage; i++) {
+		if(i==currentPage){
+			$(".pagination ul").append("<li id='"+i+"' class='active' onclick='goPage(this.id)'>"+i+"</li>");
+		} else {
+			$(".pagination ul").append("<li id='"+i+"' onclick='goPage(this.id)'>"+i+"</li>");
+		}
+	}
+	// 마지막 페이지 아닐 때
+	if(currentPage!=pagination.slice(-1)[0]) {
+		$(".pagination ul").append("<li class='pageFunc' onclick='nextPage()'>다음</li>");
+		$(".pagination ul").append("<li class='pageFunc' onclick='lastPage()'>마지막 &raquo;</li>");
+	}
+	
+	// 데이터 append
+	var startIndex = parseInt(currentPage-1)*viewNum;
+	var endIndex = parseInt(currentPage)*viewNum-1;
+	if(endIndex >= selectedData.length) {
+		endIndex = selectedData.length-1;
+	}
+// 	alert(startIndex+", "+endIndex)
+	$("#tbody").empty();
+	
+	for (var i = startIndex; i <= endIndex; i++) {
+		$("#tbody").append(selectedData[i]);
+	}
+
+}
+
+// 이전 페이지
+function prevPage() {
+	goPage(parseInt(currentPage)-1);
+}
+
+// 다음 페이지
+function nextPage() {
+	goPage(parseInt(currentPage)+1);
+}
+
+// 처음 페이지
+function firstPage() {
+	goPage(1);
+}
+
+// 마지막 페이지
+function lastPage() {
+	goPage(pagination.slice(-1)[0]);
+}
+
+// 정렬 갯수 바꾸기
+function veiwNumChange() {
+	var sel = document.getElementById("viewNum");
+	var val = sel.options[sel.selectedIndex].value;
+	// 정렬 갯수 재부여
+	viewNum = val;
+	// 페이지 배열 초기화 및 재생성
+	pagination = [];
+	for (var i = 1; i <= ((selectedData.length-1)/viewNum)+1; i++) {
+		pagination.push(i);
+	}
+	// 1페이지로 초기화
+	goPage(1);
+}
+
+
 </script>
 </head>
 <body>
@@ -187,7 +285,7 @@ function detailkinder(kincode){
         </li><br>
         <li class="basis">
           <details>
-          	<summary>상세검색 <button class="btn search_btn" type="button" onclick="selectKinders();">검색</button></summary>
+          	<summary><span style="cursor: pointer;">상세검색</span> <button class="btn search_btn" type="button" onclick="selectKinders();">검색</button></summary>
           	<ul>
           		<li><i class="arrow right"></i>&nbsp;&nbsp;설립유형 : 
           			<label class="container">가정<input type="checkbox" id="kinkind" value="1"><span class="checkmark"></span></label>
@@ -221,7 +319,20 @@ function detailkinder(kincode){
 </div>
 
 <div>
-	<h5 id="search_cnt"></h5>
+	<ul id="search_info">
+		<li><h5 id="search_cnt"></h5></li>
+		<li> 정렬 : 
+		<select id="viewNum" onchange="veiwNumChange();">
+			<option value="10">10개씩 보기</option>
+			<option value="15">15개씩 보기</option>
+			<option value="20" selected="selected">20개씩 보기</option>
+			<option value="30">30개씩 보기</option>
+			<option value="40">40개씩 보기</option>
+			<option value="50">50개씩 보기</option>
+		</select>
+		</li>
+	</ul>
+
 	<table class="sub_news" border="1" cellspacing="0"
 		summary="통합검색 리스트">
 		<caption>통합검색 리스트</caption>
@@ -255,6 +366,13 @@ function detailkinder(kincode){
 <!-- 			<td><img alt="홈페이지" class="homepageimg" src="resources/images/homepage.png"></td></tr> -->
 		</tbody>
 	</table>
+</div>
+
+<!-- 페이징 -->
+<div class="pagination">
+	<ul>
+	
+	</ul>
 </div>
 
 

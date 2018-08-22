@@ -27,5 +27,10 @@ public class KidscafeDAOImpl implements KidscafeDAO {
 	public List<KidscafeVO> selectKidscafes(KidscafesearchCri cri) throws Exception {
 		return sqlSession.selectList(namespace+".selectKidscafes",cri);
 	}
+
+	@Override
+	public KidscafeVO selectOneKidscafe(int cfcode) throws Exception {
+		return (KidscafeVO)sqlSession.selectOne(namespace+".selectOneKidscafe", cfcode);
+	}
 	
 }

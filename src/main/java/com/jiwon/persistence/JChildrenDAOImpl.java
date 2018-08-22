@@ -92,4 +92,9 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	public MemberVO getTeacherInfo(int ccode) throws Exception {
 		return session.selectOne(namespace + ".getTeacherInfo", ccode);
 	}
+
+	@Override
+	public ChildrenDTO getChnGInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getChnGInfo", ccode);
+	}
 }

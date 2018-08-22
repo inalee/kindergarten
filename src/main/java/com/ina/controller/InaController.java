@@ -107,6 +107,58 @@ public class InaController {
 		return "/gmenu8";
 	}
 	
+	
+	@RequestMapping(value = "/tmenu_info", method = RequestMethod.GET)
+	public String tmenu_info(HttpSession session,Model model) {
+		
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		System.out.println("kincode:"+kincode);
+		model.addAttribute("kininfo", regudao.sel_kinder_info(kincode));
+		
+		return "/tmenu_info";
+	}
+	
+	
+	@RequestMapping(value = "/tmenu_info_modify", method = RequestMethod.GET)
+	public String tmenu_info_modify(HttpSession session,Model model) {
+		
+		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tv.getKincode();
+		System.out.println("kincode:"+kincode);
+		model.addAttribute("kininfo", regudao.sel_kinder_info(kincode));
+		
+		return "/tmenu_info_modify";
+	}
+	
+	
+	
+	@RequestMapping(value = "/test_tmenu", method = RequestMethod.GET)
+	public String test_tmenu() {
+		
+		return "/test_tmenu";
+	}
+	
+	
+	
+	@RequestMapping(value = "/modify_kinder", method = RequestMethod.POST)
+	public String modify_kinder(KindergartenVO kv) {
+		
+		regudao.modify_kinder(kv);
+		return "redirect:tmenu_info";
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/childinfo_tmenu", method = RequestMethod.GET)
+	public String childinfo_tmenu(HttpServletRequest request,Model model) {
+		
+		int ccode = Integer.parseInt(request.getParameter("ccode"));
+		model.addAttribute("info", childdao.sel_child_info(ccode));
+		
+		return "/childinfo_tmenu";
+	}
 
 	
 	@RequestMapping(value = "/scroll_test", method = RequestMethod.GET)

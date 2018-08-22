@@ -95,10 +95,10 @@ $(function(){
 	       </ul>
 	      </li>
 	      <li class="sub-menu-parent" tab-index="0">
-	       <a href="#">주변시설 예약</a>
+	       <a href="#">키즈카페</a>
 	       <ul class="sub-menu">
-	         <li><a href="/kinder/hojung/kidscafe_gmenu">키즈카페</a></li>
-	         <li><a href="/kinder/hojung/gmenu17">예방접종 병원</a></li>
+	         <li><a href="/kinder/hojung/kidscafe_gmenu">키즈카페 예약</a></li>
+	         <li><a href="/kinder/hojung/gmenu17">나의 예약 내역</a></li>
 	       </ul>
 	      </li>
 	   </ul>

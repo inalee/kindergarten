@@ -24,4 +24,9 @@ public class KidscafeServiceImpl implements KidscafeService {
 		return dao.selectKidscafes(cri);
 	}
 
+	@Override
+	public KidscafeVO selectOneKidscafe(int cfcode) throws Exception {
+		return dao.selectOneKidscafe(cfcode);
+	}
+
 }

@@ -113,9 +113,8 @@ public class InaController {
 		
 		TeacherVO tv = (TeacherVO)session.getAttribute("teacher");
 		int kincode = tv.getKincode();
-		System.out.println("kincode:"+kincode);
 		model.addAttribute("kininfo", regudao.sel_kinder_info(kincode));
-		
+		model.addAttribute("classnum", regudao.sel_number_class(kincode));
 		return "/tmenu_info";
 	}
 	

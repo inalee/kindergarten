@@ -67,8 +67,7 @@ $(function(){
 	     <a href="#">원생 관리</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/jiwon/tmenu5">출석체크</a></li>
-	         <li><a href="/kinder/ina/manage2">원생 관리</a></li>
-	         <li><a href="/kinder/ina/manage">반 만들기</a></li>
+	         <li><a href="/kinder/ina/manage2">원생 / 반 관리</a></li>
 
 
 	       </ul>

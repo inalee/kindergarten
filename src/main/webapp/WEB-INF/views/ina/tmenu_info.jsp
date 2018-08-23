@@ -149,8 +149,8 @@ font-size: 20px;
     </tr>
     <tr>
         <th scope="row" style="height:50px; ">반 갯수</th>
-        <td>3개</td>
-        <th scope="row">방 갯수</th>
+        <td>${classnum}개</td>
+        <th scope="row">보육실 갯수</th>
         <td>${kininfo.kinroom}개</td>        
     </tr>
     <tr>
@@ -176,7 +176,7 @@ font-size: 20px;
 </div>
 <div id="headdiv">
 <div id="discript4">
-<button class="button" onclick="location.href='tmenu_info_modify'">정보 수정하기</button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="button" onclick="location.href='manage'">반 추가하기</button>
+<button class="button" onclick="location.href='tmenu_info_modify'">정보 수정하기</button>
 <br><br><br>
 </div>
 </div>

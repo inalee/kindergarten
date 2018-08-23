@@ -18,4 +18,6 @@ public interface ScheduleService {
 	public List<CarstationVO> select_schedule_station(int kincode) throws Exception;
 	
 	public void insertschedule(ScheduleVO vo)throws Exception;
+	
+	public void deleteschedule(int ccode)throws Exception;
 }

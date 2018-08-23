@@ -49,6 +49,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 	}
 
+
+	@Override
+	public void deleteschedule(int ccode) throws Exception {
+		dao.deleteschedule(ccode);
+		
+	}
+
 	
 
 

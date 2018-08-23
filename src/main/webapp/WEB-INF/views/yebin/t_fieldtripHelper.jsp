@@ -132,6 +132,98 @@ margin-top: 30px;
 
 }
 
+
+/*체크리스트*/
+.ck-container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+h1 {
+	font-family: 'Jeju Gothic', serif;
+	font-weight: 300;
+	margin-top: 0;
+}
+
+.control-group {
+	display: inline-block;
+	vertical-align: top;
+	background: #fff;
+	text-align: center;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+	width: 60%;
+/* 	height: 210px; */
+	margin: 10px;
+}
+
+.control {
+	display: block;
+	position: relative;
+	padding-left: 30px;
+	margin-bottom: 15px;
+	cursor: pointer;
+	font-size: 18px;
+}
+
+.control input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+
+.control__indicator {
+	position: absolute;
+	top: 2px;
+	left: 0;
+	height: 20px;
+	width: 20px;
+	background: #e6e6e6;
+}
+
+.control input:checked ~ .control__indicator {
+	background: #2aa1c0;
+}
+
+.control:hover input:not ([disabled] ):checked ~ .control__indicator,
+	.control input:checked:focus ~ .control__indicator {
+	background: #0e647d;
+}
+
+.control input:disabled ~ .control__indicator {
+	background: #e6e6e6;
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.control__indicator:after {
+	content: '';
+	position: absolute;
+	display: none;
+}
+
+.control input:checked ~ .control__indicator:after {
+	display: block;
+}
+
+.control--checkbox .control__indicator:after {
+	left: 8px;
+	top: 4px;
+	width: 3px;
+	height: 8px;
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+.control--checkbox input:disabled ~ .control__indicator:after {
+	border-color: #7b7b7b;
+}
+
 </style>
 </head>
 
@@ -488,11 +580,11 @@ $(function() {
 								+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
 								+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
 								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
-								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
-								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
 //	 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
 								+ "</table>")
-								$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
+								$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
 
 							}
 							
@@ -593,11 +685,16 @@ $(function() {
 	$(function() {
 		$("#saveList").on('click', function(event) {	
 			
-			$(function(){
+			$(function() {
 				openStep(event, 'step5', 'id5');
 				$('#id5').attr('disabled', false);
-		  })
+			})
 			
+			
+		  alert(tableTags)
+		  
+		  tableTags.push("{'noData' : 'noData'}");
+		  
 			jQuery.ajaxSettings.traditional = true;
 			$.ajax({
 				url : '/kinder/postSaveList',
@@ -613,8 +710,6 @@ $(function() {
 		})
 	})
   </script>
-  
-  
   
   <div id="step5" class="w3-container step">
     <p class="headline">Q.[여기어때] 버튼을 누르면 블로그 후기를 확인할 수 있습니다.<br> 블로그 후기를 충분히 확인하고, 동그라미 버튼을 눌러 최종 선택 해주세요.</p>
@@ -681,9 +776,7 @@ function searchAbtIt(buttonId, keywordId, trId, num) {
 function blogOpen(url){
 
 	var popUrl = url;	//팝업창에 출력될 페이지 URL
-
 	var popOption = "width=900, height="+ screen.height;    //팝업창 옵션(optoin)
-
 	window.open(popUrl,"",popOption);
 
 }
@@ -706,14 +799,22 @@ $(function() {
 						ftChoice : radiVal
 					},
 					success: function() {
-						console.log(" DB 저장 완료")
+						console.log("DB 저장 완료")
+						$(function(){
+					openStep(event, 'step6', 'id6');
+					$('#id6').attr('disabled', false);
+					$('#step6').empty();
+					$('#step6').append("<p class='headline'>Q.이 단계만 거치면 코스 선정이 모두 완료됩니다!<br>관광지 목록이나 지도의 Marker를 눌러 관광지를 선택하세요.</p>")
+					$('#step6').append("<button type='button' class='btNext' data-num=6 id='ifmom'>저장 후 준비물 체크하러가기</button>")
+					$('#step6').append(" <hr style='border: 2px solid lightgray;'/>")
+					$('#step6').append("<iframe id='tourism' src='/kinder/yebin/fieldtripTourism' frameborder = 0  style='margin-left:1%; width: 100%;  height: 100vh;'></iframe>");
+					document.getElementById('tourism').contentDocument.location.reload(true);  
+						})
 					}
 				})
 				
-				$(function(){
-					openStep(event, 'step6', 'id6');
-					$('#id6').attr('disabled', false);
-				  })
+				
+				  
 			}else{ return false;}
 		}else{alert("동그라미 버튼을 눌러 최종 학습지를 선정 해주세요!")}
 	})
@@ -723,67 +824,34 @@ $(function() {
   
   <div id="step6" class="w3-container step">
   <p class="headline">Q.이 단계만 거치면 코스 선정이 모두 완료됩니다!<br>관광지 목록이나 지도의 Marker를 눌러 관광지를 선택하세요.</p>
- 	 <hr style="border: 2px solid lightgray;"/>
-  <button type="button" class="btNext" data-num=6>다음</button>
-  
-
-  <iframe id='fieldtripHelper' src='/test.jsp' frameborder=0  style='margin-left:4%; width: 100%;  height: 100vh;'></iframe>"
-  
+  <button type="button" class="btNext" data-num=6 id='ifmom'>저장 후 준비물 체크하러가기</button>
+  <hr style="border: 2px solid lightgray;"/>
   </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   <div id="step7" class="w3-container step">
-  <button type="button" class="btNext" data-num=7>다음</button>
-  </div>
-  <div id="step8" class="w3-container step">
-  <button type="button" class="btNext" data-num=8>다음</button>
-  </div>
-  <div id="step9" class="w3-container step">
-  <button type="button" class="btNext" data-num=9>다음</button>
-  </div>
-  <div id="step10" class="w3-container step">
-  <button type="button" class="btNext" data-num=10>다음</button>
-  </div>
+  <p class="headline">Q.이번 체험학습에 필요한 준비물을 체크 해주세요.</p>
+  <button type="button" class="btNext" data-num=7 id='saveMaterials'>준비물 체크 완료</button>
+  <hr style="border: 2px solid lightgray;"/>
+	<iframe id='mtrCheck' src='/kinder/yebin/checkMaterials' frameborder = 0  style='margin-left:1%; width: 100%;  height: 100vh;'></iframe>
+	</div>
+  <script>
+ 	$('#saveMaterials').on('click', function(event) {
+ 		alert("adfadsfasdf");
+ 		$(function() {
+ 			openStep(event, 'step8', 'id8');
+ 			$('#id8').attr('disabled', false);	
+		})
+ 				
+	})
+  
+  </script>
 
-</div>
+  <div id="step8" class="w3-container step">
+  <p class="headline">Q.원장님 승인을 위해, 체험학습 계획서 양식을 완성 해주세요.</p>
+  <button type="button" class="btNext" data-num=7 id=''>승인 받기</button>
+  <hr style="border: 2px solid lightgray;"/>
+  </div>
 
 <script>
 //다음 버튼으로 탭 이동시키는 함수

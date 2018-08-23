@@ -351,4 +351,8 @@ call p_upload_kininfo(#{kincode},#{kinaddress},#{kinphone},#{kinroom},#{kinarea}
 </update>
 
 
+<select id="sel_num_class" resultType="int">
+select count(*) from class where kincode=#{kincode}
+</select>
+
 </mapper>

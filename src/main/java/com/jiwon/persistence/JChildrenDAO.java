@@ -21,6 +21,7 @@ public interface JChildrenDAO {
 	public List<ChildrenVO> getChildrenList(String memid) throws Exception;
 	public ChildrenDTO getChildInfo(int ccode) throws Exception;
 	public MemberVO getTeacherInfo(int ccode) throws Exception;
+	public ChildrenDTO getChnGInfo(int ccode) throws Exception;
 	
 	// 영상추천
 	public void insertVideoInfo(VideoVO vo) throws Exception;

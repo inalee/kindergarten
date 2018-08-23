@@ -12,5 +12,6 @@
 		<package name="com.jiwon.dto"/>
 		<package name="com.ina.domain"/>
 		<package name="com.hojung.domain"/>
+		<package name="com.yebin.domain"/>
 	</typeAliases>
 </configuration>

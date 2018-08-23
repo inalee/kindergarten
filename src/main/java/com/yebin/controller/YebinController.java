@@ -65,4 +65,16 @@ public class YebinController {
 		
 		return "/tmenu3";
 	}
+	
+	@RequestMapping(value = "/fieldtripTourism", method = RequestMethod.GET)
+	public String fieldtripTourism() {
+		
+		return "/t_fieldtripTourism";
+	}
+	
+	@RequestMapping(value = "/checkMaterials", method = RequestMethod.GET)
+	public String checkMaterials() {
+		return "/t_checkMaterials";
+	}
+	
 }

@@ -129,34 +129,35 @@ public class HojungController {
 	/* 키즈카페 예약페이지 */ 
 	@RequestMapping(value = "/cafereservation", method = RequestMethod.GET)
 	public String read(@RequestParam("cfcode") int cfcode, Model model) throws Exception{
-		// 상세페이지 url 불러오기
-		model.addAttribute("kidscafe", kcservice.selectOneKidscafe(cfcode));
+		// kidscafe 정보 불러오기
+		KidscafeVO kidscafe = kcservice.selectOneKidscafe(cfcode);
+		model.addAttribute("kidscafe", kidscafe);
 		
+		HashMap<String, String> hm = new HashMap<>();
 		Elements emts = null;
-		HashMap<String, String> map = new HashMap<>();
-		String src = null;
-		
-		ArrayList<String> test = new ArrayList<>();
-		
-		String url = "https://store.naver.com/attractions/detail?entry=plt&id=176714204&query=%EA%BC%AC%EB%A7%88%EB%8C%80%ED%86%B5%EB%A0%B9%20%EC%B2%9C%ED%98%B8%EC%A0%90";
-		
+		String emt = null;
+		String url = kidscafe.getUrlcode();
+//		ArrayList<String> test = new ArrayList<>();
+
+		System.out.println("=================good");
 		try {
-			// img 태그들을 emts
-			emts = Jsoup.connect(url).get().select(".biz_name_area .name");
+			emts = Jsoup.connect(url).get().select(".local_info_detail");
 
 			for (Element e : emts) {
 				// 경로에서 파일이름만 추출
-				src = e.text();
-				System.out.println(src);
+				emt = e.text();
+				System.out.println("================="+emt);
 				
-				test.add(src);
+				hm.put("cfphone", emt);
 			}
 
 		} catch (Exception e) {
 
 		}
+
 		
-		model.addAttribute("map", map);
+		
+		model.addAttribute("hm", hm);
 		
 		return "/kidscafe_reservation";
 	}

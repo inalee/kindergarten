@@ -330,7 +330,7 @@ background-color:white;
 	        <br />
 
 	            				<div id="btnid">
-	 <a class="action-button shadow animate yellow" onclick="regular_enroll(ccode.value,rehopedate.value)">신청하기</a>
+	 <a class="action-button shadow animate yellow" onclick="regular_enroll(ccode.value,rehopedate.value)" style="cursor: pointer;">신청하기</a>
 	</div>
 	</div>
 </form>

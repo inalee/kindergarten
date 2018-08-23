@@ -36,6 +36,7 @@ import com.kinder.domain.MemberVO;
 import com.jiwon.domain.VideoVO;
 import com.jiwon.dto.AttendDTO;
 import com.jiwon.dto.CalendarDTO;
+import com.jiwon.dto.ChildrenDTO;
 import com.jiwon.mongo.MongoAttendCheck;
 import com.jiwon.persistence.JChildrenDAO;
 import com.jiwon.service.JapiService;
@@ -160,6 +161,12 @@ public class JiwonController {
 		}
 		return "/gmenu20";
 	} 
+
+	@RequestMapping(value = "/getBooks", method = RequestMethod.GET)
+	public String getBooks(HttpServletRequest r) throws Exception {
+		r.setAttribute("child", dao.getChildInfo(Integer.parseInt(r.getParameter("ccode"))));
+		return "/gmenu20";
+	} 
 	
 	// 네이버 프록시
 	 @RequestMapping("/naver_book")
@@ -172,6 +179,7 @@ public class JiwonController {
 		 // 매개변수 처리
 		 // 검색어
 		 String text = request.getParameter("d_titl");
+		 System.out.println("text : " + text);
 		 text = URLEncoder.encode((Objects.isNull(text) ? "어린왕자" : text), "UTF-8");
 		 // 검색 개수
 		 String display = request.getParameter("display");
@@ -182,7 +190,6 @@ public class JiwonController {
 		 // 검색 주제
 		 String target = request.getParameter("target");
 		 target = Objects.isNull(target) ? "book_adv" : target;
-		 System.out.println("text : " + text);
 		 System.out.println("target : " + target);
 
 		 String apiURL = String.format("https://openapi.naver.com/v1/search/%s?d_titl=%s&display=%s&start=%s&sort=count",
@@ -218,7 +225,12 @@ public class JiwonController {
 			session.setAttribute("children", dao.getChildrenList(vo.getMemid()));
 		}
 	}
-	
+	@RequestMapping(value = "/getChnGInfo", method = RequestMethod.GET)
+	public @ResponseBody ChildrenDTO getChnGInfo(HttpServletRequest r) throws Exception {
+		
+		
+		return dao.getChnGInfo(Integer.parseInt(r.getParameter("ccode")));
+	}
 	@RequestMapping(value = "/getChildAttendInfo", method = RequestMethod.GET)
 	public String getChildAttendInfo(HttpServletRequest r) throws Exception {
 		//System.out.println(r.getParameter("ccode"));
@@ -356,8 +368,9 @@ public class JiwonController {
 		return ac;
 	}
 	
-	@Scheduled(cron="0 0 18 * * *")
+	@Scheduled(cron="0 00 18 * * *")
 	public void checkTime() throws Exception {
+		//today = "2018-08-21";
 		String late = today + "T10:30:00Z";
 
 		List<Integer> kl = dao.getKinderList();

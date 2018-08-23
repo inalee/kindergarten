@@ -14,48 +14,18 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function(){
-	// Activate tooltip
-	$('[data-toggle="tooltip"]').tooltip();
-	
-	// 선택삭제
-	var checkbox = $('table tbody input[type="checkbox"]');
-	$("#selectAll").click(function(){
-		if(this.checked){
-			checkbox.each(function(){
-				this.checked = true;                        
-			});
-		} else{
-			checkbox.each(function(){
-				this.checked = false;                        
-			});
-		} 
-	});
-	//전체삭제
-	checkbox.click(function(){
-		if(!this.checked){
-			$("#selectAll").prop("checked", false);
-		}
-	});
-});
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-$(function() { 
-	$("#addTR").click(function () { 
-		var row = "<tr>"; 
-		row += "<td><span>날 누르면 삭제가 됨</span></td>";
-		row += "<td><input type='text' name='idx[]' value='' /></td>";  
-		row += "</tr>";
-		$("#table").append(row); }); 
+function del_schedule(val) {
+	alert("해당 스케쥴을 삭제하시겠습니까?");
+	$.get("del_schedule",{ccode:val},function(result){
+		alert("삭제가 완료되었습니다.");
+		location.reload();
+	});
 	
-	$("#table").on("click", "span", function() { 
-		$(this).closest("tr").remove(); }); });
-
+}
 </script>
-
 
 </head>
 <body>
@@ -67,7 +37,6 @@ $(function() {
 						<h2>${teacher.kinname}-차량스케쥴</h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#deletebusModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE14C;</i> <span>스케쥴삭제</span></a>
 						<a href="#addbusModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>스케쥴추가</span></a>
 											
 					</div>
@@ -77,38 +46,27 @@ $(function() {
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-						<th>
-						<span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-						</th>
                         <th>차량명</th>
                         <th>운행교사</th>
                         <th>운행시각</th>
 						<th>정거장목록</th>
                         <th>탑승아이목록</th>
+                        <th>기타</th>
                     </tr>
                 </thead>
                 <tbody>
                 <!-- 1번테이블 -->
-                
               <c:forEach var="i" items="${sdlist}">
                     <tr class="a">
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-						</td>
 						<td>${i.carname}</td>
 						<td>${i.memname}</td>
 						<td>${i.svtime}</td>
 						<td>${i.stname}</td>
 						<td>${i.cname}</td>
+						<td><a href="#deletebusModal" class="btn btn-info"  onclick="del_schedule(${i.ccode})"> <span>삭제</span></a></td>
                   </tr>
-                </c:forEach>
                  
+                </c:forEach>
                 </tbody>
         </div>
     </div>
@@ -122,66 +80,53 @@ $(function() {
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
-							<label>차량명</label>
-							<input type="text" name="carcode" class="form-control" placeholder="ex)숫자를입력해주세요"  required >
-							
 							<div class="form-group">
-							<label>차량보기</label>
-		          <select class="time" id="starttime" onchange="possibleEndtime()">
+							<label>차량선택</label>
+		          <select class="car" name="carcode">
+		          <option value="0" selected="selected">전체</option>
 		          	<c:forEach var="i" items="${sdteacher}">
-		          		<option value="${i.carcode},${i.memname}-${i.carname}">${i.carcode},${i.carname}-${i.memname}</option>
+		          		<option value="${i.carcode}">${i.carname}-${i.memname}선생님</option>
 		          	</c:forEach>
 		          	</select>
 		          	</div>
 		          	
 						<div class="form-group">
 							<label>운행시각</label>
-		          <input type="text" name="svtime" class="form-control" placeholder="ex)오전,09:15"  required >
+		         
+		          	<select class="time" id="starttime" name="svtime1" onchange="possibleEndtime()">
+		          	<c:forEach begin="1" end="22" var="i">
+		          		<option value="${i}">${i}</option>
+		          	</c:forEach>
+		          	</select>
+		          	<span>시</span>
+		          	<select class="time" id="starttime" name="svtime2" onchange="possibleEndtime()">
+		          	<c:forEach begin="1" end="59" var="i">
+		          		<option value="${i}">${i}</option>
+		          	</c:forEach>
+		          	</select>
+		          	<span>분</span>
 						</div>
 						
-						<div class="form-group">
-							<label>정거장명</label>
-		          	<input type="text" name="stname2" class="form-control" placeholder="ex)신규 정거장명을 입력해주세요"  required >
-						</div>
 						
 						<div class="form-group">
-							<label>기존정거장선택</label>
-		          <select class="time" id="starttime" name="stname1" onchange="possibleEndtime()">
+							<label>정거장선택</label>
+		          <select class="time" id="starttime" name="stcode" onchange="possibleEndtime()">
+		          	<option value="0" selected="selected">전체</option>
 		          	<c:forEach var="i" items="${sdstation}">
-		          		<option value="${i.stname}">${i.stname}</option>
+		          		<option value="${i.stcode}">${i.stname}</option>
 		          	</c:forEach>
 		          	</select>
 		          	</div>
-		          	
-						<div class="form-group">
-							<label>x좌표</label>
-							<input type="text" name="sty" class="form-control" placeholder="ex)000.00000000"  required >
-						<input type="checkbox" name="samecheck" id="sameAddr" onclick="javascript:addrCheck()" ><font style="font-size: 12px;">기존 정류장과 동일</font>
-						</div>
-							
-						<div class="form-group">
-							<label>y좌표</label>
-							<input type="text" name="sty" class="form-control" placeholder="ex)000.00000000"  required >
-						<input type="checkbox" name="samecheck" id="sameAddr" onclick="javascript:addrCheck()" ><font style="font-size: 12px;">기존 정류장과 동일</font>
-						</div>	
-						
-						<div class="form-group">
-							<label>탑승자명</label>
-							<input type="text" name="ccode" class="form-control" placeholder="ex)숫자를입력해주세요"  required >
-						</div>
-							
+
 							<div class="form-group">
 							<label>탑승자보기</label>
-		          <select class="time" id="starttime" onchange="possibleEndtime()">
+		          <select class="time" name="ccode" id="starttime" onchange="possibleEndtime()">
+		          			          	<option value="0" selected="selected">전체</option>
 		          	<c:forEach var="i" items="${sdchildren}">
-		          		<option value="${i.ccode},${i.cname}-${i.cage}">
-		          		${i.ccode},${i.cname}-${i.cage}살</option>
+		          		<option value="${i.ccode}">${i.cname}-${i.cage}살</option>
 		          	</c:forEach>
 		          	</select>
-		          	</div>
-							
-							
-								
+		          	</div>		
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -191,27 +136,6 @@ $(function() {
 			</div>
 		</div>
 	</div>
-	
-	<!-- Delete Modal HTML -->
-	<div id="deletebusModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form>
-					<div class="modal-header">						
-						<h4 class="modal-title">스케쥴삭제</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<p>삭제하시겠습니까</p>
-						<p class="text-warning"><small>삭제시 정보를 다시 입력하셔야합니다.</small></p>
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-danger" value="Delete">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+
 </body>
 </html>                                		                            

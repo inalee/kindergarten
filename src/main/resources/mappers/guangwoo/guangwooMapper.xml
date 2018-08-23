@@ -24,7 +24,7 @@ where k.kincode=#{kincode};
 
 <!-- 차량운행스케쥴 보기 -->
 <select id="select_schedule" resultType="com.guangwoo.domain.ScheduleVO" >
-select k.kincode, k.kinname,v.carname, sv.svtime,  m.memname, s.stname, c.cname
+select k.kincode, k.kinname,v.carname, sv.svtime,  m.memname, s.stname, c.cname, c.ccode
 from vehicle v join kindergarten k on v.kincode=k.kincode
 join teacher t on t.tecode=v.tecode
 join member m on m.memid=t.memid
@@ -32,13 +32,19 @@ join schedule sd on sd.carcode=v.carcode
 join service sv on sv.svcode=sd.svcode
 join station s on s.sdcode=sd.sdcode
 join children c on c.stcode=s.stcode
-where k.kincode=#{kincode};
+where k.kincode=#{kincode} order by carname desc;
 </select>
 
 <!-- 차량스케쥴 추가 -->
 <insert id="insertschedule">
-call updateschdule(#{svtime},#{carcode},#{stname},#{ccode},#{stx},#{sty});
+call updateschdule(#{svtime},#{carcode},#{stcode},#{ccode});
 </insert>
+
+<!-- 차량스케줄 삭제 -->
+<delete id="deleteschedule">
+update children set stcode=null where ccode=#{ccode};
+</delete>
+
 
 <!-- 차량운행담당교사 -->
 <select id="select_schedule_teacher" resultType="com.guangwoo.domain.CarteacherVO" >
@@ -60,7 +66,7 @@ where k.kincode=#{kincode};
 
 <!-- 차량정거장 보기 -->
 <select id="select_schedule_station" resultType="com.guangwoo.domain.CarstationVO" >
-select k.kincode, k.kinname,st.stname,st.stx,st.sty
+select k.kincode, k.kinname,st.stcode,st.stname
 from vehicle v join schedule sd on v.carcode=sd.carcode
 join kindergarten k on k.kincode=v.kincode
 join service sv on sv.svcode=sd.svcode

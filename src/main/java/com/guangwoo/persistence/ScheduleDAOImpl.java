@@ -48,6 +48,12 @@ public class ScheduleDAOImpl implements ScheduleDAO{
 		
 	}
 
+	@Override
+	public void deleteschedule(int ccode) throws Exception {
+		session.delete(namespace+".deleteschedule",ccode);
+		
+	}
+
 	
 
 }

@@ -97,6 +97,7 @@
 			// 1페이지로 초기화
 			goPage(1);
 		}
+		
 
    });
    
@@ -104,7 +105,7 @@
    
    var geocoder = new daum.maps.services.Geocoder(); // 좌표계 변환 객체를 생성합니다
    
-   function makeMarkers(num, coordinatex, coordinatey, bounds, cfname) {
+   function makeMarkers(i, num, coordinatex, coordinatey, bounds, cfname) {
       
       var la, lo;// 위도, 경도
    
@@ -152,24 +153,35 @@
                     
                      // 현재 마커의 overlay_semi를 닫는다
                      overlay_semi.setMap(null);
+                     
+                     var cfimg; // 비어있는 이미지 데이터 처리
+                     if(cafeData[i].cfimg=='' || cafeData[i].cfimg==null) { 
+                  	   cfimg = "resources/images/noimage.gif";
+                     } else {
+                  	   cfimg = cafeData[i].cfimg;
+                     }
                      // 마커 위에 표시할 커스텀 오버레이의 content 변경
                     content = '<div class="wrap">' + 
                         '    <div class="info">' + 
                         '        <div class="title">' + 
-                        			cfname + 
+                        '        	<span class="title_span" onclick="kidscafeRespage('+cafeData[i].cfcode+')">' + cafeData[i].cfname + '</span>' +
                         '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
                         '        </div>' + 
-                        '        <div class="body">' + 
+                        '        <div class="body" onclick="kidscafeRespage('+cafeData[i].cfcode+')">' + 
                         '            <div class="img">' +
-                        '                <img alt="noimage" class="noimage" src="resources/images/noimage.gif" width="73" height="70">' +
+                        '                <img class="cfimg" src="'+cfimg+'" width="73" height="70">' +
                         '           </div>' + 
                         '            <div class="desc">' + 
-                        '                <div class="ellipsis">주소</div>' + 
-                        '                <div class="jibun ellipsis">세부사항</div>' + 
-                        '                <div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+                        '                <div class="ellipsis">'+cafeData[i].address+'</div>' + 
+                        '                <div class="jibun ellipsis">'+cafeData[i].cfopen+'시 ~ '+cafeData[i].cfclose+'시 운영</div>' + 
+                        '                <div class="jibun ellipsis">'+cafeData[i].cfphone+'</div>' + 
+//                         '                <div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
                         '            </div>' + 
                         '        </div>' + 
                         '    </div>' +    
+                        '</div>' +
+                        '<div class="wrap2">' + 
+                        '	<div class="info2"></div>' +
                         '</div>';
                         
                     // 마커 위에 커스텀오버레이를 표시
@@ -190,7 +202,7 @@
             
             // 마커에 mouseover 이벤트를 등록한다
             daum.maps.event.addListener(marker[num], 'mouseover', function() {
-               kidscafeOver(num, cfname);
+               kidscafeOver(num, i);
             });
 
             // 마커에 mouseout 이벤트 등록
@@ -207,7 +219,7 @@
    }
    
    //table, maker onmouseover 함수
-   function kidscafeOver(num, cfname) {
+   function kidscafeOver(num, i) {
       
       // 클릭된 마커가 없거나 selectedMarker가 클릭된 마커가 아니면
         if (!selectedMarker || selectedMarker != marker[num]) {
@@ -216,7 +228,7 @@
           // 마커 위에 표시할 커스텀 오버레이의 content_semi 변경
            content_semi = '<div class="wrap_semi">' + 
                '    <div class="info_semi">' + 
-               '        <div class="body_semi">'+cfname+'</div>' + 
+               '        <div class="body_semi">'+cafeData[i].cfname+'</div>' + 
                '    </div>' +    
                '</div>';
                
@@ -246,7 +258,7 @@
    
    //table onclick 함수
    function kidscafeRespage(cfcode) {
-      location.href="cafereservation?cfcode="+cfcode;
+      location.href="cafereservation?sigungucode=${cri.sigungucode}&cfname=${cri.cfname}&cfresdate=${cri.cfresdate}&starttime=${cri.starttime}&endtime=${cri.endtime}&adults=${cri.adultsnum}&kids=${cri.kidsnum}&cfcode="+cfcode;
    }
 
    // 커스텀 오버레이 닫기
@@ -318,12 +330,19 @@
            } else {
         	   cfphone = cafeData[i].cfphone;
            }
+           
+           var cfimg; // 비어있는 이미지 데이터 처리
+           if(cafeData[i].cfimg=='' || cafeData[i].cfimg==null) { 
+        	   cfimg = "resources/images/noimage.gif";
+           } else {
+        	   cfimg = cafeData[i].cfimg;
+           }
 
            var cfpermit =  getFormatDate(new Date(cafeData[i].cfpermit.time)); //date 포맷 변경
 
 			// 결과 목록 생성
-			$(".listMap").append('<table onmouseover="kidscafeOver('+i%10+', \''+cafeData[i].cfname+'\');" onmouseout="kidscafeOut('+i%10+');" onclick="kidscafeRespage('+cafeData[i].cfcode+');">'
-						            +'<tr><td rowspan="7"><img alt="noimage" class="noimage" src="resources/images/noimage.gif"></td></tr>'
+			$(".listMap").append('<table onmouseover="kidscafeOver('+i%10+', \''+i+'\');" onmouseout="kidscafeOut('+i%10+');" onclick="kidscafeRespage('+cafeData[i].cfcode+');">'
+						            +'<tr><td rowspan="7"><img class="cfimg" src="'+cfimg+'"></td></tr>'
 						            +'<tr><td colspan="2"><img alt="marker" class="marker" src="resources/images/map_markers/marker'+i%10+'.png">'+cafeData[i].cfname+'</td></tr>'
 						            +'<tr><td colspan="2">'+cafeData[i].address+'</td></tr>'
 						            +'<tr><td>전화번호 : '+cfphone+'</td><td>운영시간 : '+cafeData[i].cfopen+'시 ~ '+cafeData[i].cfclose+'시</td></tr>'
@@ -333,7 +352,7 @@
 						            +'</table>');
 
 			// 마커를 생성하고 지도에 표시
-			makeMarkers(i%10, cafeData[i].coordinatex, cafeData[i].coordinatey, bounds, cafeData[i].cfname);
+			makeMarkers(i, i%10, cafeData[i].coordinatex, cafeData[i].coordinatey, bounds, cafeData[i].cfname);
 		}
 		// 검색된 장소 위치를 기준으로 지도 범위를 재설정
 	    map.setBounds(bounds);

@@ -16,8 +16,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+
 function del_schedule(val) {
-	
 	alert("해당 스케쥴을 삭제하시겠습니까?");
 	$.get("del_schedule",{ccode:val},function(result){
 		alert("삭제가 완료되었습니다.");

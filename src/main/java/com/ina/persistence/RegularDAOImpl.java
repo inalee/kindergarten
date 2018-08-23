@@ -98,4 +98,8 @@ public class RegularDAOImpl implements RegularDAO{
 		sqlSession.selectList(namespace+".modify_kinder",kv);
 	}
 	
+	@Override
+	public int sel_number_class(int kincode) {
+		return sqlSession.selectOne(namespace+".sel_num_class",kincode);
+	}
 }

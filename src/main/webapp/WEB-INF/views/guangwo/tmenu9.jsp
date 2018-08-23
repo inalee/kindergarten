@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <jsp:include page="../commons/teachermenu.jsp" flush="true" ></jsp:include>
 <link href="resources/gwcss/tmenu9.css" rel="stylesheet" type="text/css">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,6 +41,22 @@ $(document).ready(function(){
 	});
 });
 </script>
+<script type="text/javascript">
+
+$(function() { 
+	$("#addTR").click(function () { 
+		var row = "<tr>"; 
+		row += "<td><span>날 누르면 삭제가 됨</span></td>";
+		row += "<td><input type='text' name='idx[]' value='' /></td>";  
+		row += "</tr>";
+		$("#table").append(row); }); 
+	
+	$("#table").on("click", "span", function() { 
+		$(this).closest("tr").remove(); }); });
+
+</script>
+
+
 </head>
 <body>
     <div class="container">
@@ -47,153 +64,124 @@ $(document).ready(function(){
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-						<h2>배차관리</h2>
+						<h2>${teacher.kinname}-차량스케쥴</h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>차량삭제</span></a>
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>차량추가</span></a>					
+						<a href="#deletebusModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE14C;</i> <span>스케쥴삭제</span></a>
+						<a href="#addbusModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>스케쥴추가</span></a>
+											
 					</div>
                 </div>
             </div>
+
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
 						<th>
-							<span class="custom-checkbox">
+						<span class="custom-checkbox">
 								<input type="checkbox" id="selectAll">
 								<label for="selectAll"></label>
 							</span>
 						</th>
                         <th>차량명</th>
                         <th>운행교사</th>
+                        <th>운행시각</th>
 						<th>정거장목록</th>
                         <th>탑승아이목록</th>
-                        <th>배정승인</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                <!-- 1번테이블 -->
+                
+              <c:forEach var="i" items="${sdlist}">
+                    <tr class="a">
 						<td>
 							<span class="custom-checkbox">
 								<input type="checkbox" id="checkbox1" name="options[]" value="1">
 								<label for="checkbox1"></label>
 							</span>
 						</td>
-                        <td>차량명</td>
-                        <td><button>교사명</button></td>
-						<td><button>정거장</button></td>
-                        <td><button>탑승자</button></td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-						</td>
-                         <td>차량명</td>
-                        <td><button>교사명</button></td>
-						<td><button>정거장</button></td>
-                        <td><button>탑승자</button></td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-						</td>
-                         <td>차량명</td>
-                        <td><button>교사명</button></td>
-						<td><button>정거장</button></td>
-                        <td><button>탑승자</button></td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox4" name="options[]" value="1">
-								<label for="checkbox4"></label>
-							</span>
-						</td>
-                         <td>차량명</td>
-                        <td><button>교사명</button></td>
-						<td><button>정거장</button></td>
-                        <td><button>탑승자</button></td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>					
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox5" name="options[]" value="1">
-								<label for="checkbox5"></label>
-							</span>
-						</td>
-                         <td>차량명</td>
-                        <td><button>교사명</button></td>
-						<td><button>정거장</button></td>
-                        <td><button>탑승자</button></td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr> 
+						<td>${i.carname}</td>
+						<td>${i.memname}</td>
+						<td>${i.svtime}</td>
+						<td>${i.stname}</td>
+						<td>${i.cname}</td>
+                  </tr>
+                </c:forEach>
+                 
                 </tbody>
-            </table>
-			<div class="clearfix">
-                <div class="hint-text"> 총 <b>5</b> 페이지 <b>25</b> 항목</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">이전</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">다음</a></li>
-                </ul>
-            </div>
         </div>
     </div>
 	<!-- Edit Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
+	<div id="addbusModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
-					<div class="modal-header">						
-						<h4 class="modal-title">차량등록</h4>
+				<form action="/kinder/guangwo/tmenu9" method="POST" >
+					<div class="modal-header">			
+						<h4 class="modal-title">스케쥴등록</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
-						<div class="form-group">
 							<label>차량명</label>
-							<input type="text" class="form-control" required>
-						</div>
+							<input type="text" name="carcode" class="form-control" placeholder="ex)숫자를입력해주세요"  required >
+							
+							<div class="form-group">
+							<label>차량보기</label>
+		          <select class="time" id="starttime" onchange="possibleEndtime()">
+		          	<c:forEach var="i" items="${sdteacher}">
+		          		<option value="${i.carcode},${i.memname}-${i.carname}">${i.carcode},${i.carname}-${i.memname}</option>
+		          	</c:forEach>
+		          	</select>
+		          	</div>
+		          	
 						<div class="form-group">
-							<label>운행교사명</label>
-							<input type="email" class="form-control" required>
+							<label>운행시각</label>
+		          <input type="text" name="svtime" class="form-control" placeholder="ex)오전,09:15"  required >
 						</div>
+						
 						<div class="form-group">
 							<label>정거장명</label>
-							<textarea class="form-control" required></textarea>
+		          	<input type="text" name="stname2" class="form-control" placeholder="ex)신규 정거장명을 입력해주세요"  required >
 						</div>
+						
+						<div class="form-group">
+							<label>기존정거장선택</label>
+		          <select class="time" id="starttime" name="stname1" onchange="possibleEndtime()">
+		          	<c:forEach var="i" items="${sdstation}">
+		          		<option value="${i.stname}">${i.stname}</option>
+		          	</c:forEach>
+		          	</select>
+		          	</div>
+		          	
+						<div class="form-group">
+							<label>x좌표</label>
+							<input type="text" name="sty" class="form-control" placeholder="ex)000.00000000"  required >
+						<input type="checkbox" name="samecheck" id="sameAddr" onclick="javascript:addrCheck()" ><font style="font-size: 12px;">기존 정류장과 동일</font>
+						</div>
+							
+						<div class="form-group">
+							<label>y좌표</label>
+							<input type="text" name="sty" class="form-control" placeholder="ex)000.00000000"  required >
+						<input type="checkbox" name="samecheck" id="sameAddr" onclick="javascript:addrCheck()" ><font style="font-size: 12px;">기존 정류장과 동일</font>
+						</div>	
+						
 						<div class="form-group">
 							<label>탑승자명</label>
-							<input type="text" class="form-control" required>
-						</div>					
+							<input type="text" name="ccode" class="form-control" placeholder="ex)숫자를입력해주세요"  required >
+						</div>
+							
+							<div class="form-group">
+							<label>탑승자보기</label>
+		          <select class="time" id="starttime" onchange="possibleEndtime()">
+		          	<c:forEach var="i" items="${sdchildren}">
+		          		<option value="${i.ccode},${i.cname}-${i.cage}">
+		          		${i.ccode},${i.cname}-${i.cage}살</option>
+		          	</c:forEach>
+		          	</select>
+		          	</div>
+							
+							
+								
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -203,53 +191,19 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Edit Modal HTML -->
-	<div id="editEmployeeModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form>
-					<div class="modal-header">						
-						<h4 class="modal-title">차량삭제</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<div class="form-group">
-							<label>차량명</label>
-							<input type="text" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>운행교사명</label>
-							<input type="email" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>정류장</label>
-							<textarea class="form-control" required></textarea>
-						</div>
-						<div class="form-group">
-							<label>탑승자명</label>
-							<input type="text" class="form-control" required>
-						</div>					
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-info" value="Save">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+	
 	<!-- Delete Modal HTML -->
-	<div id="deleteEmployeeModal" class="modal fade">
+	<div id="deletebusModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
 					<div class="modal-header">						
-						<h4 class="modal-title">차량삭제</h4>
+						<h4 class="modal-title">스케쥴삭제</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
-						<p>리얼루다가 삭제허쉴?</p>
-						<p class="text-warning"><small>지금 먼짓거리여?</small></p>
+						<p>삭제하시겠습니까</p>
+						<p class="text-warning"><small>삭제시 정보를 다시 입력하셔야합니다.</small></p>
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

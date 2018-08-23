@@ -341,7 +341,7 @@ table.type04 td {
 .card-media-body-heading {
   display: block;
   margin-top: 10px;
- margin-left: 20px;
+ margin-left: 30px;
 }
 
 .card-media-body-supporting-bottom {

@@ -192,7 +192,7 @@
 		          			<td>성인</td>
 		          			<td>
 		          				<button type="button" class="minus" onclick="minus1();"></button>
-					          	<input type="number" value="0" class="count" id="count1" name="count1" >
+					          	<input type="number" value="0" class="count" id="count1" name="adults" >
 							    <button type="button" class="plus" onclick="plus1();"></button>
 		          			</td>
 		          		</tr>
@@ -200,7 +200,7 @@
 		          			<td>어린이</td>
 		          			<td>
 		          				<button type="button" class="minus" onclick="minus2();"></button>
-					          	<input type="number" value="0" class="count" id="count2" name="count2" >
+					          	<input type="number" value="0" class="count" id="count2" name="kids" >
 							    <button type="button" class="plus" onclick="plus2();"></button>
 		          			</td>
 		          		</tr>

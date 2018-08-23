@@ -20,6 +20,7 @@ public class KidscafeVO {
 	int cfclose;
 	int numperhour;
 	String urlcode;
+	String cfimg;
 	
 	public KidscafeVO() {
 		
@@ -27,7 +28,7 @@ public class KidscafeVO {
 
 	public KidscafeVO(int cfcode, String cfname, String sido, int sigungucode, int zipcode, String address,
 			Date cfpermit, double cfarea, String cfphone, double coordinatex, double coordinatey, String cfpermitnum,
-			int cfopen, int cfclose, int numperhour, String urlcode) {
+			int cfopen, int cfclose, int numperhour, String urlcode, String cfimg) {
 		super();
 		this.cfcode = cfcode;
 		this.cfname = cfname;
@@ -45,6 +46,7 @@ public class KidscafeVO {
 		this.cfclose = cfclose;
 		this.numperhour = numperhour;
 		this.urlcode = urlcode;
+		this.cfimg = cfimg;
 	}
 
 	public int getCfcode() {
@@ -175,13 +177,22 @@ public class KidscafeVO {
 		this.urlcode = urlcode;
 	}
 
+	public String getCfimg() {
+		return cfimg;
+	}
+
+	public void setCfimg(String cfimg) {
+		this.cfimg = cfimg;
+	}
+
 	@Override
 	public String toString() {
 		return "KidscafeVO [cfcode=" + cfcode + ", cfname=" + cfname + ", sido=" + sido + ", sigungucode=" + sigungucode
 				+ ", zipcode=" + zipcode + ", address=" + address + ", cfpermit=" + cfpermit + ", cfarea=" + cfarea
 				+ ", cfphone=" + cfphone + ", coordinatex=" + coordinatex + ", coordinatey=" + coordinatey
 				+ ", cfpermitnum=" + cfpermitnum + ", cfopen=" + cfopen + ", cfclose=" + cfclose + ", numperhour="
-				+ numperhour + ", urlcode=" + urlcode + "]";
+				+ numperhour + ", urlcode=" + urlcode + ", cfimg=" + cfimg + "]";
 	}
+
 
 }

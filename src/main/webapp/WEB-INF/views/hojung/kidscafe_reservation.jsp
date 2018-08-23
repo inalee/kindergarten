@@ -14,9 +14,11 @@
 $(function(){
 	//현재달 달력 생성
 	drawCalendar();
-
+	
 	
 });
+
+
 
 var disabledTime=[17,18]; // 잔여석이 없는 시간
 var selectedDate=null;
@@ -253,27 +255,73 @@ function drawCalendar(){
 			document.getElementById("count2").value = count2;
 		}
 	}
+	
+	
+	var myVar;
 
+	function loadFunction() {
+	    myVar = setTimeout(showPage, 3000);
+	}
+
+	function showPage() {
+	  document.getElementById("loader").style.display = "none";
+	  document.getElementById("contents").style.display = "block";
+	}
 
 </script>
 </head>
-<body>
+<body onload="loadFunction()" style="margin:0;">
+
+<!-- 로딩 중 이미지 -->
+<div id="loader"></div>
+
+<!-- 실제 콘텐츠 -->
+<div style="display:none;" id="contents" class="animate-bottom">
 
 <div id="wrap">
-
 	<div id="kidscafe_detail">
-		<div id="kidscafe_photo"><img alt="kidscafe_photo" class="kcimage" src="resources/images/noimage.gif"></div>
+		<div id="kidscafe_photo">
+			<c:if test="${kidscafe.cfimg==null || kidscafe.cfimg==''}">
+				<c:set var="cfimg" value="resources/images/noimage.gif"></c:set>
+			</c:if>
+			<c:if test="${kidscafe.cfimg!=null && kidscafe.cfimg!=''}">
+				<c:set var="cfimg" value="${kidscafe.cfimg}"></c:set>
+			</c:if>
+			<img alt="kidscafe_photo" class="kcimage" src="${cfimg}">
+		</div>
 		<ul class="ul_detail">
-			<li><span class="li_detail">카페명</span><span style="font-size: 17px; font-weight: bold;">${kidscafe.cfname}</span></li>
-			<li><span class="li_detail">주소</span><span style="width: 83%; float: right;">${kidscafe.address}</span></li>
-			<li><span class="li_detail">전화번호</span>ㅇㅇ</li>
-			<li><span class="li_detail">홈페이지</span>ㅇㅇ</li>
-			<li><span class="li_detail">이용시간</span>ㅇㅇ</li>
-			<li><span class="li_detail">이용정보</span>ㅇㅇ</li>
-			<li><span class="li_detail">가격정보</span>ㅇㅇ</li>
+			<li><span class="li_detail">카페명</span><span style="width: 80%; float: right; font-size: 17px; font-weight: bold;">${kidscafe.cfname}</span></li>
+			<li><span class="li_detail">주소</span><span style="width: 80%; float: right; word-break: break-all;">${kidscafe.address}</span></li>
+			<li><span class="li_detail">전화번호</span>${hm.cfphone}
+				<c:if test="${hm.cfphone==null || hm.cfphone==''}">
+					${kidscafe.cfphone}
+					<c:if test="${kidscafe.cfphone==null || kidscafe.cfphone==''}">-</c:if>
+				</c:if>
+			</li>
+			<li><span class="li_detail" style="margin-right: 23px;">홈페이지</span>
+				<span style="width: 80%; float: right;">
+					<a href="${hm.homepage}" target="_blank" style="text-decoration: none; color: green; word-break: break-all;">${hm.homepage}</a>
+				</span>
+				<c:if test="${hm.homepage==null || hm.homepage==''}">-</c:if>
+			</li>
+			<li><span class="li_detail">이용시간</span>${kidscafe.cfopen}시 ~ ${kidscafe.cfclose}시</li>
+			<li><span class="li_detail" style="margin-right: 23px;">이용정보</span><span style="width: 80%; float: right;">${hm.info}</span>
+				<c:if test="${hm.info==null || hm.info==''}">-</c:if>
+			</li>
+			<li><span class="li_detail">가격정보	</span>
+				<span style="width: 80%; float: right;">
+				<table>
+					<c:forEach items="${price}" var="i">
+					<tr><td>${i.key}</td><td style="padding-left: 2px; padding-right: 2px;">-----------</td><td>${i.value}</td></tr>
+					</c:forEach>
+				</table>
+				</span>
+			</li>
 			<hr>
 			<li><span class="li_detail">상세설명</span></li>
-			<li>dkdkdkkdkdkdkdkdkdkdkd</li>
+			<li style="padding: 10px 10px;"><span style="white-space:pre-wrap;">${hm.description}</span>
+				<c:if test="${hm.description==null || hm.description==''}">-</c:if>
+			</li>
 			<hr>
 			<li><span class="li_detail">찾아가는 길</span></li>
 			<li>지도</li>
@@ -380,8 +428,8 @@ function drawCalendar(){
 			<hr>
 			<li><button id="btn_res"><span>예 약 하 기</span></button></li>
 		</ul>
-		
 	</div>
+</div>
 
 </div>
 

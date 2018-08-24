@@ -1,5 +1,6 @@
 package com.hojung.persistence;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hojung.domain.KidscafeVO;
 import com.hojung.domain.KidscafesearchCri;
+import com.hojung.domain.KidscafesumCri;
 
 @Repository
 public class KidscafeDAOImpl implements KidscafeDAO {
@@ -31,6 +33,11 @@ public class KidscafeDAOImpl implements KidscafeDAO {
 	@Override
 	public KidscafeVO selectOneKidscafe(int cfcode) throws Exception {
 		return (KidscafeVO)sqlSession.selectOne(namespace+".selectOneKidscafe", cfcode);
+	}
+
+	@Override
+	public List<KidscafesumCri> selectResSum(KidscafesumCri cri) throws Exception {
+		return sqlSession.selectList(namespace+".selectResSum", cri);
 	}
 	
 }

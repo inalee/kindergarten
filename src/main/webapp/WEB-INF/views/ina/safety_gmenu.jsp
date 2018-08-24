@@ -80,7 +80,7 @@ function search_btn() {
 			
 			$("#mychild").append("<tr id='trresult'>"+
 					"<td>"+data[i].sido+" "+sigunguname+"</td><td>"+data[i].kinname+"</td><td>"+kinkind+"</td><td>"+data[i].kinphone+"</td><td>"+data[i].kinspec+"</td>"+   
-				    "<td><a href='#' onclick='layer_open((\"modal\"),"+data[i].kincode2+",(\""+data[i].kinname+"\")"+",(\""+data[i].kinaddress+"\"))'><img style='width:50px; height:50px;' src='https://static8.depositphotos.com/1003938/1045/v/950/depositphotos_10451115-stock-illustration-funny-cartoon-builder.jpg'></a></td></tr>");
+				    "<td><a onclick='layer_open((\"modal\"),"+data[i].kincode2+",(\""+data[i].kinname+"\")"+",(\""+data[i].kinaddress+"\"))'><img style='width:50px; height:50px;' src='https://static8.depositphotos.com/1003938/1045/v/950/depositphotos_10451115-stock-illustration-funny-cartoon-builder.jpg'></a></td></tr>");
 		}
 			$("#mychild").after("<center><button id='next' class='button2 button4'>더보기▽</button></center>"); 
 		
@@ -213,12 +213,7 @@ function layer_open(obj,obj2,obj3,obj4) {
 	$("#kindetail").empty();
 	$("#kindetail").append(obj4+"에 위치한 "+obj3+"은");
 	});
-	
 
-
-
-	
-	
 	
     var temp = $('#' + obj);
     var bg = temp.parent().parent().find('.bg').hasClass('bg');

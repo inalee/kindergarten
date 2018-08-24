@@ -21,6 +21,19 @@ public class VehicleServiceImpl implements VehicleService {
 		return dao.selectcar(kincode);
 	}
 
+	@Override
+	public List<VehicleVO> select_car_teacher(int kincode) throws Exception {
+		return dao.select_car_teacher(kincode);
+	}
+	
+	@Override
+	public void insert_car(VehicleVO vo) throws Exception {
+		dao.insert_car(vo);
+	}
+
+
+	
+
 
 
 

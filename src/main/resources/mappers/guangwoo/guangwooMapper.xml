@@ -9,14 +9,29 @@
 
 <!-- 차량상세검색  -->
 <select id="selectcar" resultType="com.guangwoo.domain.VehicleVO" >
-select  v.carcode, v.carname,v.carnum,v.carpay,o.oilname,vtl.vtlname,f.faname,f.fayear
-from vehicle v join kindergarten k on v.kincode=k.kincode
+select k.kincode, k.kinname,v.carcode,v.carname, m.memname,v.carnum,v.carpay,o.oilname,vtl.vtlname,f.faname,f.fayear
+from kindergarten k join teacher t on k.kincode=t.kincode
+join member m on m.memid=t.memid
+join vehicle v on v.tecode=t.tecode
 join vehiceltype vt on vt.vtcode=v.vtcode
+join factory f on vt.facode=f.facode
 join oil o on o.oilcode=vt.oilcode
 join vehicletypelist vtl on vtl.vtlcode=vt.vtlcode
-join factory f on f.facode=vt.facode
 where k.kincode=#{kincode};
 </select>
+
+<!-- 차량&교사검색 -->
+<select id="select_car_teacher" resultType="com.guangwoo.domain.VehicleVO">
+select k.kincode,t.tecode,m.memname
+from member m join teacher t on m.memid=t.memid
+join kindergarten k on t.kincode=k.kincode
+where k.kincode=#{kincode};
+</select>
+
+<!-- 차량추가 -->
+<insert id="insert_car">
+call updatevehicle(#{oilname},#{vtlname},#{faname},#{fayear},#{kincode},#{tecode},#{carname},#{carnum},#{carpay});
+</insert>
 
 
 

@@ -62,13 +62,35 @@ public class GuangwooController {
 	public String tmenu8Get(HttpSession session, Model model) throws Exception {
 		TeacherVO vo = (TeacherVO) session.getAttribute("teacher");
 		model.addAttribute("list", service.selectcar(vo.getKincode()));
+		model.addAttribute("ctlist", service.select_car_teacher(vo.getKincode()));
 		
 		return "/tmenu8";
 	}
 	@RequestMapping(value = "/tmenu8", method = RequestMethod.POST)
-	public String tmenu8Post() throws Exception {
+	public String tmenu8Post(HttpSession session,
+			@RequestParam String carname,@RequestParam Integer tecode,
+			@RequestParam String carnum,@RequestParam String carpay,
+			@RequestParam String oilname,@RequestParam String vtlname,
+			@RequestParam String faname,@RequestParam Integer fayear
+			) throws Exception {
 		
-		return "/tmenu8";
+		TeacherVO vo = (TeacherVO) session.getAttribute("teacher");
+		VehicleVO vvo = new VehicleVO();
+		vvo.setKincode(vo.getKincode());
+		
+		    vvo.setTecode(tecode);
+			vvo.setCarname(carname);
+			vvo.setCarnum(carnum);
+			vvo.setCarpay(carpay);
+			vvo.setOilname(oilname);
+			vvo.setVtlname(vtlname);
+			vvo.setFaname(faname);
+			vvo.setFayear(fayear);
+			
+			service.insert_car(vvo);
+		
+		
+		return "redirect:tmenu8";
 	}
 	
 	

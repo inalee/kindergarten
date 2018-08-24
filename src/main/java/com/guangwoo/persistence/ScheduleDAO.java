@@ -19,4 +19,6 @@ public interface ScheduleDAO {
 	
 	
 	public void insertschedule(ScheduleVO vo)throws Exception;
+	
+	public void deleteschedule(int ccode)throws Exception;
 }

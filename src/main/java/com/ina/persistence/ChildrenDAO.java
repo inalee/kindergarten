@@ -2,6 +2,8 @@ package com.ina.persistence;
 
 
 import java.util.List;
+import java.util.Map;
+
 import com.ina.domain.EnrollBean;
 import com.ina.domain.EnrollVO;
 import com.kinder.domain.ChildrenVO;
@@ -29,6 +31,8 @@ public interface ChildrenDAO {
    public int same_kin(EnrollBean eb);
    
    public ChildrenVO sel_child_info(int ccode);
+   
+   public List<Map<String, Object>> sel_kinder_child(int clcode);
    
    
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -784,7 +785,6 @@ public class InaController {
 		List<Map<String, Object>> lm = regudao.search_regular(cri);
 		
 		
-		
 		return lm;
 	
 	}
@@ -916,6 +916,20 @@ public class InaController {
 			
 			return contains;
 	}
+	
+	
+	@RequestMapping(value="sel_kinder_child",method=RequestMethod.GET)
+	public @ResponseBody List<Map<String, Object>> sel_kinder_child(ServletRequest request, Model model) {
+		
+		int clcode = Integer.parseInt(request.getParameter("clcode"));
+		List<Map<String, Object>> lm = childdao.sel_kinder_child(clcode);
+		
+		
+		return lm;
+	
+	}
+	
+	
 	
 	
 	

@@ -99,10 +99,11 @@ public class GuangwooController {
 			@RequestParam Integer carcode,@RequestParam Integer stcode,@RequestParam Integer [] ccode
 			) throws Exception {
 
+
 		for (int i = 0; i < ccode.length; i++) {
 			
 			if (Integer.parseInt(svtime1)<13) {
-	        	String svtime = "¿ÀÀü"+','+svtime1+"½Ã"+svtime2+"ºÐ";
+	        	String svtime = "ì˜¤ì „"+','+svtime1+"ì‹œ"+svtime2+"ë¶„";
 	        	 ScheduleVO sdvo= new ScheduleVO();
 	 			sdvo.setSvtime(svtime);
 	 			sdvo.setCarcode(carcode);
@@ -111,7 +112,7 @@ public class GuangwooController {
 	 			sdservice.insertschedule(sdvo);
 			
 			}else {
-				String svtime = "¿ÀÈÄ"+','+svtime1+"½Ã"+svtime2+"ºÐ";
+				String svtime = "ì˜¤ì „"+','+svtime1+"ì‹œ"+svtime2+"ë¶„";
 	 			ScheduleVO sdvo= new ScheduleVO();
 	 			sdvo.setSvtime(svtime);
 	 			sdvo.setCarcode(carcode);

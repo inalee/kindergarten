@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
@@ -29,6 +30,7 @@ $(function(){
 
 body{
 font-family: 'Jeju Gothic', sans-serif;	
+background-color: #F9F9F9;
 }
 .container {
       width: 1300px;
@@ -42,7 +44,7 @@ font-family: 'Jeju Gothic', sans-serif;
 #header{
 position: relative;
 margin: 50px auto;
-margin-bottom: 30px;
+margin-bottom: -85px;
 width: 1300px;
 
 }
@@ -93,49 +95,102 @@ table.type04 td {
 
 .button4:hover {background-color: #e7e7e7;}
 
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+
+.login-page {
+  width: 550px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background-color: #D9E5FF;
+  max-width: 550px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form input,.form select{
+   font-family: 'Jeju Gothic', sans-serif;	
+  outline: 0;
+ 
+  width: 85%;
+  border: 0;
+  margin: 0 0 25px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form button {
+
+  text-transform: uppercase;
+  outline: 0;
+  border: 0;
+  background-color: #6799FF;
+  width: 50%;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 16px;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background: #4375DB;
+}
+
+.form .message {
+  margin: 15px 0 0;
+  color: black;
+  font-size: 15px;
+}
+
+.form .message a {
+  color: #465489;
+  text-decoration: none;
+}
+
+.form .register-form {
+  display: none;
+}
 </style>
 <body>
 <div id="header">
-<h2>┃ 반 만들기</h2>
+<h2>┃ 신규반 추가</h2>
 </div>
-<div id="contain2">
-<h4 style=" margin-left: 30px;">생성할 반의 상세정보를 입력해주세요.</h4><br>
-
-<form action="make_class" method="POST">
-<table class="type04">
-
-    <tr>
-        <th scope="row">반이름</th>
-        <td><input type="text" name="clname">
-        <input type="hidden" name="kincode" value="${teacher.kincode}"></td>
-         <th scope="row">반 연령대</th>
-        <td><select id="agecode" name="agecode" style="width: 150px; height: 25px;">
+<div class="login-page">
+  <div class="form">
+    <form class="login-form" action="make_class" method="POST">
+      <p class="message">생성할 반의 상세정보를 입력해주세요.</p><br>
+      <input type="hidden" name="kincode" value="${teacher.kincode}">
+      <input type="text" placeholder="반 이름" name="clname">
+      <input type="text" placeholder="반 상세정보" name="clage">
+      <select id="agecode" name="agecode" >
+      		<option value="none" disabled="disabled" selected="selected">반 연령대</option>
 			<option value="1">0-1세</option>
 			<option value="2">1-2세</option>
 			<option value="3">2-3세</option>
 			<option value="4">3-4세</option>
 			<option value="5">4-5세</option>
 			<option value="6">5-6세</option>				
-        </select></td>
-    </tr>
-    <tr>
-        <th scope="row">상세정보</th>
-        <td><input type="text" name="clage"></td>
- 			 <th scope="row" >담당 선생님</th>
-        <td><select style="width: 150px; height: 25px;" name="tecode">
+        </select><br>
+        <select  name="tecode">
+        <option disabled="disabled" selected="selected">담당 선생님</option>
         <c:forEach items="${teacherlist}" var="i">
         <option value="${i.tecode}">${i.memname}</option>
         </c:forEach>
-        </select></td>
-    </tr>
-    <tr>
-         <th scope="row" colspan="4" style="text-align: center; border-bottom: none;"><button type="submit" style="width: 200px; height: 60px;  margin-top: 15px; font-size: 20px;" class="button2 button4">만들기</button></th>
-    </tr>
-</table>
-</form>
+        </select>
+      <button type="submit">신규반 추가하기</button>
+    </form>
+  </div>
 </div>
-
-	
-
 </body>
 </html>

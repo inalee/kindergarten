@@ -74,6 +74,25 @@ $(document).ready(function() {
 	});//end ready
 	
 	
+	
+	//Layer Popup
+	function layer_open(obj) {
+	    var temp = $('#' + obj);
+	    var bg = temp.parent().parent().find('.bg').hasClass('bg');
+	    if(bg) {
+	        $('html, body').css('overflow-y','hidden');
+	        temp.parent().parent().show();
+	        temp.parent().css('overflow-y','auto');
+	    }
+	    temp.find('.popcls').on('click', function(e){
+	        if(bg) {
+	            $('html, body, .ly_pop, .ly_pop .cont').removeAttr('style');
+	        }
+	        e.preventDefault();
+	    });
+	};
+	
+	
 </script>
 <style>
 .container {
@@ -339,7 +358,6 @@ margin-top: 50px;
   width:100%;
 	margin-top: 50px;
   min-height:200px;
-
 }
 
 .line {
@@ -501,6 +519,92 @@ list-style: square;
 
 
 
+table.type05 {
+	width:95%;
+	height:50%;
+	font-size: 16px;
+    border-collapse: separate;
+    border-spacing: 1px;
+    line-height: 1.5;
+    border-top: 1px solid #ccc;
+    margin: 0 auto;
+    position: relative;
+
+}
+
+
+table.type05 th {
+	padding: 15px;
+	width:20%;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    background: #efefef;
+}
+table.type05 td {
+	
+	padding: 15px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+
+
+
+.ly_pop{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:99}
+.ly_pop .bg{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:.4}
+.ly_pop .popcls{position:absolute;top:0px;right:3px; font-size: 15px;}
+.ly_pop .cont{width: 100%;height: 100%;position: absolute;top: 0;left: 0;z-index:999;text-align: center;}
+.ly_pop .cont:before{height:100%;content:'';display:inline-block;vertical-align:middle}
+.ly_pop .ele{
+width:40%; height:50%; position:relative;display:inline-block;vertical-align:middle;margin:0 auto 0 -2px;
+background:white;
+padding:15px;border-radius:5px;
+}
+
+#class_info{
+text-align: center;
+margin-bottom: 25px;
+}
+
+#child_list {
+text-align: center;
+height: 175px;
+overflow: auto;
+}
+
+
+table.type09 {
+	width:95%;
+    border-collapse: collapse;
+    text-align: left;
+    line-height: 1.5;
+    font-size: 12px;
+    border-spacing: 1px;
+    margin: 0 auto;
+	font-family: sans-serif;
+
+}
+table.type09 thead th {
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    color: #369;
+    border-bottom: 3px solid #036;
+}
+table.type09 tbody th {
+    width: 150px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    background: #f3f6f7;
+}
+table.type09 td {
+    width: 350px;
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+
 </style>
 </head>
 <body>
@@ -547,8 +651,9 @@ list-style: square;
 </c:forEach>
 </table>
     </div>
+    
        <div>
-		  <a href="#" class="btn blue" onclick="window.location.href='manage'">반 추가하기</a><br>
+		  <a href="#" class="btn blue" onclick="window.location.href='manage'">신규반 추가하기</a><br>
 <c:forEach items="${sellist4}" var="i" varStatus="k"> 
 <div class="container">
   <div class="card-media">
@@ -594,19 +699,87 @@ list-style: square;
       </div>
       <div class="card-media-body-supporting-bottom card-media-body-supporting-bottom-reveal">
        
-        <a href="#" class="card-media-body-supporting-bottom-text card-media-link u-float-right" style="font-size: 17px;" >반 상세보기</a>
+        <a onclick="layer_open('modal');" class="card-media-body-supporting-bottom-text card-media-link u-float-right" style="font-size: 17px; cursor: pointer;" >반 상세보기</a>
       </div>
     </div>
   </div>
 </div>
 </c:forEach>
-
     </div>
    </div>
   </div><!-- //tab-content -->
 </div><!-- //tab-wrapper -->
-
 <div>
+</div>
+
+<div class="ly_pop">
+	<div class="bg"><!-- shadow --></div>
+	<div class="cont">
+		<section id="modal" class="ele">
+			<a href="" class="ico_com popcls">[닫기]</a>
+			<div id="class_info">
+			<h3>꽃님반 상세정보</h3>
+			<table class="type05">
+    <tr>
+        <th  scope="row">담당교사</th>
+        <td>이인아 선생님</td>
+        <th  scope="row">연령대</th>
+        <td>1-2세반</td>        
+    </tr>
+    <tr>
+        <th scope="row">상세정보</th>
+        <td>특수반</td>
+        <th scope="row">현인원</th>
+        <td>5명</td>        
+    </tr>
+
+</table>
+			</div>
+			<div id="child_list">
+<table class="type09">
+    <thead>
+    <tr>
+        <th scope="cols">이름</th>
+        <th scope="cols">성별</th>
+         <th scope="cols">나이</th>
+        <th scope="cols">보호자 연락처</th>
+       <th scope="cols">출석현황</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>이인아</td>
+        <td>여아</td>
+        <td>25세</td>
+        <td>01082785778</td>
+        <td><a href="#">출석▶</a></td>
+    </tr>
+    <tr>
+        <td>이인아</td>
+        <td>여아</td>
+        <td>25세</td>
+        <td>01082785778</td>
+        <td><a href="#">출석▶</a></td>
+    </tr>
+    <tr>
+        <td>이인아</td>
+        <td>여아</td>
+        <td>25세</td>
+        <td>01082785778</td>
+        <td><a href="#">출석▶</a></td>
+    </tr>
+        <tr>
+        <td>이인아</td>
+        <td>여아</td>
+        <td>25세</td>
+        <td>01082785778</td>
+        <td><a href="#">출석▶</a></td>
+    </tr>
+    </tbody>
+</table>
+			</div>
+		</section>
+	</div>
 </div>
 
 

@@ -71,9 +71,14 @@
   </select>
   
   
-  <!-- 키즈카페 예약 상세페이지 -->
+  <!-- 키즈카페 예약 상세페이지 : 키즈카페 정보 -->
   <select id="selectOneKidscafe" resultType="com.hojung.domain.KidscafeVO">
   select * from kidscafe where cfcode = #{cfcode}
+  </select>
+  
+  <!-- 키즈카페 예약 상세페이지 : 키즈카페 예약 정보 -->
+  <select id="selectResSum" resultType="com.hojung.domain.KidscafesumCri">
+  select * from cfres_summary where cfcode=#{cfcode} and cfresdate=#{cfresdate}
   </select>
 
 

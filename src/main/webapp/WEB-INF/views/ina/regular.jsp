@@ -31,11 +31,15 @@ function upclass(pccode,pclcode) {
 
 function del_regular(val) {
 	
-	alert("해당 정기모집 공고를 삭제하시겠습니까?");
-	$.get("del_regular",{recode:val},function(result){
-		alert("삭제가 완료되었습니다.");
-		location.reload();
-	});
+	if (confirm("해당 정기모집 공고를 삭제하시겠습니까?") == true){   
+			$.get("del_regular",{recode:val},function(result){
+				alert("삭제가 완료되었습니다.");
+				location.reload();
+			});	
+	}else{   
+	    return;
+	}
+
 	
 }
 

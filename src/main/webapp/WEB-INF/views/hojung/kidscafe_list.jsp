@@ -12,11 +12,15 @@
 <c:url var="kidscafelist" value="resources/hjcss/kidscafelist.css"></c:url>
 <link href="${kidscafelist}" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<body style="margin:0;">
 
-<div class="kidscafe_search">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+<!-- 로딩 중 이미지 -->
+<div id="loader" style="display: none;"></div>
+
+<!-- 실제 콘텐츠 -->
+<div id="contents"  class="kidscafe_search">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
    <div style="height: 50px;"></div>
-   <div class="search_result">
+     <div class="search_result">
       <div class="kidscafe_list">
       	<div class="listMap">
       		
@@ -258,7 +262,9 @@
    
    //table onclick 함수
    function kidscafeRespage(cfcode) {
+	  loadFunction();
       location.href="cafereservation?sigungucode=${cri.sigungucode}&cfname=${cri.cfname}&cfresdate=${cri.cfresdate}&starttime=${cri.starttime}&endtime=${cri.endtime}&adults=${cri.adultsnum}&kids=${cri.kidsnum}&cfcode="+cfcode;
+      loadFunction();
    }
 
    // 커스텀 오버레이 닫기
@@ -383,6 +389,18 @@
 		return year + '-' + month + '-' + day;
 	}
 	
+	
+	// 로딩 중 함수
+	var myVar;
+
+	function loadFunction() {
+	    myVar = setTimeout(showPage, 3000);
+	}
+
+	function showPage() {
+	  document.getElementById("loader").style.display = "block";
+	  document.getElementById("contents").style.display = "none";
+	}
 	
 </script>
 </body>

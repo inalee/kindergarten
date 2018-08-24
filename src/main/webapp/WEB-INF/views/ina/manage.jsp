@@ -105,6 +105,7 @@ table.type04 td {
 }
 
 .form {
+
   position: relative;
   z-index: 1;
   background-color: #D9E5FF;

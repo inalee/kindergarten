@@ -96,29 +96,33 @@ public class GuangwooController {
 	@RequestMapping(value = "/tmenu9", method = RequestMethod.POST)
 	public String tmenu9post(HttpSession session,
 			@RequestParam String svtime1,@RequestParam String svtime2,
-			@RequestParam Integer carcode,@RequestParam Integer stcode,@RequestParam Integer ccode
+			@RequestParam Integer carcode,@RequestParam Integer stcode,@RequestParam Integer [] ccode
 			) throws Exception {
-		
-		
 
-        if (Integer.parseInt(svtime1)<13) {
-        	 String svtime = "오전"+','+svtime1+"시"+svtime2+"분";
- 			ScheduleVO sdvo= new ScheduleVO();
- 			sdvo.setSvtime(svtime);
- 			sdvo.setCarcode(carcode);
- 			sdvo.setStcode(stcode);
- 			sdvo.setCcode(ccode);
- 			sdservice.insertschedule(sdvo);
- 			
-		}else {
-			String svtime = "오후"+','+svtime1+"시"+svtime2+"분";
- 			ScheduleVO sdvo= new ScheduleVO();
- 			sdvo.setSvtime(svtime);
- 			sdvo.setCarcode(carcode);
- 			sdvo.setStcode(stcode);
- 			sdvo.setCcode(ccode);
- 			sdservice.insertschedule(sdvo);
+
+		for (int i = 0; i < ccode.length; i++) {
+			
+			if (Integer.parseInt(svtime1)<13) {
+	        	String svtime = "오전"+','+svtime1+"시"+svtime2+"분";
+	        	 ScheduleVO sdvo= new ScheduleVO();
+	 			sdvo.setSvtime(svtime);
+	 			sdvo.setCarcode(carcode);
+	 			sdvo.setStcode(stcode);
+	 			sdvo.setCcode(ccode[i]);
+	 			sdservice.insertschedule(sdvo);
+			
+			}else {
+				String svtime = "오전"+','+svtime1+"시"+svtime2+"분";
+	 			ScheduleVO sdvo= new ScheduleVO();
+	 			sdvo.setSvtime(svtime);
+	 			sdvo.setCarcode(carcode);
+	 			sdvo.setStcode(stcode);
+	 			sdvo.setCcode(ccode[i]);
+	 			sdservice.insertschedule(sdvo);
+			}	
 		}
+		
+        
        
 		return "redirect:tmenu9";
 	}

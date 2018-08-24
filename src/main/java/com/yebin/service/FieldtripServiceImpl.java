@@ -12,6 +12,7 @@ import com.kinder.domain.MemberVO;
 import com.yebin.domain.AreacodeVO;
 import com.yebin.domain.CategoryVO;
 import com.yebin.domain.FieldtripVO;
+import com.yebin.domain.MaterialsVO;
 import com.yebin.domain.TourismVO;
 import com.yebin.persistence.FieldtripDAO;
 
@@ -49,6 +50,21 @@ public class FieldtripServiceImpl implements FieldtripService{
 		params.put("fieldVO", fieldVO);
 		params.put("tourVO", tourVO);
 		fieldDAO.insertTourCourse(params);
+	}
+
+	@Override
+	public void insertMaterials(MaterialsVO mVO, FieldtripVO fieldVO) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("fieldVO", fieldVO);
+		params.put("mVO", mVO);
+		fieldDAO.insertMaterials(params);
+	}
+
+	@Override
+	public List<Object> selectReport(FieldtripVO fieldVO) {
+		System.out.println(fieldVO.getFtcode());
+		List<Object> reportList = fieldDAO.selectReport(fieldVO);
+		return reportList;
 	}
 
 	

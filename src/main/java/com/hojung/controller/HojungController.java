@@ -1,5 +1,6 @@
 package com.hojung.controller;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hojung.domain.KidscafeVO;
 import com.hojung.domain.KidscafesearchCri;
+import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.KinsearchCri;
 import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
@@ -128,10 +130,17 @@ public class HojungController {
 	
 	/* 키즈카페 예약페이지 */ 
 	@RequestMapping(value = "/cafereservation", method = RequestMethod.GET)
-	public String read(@RequestParam("cfcode") int cfcode, Model model) throws Exception{
+	public String read(@RequestParam("cfcode") int cfcode, @RequestParam("cfresdate") Date cfresdate, Model model) throws Exception{
 		// kidscafe 정보 불러오기
 		KidscafeVO kidscafe = kcservice.selectOneKidscafe(cfcode);
 		model.addAttribute("kidscafe", kidscafe);
+		
+		// cfres_summary 정보 불러오기
+		KidscafesumCri cri = new KidscafesumCri();
+		cri.setCfcode(cfcode);
+		cri.setCfresdate(cfresdate);
+		HashMap<Integer, Integer> ressum = kcservice.selectResSum(cri);
+		model.addAttribute("ressum", ressum);
 		
 		HashMap<String, String> hm = new HashMap<>();
 		HashMap<String, String> price = new HashMap<>();

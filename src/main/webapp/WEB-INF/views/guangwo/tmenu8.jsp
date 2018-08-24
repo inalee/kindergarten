@@ -15,46 +15,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-	// Activate tooltip
-	$('[data-toggle="tooltip"]').tooltip();
-	
-	// 선택삭제
-	var checkbox = $('table tbody input[type="checkbox"]');
-	$("#selectAll").click(function(){
-		if(this.checked){
-			checkbox.each(function(){
-				this.checked = true;                        
-			});
-		} else{
-			checkbox.each(function(){
-				this.checked = false;                        
-			});
-		} 
-	});
-	//전체삭제
-	checkbox.click(function(){
-		if(!this.checked){
-			$("#selectAll").prop("checked", false);
-		}
-	});
-});
-
-
-//문자 체크
-function checkPattern1(input) { 
-var pattern1 = /^[0-9]{2,3}-[ㄱ-ㅎㅏ-ㅣ가-힣]{1}-[0-9]{4}/;
-
-if(!pattern1.test(str) || str.length < 7) { 
-	alert("7자리 이상 문자, 숫자+문자+숫자로 구성하여야 합니다.");
-	    return false; 
-	} else { 
-		return true; 
-		} 
-	}
-
-</script>
 </head>
 <body>
     <div class="container">
@@ -158,26 +118,6 @@ if(!pattern1.test(str) || str.length < 7) {
 		</div>
 	</div>
 	
-	<!-- Delete Modal HTML -->
-	<div id="deletebusModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form>
-					<div class="modal-header">						
-						<h4 class="modal-title">차량삭제</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">
-						<p>삭제하시겠습니까</p>
-						<p class="text-warning"><small>삭제시 정보를 다시 입력하셔야합니다.</small></p>
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-danger" value="Delete">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+
 </body>
 </html>                                		                            

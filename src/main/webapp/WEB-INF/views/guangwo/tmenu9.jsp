@@ -15,6 +15,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+select {
+    width: 80px;
+    height: 25px;
+    padding-left: 10px;
+    font-size: 15px;
+    border-radius: 3px;
+}
+</style>
+<style type="text/css"></style>
+
 <script type="text/javascript">
 
 function del_schedule(val) {
@@ -25,6 +37,42 @@ function del_schedule(val) {
 	});
 	
 }
+
+$('.btn-example').click(function(){
+    var $href = $(this).attr('href');
+    layer_popup($href);
+});
+function layer_popup(el){
+
+    var $el = $(el);        //레이어의 id를 $el 변수에 저장
+    var isDim = $el.prev().hasClass('dimBg');   //dimmed 레이어를 감지하기 위한 boolean 변수
+
+    isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
+
+    var $elWidth = ~~($el.outerWidth()),
+        $elHeight = ~~($el.outerHeight()),
+        docWidth = $(document).width(),
+        docHeight = $(document).height();
+
+    // 화면의 중앙에 레이어를 띄운다.
+    if ($elHeight < docHeight || $elWidth < docWidth) {
+        $el.css({
+            marginTop: -$elHeight /2,
+            marginLeft: -$elWidth/2
+        })
+    } else {
+        $el.css({top: 0, left: 0});
+    }
+
+    $el.find('a.btn-layerClose').click(function(){
+        isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+        return false;
+    });
+
+    $('.layer .dimBg').click(function(){
+        $('.dim-layer').fadeOut();
+        return false;
+    });
 </script>
 
 </head>
@@ -75,23 +123,24 @@ function del_schedule(val) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form action="/kinder/guangwo/tmenu9" method="POST" >
-					<div class="modal-header">			
-						<h4 class="modal-title">스케쥴등록</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<div class="modal-header" style="background-color: #bce8f1;">			
+						<h4 class="modal-title" >스케쥴등록</h4>
+						
 					</div>
-					<div class="modal-body">					
-							<div class="form-group">
-							<label>차량선택</label>
+					<div class="modal-body">
+					<div>
+							<label>차량선택
 		          <select class="car" name="carcode">
 		          <option value="0" selected="selected">전체</option>
 		          	<c:forEach var="i" items="${sdteacher}">
 		          		<option value="${i.carcode}">${i.carname}-${i.memname}선생님</option>
 		          	</c:forEach>
 		          	</select>
+		          	</label>
 		          	</div>
 		          	
-						<div class="form-group">
-							<label>운행시각</label>
+		          	<div>
+							<label>운행시각
 		         
 		          	<select class="time" id="starttime" name="svtime1" onchange="possibleEndtime()">
 		          	<c:forEach begin="1" end="22" var="i">
@@ -105,37 +154,38 @@ function del_schedule(val) {
 		          	</c:forEach>
 		          	</select>
 		          	<span>분</span>
+						</label>
 						</div>
 						
-						
-						<div class="form-group">
-							<label>정거장선택</label>
+						<div>
+							<label>정거장선택
 		          <select class="time" id="starttime" name="stcode" onchange="possibleEndtime()">
 		          	<option value="0" selected="selected">전체</option>
 		          	<c:forEach var="i" items="${sdstation}">
 		          		<option value="${i.stcode}">${i.stname}</option>
 		          	</c:forEach>
 		          	</select>
+		          	</label>
 		          	</div>
-
-							<div class="form-group">
-							<label>탑승자보기</label>
-		          <select class="time" name="ccode" id="starttime" onchange="possibleEndtime()">
-		          			          	<option value="0" selected="selected">전체</option>
+		          	
+		          	<div>
+							<label>탑승자보기
 		          	<c:forEach var="i" items="${sdchildren}">
-		          		<option value="${i.ccode}">${i.cname}-${i.cage}살</option>
+		          	<input type="checkbox" name="ccode" value="${i.ccode}">${i.cname}</input>
 		          	</c:forEach>
-		          	</select>
-		          	</div>		
-					</div>
+		          	</label>
+		          	</div>
+		          	
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
 						<input type="submit" class="btn btn-success" value="Add">
 					</div>
 				</form>
+				</div>
 			</div>
 		</div>
-	</div>
 
+	
+	
 </body>
 </html>                                		                            

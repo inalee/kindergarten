@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.yebin.domain.FieldtripVO;
+import com.yebin.domain.MaterialsVO;
 
 
 @Repository
@@ -41,6 +42,19 @@ public class FieldtripDAOImpl implements FieldtripDAO {
 	@Override
 	public void insertTourCourse(Map<String, Object> params) {
 		sqlSession.insert(namespace+".insertTourCourse", params);
+	}
+	
+	@Override
+	public void insertMaterials(Map<String, Object> params) {
+		sqlSession.insert(namespace+".insertMaterials", params);
+		
+	}
+
+	@Override
+	public List<Object> selectReport(FieldtripVO fieldVO) {
+		System.out.println(fieldVO.getFtcode());
+		List<Object> reportList = sqlSession.selectList(namespace+".selectReport", fieldVO);
+		return reportList;
 	}
 	
 }

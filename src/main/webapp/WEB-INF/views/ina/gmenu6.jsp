@@ -30,13 +30,13 @@ function search_btn() {
 	$.get("search_regular",	{ sigungucode: psigungu, kinkindcode:pkinkind, kinname:pkinname }).done(function(data,state){
 	
 		
-		$("#mychild").empty();
-	 	$("#mychild").append("<tr><th>번호</th><th>구분</th><th>어린이집 이름</th><th>주소 </th><th>모집 일자</th><th>모집 인원</th><th>비고</th><th>신청 페이지</th></tr>");
+		$(".container").empty();
+	 	$(".container").append("<tr><th>번호</th><th>구분</th><th>어린이집 이름</th><th>주소 </th><th>모집 일자</th><th>모집 인원</th><th>비고</th><th>신청 페이지</th></tr>");
 		
 		for (var i = 0; i < data.length; i++) {
 		
 			date=new Date(data[i].reopen-32400000);
-			$("#mychild").append("<tr>"+
+			$(".container").append("<tr>"+
 					"<td>"+data[i].recode+"</td><td>"+data[i].kinkind+"</td><td>"+data[i].kinname+"</td><td>"+data[i].sigungu+"</td><td>"+date.getFullYear()+"년 "+(date.getMonth()+1)+"월 "+date.getDate()+"일</td>"+   
 				    "<td>"+data[i].renum+"명</td><td>"+data[i].redetail+"</td><td><a href='detail_regular_enroll?recode="+data[i].recode+"&kincode="+data[i].kincode+"'><img style='width: 30px; height: 30px;' src='http://atonofcows.x10.mx/assets/circle.png'></a></td></tr>");
 		}
@@ -104,12 +104,12 @@ padding-left: 50px;
 margin: auto;
 margin-top: 50px;
 position: relative;
-width: 95%;
+width: 100%;
 margin-bottom: 70px;
 }
 
 #contain2{
-width: 1200px;
+width: 100%;
 
 /* border: solid thin black; */
 position: relative; 
@@ -167,6 +167,217 @@ table.type04 td {
 }
 
 .button4:hover {background-color: #e7e7e7;}
+
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.container {
+  box-sizing: border-box;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 70px;
+  margin-bottom: 100px;
+  width: 1200px;
+
+
+}
+
+.u-float-right {
+  float: right;
+}
+
+
+.subtle {
+	color: #EDA900;
+  font-size: 20px;
+
+}
+
+.card-media {
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+  height: 250px;
+  margin-bottom: 25px;
+  transition: all 300ms ease-out;
+  width: 100%;
+}
+
+.card-media:hover {
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .2);
+}
+
+.card-media-object-container {
+  background: none;
+  float: left;
+  height: 100%;
+  width: 35%;
+  position: relative;
+  
+  
+
+}
+
+.card-media-object {
+  background-position: center center;
+  background-size: cover;
+  height: 100%;
+
+}
+
+
+
+.card-media-object:after {
+  content: " ";
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: all 300ms ease-out;
+  z-index: 10;
+}
+
+.card-media:hover .card-media-object:after {
+  background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.4) 100%);
+  background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 52%,rgba(0,0,0,0.4) 100%);
+  background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 52%,rgba(0,0,0,0.4) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );
+  opacity: 1;
+}
+
+.card-media-object-tag {
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 2px 7px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.card-media-object-social-list {
+  bottom: 4px;
+  left: 10px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 20;
+}
+
+.card-media-object-social-list li {
+  border-radius: 50%;
+  display: inline-block;
+  height: 30px;
+  margin-right: 6px;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(5px);
+  transition: all 300ms ease-out;
+  width: 30px;
+}
+
+.card-media:hover .card-media-object-social-list li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-media-object-social-list li:nth-child(1) {
+  transition-delay: 0;
+}
+.card-media-object-social-list li:nth-child(2) {
+  transition-delay: 75ms;
+}
+.card-media-object-social-list li:nth-child(3) {
+  transition-delay: 150ms;
+}
+
+.card-media-object-social-list-item-additional {
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 12px;
+  padding-top: 7px;
+  text-align: center;
+}
+
+.card-media-body {
+  background-color: #F6F6F6;
+  float: left;
+  height: 100%;
+  padding: 12px 15px;
+  position: relative;
+  width: 65%;
+}
+
+.card-media-body-top {
+  display: block;
+}
+
+.card-media-body-top-icons {
+  margin-top: -2px;
+  opacity: 0;
+  transition: all 300ms ease-out;
+  transform: translateY(-5px);
+}
+
+.card-media:hover .card-media-body-top-icons {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-media-body-top-icons > svg {
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 300ms ease-out;
+}
+
+.card-media-body-top-icons > svg:hover {
+  fill: #444;
+}
+
+.card-media-body-heading {
+  display: block;
+  margin-top: 10px;
+ margin-left: 30px;
+}
+
+.card-media-body-supporting-bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  opacity: 1;
+  padding: 0 15px;
+  transition: all 300ms ease-out;
+  width: 100%;
+}
+
+.card-media:hover .card-media-body-supporting-bottom {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.card-media-body-supporting-bottom-text {
+  display: inline-block;
+}
+
+.card-media-body-supporting-bottom-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 300ms ease-out;
+}
+
+.card-media:hover .card-media-body-supporting-bottom-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-media-link {
+  color: #41C1F2;
+  text-decoration: none;
+}
 
 </style>
 </head>
@@ -231,36 +442,58 @@ table.type04 td {
 
     </tr>
 </table>
-<hr class="my-hr3">
+<hr class="my-hr3" style="width: 70%;">
  <div id="contains">
     <div class="wrapper">
   	 <ul class="list">
-		<table id="mychild">
-  		<tr>
-	<th>번호</th>
-	  <th>구분</th>
-    <th>어린이집 이름</th>
-    <th>주소</th>
-    <th>모집 일자</th>  
-    <th>모집 인원</th>
-  	<th>비고</th>
-	<th>신청 페이지</th>
-  </tr>
 
-<c:forEach items="${list}" var="i">
-<fmt:formatDate var="date_re2" value="${i.reopen}" pattern="yyyy년 M월 d일" />
-  <tr>
-    <td>${i.recode}</td>
-    <td>${i.kinkind}</td>
-	<td>${i.kinname}</td>
-	<td>${i.sigungu}</td>
-    <td>${date_re2}</td>
-    <td>${i.renum}명</td>
-    <td>${i.redetail}</td>
-    <td><a href="detail_regular_enroll?recode=${i.recode}&kincode=${i.kincode}"><img style="width: 30px; height: 30px;" src="http://atonofcows.x10.mx/assets/circle.png"></a>
-  </tr>
-  </c:forEach>
-</table>
+	<c:forEach items="${list}" var="i" varStatus="k">
+	<fmt:formatDate var="date_re2" value="${i.reopen}" pattern="yyyy년 M월 d일 HH시 mm분" />
+	<div class="container">
+  <div class="card-media">
+    <!-- media container -->
+    <div class="card-media-object-container">
+	<c:choose>
+		<c:when test="${k.count%2 == 0 }">
+		<div class="card-media-object" style="background-image: url(resources/images/logo.png); background-size: contain; background-color: #FFBB00;"></div>
+		</c:when>
+		<c:otherwise>
+		<div class="card-media-object" style="background-image: url(resources/images/logo.png); background-size: contain;"></div>
+		</c:otherwise>
+	</c:choose>
+	  
+
+    </div>
+    <!-- body container -->
+    <div class="card-media-body">
+      <div class="card-media-body-top">
+        <span class="subtle" style="margin-left: 10px; font-size: 23px; font-weight: bolder;">◎ ${i.kinname}</span>
+        <div class="card-media-body-top-icons u-float-right">
+          <svg fill="#888888" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+          </svg>
+          <svg fill="#888888" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <br>
+      <span class="card-media-body-heading">#${i.kinkind} #${i.sigungu} #${i.renum}명 모집</span>
+	 <span class="card-media-body-heading"> - ${i.redetail}</span>
+      <div class="card-media-body-supporting-bottom">
+        <span class="card-media-body-supporting-bottom-text subtle" style="font-size: 19px; margin-left: 10px; ">모집일시 - ${date_re2}</span>
+      
+      </div>
+      <div class="card-media-body-supporting-bottom card-media-body-supporting-bottom-reveal">
+       
+        <a href="detail_regular_enroll?recode=${i.recode}&kincode=${i.kincode}" class="card-media-body-supporting-bottom-text card-media-link u-float-right" style="font-size:20px; color: #4374D9;" >상세보기▶</a>
+      </div>
+    </div>
+  </div>
+</div>
+</c:forEach>
 
 </ul>
 </div>

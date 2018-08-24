@@ -50,11 +50,14 @@
   <select id="selectKidscafes" resultType="com.hojung.domain.KidscafeVO">
   <![CDATA[select * from kidscafe 
   where cfname like CONCAT('%',#{cfname},'%')
-  and numperhour >= #{cfresnum}]]>
+  and numperhour >= #{cfresnum}
+  and cfopen <= #{starttime}
+  and cfclose > #{endtime}]]>
   <if test="sigungucode != 0">
 	and sigungucode=#{sigungucode}
   </if>
-  <![CDATA[and cfcode not in (select kc.cfcode
+  <![CDATA[and cfcode not in 
+  (select kc.cfcode
   from kidscafe kc, cfres_summary cs
   where kc.cfcode=cs.cfcode and kc.cfname like CONCAT('%',#{cfname},'%')
   and cs.cfresdate=#{cfresdate}
@@ -63,15 +66,19 @@
 	and kc.sigungucode=#{sigungucode}
   </if>
   <foreach collection="cfrestime_lists" item="cfrestime" separator="or" open="and(" close=")">cs.cfrestime=#{cfrestime}</foreach>
-  
   <![CDATA[group by kc.cfcode)
   order by cfcode]]>
   </select>
   
   
-  <!-- 키즈카페 예약 상세페이지 -->
+  <!-- 키즈카페 예약 상세페이지 : 키즈카페 정보 -->
   <select id="selectOneKidscafe" resultType="com.hojung.domain.KidscafeVO">
   select * from kidscafe where cfcode = #{cfcode}
+  </select>
+  
+  <!-- 키즈카페 예약 상세페이지 : 키즈카페 예약 정보 -->
+  <select id="selectResSum" resultType="com.hojung.domain.KidscafesumCri">
+  select * from cfres_summary where cfcode=#{cfcode} and cfresdate=#{cfresdate}
   </select>
 
 

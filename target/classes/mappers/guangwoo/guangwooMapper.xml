@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapper는 sql쿼리 작성 및 저장 용도 -->
+  <mapper namespace="com.kinder.mapper.guangwoo.guangwooMapper"> <!-- namespace는 패키지와 유사한 용도임 -->
+<!-- 화면8 -->
+
+<!-- 차량상세검색  -->
+<select id="selectcar" resultType="com.guangwoo.domain.VehicleVO" >
+select  v.carcode, v.carname,v.carnum,v.carpay,o.oilname,vtl.vtlname,f.faname,f.fayear
+from vehicle v join kindergarten k on v.kincode=k.kincode
+join vehiceltype vt on vt.vtcode=v.vtcode
+join oil o on o.oilcode=vt.oilcode
+join vehicletypelist vtl on vtl.vtlcode=vt.vtlcode
+join factory f on f.facode=vt.facode
+where k.kincode=#{kincode};
+</select>
+
+
+
+<!-- 화면9 -->
+
+<!-- 차량운행스케쥴 보기 -->
+<select id="select_schedule" resultType="com.guangwoo.domain.ScheduleVO" >
+select k.kincode, k.kinname,v.carname, sv.svtime,  m.memname, s.stname, c.cname, c.ccode
+from vehicle v join kindergarten k on v.kincode=k.kincode
+join teacher t on t.tecode=v.tecode
+join member m on m.memid=t.memid
+join schedule sd on sd.carcode=v.carcode
+join service sv on sv.svcode=sd.svcode
+join station s on s.sdcode=sd.sdcode
+join children c on c.stcode=s.stcode
+where k.kincode=#{kincode} order by carname desc;
+</select>
+
+<!-- 차량스케쥴 추가 -->
+<insert id="insertschedule">
+call updateschdule(#{svtime},#{carcode},#{stcode},#{ccode});
+</insert>
+
+<!-- 차량스케줄 삭제 -->
+<delete id="deleteschedule">
+update children set stcode=null where ccode=#{ccode};
+</delete>
+
+
+<!-- 차량운행담당교사 -->
+<select id="select_schedule_teacher" resultType="com.guangwoo.domain.CarteacherVO" >
+select k.kincode, k.kinname,v.carcode,v.carname, m.memname, m.memid
+from kindergarten k join teacher t on k.kincode=t.kincode
+join member m on m.memid=t.memid
+join vehicle v on v.tecode=t.tecode
+where k.kincode=#{kincode};
+</select>
+
+<!-- 차량탑승아이 -->
+<select id="select_schedule_children" resultType="com.guangwoo.domain.CarchildrenVO" >
+select k.kincode, k.kinname,c.ccode, c.cage,c.cname,c.cgen
+from member m join guardian g on m.memid=g.memid
+join children c on c.gcode=g.gcode
+join kindergarten k on c.kincode=k.kincode
+where k.kincode=#{kincode};
+</select>
+
+<!-- 차량정거장 보기 -->
+<select id="select_schedule_station" resultType="com.guangwoo.domain.CarstationVO" >
+select k.kincode, k.kinname,st.stcode,st.stname
+from vehicle v join schedule sd on v.carcode=sd.carcode
+join kindergarten k on k.kincode=v.kincode
+join service sv on sv.svcode=sd.svcode
+join station st on st.sdcode=sd.sdcode
+where k.kincode=#{kincode};
+</select>
+
+<!-- 화면10 -->
+<!-- 정거장추가 -->
+<insert id="station_insert">
+insert into station(sdcode,stname,stx,sty) values(#{sdcode},#{stname},#{stx},#{sty});
+</insert>
+<!-- 정거장보기 -->
+<select id="station_select" resultType="com.guangwoo.domain.StationVO">
+select k.kincode, k.kinname,st.stname, st.stx,st.sty
+from vehicle v join schedule sd on v.carcode=sd.carcode
+join kindergarten k on k.kincode=v.kincode
+join service sv on sv.svcode=sd.svcode
+join station st on st.sdcode=sd.sdcode
+where k.kincode=#{kincode};
+</select>
+<!-- 정거장수정 -->
+<update id="station_update_sdcode">
+update station set sdcode=#{sdcode} where stcode=#{stcode};
+</update>
+<!-- 정거장명변경 -->
+<update id="station_update_stname">
+update station set stname=#{stname} where stcode=#{stcode};
+</update>
+<!-- 정거장좌표변경 -->
+<update id="station_update_stx">
+update station set stx=#{stx} where stcode=#{stcode};
+</update>
+<update id="station_update_sty">
+update station set sty=#{sty} where stcode=#{stcode};
+</update>
+
+<!-- 정거장삭제 -->
+<delete id="station_delete">
+delete from station where stcode=#{stcode};
+</delete>
+
+
+
+
+
+
+
+
+  </mapper>
+  
+  
+  
+  

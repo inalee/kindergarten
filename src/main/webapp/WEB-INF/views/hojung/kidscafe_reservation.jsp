@@ -11,19 +11,55 @@
 <c:url var="kidscaferes" value="resources/hjcss/kidscaferes.css"></c:url>
 <link href="${kidscaferes}" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
-$(function(){
-	//현재달 달력 생성
-	drawCalendar();
 
-	
-});
-
-var disabledTime=[17,18]; // 잔여석이 없는 시간
+var disabledTime=[]; // 잔여석이 없는 시간
 var selectedDate=null;
 var selectedDateId=null; // 선택된 날짜
 var selectedTime=[]; // 선택된 시간
 var time1=null;
 var time2=null;
+
+
+$(function(){
+	//현재달 달력 생성
+	drawCalendar();
+	
+	//url 파라미터값 가져오기
+	var getParameters = function (paramName) {
+	    // 리턴값을 위한 변수 선언
+	    var returnValue;
+
+	    // 현재 URL 가져오기
+	    var url = location.href;
+
+	    // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔
+	    var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+
+	    // 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return
+	    for (var i = 0; i < parameters.length; i++) {
+	        var varName = parameters[i].split('=')[0];
+	        if (varName.toUpperCase() == paramName.toUpperCase()) {
+	            returnValue = parameters[i].split('=')[1];
+	            return decodeURIComponent(returnValue);
+	        }
+	    }
+	};
+	
+	//date value 반영
+	selectDate(getParameters('cfresdate'));
+	
+	//time value 반영
+	selectTime(getParameters('starttime'));
+	if(getParameters('starttime')!=getParameters('endtime')-1) {
+		selectTime(getParameters('endtime')-1);
+	}
+	
+	//인원수 반영
+	document.getElementById("count1").value = getParameters('adults');
+	document.getElementById("count2").value = getParameters('kids');
+
+});
+
 
 function drawCalendar(){
 	var d = new Date();
@@ -47,9 +83,9 @@ function drawCalendar(){
 			day = (i+1)
 		}
 		if((i+1)<d.getDate()) {
-			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+d.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+d.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 		} else {
-			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+d.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);'>"+(i+1)+"</span></li>");
+			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+d.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);'>"+(i+1)+"</span></li>");
 		}
 
 	}
@@ -80,19 +116,19 @@ function drawCalendar(){
 				day = (i+1)
 			}
 			if(lastMonth.getFullYear()<today.getFullYear()) {
-				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+lastMonth.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+lastMonth.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 			} else if (lastMonth.getFullYear()>today.getFullYear()) {
-				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+lastMonth.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
+				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+lastMonth.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
 			} else {
 				if(thisMonth<today.getMonth()+1) {
-					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+lastMonth.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+lastMonth.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 				} else if(thisMonth>today.getMonth()+1) {
-					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+lastMonth.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");				
+					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+lastMonth.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");				
 				} else {
 					if ((i+1)<today.getDate()) {
-						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+lastMonth.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+lastMonth.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 					} else {
-						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+lastMonth.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
+						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+lastMonth.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
 					}
 				}
 			}
@@ -124,19 +160,19 @@ function drawCalendar(){
 				day = (i+1)
 			}
 			if(afterMonth.getFullYear()<today.getFullYear()) {
-				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+afterMonth.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+afterMonth.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 			} else if (afterMonth.getFullYear()>today.getFullYear()) {
-				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+afterMonth.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
+				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+afterMonth.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
 			} else {
 				if(thisMonth<today.getMonth()+1) {
-					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+afterMonth.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+afterMonth.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 				} else if(thisMonth>today.getMonth()+1) {
-					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+afterMonth.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
+					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+afterMonth.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
 				} else {
 					if ((i+1)<today.getDate()) {
-						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+afterMonth.getFullYear()+"/"+thisMonth+"/"+day+">"+(i+1)+"</span></li>");
+						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+afterMonth.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
 					} else {
-						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+afterMonth.getFullYear()+"/"+thisMonth+"/"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
+						$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+afterMonth.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
 					}
 				}
 			}
@@ -186,7 +222,15 @@ function drawCalendar(){
 				for (var i = time2; i < parseInt(time1)+1; i++) {  
 					selectedTime.push(i);
 				}
-			} 
+			} else if (time1 == time) {
+				// css 초기화
+				for ( var t in selectedTime) {
+					document.getElementById(selectedTime[t]).style.backgroundColor="#ffffff";
+					document.getElementById(selectedTime[t]).style.color="#000000";
+				}
+				selectedTime=[]; // 초기화
+				time1=null; // 초기화
+			}
 		} else { // 2개 모두 선택되어 있을 때
 			// css 초기화
 			for ( var t in selectedTime) {
@@ -201,6 +245,7 @@ function drawCalendar(){
 		var disabled=null; // 예약 불가능 판별 변수
 		// 예약 불가능 시간대 판별
 		for ( var t in selectedTime) {
+// 			alert(disabledTime)
 // 			alert(t+", "+disabledTime.indexOf(t))
 			if(disabledTime.indexOf(selectedTime[t])!=-1) {
 				alert("예약 불가능한 시간이 포함되어 있습니다. 다시 선택하여 주세요.");
@@ -214,13 +259,20 @@ function drawCalendar(){
 		
 		// 예약이 가능한 상태이면
 		if(disabled!=true) {
-			for ( var t in selectedTime) {
-				document.getElementById(selectedTime[t]).style.backgroundColor="#95d5ff";
-				document.getElementById(selectedTime[t]).style.color="#ffffff";
+			// selectedTime 배열이 비어있을 때
+			if(selectedTime.length==0) {
+				document.getElementById("res_time").value = "";
+			// selectedTime 배열에 값이 존재할 때
+			} else {
+				for ( var t in selectedTime) {
+					document.getElementById(selectedTime[t]).style.backgroundColor="#95d5ff";
+					document.getElementById(selectedTime[t]).style.color="#ffffff";
+				}
+				// form에 추가
+				var res_time = selectedTime[0]+":00 ~ "+selectedTime.slice(-1)[0]+":59"
+				document.getElementById("res_time").value = res_time;
 			}
-			// form에 추가
-			var res_time = selectedTime[0]+":00 ~ "+selectedTime.slice(-1)[0]+":59"
-			document.getElementById("res_time").value = res_time;
+			
 		}
 	}
 	
@@ -253,27 +305,83 @@ function drawCalendar(){
 			document.getElementById("count2").value = count2;
 		}
 	}
+	
+	
+	// disabledTime 저장 함수
+	function pushDisabledTime(time) {
+// 		alert(time)
+		disabledTime.push(time);
+// 		alert(disabledTime)
+	}
+	
+	
+	var myVar;
 
+	function loadFunction() {
+	    myVar = setTimeout(showPage, 3000);
+	}
+
+	function showPage() {
+	  document.getElementById("loader").style.display = "none";
+	  document.getElementById("contents").style.display = "block";
+	}
 
 </script>
 </head>
-<body>
+<!-- <body onload="loadFunction()" style="margin:0;"> -->
+<body style="margin:0;">
+
+<!-- 로딩 중 이미지 -->
+<!-- <div id="loader"></div> -->
+
+<!-- 실제 콘텐츠 -->
+<!-- <div style="display:none;" id="contents" class="animate-bottom"> -->
+<div id="contents" class="animate-bottom">
 
 <div id="wrap">
-
 	<div id="kidscafe_detail">
-		<div id="kidscafe_photo"><img alt="kidscafe_photo" class="kcimage" src="resources/images/noimage.gif"></div>
+		<div id="kidscafe_photo">
+			<c:if test="${kidscafe.cfimg==null || kidscafe.cfimg==''}">
+				<c:set var="cfimg" value="resources/images/noimage.gif"></c:set>
+			</c:if>
+			<c:if test="${kidscafe.cfimg!=null && kidscafe.cfimg!=''}">
+				<c:set var="cfimg" value="${kidscafe.cfimg}"></c:set>
+			</c:if>
+			<img alt="kidscafe_photo" class="kcimage" src="${cfimg}">
+		</div>
 		<ul class="ul_detail">
-			<li><span class="li_detail">카페명</span><span style="font-size: 17px; font-weight: bold;">${kidscafe.cfname}</span></li>
-			<li><span class="li_detail">주소</span><span style="width: 83%; float: right;">${kidscafe.address}</span></li>
-			<li><span class="li_detail">전화번호</span>ㅇㅇ</li>
-			<li><span class="li_detail">홈페이지</span>ㅇㅇ</li>
-			<li><span class="li_detail">이용시간</span>ㅇㅇ</li>
-			<li><span class="li_detail">이용정보</span>ㅇㅇ</li>
-			<li><span class="li_detail">가격정보</span>ㅇㅇ</li>
+			<li><span class="li_detail">카페명</span><span style="width: 80%; float: right; font-size: 17px; font-weight: bold;">${kidscafe.cfname}</span></li>
+			<li><span class="li_detail">주소</span><span style="width: 80%; float: right; word-break: break-all;">${kidscafe.address}</span></li>
+			<li><span class="li_detail">전화번호</span>${hm.cfphone}
+				<c:if test="${hm.cfphone==null || hm.cfphone==''}">
+					${kidscafe.cfphone}
+					<c:if test="${kidscafe.cfphone==null || kidscafe.cfphone==''}">-</c:if>
+				</c:if>
+			</li>
+			<li><span class="li_detail" style="margin-right: 23px;">홈페이지</span>
+				<span style="width: 80%; float: right;">
+					<a href="${hm.homepage}" target="_blank" style="text-decoration: none; color: green; word-break: break-all;">${hm.homepage}</a>
+				</span>
+				<c:if test="${hm.homepage==null || hm.homepage==''}">-</c:if>
+			</li>
+			<li><span class="li_detail">이용시간</span>${kidscafe.cfopen}시 ~ ${kidscafe.cfclose}시</li>
+			<li><span class="li_detail" style="margin-right: 23px;">이용정보</span><span style="width: 80%; float: right;">${hm.info}</span>
+				<c:if test="${hm.info==null || hm.info==''}">-</c:if>
+			</li>
+			<li><span class="li_detail">가격정보	</span>
+				<span style="width: 80%; float: right;">
+				<table>
+					<c:forEach items="${price}" var="i">
+					<tr><td>${i.key}</td><td style="padding-left: 2px; padding-right: 2px;">-----------</td><td>${i.value}</td></tr>
+					</c:forEach>
+				</table>
+				</span>
+			</li>
 			<hr>
 			<li><span class="li_detail">상세설명</span></li>
-			<li>dkdkdkkdkdkdkdkdkdkdkd</li>
+			<li style="padding: 10px 10px;"><span style="white-space:pre-wrap;">${hm.description}</span>
+				<c:if test="${hm.description==null || hm.description==''}">-</c:if>
+			</li>
 			<hr>
 			<li><span class="li_detail">찾아가는 길</span></li>
 			<li>지도</li>
@@ -314,29 +422,49 @@ function drawCalendar(){
 		</div>
 		
 		<ul class="ul_detail">
-			<li><span class="li_detail">날짜</span><input type="text" id="res_date" disabled="disabled" value="2018/08/16"></li>
+			<li><span class="li_detail">날짜</span><input type="text" id="res_date" disabled="disabled" value=""></li>
 			<hr>
 			<li><span class="li_detail">시간</span><input type="text" id="res_time" disabled="disabled" value=""></li>
 			<li><span class="li_detail" style="font-size: 15px; display: inline-block; margin-top: 10px;">오전</span>
 				<span style="display: inline-block; width: 400px; float: right;">
-	<!-- 			<button class="res_time" id="10" type="button" onclick="selectTime(this.id);">10:00</button> -->
-				<button class="btn_time" id="10" value="10" type="button" onclick="selectTime(this.id);">10:00<br><p>12/20</p></button>
-				<button class="btn_time" id="11" value="11" type="button" onclick="selectTime(this.id);">11:00<br><p>12/20</p></button>
+				<c:forEach var="i" begin="${kidscafe.cfopen}" end="11" step="1">
+					<c:if test="${ressum.containsKey(i)}"><c:set var="p" value="${ressum.get(i)}"></c:set></c:if>
+					<c:if test="${!ressum.containsKey(i)}"><c:set var="p" value="0"></c:set></c:if>
+					<c:if test="${kidscafe.numperhour==p}">
+						<button class="btn_time" id="${i}" value="${i}" type="button"  disabled="disabled" title="인원초과입니다.">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+						<script type="text/javascript">pushDisabledTime('${i}');</script>
+					</c:if>
+					<c:if test="${kidscafe.numperhour!=p}">
+						<button class="btn_time" id="${i}" value="${i}" type="button" onclick="selectTime(this.id);">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+					</c:if>
+				</c:forEach>
+<!-- 				<button class="btn_time" id="10" value="10" type="button" onclick="selectTime(this.id);">10:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="11" value="11" type="button" onclick="selectTime(this.id);">11:00<br><p>12/20</p></button> -->
 				</span>
 			</li>
 			<li><span class="li_detail" style="font-size: 15px; display: inline-block; padding-top: 8px;">오후</span>
 				<span style="display: inline-block; width: 400px; float: right;">
-				<button class="btn_time" id="12" value="12" onclick="selectTime(this.id);">12:00<br><p>12/20</p></button>
-				<button class="btn_time" id="13" value="13" onclick="selectTime(this.id);">13:00<br><p>12/20</p></button>
-				<button class="btn_time" id="14" value="14" onclick="selectTime(this.id);">14:00<br><p>12/20</p></button>
-				<button class="btn_time" id="15" value="15" onclick="selectTime(this.id);">15:00<br><p>12/20</p></button>
-				<button class="btn_time" id="16" value="16" onclick="selectTime(this.id);">16:00<br><p>12/20</p></button>
-				<button class="btn_time" id="17" value="17" disabled="disabled" title="인원초과입니다. ">17:00<br><p>20/20</p></button>
-				<button class="btn_time" id="18" value="18" disabled="disabled" title="인원초과입니다.">18:00<br><p>20/20</p></button>
-				<button class="btn_time" id="19" value="19" onclick="selectTime(this.id);">19:00<br><p>12/20</p></button>
-				<button class="btn_time" id="20" value="20" onclick="selectTime(this.id);">20:00<br><p>12/20</p></button>
-				<button class="btn_time" id="21" value="21" onclick="selectTime(this.id);">21:00<br><p>12/20</p></button>
-				<button class="btn_time" id="22" value="22" onclick="selectTime(this.id);">22:00<br><p>12/20</p></button>
+				<c:forEach var="i" begin="12" end="${kidscafe.cfclose-1}" step="1">
+					<c:if test="${ressum.containsKey(i)}"><c:set var="p" value="${ressum.get(i)}"></c:set></c:if>
+					<c:if test="${!ressum.containsKey(i)}"><c:set var="p" value="0"></c:set></c:if>
+					<c:if test="${kidscafe.numperhour==p}">
+						<button class="btn_time" id="${i}" value="${i}" type="button"  disabled="disabled" title="인원초과입니다.">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+					</c:if>
+					<c:if test="${kidscafe.numperhour!=p}">
+						<button class="btn_time" id="${i}" value="${i}" type="button" onclick="selectTime(this.id);">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+					</c:if>
+				</c:forEach>
+<!-- 				<button class="btn_time" id="12" value="12" onclick="selectTime(this.id);">12:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="13" value="13" onclick="selectTime(this.id);">13:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="14" value="14" onclick="selectTime(this.id);">14:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="15" value="15" onclick="selectTime(this.id);">15:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="16" value="16" onclick="selectTime(this.id);">16:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="17" value="17" disabled="disabled" title="인원초과입니다. ">17:00<br><p>20/20</p></button> -->
+<!-- 				<button class="btn_time" id="18" value="18" disabled="disabled" title="인원초과입니다.">18:00<br><p>20/20</p></button> -->
+<!-- 				<button class="btn_time" id="19" value="19" onclick="selectTime(this.id);">19:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="20" value="20" onclick="selectTime(this.id);">20:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="21" value="21" onclick="selectTime(this.id);">21:00<br><p>12/20</p></button> -->
+<!-- 				<button class="btn_time" id="22" value="22" onclick="selectTime(this.id);">22:00<br><p>12/20</p></button> -->
 				</span>
 			</li>
 			<hr>
@@ -345,13 +473,13 @@ function drawCalendar(){
 				<span style="display: inline-block; float: right; margin: 0 10px 10px 0;">
 					<span style="font-size: 15px; margin-right: 25px;">성인</span> 
 					<button type="button" class="minus" onclick="minus1();"></button>
-		          	<input type="number" value="2" class="count" id="count1" name="count1" >
+		          	<input type="number" value="0" class="count" id="count1" name="adults" >
 				    <button type="button" class="plus" onclick="plus1();"></button><br>
 				</span>
 				<span style="display: inline-block; float: right; margin: 0 10px 10px 0;">
 					<span style="font-size: 15px; margin-right: 10px;">어린이</span> 
 					<button type="button" class="minus" onclick="minus2();"></button>
-		          	<input type="number" value="3" class="count" id="count2" name="count2">
+		          	<input type="number" value="0" class="count" id="count2" name="kids">
 				    <button type="button" class="plus" onclick="plus2();"></button>
 				</span>
 				</div>
@@ -380,8 +508,8 @@ function drawCalendar(){
 			<hr>
 			<li><button id="btn_res"><span>예 약 하 기</span></button></li>
 		</ul>
-		
 	</div>
+</div>
 
 </div>
 

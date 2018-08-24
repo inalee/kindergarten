@@ -17,6 +17,7 @@
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 <!-- 		username 인아에게 부여받은 이름으로 수정해주세요 -->
+
 		<property name="url" value="jdbc:log4jdbc:mysql://192.168.0.52:3306/kindergarten?useSSL=false&amp;serverTimezone=Asia/Seoul"></property>
 		<property name="username" value="yebin"></property>
 		<property name="password" value="1234"></property>
@@ -51,6 +52,8 @@
 	
 	
 	<!-- 패키지를 자동으로 인식할 수 있도록 설정 -->
+	<context:component-scan base-package="com.guangwoo.persistence"></context:component-scan>
+	<context:component-scan base-package="com.guangwoo.service"></context:component-scan>
 	<context:component-scan base-package="com.yebin.persistence"></context:component-scan>
 	<context:component-scan base-package="com.yebin.service"></context:component-scan>
 	<context:component-scan base-package="com.ina.persistence"></context:component-scan>

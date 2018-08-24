@@ -1,7 +1,6 @@
 package com.hojung.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hojung.domain.KidscafeVO;
 import com.hojung.domain.KidscafesearchCri;
+import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.KinsearchCri;
 import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
@@ -109,55 +109,94 @@ public class HojungController {
 			index++;
 		}
 		cri.setCfrestime_lists(cfrestime_lists);
-		cri.setCfresnum(Integer.parseInt(request.getParameter("count1"))+Integer.parseInt(request.getParameter("count2")));
+		cri.setAdultsnum(Integer.parseInt(request.getParameter("adults")));
+		cri.setKidsnum(Integer.parseInt(request.getParameter("kids")));
 		System.out.println("================="+cri);
 		
 		//예약 조건에 맞는 kidscafe 리스트
-//		List<KidscafeVO> Kidscafe_list = kcservice.selectKidscafes(cri);
+		List<KidscafeVO> kidscafe_list = kcservice.selectKidscafes(cri);
 //		for (KidscafeVO kc : Kidscafe_list) {
 //			System.out.println(kc.getCfpermit());
 //		}
-		
-		model.addAttribute("kidscafe_list", kcservice.selectKidscafes(cri));
+//		model.addAttribute("kidscafe_list", kidscafe_list); // 검색 결과
 		
 		JSONArray jsonArray = new JSONArray();
-		model.addAttribute("kidscafe_list_json", jsonArray.fromObject(kcservice.selectKidscafes(cri)));
+		model.addAttribute("kidscafe_list_json", jsonArray.fromObject(kidscafe_list)); // 검색 결과 json
+		
+		model.addAttribute("cri", cri); // 예약 조건 파라미터
 		
 		return "/kidscafe_list";
 	}
 	
 	/* 키즈카페 예약페이지 */ 
 	@RequestMapping(value = "/cafereservation", method = RequestMethod.GET)
-	public String read(@RequestParam("cfcode") int cfcode, Model model) throws Exception{
+	public String read(@RequestParam("cfcode") int cfcode, @RequestParam("cfresdate") Date cfresdate, Model model) throws Exception{
 		// kidscafe 정보 불러오기
 		KidscafeVO kidscafe = kcservice.selectOneKidscafe(cfcode);
 		model.addAttribute("kidscafe", kidscafe);
 		
+		// cfres_summary 정보 불러오기
+		KidscafesumCri cri = new KidscafesumCri();
+		cri.setCfcode(cfcode);
+		cri.setCfresdate(cfresdate);
+		HashMap<Integer, Integer> ressum = kcservice.selectResSum(cri);
+		model.addAttribute("ressum", ressum);
+		
 		HashMap<String, String> hm = new HashMap<>();
-		Elements emts = null;
+		HashMap<String, String> price = new HashMap<>();
+		Elements emts1, emts2, emts3, prices = null;
 		String emt = null;
-		String url = kidscafe.getUrlcode();
+		String url1 = "https://store.naver.com/restaurants/detail?id="+kidscafe.getUrlcode();
+		String url2= "https://m.store.naver.com/restaurants/"+kidscafe.getUrlcode();
 //		ArrayList<String> test = new ArrayList<>();
 
-		System.out.println("=================good");
 		try {
-			emts = Jsoup.connect(url).get().select(".local_info_detail");
-
-			for (Element e : emts) {
-				// 경로에서 파일이름만 추출
-				emt = e.text();
-				System.out.println("================="+emt);
-				
-				hm.put("cfphone", emt);
+			emts1 = Jsoup.connect(url1).get().select(".txt");
+			
+			if(emts1.get(0).text()!="" || emts1.get(0).text()!=null) hm.put("cfphone", emts1.get(0).text()); //전화번호
+			else hm.put("cfphone", "-");
+			if(emts1.get(4).text().contains("http")) {
+				if(emts1.get(4).text()!="" || emts1.get(4).text()!=null) hm.put("homepage", emts1.get(4).text()); //홈페이지
+				else hm.put("homepage", "-");
+				if(!emts1.get(5).text().contains("고쳐주고")) {
+					if(emts1.get(5).text()!="" || emts1.get(5).text()!=null) hm.put("info", emts1.get(5).text()); // 이용정보
+					else hm.put("info", "-");
+				}
+			} else {
+				if(!emts1.get(5).text().contains("고쳐주고")) {
+					if(emts1.get(5).text()!="" || emts1.get(5).text()!=null) hm.put("info", emts1.get(5).text()); // 이용정보
+					else hm.put("info", "-");
+				}
 			}
 
+			emts2 = Jsoup.connect(url1).get().select(".txt .list_menu .name");
+			prices = Jsoup.connect(url1).get().select(".txt .list_menu .price");
+			
+			for (int i = 0; i < emts2.size(); i++) {
+				price.put(emts2.get(i).text(), prices.get(i).text()); //가격정보
+			}
+			
+			emts3 = Jsoup.connect(url2).get().select("meta");
+			for (Element e : emts3) {
+				if(e.toString().contains("twitter:description")) {					
+					if(e.toString().substring(46, e.toString().length()-2)!="" || e.toString().substring(46, e.toString().length()-2)!=null) hm.put("description", e.toString().substring(46, e.toString().length()-2));//상세설명
+					else hm.put("description", "-");
+				}
+			}
+
+			
+			
+			
 		} catch (Exception e) {
 
 		}
 
+	
+
 		
 		
 		model.addAttribute("hm", hm);
+		model.addAttribute("price", price);
 		
 		return "/kidscafe_reservation";
 	}
@@ -174,12 +213,6 @@ public class HojungController {
 	public String gmenu17() {
 		
 		return "/gmenu17";
-	}
-	
-	@RequestMapping(value = "/gmenu18", method = RequestMethod.GET)
-	public String gmenu18() {
-		
-		return "/gmenu18";
 	}
 	
 	@RequestMapping(value = "/tmenu13", method = RequestMethod.GET)

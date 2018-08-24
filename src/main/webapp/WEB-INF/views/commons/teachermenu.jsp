@@ -67,8 +67,7 @@ $(function(){
 	     <a href="#">원생 관리</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/jiwon/tmenu5">출석체크</a></li>
-	         <li><a href="/kinder/ina/manage2">원생 관리</a></li>
-	         <li><a href="/kinder/ina/manage">반 만들기</a></li>
+	         <li><a href="/kinder/ina/manage2">원생 / 반 관리</a></li>
 
 
 	       </ul>
@@ -84,10 +83,9 @@ $(function(){
 	     <li class="sub-menu-parent" tab-index="0">
 	       <a href="#">차량운행</a>
 	       <ul class="sub-menu">
-	         <li><a href="/kinder/guangwo/tmenu8">차량정보</a></li>
-	         <li><a href="/kinder/guangwo/tmenu9">배차관리</a></li>
-	         <li><a href="/kinder/guangwo/tmenu10">배차일지</a></li>
-	         <li><a href="/kinder/guangwo/tmenu11">정비관리</a></li>
+	         <li><a href="/kinder/guangwo/tmenu8">차량관리</a></li>
+	         <li><a href="/kinder/guangwo/tmenu9">스케쥴관리</a></li>
+	         <li><a href="/kinder/guangwo/tmenu10">정거장관리</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

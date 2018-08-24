@@ -21,6 +21,7 @@ public class FieldtripVO {
 	private String ftremarks;
 	private boolean mtrcode;
 	private String fttitle;
+	private String ftselecteddate;
 
 
 	public FieldtripVO() {
@@ -49,6 +50,16 @@ public class FieldtripVO {
 		this.fttitle = fttitle;
 	}
 
+	
+	public String getFtselecteddate() {
+		return ftselecteddate;
+	}
+
+	public void setFtselecteddate(String ftselecteddate) {
+		this.ftselecteddate = ftselecteddate;
+	}
+
+	
 	public int getFtcode() {
 		return ftcode;
 	}

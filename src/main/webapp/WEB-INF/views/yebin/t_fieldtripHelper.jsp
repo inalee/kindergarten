@@ -837,7 +837,6 @@ $(function() {
 	</div>
   <script>
  	$('#saveMaterials').on('click', function(event) {
- 		alert("adfadsfasdf");
  		$(function() {
  			openStep(event, 'step8', 'id8');
  			$('#id8').attr('disabled', false);	
@@ -849,9 +848,15 @@ $(function() {
 
   <div id="step8" class="w3-container step">
   <p class="headline">Q.원장님 승인을 위해, 체험학습 계획서 양식을 완성 해주세요.</p>
-  <button type="button" class="btNext" data-num=7 id=''>승인 받기</button>
+  <button type="button" class="btNext" data-num=8 id='requestApproval'>승인 받기</button>
   <hr style="border: 2px solid lightgray;"/>
+  
+ 
   </div>
+
+
+
+
 
 <script>
 //다음 버튼으로 탭 이동시키는 함수

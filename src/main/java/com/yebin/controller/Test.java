@@ -1,7 +1,28 @@
 package com.yebin.controller;
 
+import com.yebin.domain.FieldtripVO;
+import com.yebin.service.FieldtripServiceImpl;
 
-    	
+public class Test {    	
+	
+	
+	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		
+		FieldtripVO fvo = new FieldtripVO();
+		fvo.setFtcode(33);
+		
+		FieldtripServiceImpl fsi = new  FieldtripServiceImpl();
+		fsi.selectReport(fvo);
+		
+			
+
+		
+	}
+	
+}
+
+
+
 //    	{"date":"2018-08","zone":"지역없음","city":"도시없음","person":"0","searchDate":{"$date":1533026357381},"term":"역사체험-창의적체험활동","_id":{"$oid":"5b602035084ce64a102ecd28"},"memid":"teacher"}
 
 //    	ArrayList<String> list = new ArrayList<>();

@@ -37,4 +37,6 @@ public interface RegularDAO {
 	public Map<String, Object> sel_kinder_info(int kincode);
 	
 	public void modify_kinder(KindergartenVO kv);
+	
+	public int sel_number_class (int kincode);
 }

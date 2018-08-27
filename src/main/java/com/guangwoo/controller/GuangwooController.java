@@ -186,6 +186,10 @@ public class GuangwooController {
 		return "tmenu10";
 	}
 	
-	
+	@RequestMapping(value="map_view",method=RequestMethod.GET)
+	public String map_view() throws Exception {
+		
+		return "tmenu11";
+	}
 	
 }

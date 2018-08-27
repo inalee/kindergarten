@@ -190,6 +190,7 @@ function showDetail(apvnum, num, apvdate) {
 				$(person).append("<p>"+data[0].ftperson+"</p>")
 				$(apvpurpose).append("<p>"+data[0].apvpurpose+"</p>")
 				$(apvremarks).append("<p>"+data[0].apvremarks+"</p>")
+// 				$(materials).append("<p>"+data[0].apvremarks+"</p>")
 				
 				
 				if(isMst){
@@ -240,7 +241,7 @@ function showDetail(apvnum, num, apvdate) {
 function approve(apvnum, num){
 	var td = "#tdbefore" + num;
 	var master = "#master" + num;
-	var apvAtr = "#apprAttr" + i;
+	var apvAtr = "#apprAttr" + num;
 	
 	$.ajax({
 		url: '/kinder/postUpdateApv',
@@ -269,8 +270,8 @@ function approve(apvnum, num){
 <h2>결재 승인/대기목록</h2>
 <table id='apprList'>
   <tr>
-    <th width='5%'>문서 번호</th>
-    <th width='40%'>제목</th>
+    <th width='10%'>문서번호</th>
+    <th width='35%'>제목</th>
      <th width='10%'>학급</th>
     <th width='10%'>선생님</th>
     <th width='10%'>요청일</th>

@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -25,10 +26,8 @@ select {
     border-radius: 3px;
 }
 </style>
-<style type="text/css"></style>
 
 <script type="text/javascript">
-
 function del_schedule(val) {
 	alert("해당 스케쥴을 삭제하시겠습니까?");
 	$.get("del_schedule",{ccode:val},function(result){
@@ -37,42 +36,6 @@ function del_schedule(val) {
 	});
 	
 }
-
-$('.btn-example').click(function(){
-    var $href = $(this).attr('href');
-    layer_popup($href);
-});
-function layer_popup(el){
-
-    var $el = $(el);        //레이어의 id를 $el 변수에 저장
-    var isDim = $el.prev().hasClass('dimBg');   //dimmed 레이어를 감지하기 위한 boolean 변수
-
-    isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
-
-    var $elWidth = ~~($el.outerWidth()),
-        $elHeight = ~~($el.outerHeight()),
-        docWidth = $(document).width(),
-        docHeight = $(document).height();
-
-    // 화면의 중앙에 레이어를 띄운다.
-    if ($elHeight < docHeight || $elWidth < docWidth) {
-        $el.css({
-            marginTop: -$elHeight /2,
-            marginLeft: -$elWidth/2
-        })
-    } else {
-        $el.css({top: 0, left: 0});
-    }
-
-    $el.find('a.btn-layerClose').click(function(){
-        isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
-        return false;
-    });
-
-    $('.layer .dimBg').click(function(){
-        $('.dim-layer').fadeOut();
-        return false;
-    });
 </script>
 
 </head>
@@ -122,7 +85,7 @@ function layer_popup(el){
 	<div id="addbusModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="/kinder/guangwo/tmenu9" method="POST" >
+				<form action="/kinder/guangwo/tmenu9" method="POST">
 					<div class="modal-header" style="background-color: #bce8f1;">			
 						<h4 class="modal-title" >스케쥴등록</h4>
 						
@@ -141,7 +104,6 @@ function layer_popup(el){
 		          	
 		          	<div>
 							<label>운행시각
-		         
 		          	<select class="time" id="starttime" name="svtime1" onchange="possibleEndtime()">
 		          	<c:forEach begin="1" end="22" var="i">
 		          		<option value="${i}">${i}</option>

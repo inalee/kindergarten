@@ -84,8 +84,8 @@ $(function(){
 	       <a href="#">차량운행</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/guangwo/tmenu8">차량관리</a></li>
-	         <li><a href="/kinder/guangwo/tmenu9">스케쥴관리</a></li>
 	         <li><a href="/kinder/guangwo/tmenu10">정거장관리</a></li>
+	         <li><a href="/kinder/guangwo/tmenu9">스케쥴관리</a></li>
 	       </ul>
 	     </li>
 	     <li class="sub-menu-parent" tab-index="0">

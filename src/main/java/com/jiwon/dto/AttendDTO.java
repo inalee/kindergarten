@@ -4,12 +4,21 @@ public class AttendDTO {
 	private int ccode;
 	private String cname;
 	private int clcode;
+	private int kincode;
 	private int atstate;
 	private String atstime;
 	private String atetime;
 	private String atdate;
 	private String atmonth;
 	
+	
+	
+	public int getKincode() {
+		return kincode;
+	}
+	public void setKincode(int kincode) {
+		this.kincode = kincode;
+	}
 	public String getAtmonth() {
 		return atmonth;
 	}
@@ -24,6 +33,11 @@ public class AttendDTO {
 	}
 	public AttendDTO() {
 		super();
+	}
+	public AttendDTO(int kincode, String atate) {
+		super();
+		this.kincode = kincode;
+		this.atdate = atate;
 	}
 	public AttendDTO(int ccode, String cname, int clcode, int atstate) {
 		super();

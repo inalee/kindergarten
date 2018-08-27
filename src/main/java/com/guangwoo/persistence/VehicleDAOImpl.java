@@ -23,6 +23,25 @@ public class VehicleDAOImpl implements VehicleDAO{
 		return session.selectList(namespace+".selectcar", kincode);
 	}
 
+	@Override
+	public List<VehicleVO> select_car_teacher(int kincode) throws Exception {
+		return session.selectList(namespace+".select_car_teacher",kincode);
+	}
+	
+	@Override
+	public void insert_car(VehicleVO vo) throws Exception {
+		session.insert(namespace+".insert_car",vo);
+		
+	}
+
+	@Override
+	public void delete_car(Integer carcode) throws Exception {
+		session.delete(namespace+".delete_car",carcode);
+		
+	}
+
+	
+
 
 
 	

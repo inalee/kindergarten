@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,10 +64,6 @@ public class JiwonController {
 	 * Simply selects the home view to render by returning its name.
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/notificationTest", method = RequestMethod.GET)
-	public String notificationTest(HttpSession session) throws Exception {
-		return "/notificationTest";
-	}
 	@RequestMapping(value = "/gmenu19", method = RequestMethod.GET)
 	public String gmenu19(HttpSession session) throws Exception {
 		if(Objects.isNull(session.getAttribute("children"))) {
@@ -86,7 +84,6 @@ public class JiwonController {
 		 
 		 String clientId = "AIzaSyD3VvQ9ybvDJAvsYm6pIsjZhrJ9qdDqpME";//애플리케이션 클라이언트 아이디값";
 		 String query = r.getParameter("q");
-		 //System.out.println("Qeury : " + query);
 		 query = query.equals("") ? "어린이" : query;
 		 String[] queries = query.split(" ");
 		 query = String.join("%20", queries);
@@ -226,9 +223,7 @@ public class JiwonController {
 		}
 	}
 	@RequestMapping(value = "/getChnGInfo", method = RequestMethod.GET)
-	public @ResponseBody ChildrenDTO getChnGInfo(HttpServletRequest r) throws Exception {
-		
-		
+	public @ResponseBody ChildrenDTO getChnGInfo(HttpServletRequest r) throws Exception {		
 		return dao.getChnGInfo(Integer.parseInt(r.getParameter("ccode")));
 	}
 	@RequestMapping(value = "/getChildAttendInfo", method = RequestMethod.GET)
@@ -269,10 +264,70 @@ public class JiwonController {
 	@RequestMapping(value = "/tmenu5", method = RequestMethod.GET)
 	public void tmenu5(Model model, HttpSession session) throws Exception {
 		
-		TeacherVO vo = (TeacherVO)session.getAttribute("teacher");
-		int kincode = vo.getKincode();
-		
+		TeacherVO tvo = (TeacherVO)session.getAttribute("teacher");
+		int kincode = tvo.getKincode();
+		List<ChildrenVO> child = dao.getKinderMember(kincode);
+		List<Document> list = MongoAttendCheck.findKinderAttend(kincode, today);
 		session.setAttribute("classinfo", dao.getClassList(kincode));
+
+		int[] state = {0, 0, 0, 0, 0, 0};
+		
+		String late = today + "T10:30:00Z";
+		
+		int k;
+		for (ChildrenVO vo : child) {	
+			k = -1;
+			for (Document document : list) {
+				if(vo.getCcode() == (int)document.get("ccode")) {
+					if(document.get("state").equals("leave")) {
+						state[3]++;
+						state[5]++;
+						k = 1;
+					}else if(document.get("state").equals("attend") && k==-1) {
+						if(((Date)document.get("date")).compareTo(format.parse(late)) > 0) {
+							state[2]++;
+							state[5]++;
+						}else {
+							state[1]++;
+							state[5]++;
+						}
+						k = 1;
+					}
+				}
+			}
+			if(k==-1) {
+				if(vo.getClcode() == 1) {
+					state[4]++;
+					state[5]++;
+				}else {
+					state[0]++;
+					state[5]++;
+				}
+			}
+		}
+		
+		model.addAttribute("state", state);
+		
+		
+	}
+	
+	@RequestMapping(value = "/week_attend", method = RequestMethod.GET)
+	public @ResponseBody List<AttendDTO> week_attend(Model model, HttpSession session) throws Exception {
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+		String monday = c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DATE);
+		TeacherVO vo = (TeacherVO) session.getAttribute("teacher");
+		System.out.println(vo.getKincode());
+		AttendDTO dto = new AttendDTO(vo.getKincode(), monday);
+		List<AttendDTO> list = dao.getAttendByWeek(dto);
+		HashMap<String, Object> map = new HashMap<>();
+		
+		for(AttendDTO d : list) {
+			
+		}
+		
+		System.out.println(monday);
+		return list;
 	}
 	@RequestMapping(value = "/getClassMember", method = RequestMethod.GET)
 	public String getClassMember(Model model, HttpSession session, HttpServletRequest r) throws Exception {
@@ -308,20 +363,20 @@ public class JiwonController {
 			}
 		}
 		
-		model.addAttribute("clmem", ad);
+		model.addAttribute("children", ad);
 		
 		return "/tmenu5";
 	}
 	@RequestMapping(value = "/addAttend", method = RequestMethod.POST)
 	public String addAttend(HttpServletRequest r, HttpSession s) throws Exception {
 		TeacherVO vo = (TeacherVO)s.getAttribute("teacher");
-		MongoAttendCheck.insertAttend(vo.getKincode(), Integer.parseInt(r.getParameter("clcode")), Integer.parseInt(r.getParameter("ccode")));
+		MongoAttendCheck.insertState(vo.getKincode(), Integer.parseInt(r.getParameter("clcode")), Integer.parseInt(r.getParameter("ccode")), "attend");
 		return "/tmenu5";
 	}
 	@RequestMapping(value = "/addLeave", method = RequestMethod.POST)
 	public String addLeave(HttpServletRequest r, HttpSession s) throws Exception {
 		TeacherVO vo = (TeacherVO)s.getAttribute("teacher");
-		MongoAttendCheck.insertLeave(vo.getKincode(), Integer.parseInt(r.getParameter("clcode")), Integer.parseInt(r.getParameter("ccode")));
+		MongoAttendCheck.insertState(vo.getKincode(), Integer.parseInt(r.getParameter("clcode")), Integer.parseInt(r.getParameter("ccode")), "leave");
 		return "/tmenu5";
 	}
 	@RequestMapping(value="/getAttendState", method = RequestMethod.POST)

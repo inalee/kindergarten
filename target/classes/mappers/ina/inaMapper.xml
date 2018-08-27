@@ -255,6 +255,7 @@ where r.kincode=k.kincode and s.sigungucode=r.sigungucode and ki.kinkindcode=k.k
 call p_regular_insert(#{ccode},#{recode},#{rehopedate});
 </insert>
 
+
 <!--  신청 list -->
 <select id="select_regular" resultType="map">
 <![CDATA[
@@ -353,6 +354,11 @@ call p_upload_kininfo(#{kincode},#{kinaddress},#{kinphone},#{kinroom},#{kinarea}
 
 <select id="sel_num_class" resultType="int">
 select count(*) from class where kincode=#{kincode}
+</select>
+
+<select id="sel_kinder_child" resultType="map">
+select ch.clcode,cl.clname,ch.cname,ch.cgen,m.memphone,ch.ccode,ch.cage from children ch,member m,guardian g,class cl,kindergarten k 
+where cl.clcode=ch.clcode and m.memid=g.memid and g.gcode=ch.gcode and k.kincode=cl.kincode and ch.clcode=#{clcode}
 </select>
 
 </mapper>

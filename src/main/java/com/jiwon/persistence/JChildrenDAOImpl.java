@@ -97,4 +97,14 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	public ChildrenDTO getChnGInfo(int ccode) throws Exception {
 		return session.selectOne(namespace + ".getChnGInfo", ccode);
 	}
+
+	@Override
+	public List<ChildrenVO> getKinderMember(int kincode) throws Exception {
+		return session.selectList(namespace + ".getKinderMember", kincode);
+	}
+
+	@Override
+	public List<AttendDTO> getAttendByWeek(AttendDTO dto) throws Exception {
+		return session.selectList(namespace + ".getAttendByWeek", dto);
+	}
 }

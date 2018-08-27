@@ -192,7 +192,7 @@ public class CommonController {
 		  session.removeAttribute("joincheck");
 		return "join";
 	}
-	
+			
 	
 	@Inject MemberDAO dao;
 

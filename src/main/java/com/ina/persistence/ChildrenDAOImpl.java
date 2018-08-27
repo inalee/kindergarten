@@ -1,6 +1,7 @@
 package com.ina.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -73,5 +74,11 @@ public class ChildrenDAOImpl implements ChildrenDAO{
 	@Override
 	public ChildrenVO sel_child_info(int ccode) {
 		return sqlSession.selectOne(namespace+".sel_child_info",ccode);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> sel_kinder_child(int clcode) {
+		return sqlSession.selectList(namespace+".sel_kinder_child",clcode);
 	}
 }

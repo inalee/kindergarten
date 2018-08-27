@@ -10,13 +10,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.tmenu5 * {} 
+.tmenu5 { margin-bottom: 80px; margin-left:0px; padding-left: 0px; text-align:center;} 
 li{	list-style : none;}
 .column {
 	display : inline-block;
 	vertical-align: top;
 }
-table {border-collapse: collapse;}
+#clickedClass, #tmenuEnter { text-align : center;}
+table {border-collapse: collapse; margin-bottom:20px;}
 table th, td{
 	text-align : center;
 	border : 1px solid #ddd;
@@ -25,14 +26,13 @@ table th, td{
 }
 table th{
 	background-color: #EBF7FF;
-	width : 33%;
 	padding : 5px;
 	font-size : 18px;
 }
 #classlist {
     list-style-type: none;
     margin: 0;
-    margin-right : 5px;
+    margin-right : 15px;
     padding: 0;
     width: 180px;
     background-color: #f1f1f1;
@@ -52,6 +52,11 @@ table th{
     background-color: #555;
     color: white;
 }
+.kinCon{
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+}
+
 /* Style the tab */
 .tab {
     overflow: hidden;
@@ -94,7 +99,7 @@ table button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 5px 7px;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
@@ -105,6 +110,21 @@ table button:hover {background-color: #e7e7e7;}
 
 .btn_disabled {background-color: #e7e7e7;}
 
+.w3-ul{
+	list-style-type:none;padding:0;margin:0;
+	border:1px solid #ccc!important;
+	text-align:center!important;
+	margin : 10px;	
+}
+.w3-ul:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.19)}
+.w3-ul li{
+	padding:8px 16px;border-bottom:1px solid #ddd;
+}.w3-ul li:last-child{border-bottom:none}
+.w3-dark-grey {color:#000!important;background-color:#f1f1f1!important;}
+.w3-xlarge{font-size:24px!important}
+.w3-padding-16{padding-top:16px!important;padding-bottom:16px!important}
+.w3-padding-32{padding-top:32px!important;padding-bottom:32px!important}
+.w3-light-grey{padding-top:24px;color:#000!important;background-color:#f1f1f1!important}
 
 .ShopContainer .atd_month {width:977px; height:105px; text-align:center; border:1px solid #e1e4e8; border-bottom:0; padding-top:30px; position:relative;}
 .ShopContainer .atd_month .num {font-size:32px; font-weight:800; color:#333; vertical-align:middle; padding:0 18px; letter-spacing:-1px;}
@@ -129,9 +149,10 @@ table button:hover {background-color: #e7e7e7;}
 
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawChart);
-
+      google.charts.setOnLoadCallback(drawChart2);
+      google.charts.setOnLoadCallback(drawColumnChart);
    	  var list = new Array(); 
-   	  <c:forEach items="${clmem}" var="item">
+   	  <c:forEach items="${children}" var="item">
    	  	list.push("${item.ccode}","${item.atstate}");
    	  </c:forEach>
    	  var state = new Array();
@@ -139,6 +160,7 @@ table button:hover {background-color: #e7e7e7;}
    	  for (var i = 0; i < list.length/2; i++) {
 		state[list[i*2+1]]++;
 		}
+		
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
@@ -168,6 +190,108 @@ table button:hover {background-color: #e7e7e7;}
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
+      function drawChart2() {
+      	// Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', '상태');
+          data.addColumn('number', '인원');
+          data.addRows([
+            ['결석', ${state[0]}],
+            ['출석', ${state[1]}],
+            ['지각', ${state[2]}],
+            ['하원', ${state[3]}],
+            ['기타', state[4]]
+          ]);
+
+          // Set chart options
+          var options = {'title':'오늘의 출석 현황',
+          			   'titleTextStyle':{fontSize : 20, bold : true},
+          			   'fontSize' : 12,
+                         'width':550,
+                         'height':450,
+                         'colors': ['#F15F5F', '#6799FF', '#D1B2FF', '#FAED7D', '#f6c7b6']
+                         };
+          
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+          chart.draw(data, options);
+        }
+      function drawColumnChart() {
+// 		var data = google.visualization.arrayToDataTable([
+// 		         ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+// 		         ['2004/05',  165,      938,         522,             998,           450,      614.6],
+// 		         ['2005/06',  135,      1120,        599,             1268,          288,      682],
+// 		         ['2006/07',  157,      1167,        587,             807,           397,      623],
+// 		         ['2007/08',  139,      1110,        615,             968,           215,      609.4],
+// 		         ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+// 	      ]);
+
+//           var view = new google.visualization.DataView(data);
+//           view.setColumns([0, 1,
+//                            { calc: "stringify",
+//                              sourceColumn: 1,
+//                              type: "string",
+//                              role: "annotation" },
+//                            2]);
+
+// 		var options = {
+// 		      title : '주간 출석 현황',
+// 		      vAxis: {title: '인원'},
+// 		      hAxis: {title: '날짜'},
+// 		      seriesType: 'bars',
+// 		      series: {5: {type: 'line'}}
+// 		    };
+//           var chart = new google.visualization.ColumnChart(document.getElementById("column_chart"));
+//           chart.draw(view, options);
+
+              //var jdata = new google.visualization.DataTable();
+		     $.ajax({
+		
+		          url : "week_attend",
+		          timeout : 10000,
+		          type : 'get',
+		          dataType : 'json', // response 데이터 타입
+		          success : function(data, state){
+		              var jdata = new google.visualization.DataTable();
+		
+		              jdata.addColumn('string', '요일');
+		              jdata.addColumn('number', '출석');
+		              jdata.addColumn('number', '지각');
+		              jdata.addColumn('number', '결석');
+		
+// 		              for(var i = 0; i < data.length; i++)
+// 		                          jdata.addRow([data[i].day, data[i].attend, data[i].late, data[i].absent]);
+		 				jdata.addRow(['2018.08.27', 13, 3, 1]);
+		 				jdata.addRow(['2018.08.28', 15, 1, 1]);
+		 				jdata.addRow(['2018.08.29', 3, 0, 0]);
+		 				jdata.addRow(['2018.08.30', 0, 0, 0]);
+		 				jdata.addRow(['2018.08.31', 0, 0, 0]);
+// 						 jdata.addRow(['2018.08.21', 2, 2, 2]);
+// 						 jdata.addRow(['2018.08.22', 3, 1, 2]);
+		              //jdata = new google.visualization.DataTable(jdata);
+		
+		              // Set chart options
+		              var options = {
+		                          'width':1200,
+		                          'height':300,
+		                          'vAxis' :{
+		                        	  viewWindow:{
+		                                  'min':0
+		                               }
+		                          }
+		              };
+		
+		              // Instantiate and draw our chart, passing in some options.
+		              var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+		              chart.draw(jdata, options);
+		             
+		          },
+		          error : function(reqeust, state, error){
+		              //alert(error);
+		          }
+		      })
+
+      }
       
 $(function(){
 	var today = new Date();
@@ -175,9 +299,18 @@ $(function(){
 	com = com.getTime();
 	//현재 주소를 decoding
 	var url = unescape(location.href); 
+	if(url.includes("getClassMember")){
+		$("#tmenuEnter").remove();
+		$("#clickedClass").show();
+		
+	} else{
+		$("#clickedClass").remove();
+		$("#tmenuEnter").show();
+	}
 	//파라미터만 자르고, 다시 그분자를 잘라서 배열에 넣는다. 
 	var clcode = (url.substring(url.indexOf("=")+1,url.length));
 	if(!clcode.includes("kinder")){
+
 	var clid = "#cl_" + clcode;
 		$("#className").append($(clid).text());
 		$(".attend").on("click", function(){
@@ -212,13 +345,12 @@ $(function(){
 			var ccode = this.value;
 			
 			$.post("addLeave", {ccode:ccode, clcode:clcode}).done(function(data, state){
-				console.log("success");
 			})	
 			var chname = "#atCheck_" + ccode;
 			var tename = "#atText_" + ccode;
 			$(chname).empty();
 			$(tename).empty();
-			var btn = "<button class='leave' value='" + ccode + "' disabled='disabled'>하원</button>"
+			var btn = "<button class='btn_disabled'  disabled='disabled'>하원</button>"
 			$(chname).append(btn);
 			$(tename).append("하원");
 			for (var i = 0; i < list.length/2; i++) {
@@ -237,7 +369,6 @@ $(function(){
 	} else {
 		$("#className").append("학급 선택");
 	}
-	// Get the element with id="defaultOpen" and click on it
 	document.getElementById("defaultOpen").click();
 	
 	$(".chinfo").on("click",function(){
@@ -247,6 +378,7 @@ $(function(){
 			document.getElementById('c_name').innerHTML = data.cname;
 			document.getElementById('c_gender').innerHTML = data.cgen;
 			document.getElementById('c_age').innerHTML = data.cage;
+			document.getElementById('c_birth').innerHTML = data.cidnum.substring(0,6);
 			document.getElementById('c_addr').innerHTML = data.caddress;
 			document.getElementById('g_name').innerHTML = data.memname;
 			document.getElementById('g_relation').innerHTML = data.grelation;
@@ -383,7 +515,7 @@ function drawCalendar(){
 </head>
 
 <body>
-<h1 id="className">&nbsp</h1>
+<h1 id="className" style="margin-left:50px"></h1>
 	<ul class="tmenu5">
 		<li class="column" style="vertical-align: top">
 			<ul id="classlist">
@@ -392,7 +524,7 @@ function drawCalendar(){
 				</c:forEach>
 			</ul>
 		</li>		
-		<li class="column" style="width:80%">
+		<li class="column" style="width:80%;" id="clickedClass" >
 		<div class="tab">
 		  <button id="defaultOpen" class="tablinks" onclick="openTab(event, 'atCheck')">출석체크</button>
 		  <button class="tablinks" onclick="openTab(event, 'atMonth')">이달의 출석</button>
@@ -403,55 +535,75 @@ function drawCalendar(){
 				<li>
 					<table width=100%;>
 						<tr><th >이름 </th><th colspan="2">상태</th><th>학생정보</th></tr>
-						<c:forEach items="${clmem}" var="i">
+						<c:forEach items="${children}" var="i">
 							<c:if test="${i.atstate == 0}">
-								<tr><td class="tds" width="15%">${i.cname}</td><td width="15%" id="atText_${i.ccode}"  class="tds">미출석</td><td width="50%" id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button><button class="etc" value="${i.ccode}">기타</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
+<%-- 								<tr><td class="tds" width="15%">${i.cname}</td><td width="15%" id="atText_${i.ccode}"  class="tds">미출석</td><td width="50%" id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button><button class="etc" value="${i.ccode}">기타</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr> --%>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tds">미출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate == 1 || i.atstate == 2}">
 								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="leave" value="${i.ccode}">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate eq 3}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">하원</td><td id="atCheck_${i.ccode}" class="tds"><button value="${i.ccode}" class="btn_disabled" disabled="disabled">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">하원</td><td id="atCheck_${i.ccode}" class="tds"><button class="btn_disabled" disabled="disabled">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 						</c:forEach>
 					</table>	
 				</li>
 				</ul>
 			</div>
-			<div style="display:inline-block; text-align:right" id="chart_div">
-				
-			</div>
+			<div style="display:inline-block; text-align:right" id="chart_div"></div>
 			</div>
 		
-		<div id="atMonth" class="tabcontent">
-			<ul>
-			<li>
-			<section class="ShopContainer">
-						<!-- contents -->
-						<div class="atd_month">
-							<div class="inblock">
-								<a href="javascript:drawPrevCalendar()" class="btn_left vam"><img src="http://image.ethefaceshop.com/tfsshopWebSrc/images/btn/btn_left_9.png" alt="전달"></a>
-								<span class="num" id="thisMonth"></span>
-								<a href="javascript:drawNextCalendar()" class="btn_right vam"><img src="http://image.ethefaceshop.com/tfsshopWebSrc/images/btn/btn_right_9.png" alt="다음달"></a>
+			<div id="atMonth" class="tabcontent">
+				<ul>
+				<li>
+				<section class="ShopContainer">
+							<!-- contents -->
+							<div class="atd_month">
+								<div class="inblock">
+									<a href="javascript:drawPrevCalendar()" class="btn_left vam"><img src="http://image.ethefaceshop.com/tfsshopWebSrc/images/btn/btn_left_9.png" alt="전달"></a>
+									<span class="num" id="thisMonth"></span>
+									<a href="javascript:drawNextCalendar()" class="btn_right vam"><img src="http://image.ethefaceshop.com/tfsshopWebSrc/images/btn/btn_right_9.png" alt="다음달"></a>
+								</div>
 							</div>
-						</div>
+		
+							<!-- 달력 -->
+							<!-- 출석체크되면 li에 클래스 "ac" 추가 -->					
+							<div class="atd_calendar">
+								<ul>
 	
-						<!-- 달력 -->
-						
-						<!-- 출석체크되면 li에 클래스 "ac" 추가 -->					
-						<div class="atd_calendar">
-							<ul>
-
-							</ul>
-							<div class="clear"></div>
-						</div>
-						<!--// 달력 -->
-				</section> 
-				</li>
-			</ul>
-		</div>
+								</ul>
+								<div class="clear"></div>
+							</div>
+							<!--// 달력 -->
+					</section> 
+					</li>
+				</ul>
+			</div>
+		</li>
+		<li class="column" style="width:80%;" id="tmenuEnter">
+			<div class="kinCon">
+				<div class="w3-third w3-margin-bottom"  style="display:inline-block; width:50%; vertical-align:top;">
+			      <ul class="w3-ul">
+			        <li class="w3-dark-grey w3-xlarge w3-padding-32">출석정보</li>
+			        <li class="w3-padding-16"><b>등원</b> ${state[1]}</li>
+			        <li class="w3-padding-16"><b>지각</b> ${state[2]}</li>
+			        <li class="w3-padding-16"><b>하원</b> ${state[3]}</li>
+			        <li class="w3-padding-16"><b>미등원</b> ${state[0]}</li>
+			        <li class="w3-padding-16"><b>반미지정</b> ${state[4]}</li>
+			        <li class="w3-light-grey"><b>총원</b>${state[5]}</li>
+			      </ul>
+			    </div>
+				<div id="chart_div2" style="display:inline-block; text-align:right" ></div>
+				<div>
+					<h3 style="text-align:left; margin-left:30px">이주의 출석</h3>
+					<div id="column_chart"></div>
+				</div>
+			</div>
 		</li>
 	</ul>
+	
+	
 	  <!-- Modal -->
   <div class="modal fade" id="info_modal" role="dialog">
     <div class="modal-dialog">
@@ -464,13 +616,13 @@ function drawCalendar(){
         </div>
         <div class="modal-body">
   			<table style="width:100%;margin-bottom:10px;">
-  				<tr><th>원생이름</th><td id="c_name" colspan="3"></td></tr>
-  				<tr><th>원생성별</th><td id="c_gender"></td><th>원생나이</th><td id="c_age"></td></tr>
+  				<tr><th style="width:25%;">원생이름</th><td style="width:25%;" id="c_name"></td><th style="width:25%;">원생성별</th><td style="width:25%;" id="c_gender"></td></tr>
+  				<tr><th>원생나이</th><td id="c_age"></td><th>생년월일</th><td id="c_birth"></td></tr>
   				<tr><th>원생주소</th><td id="c_addr" colspan="3"></td></tr>
   				
   			</table>
   			<table style="width:100%;">
-  				<tr><th>보호자이름</th><td id="g_name"></td><th>원생과의 관계</th><td id="g_relation"></td></tr>
+  				<tr><th style="width:25%;">보호자이름</th><td style="width:25%;" id="g_name"></td><th style="width:25%;">원생과의 관계</th><td style="width:25%;" id="g_relation"></td></tr>
   				<tr><th>연락처</th><td id="g_tel" colspan="3"></td></tr>
   			</table>
         </div>

@@ -33,6 +33,10 @@ where k.kincode=#{kincode};
 call updatevehicle(#{oilname},#{vtlname},#{faname},#{fayear},#{kincode},#{tecode},#{carname},#{carnum},#{carpay});
 </insert>
 
+<!-- 차량삭제 -->
+<delete id="delete_car">
+call deletevehicle(#{carcode});
+</delete>
 
 
 <!-- 화면9 -->
@@ -96,7 +100,7 @@ insert into station(sdcode,stname,stx,sty) values(#{sdcode},#{stname},#{stx},#{s
 </insert>
 <!-- 정거장보기 -->
 <select id="station_select" resultType="com.guangwoo.domain.StationVO">
-select k.kincode, k.kinname,st.stname, st.stx,st.sty
+select k.kincode, k.kinname,st.stcode,st.stname, st.stx,st.sty
 from vehicle v join schedule sd on v.carcode=sd.carcode
 join kindergarten k on k.kincode=v.kincode
 join service sv on sv.svcode=sd.svcode
@@ -121,7 +125,7 @@ update station set sty=#{sty} where stcode=#{stcode};
 
 <!-- 정거장삭제 -->
 <delete id="station_delete">
-delete from station where stcode=#{stcode};
+call deletestation(#{stcode});
 </delete>
 
 

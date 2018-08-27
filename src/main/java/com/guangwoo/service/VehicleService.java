@@ -12,4 +12,5 @@ public interface VehicleService {
 	
 	public void insert_car(VehicleVO vo)throws Exception;
 	
+	public void delete_car(Integer carcode)throws Exception;
 }

@@ -31,6 +31,12 @@ public class VehicleServiceImpl implements VehicleService {
 		dao.insert_car(vo);
 	}
 
+	@Override
+	public void delete_car(Integer carcode) throws Exception {
+		dao.delete_car(carcode);
+		
+	}
+
 
 	
 

@@ -14,6 +14,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script type="text/javascript">
+
+function delete_car(val) {
+	alert("해당 차량을 삭제하시겠습니까?");
+	$.get("delete_car",{carcode:val},function(result){
+		alert("삭제가 완료되었습니다.");
+		location.reload();
+	});
+	
+}
+</script>
+
 </head>
 <body>
     <div class="container">
@@ -41,6 +53,7 @@
                         <th>차종</th>
                         <th>제조사</th>
                         <th>연식</th>
+                        <th>기타</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,6 +70,7 @@
                 <td>${i.vtlname}</td>
                 <td>${i.faname}</td>
                  <td>${i.fayear}년식</td>
+                 <td><a href="#deletebusModal" class="btn btn-info"  onclick="delete_car(${i.carcode})"> <span>삭제</span></a></td>
                 </tr>
                 </c:forEach>
                 </tbody>

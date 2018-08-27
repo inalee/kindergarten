@@ -34,6 +34,12 @@ public class VehicleDAOImpl implements VehicleDAO{
 		
 	}
 
+	@Override
+	public void delete_car(Integer carcode) throws Exception {
+		session.delete(namespace+".delete_car",carcode);
+		
+	}
+
 	
 
 

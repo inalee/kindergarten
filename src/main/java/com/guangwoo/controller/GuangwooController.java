@@ -93,6 +93,15 @@ public class GuangwooController {
 		return "redirect:tmenu8";
 	}
 	
+	@RequestMapping(value="delete_car",method=RequestMethod.GET)
+	public String delete_car(HttpServletRequest request) throws Exception {
+		
+		int carcode = Integer.parseInt(request.getParameter("carcode"));
+		service.delete_car(carcode);
+		
+		return "tmenu8";
+	}
+	
 	
 	@RequestMapping(value = "/tmenu9", method = RequestMethod.GET)
 	public String tmenu9get(HttpSession session, Model model) throws Exception{
@@ -167,6 +176,14 @@ public class GuangwooController {
 		stservice.station_insert(svo);	
 
 		return "redirect:tmenu10";
+	}
+	@RequestMapping(value="del_station",method=RequestMethod.GET)
+	public String del_station(HttpServletRequest request) throws Exception {
+		
+		int stcode = Integer.parseInt(request.getParameter("stcode"));
+		stservice.station_delete(stcode);
+		
+		return "tmenu10";
 	}
 	
 	

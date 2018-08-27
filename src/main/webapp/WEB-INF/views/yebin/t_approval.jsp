@@ -65,15 +65,20 @@ $(function() {
 	})
 	
 	window.parent.$("#requestApproval").on('click', function() {
+	
+		var title = "[" + $("#catemain").text() + "/" + $("#catesub").text() + "] " + $("#class").text() + " 견학 승인 요청";
 		
 		$.ajax({
 			url: '/kinder/postSaveApv',
 			type: 'post',
 			data : {
 				apvpurpose : $('#apvpurpose').val(),
-				apvremarks : $('#apvremarks').val()
+				apvremarks : $('#apvremarks').val(),
+				apvtitle : title,
+				apvclname : $("#class").text()
 			},
 			success : function() {
+				alert("제출 완료. 원장님 승인여부는 [승인/대기목록]에서 확인하실 수 있습니다.")
 				window.parent.window.parent.location.href='/kinder/yebin/tmenu3'
 			}
 			

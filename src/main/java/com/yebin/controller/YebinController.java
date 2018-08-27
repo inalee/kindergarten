@@ -1,13 +1,24 @@
 package com.yebin.controller;
 
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.kinder.domain.TeacherVO;
+import com.yebin.service.ApprovalService;
+
 @Controller
 public class YebinController {
+
+	@Inject
+	ApprovalService apprService;
 
 	private static final Logger logger = LoggerFactory.getLogger(YebinController.class);
 
@@ -42,8 +53,18 @@ public class YebinController {
 	}
 
 	@RequestMapping(value = "/tmenu3", method = RequestMethod.GET)
-	public String tmenu3() {
+	public String tmenu3(HttpSession hs) {
 
+		TeacherVO teVO = new TeacherVO();
+		teVO.setMemid(hs.getAttribute("ybMemid").toString());
+
+		if (apprService.isMaster(teVO)) {
+			System.out.println("원장님 입니다.");
+			hs.setAttribute("isMaster", true);
+		} else {
+			System.out.println("선생님 입니다.");
+			hs.setAttribute("isMaster", false);
+		}
 		return "/tmenu3";
 	}
 
@@ -80,7 +101,5 @@ public class YebinController {
 	public String approvalForm() {
 		return "/t_approval";
 	}
-
-	
 
 }

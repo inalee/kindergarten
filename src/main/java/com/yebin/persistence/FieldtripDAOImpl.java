@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.kinder.domain.MemberVO;
 import com.yebin.domain.FieldtripVO;
 import com.yebin.domain.MaterialsVO;
 
@@ -55,6 +56,19 @@ public class FieldtripDAOImpl implements FieldtripDAO {
 		System.out.println(fieldVO.getFtcode());
 		List<Object> reportList = sqlSession.selectList(namespace+".selectReport", fieldVO);
 		return reportList;
+	}
+
+	@Override
+	public List<Object> getApprList(MemberVO memVO) {
+		List<Object> apprList = sqlSession.selectList(namespace+".getApprList", memVO);
+		
+		return apprList;
+	}
+
+	@Override
+	public List<Object> getApprListMaster(MemberVO memVO) {
+		List<Object> apprList = sqlSession.selectList(namespace+".getApprListMaster", memVO);
+		return apprList;
 	}
 	
 }

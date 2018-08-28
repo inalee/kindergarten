@@ -34,8 +34,8 @@
   </select>
   
 <!--   해당 학부모의 아이 리스트를 가져옴 -->
-	<select id="getChildrenList" resultType="ChildrenVO">
-		select ch.ccode, ch.kincode, ch.clcode, ch.cname from children ch, guardian g where g.memid = #{memid} and ch.gcode = g.gcode;
+	<select id="getChildrenList" resultType="ChildrenDTO">
+		select ch.ccode, ch.kincode, k.kinname, ch.clcode, cl.clname, ch.cname, ch.cgen from children ch, guardian g, kindergarten k, class cl where g.memid = #{memid} and ch.gcode = g.gcode and ch.kincode = k.kincode and ch.clcode = cl.clcode;
 	</select>
 <!-- 	해당 아이의 정보를 가져옴 -->
 	<select id="getChildInfo" resultType="ChildrenDTO">

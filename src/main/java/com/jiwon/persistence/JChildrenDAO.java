@@ -19,7 +19,7 @@ public interface JChildrenDAO {
 	public List<Integer> getKinderList() throws Exception;
 	public void insertACheck(AttendDTO dto) throws Exception;
 	public List<AttendDTO> getAttendByMonth(AttendDTO dto) throws Exception;
-	public List<ChildrenVO> getChildrenList(String memid) throws Exception;
+	public List<ChildrenDTO> getChildrenList(String memid) throws Exception;
 	public ChildrenDTO getChildInfo(int ccode) throws Exception;
 	public MemberVO getTeacherInfo(int ccode) throws Exception;
 	public ChildrenDTO getChnGInfo(int ccode) throws Exception;

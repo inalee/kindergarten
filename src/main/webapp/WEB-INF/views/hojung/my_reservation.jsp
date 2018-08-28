@@ -20,14 +20,15 @@
 			return false;
 	}
 	
-// 	function deleteRes(cfrescode) {
-// 		location.href="deleteres?cfrescode="+cfrescode;
-// 	}
-	
-	var result = '${msg}';
+	var result = '${msg_del}';
 	if(result=='success'){
 		alert("취소되었습니다.");
 	}
+	
+// 	var result = '${msg_res}';
+// 	if(result=='success'){
+// 		alert("예약 완료되었습니다.");
+// 	}
 	
 </script>
 </head>

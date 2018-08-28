@@ -104,9 +104,8 @@ h4{
 	var geocoder = new daum.maps.services.Geocoder();
 	
 	var keyword = "${keyword}";
-// 	  	alert(keyword);
-		var x;
-		var y;
+	var x;
+	var y;
 
 		
 

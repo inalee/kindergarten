@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+/* body{font-family: 'Jeju Gothic', sans-serif; } */
 .tmenu5 { margin-bottom: 80px; margin-left:0px; padding-left: 0px; text-align:center;} 
 li{	list-style : none;}
 .column {
@@ -23,35 +24,41 @@ table th, td{
 	border : 1px solid #ddd;
 	top: 5px;
 	font-size : 16px;
+	border-right : hidden;
+	border-left : hidden;
 }
 table th{
 	background-color: #EBF7FF;
 	padding : 5px;
 	font-size : 18px;
 }
+table .tdst{text-align:right; }
+table .tdbtn{text-align:center; }
 #classlist {
     list-style-type: none;
     margin: 0;
     margin-right : 15px;
     padding: 0;
     width: 180px;
-    background-color: #f1f1f1;
+    background-color: white;
     text-align:center;
 }
-
+#classlist li {}
 #classlist li a {
     display: block;
     color: #000;
     padding: 8px 16px;
     text-decoration: none;
     font-size:18px;
+    border-bottom: thin solid black;
 }
 
 /* Change the link color on hover */
-#classlist li a:hover {
+#classlist li a:hover, #classlist .active {
     background-color: #555;
     color: white;
 }
+
 .kinCon{
     padding: 6px 12px;
     border: 1px solid #ccc;
@@ -136,6 +143,8 @@ table button:hover {background-color: #e7e7e7;}
 .ShopContainer .atd_calendar ul li .d {font-size:13px; color:#333;}
 .ShopContainer .atd_calendar ul li .giveaway {display:inline-block; width:48px; height:48px; background:url('/images/icon/icon_giveaway.png') no-repeat; position:absolute; right:5px; top:5px;}
 .ShopContainer .atd_calendar ul li .ac {margin:1px; background-color: #FFE08C;  text-align:center; color: #4B2C00}
+.ShopContainer .atd_calendar ul li .lt {margin:1px; background-color: #FFC19E;  text-align:center; color: #4B2C00}
+.ShopContainer .atd_calendar ul li .lv {margin:1px; background-color: #FFB9B9;  text-align:center; color: #4B2C00}
 </style>
 <c:url var="phone" value="resources/images/tphone.png"></c:url>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -217,34 +226,7 @@ table button:hover {background-color: #e7e7e7;}
           chart.draw(data, options);
         }
       function drawColumnChart() {
-// 		var data = google.visualization.arrayToDataTable([
-// 		         ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
-// 		         ['2004/05',  165,      938,         522,             998,           450,      614.6],
-// 		         ['2005/06',  135,      1120,        599,             1268,          288,      682],
-// 		         ['2006/07',  157,      1167,        587,             807,           397,      623],
-// 		         ['2007/08',  139,      1110,        615,             968,           215,      609.4],
-// 		         ['2008/09',  136,      691,         629,             1026,          366,      569.6]
-// 	      ]);
 
-//           var view = new google.visualization.DataView(data);
-//           view.setColumns([0, 1,
-//                            { calc: "stringify",
-//                              sourceColumn: 1,
-//                              type: "string",
-//                              role: "annotation" },
-//                            2]);
-
-// 		var options = {
-// 		      title : '주간 출석 현황',
-// 		      vAxis: {title: '인원'},
-// 		      hAxis: {title: '날짜'},
-// 		      seriesType: 'bars',
-// 		      series: {5: {type: 'line'}}
-// 		    };
-//           var chart = new google.visualization.ColumnChart(document.getElementById("column_chart"));
-//           chart.draw(view, options);
-
-              //var jdata = new google.visualization.DataTable();
 		     $.ajax({
 		
 		          url : "week_attend",
@@ -266,8 +248,6 @@ table button:hover {background-color: #e7e7e7;}
 		 				jdata.addRow(['2018.08.29', 3, 0, 0]);
 		 				jdata.addRow(['2018.08.30', 0, 0, 0]);
 		 				jdata.addRow(['2018.08.31', 0, 0, 0]);
-// 						 jdata.addRow(['2018.08.21', 2, 2, 2]);
-// 						 jdata.addRow(['2018.08.22', 3, 1, 2]);
 		              //jdata = new google.visualization.DataTable(jdata);
 		
 		              // Set chart options
@@ -290,9 +270,7 @@ table button:hover {background-color: #e7e7e7;}
 		              //alert(error);
 		          }
 		      })
-
       }
-      
 $(function(){
 	var today = new Date();
 	var com = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 10, 30);
@@ -310,9 +288,9 @@ $(function(){
 	//파라미터만 자르고, 다시 그분자를 잘라서 배열에 넣는다. 
 	var clcode = (url.substring(url.indexOf("=")+1,url.length));
 	if(!clcode.includes("kinder")){
-
 	var clid = "#cl_" + clcode;
-		$("#className").append($(clid).text());
+	$(clid).parent().addClass("active");
+	
 		$(".attend").on("click", function(){
 			today = new Date();
 			today = today.getTime();
@@ -366,8 +344,6 @@ $(function(){
 			}
 			drawChart();
 		});
-	} else {
-		$("#className").append("학급 선택");
 	}
 	document.getElementById("defaultOpen").click();
 	
@@ -398,8 +374,8 @@ function writeAttendState(pmonth){
 	        for ( var i=0; i<data.length; i++) {
 	        	var day = "#day_" + data[i].date;
 				$(day).append("<h6 class='ac'>출석 : "+ data[i].attend+"</h6>");
-				$(day).append("<h6 class='ac'>지각 : "+ data[i].late+"</h6>");
-				$(day).append("<h6 class='ac'>결석 : "+ data[i].absent+"</h6>");
+				$(day).append("<h6 class='lt'>지각 : "+ data[i].late+"</h6>");
+				$(day).append("<h6 class='lv'>결석 : "+ data[i].absent+"</h6>");
 			}
 	        
 	    });
@@ -538,13 +514,13 @@ function drawCalendar(){
 						<c:forEach items="${children}" var="i">
 							<c:if test="${i.atstate == 0}">
 <%-- 								<tr><td class="tds" width="15%">${i.cname}</td><td width="15%" id="atText_${i.ccode}"  class="tds">미출석</td><td width="50%" id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button><button class="etc" value="${i.ccode}">기타</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr> --%>
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tds">미출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tdst">미출석</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="attend" value="${i.ccode}">출석</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate == 1 || i.atstate == 2}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">출석</td><td id="atCheck_${i.ccode}" class="tds"><button class="leave" value="${i.ccode}">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tdst">출석</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="leave" value="${i.ccode}">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate eq 3}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tds">하원</td><td id="atCheck_${i.ccode}" class="tds"><button class="btn_disabled" disabled="disabled">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tdst">하원</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="btn_disabled" disabled="disabled">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 						</c:forEach>
 					</table>	

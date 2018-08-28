@@ -300,8 +300,8 @@ $(function() {
 						}
 				}
 			}
-			}
-		})
+		}
+	})
 })
 
 // 1. 체험학습 분류 - 몽고DB에 저장된 program-category catesub 불러오기
@@ -401,10 +401,12 @@ $(function() {
   			success: function(data) {
   				$("#class").empty()
   				$("#class").append("<option>"+"---반선택---"+"</option>")
-  				$.each(data, function(index, item) {
-  					if(item.clname == ""){
-  						alert('아직 선생님 담당 학급이 없습니다.')
-  					}else{
+  				
+  				if(data == ""){
+  					alert('아직 선생님 담당 학급이 없습니다. 반을 등록하시거나 원장님께 문의 바랍니다.')
+//   					location.href ="/kinder/ina/manage2";
+  				}else{
+  					$.each(data, function(index, item) {
   						$("#class").append("<option>"+item.clname+"</option>")
   	  					$("#person").append("<option>"+"--반선택 시 자동 입력--"+"</option>")
   						$("#class").change(function() {
@@ -416,10 +418,8 @@ $(function() {
   	  		  					$("#person").append("<option>"+"--반선택 시 자동 입력--"+"</option>")	
   	  		  				}
   						})
-  					}
-  					
-  					
-				})	
+				})
+  			}
 			}
   		})
   	})
@@ -614,6 +614,8 @@ $(function() {
 // 			alert(test)
 //	 				tableTags.splice(tableTags.indexOf($(tableid).text()+"★"));
 	
+	
+	//관심등록 표시를 위한 토글버튼
 	var j = 0;
 	function toggle_bt(img_id, num) {
 		var obj = img_id;
@@ -630,7 +632,6 @@ $(function() {
 			obj.src = "${images}yebin-click-after.jpg";
 			posts.push($(getTitle).text());
 			tableTags.push($(jsonid).text());
-// 			alert(tableTags);
 			$(idForJq).data('id', 0); 
 			j = 0;
 			
@@ -640,7 +641,6 @@ $(function() {
 				posts.splice(posts.indexOf($(getTitle).text()),1);
 				tableTags.splice(tableTags.indexOf($(jsonid).text()), 1);
 				$(idForJq).data('id', 1); 
-// 				alert(tableTags)	
 			}
 				
 			}
@@ -688,13 +688,10 @@ $(function() {
 			$(function() {
 				openStep(event, 'step5', 'id5');
 				$('#id5').attr('disabled', false);
-			})
-			
-			
-// 		  alert(tableTags)
-		  
+			})  
 		  tableTags.push("{'noData' : 'noData'}");
 		  
+			// 4. 체험학습 후보지 저장 - 키워드 controller로 전송
 			jQuery.ajaxSettings.traditional = true;
 			$.ajax({
 				url : '/kinder/postSaveList',
@@ -746,11 +743,6 @@ $('#selection').on('click', function() {
 function searchAbtIt(buttonId, keywordId, trId, num) {
 	var btid = buttonId;
 	var keyid = keywordId;
-	
-	
-	
-// 	alert($(btid).attr('id'));
-// 	alert($(keyid).text());
 	
 	$.ajax({
 		url: '/kinder/getSearch',

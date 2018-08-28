@@ -128,25 +128,18 @@ public class ApiController {
 		areaVO.setArarea(map.get("zone").toString());
 		areaVO.setArcity(map.get("city").toString());
 		fieldVO.setFtperson(map.get("person").toString());
+		fieldVO.setFtselecteddate(map.get("date").toString()+"-01");
 
 		List<Map<String, Integer>> pvoList = new ArrayList<>();
 		Map<String, Integer> tempKey = new HashMap<>();
-
+		String[] data = new String[jsondata.length-1];
 		for(int i = 0; i < jsondata.length; i++) {
-			if(jsondata[i].contains("noData")) {
-//				jsondata[i]
+			if(!jsondata[i].contains("noData")) {
+				data[i] = jsondata[i];
+				System.out.println(data[i]);				
 			}
 		}
-		
-		for(String a : jsondata) {
-			if(a.contains("nodata")) {
-
-			}
-		}
-		
-		
-		System.out.println("왜짤리냐고?"+jsondata[0]);
-		Map<String, Map<String, Object>> comMap = JsonParse.jsonToMap(jsondata);
+		Map<String, Map<String, Object>> comMap = JsonParse.jsonToMap(data);
 		for (int i = 0; i < keywords.length; i++) {
 			fieldVO.setFttitle(keywords[i]);
 
@@ -185,7 +178,6 @@ public class ApiController {
 				}
 			}
 		}
-
 		hs.setAttribute("tempKeyList", pvoList); // 맵 형태가 담긴 리스트
 		System.out.println(hs.getAttribute("tempKeyList").toString());
 
@@ -202,8 +194,11 @@ public class ApiController {
 		TourismVO tvo = new TourismVO();
 
 		for (String f : FtcodeMap.keySet()) {
-			fvo.setFtcode(FtcodeMap.get(f));
+			System.out.println("asdfafadsfasdfasdfasdfasdfasdfasfas"+f);
+//			fvo.setFtcode(FtcodeMap.get(f));
+			fvo.setFtcode((int)hs.getAttribute("ftcodeToken"));
 		}
+		
 
 		for (int i = 0; i < tourCourse.length; i++) {
 			Map<String, Object> map = JsonParse.jsonToSingleMap(tourCourse[i]);
@@ -213,12 +208,7 @@ public class ApiController {
 			fieldService.insertTourCourse(fvo, tvo);
 		}
 	}
-
-	@RequestMapping(value = "/login/{number}", method = RequestMethod.GET)
-	public @ResponseBody int loginPost(@PathVariable int number) {
-		System.out.println("dfdffdf" + number);
-
-		return number;
-	}
-
+	
+	
+	
 }

@@ -85,6 +85,8 @@ public class CommonController {
 	public String teachermenu(HttpSession session) {
 		MemberVO vo = (MemberVO)(session.getAttribute("tlogin"));
 		session.setAttribute("teacher", dao.seltecher(vo.getMemid()));
+		//최예빈이 사용하기 위해 세션에 좀 걸어둘게요
+		session.setAttribute("ybMemid", vo.getMemid());
 			
 		return "tmain";
 	}
@@ -190,7 +192,7 @@ public class CommonController {
 		  session.removeAttribute("joincheck");
 		return "join";
 	}
-	
+			
 	
 	@Inject MemberDAO dao;
 

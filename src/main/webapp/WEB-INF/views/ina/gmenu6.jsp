@@ -437,7 +437,7 @@ table.type04 td {
         <td><input type="text"  style="width: 250px; height: 20px;" name="kinname"  id="kinname" ></td>
     </tr>
     <tr>
-         <th scope="row" colspan="4" style="text-align: center; border-bottom: none;"><button onclick="search_btn()" type="button" style="width: 200px; height: 60px;  margin-top: 15px; font-size: 20px;" class="button2 button4">검색</button></th>
+         <th scope="row" colspan="4" style="text-align: center; border-bottom: none;"><button onclick="" type="button" style="width: 200px; height: 60px;  margin-top: 15px; font-size: 20px;" class="button2 button4">검색</button></th>
      
 
     </tr>
@@ -461,8 +461,6 @@ table.type04 td {
 		<div class="card-media-object" style="background-image: url(resources/images/logo.png); background-size: contain;"></div>
 		</c:otherwise>
 	</c:choose>
-	  
-
     </div>
     <!-- body container -->
     <div class="card-media-body">

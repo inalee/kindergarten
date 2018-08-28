@@ -10,6 +10,9 @@
   <select id="getClassList" resultType="ClassVO">
   	<![CDATA[select clcode, clname, kincode from class where kincode=#{kincode}]]>
   </select>
+  <select id="getKinderMember" resultType="ChildrenVO">
+  		select clcode, ccode, cname from children where kincode = #{kincode}
+  </select>
    <select id="getClassMember" resultType="ChildrenVO">
   		select ccode, cname from children where clcode = #{clcode}
   </select>
@@ -24,6 +27,10 @@
 <!--   해당 반의 한달동안 출결정보를 가져옴 -->
   <select id="getAttendByMonth" resultType="AttendDTO"><!-- 0801 추가 -->
   	select a.atdate, a.ccode, a.atstate from attend a, class c, children ch where atdate like concat(#{atmonth},'%') and c.clcode=ch.clcode and ch.ccode = a.ccode and ch.clcode=#{clcode} order by atdate;
+  </select>
+  <!--   해당 유치원의 일주일 출결정보를 가져옴 -->
+  <select id="getAttendByWeek" resultType="AttendDTO">
+  	select c.ccode, a.atdate, a.atstate  from attend a, children c where a.atdate >= #{atdate} and c.kincode=#{kincode} and c.ccode = a.ccode order by atdate desc;
   </select>
   
 <!--   해당 학부모의 아이 리스트를 가져옴 -->

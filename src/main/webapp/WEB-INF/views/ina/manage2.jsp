@@ -76,7 +76,22 @@ $(document).ready(function() {
 	
 	
 	//Layer Popup
-	function layer_open(obj) {
+	function layer_open(obj,obj1,obj2,obj3,obj4,obj5,obj6) {
+		$("#class_name").empty();
+		$("#class_name").append(obj4+" 상세정보</h3>");
+		
+		$("#kin_table").empty();
+		$("#kin_table").append("<tr><th  scope='row'>담당교사</th><td>"+obj1+" 선생님</td><th  scope='row'>연령대</th><td>"+obj3+"</td></tr>"+
+		    "<tr><th scope='row'>상세정보</th><td>"+obj2+"</td><th scope='row'>현인원</th><td>"+obj5+"명</td></tr>");
+		
+		$("#class_child").empty();
+		$.get("sel_kinder_child",{clcode:obj6},function(data){
+			for (var i = 0; i < data.length; i++) {
+				$("#class_child").append("<tr><td>"+data[i].cname+"</td><td>"+data[i].cgen+"</td><td>"+data[i].cage+"세</td><td>"+data[i].memphone+"</td><td><a href='../jiwon/getClassMember?clcode="+data[i].clcode+"'>출결현황</a></td></tr>");
+				
+			};
+		});
+		
 	    var temp = $('#' + obj);
 	    var bg = temp.parent().parent().find('.bg').hasClass('bg');
 	    if(bg) {
@@ -577,7 +592,7 @@ table.type09 {
     border-collapse: collapse;
     text-align: left;
     line-height: 1.5;
-    font-size: 12px;
+    font-size: 14px;
     border-spacing: 1px;
     margin: 0 auto;
 	font-family: sans-serif;
@@ -699,7 +714,7 @@ table.type09 td {
       </div>
       <div class="card-media-body-supporting-bottom card-media-body-supporting-bottom-reveal">
        
-        <a onclick="layer_open('modal');" class="card-media-body-supporting-bottom-text card-media-link u-float-right" style="font-size: 17px; cursor: pointer;" >반 상세보기</a>
+        <a onclick="layer_open('modal','${i.memname}','${i.clage}','${i.detail}','${i.clname}','${i.re}',${i.clcode});" class="card-media-body-supporting-bottom-text card-media-link u-float-right" style="font-size: 17px; cursor: pointer;" >반 상세보기</a>
       </div>
     </div>
   </div>
@@ -718,24 +733,13 @@ table.type09 td {
 		<section id="modal" class="ele">
 			<a href="" class="ico_com popcls">[닫기]</a>
 			<div id="class_info">
-			<h3>꽃님반 상세정보</h3>
-			<table class="type05">
-    <tr>
-        <th  scope="row">담당교사</th>
-        <td>이인아 선생님</td>
-        <th  scope="row">연령대</th>
-        <td>1-2세반</td>        
-    </tr>
-    <tr>
-        <th scope="row">상세정보</th>
-        <td>특수반</td>
-        <th scope="row">현인원</th>
-        <td>5명</td>        
-    </tr>
+			<h3 id="class_name"></h3>
+			<table class="type05" id="kin_table">
+
 
 </table>
 			</div>
-			<div id="child_list">
+<div id="child_list">
 <table class="type09">
     <thead>
     <tr>
@@ -743,38 +747,11 @@ table.type09 td {
         <th scope="cols">성별</th>
          <th scope="cols">나이</th>
         <th scope="cols">보호자 연락처</th>
-       <th scope="cols">출석현황</th>
+       <th scope="cols">출결현황</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td>이인아</td>
-        <td>여아</td>
-        <td>25세</td>
-        <td>01082785778</td>
-        <td><a href="#">출석▶</a></td>
-    </tr>
-    <tr>
-        <td>이인아</td>
-        <td>여아</td>
-        <td>25세</td>
-        <td>01082785778</td>
-        <td><a href="#">출석▶</a></td>
-    </tr>
-    <tr>
-        <td>이인아</td>
-        <td>여아</td>
-        <td>25세</td>
-        <td>01082785778</td>
-        <td><a href="#">출석▶</a></td>
-    </tr>
-        <tr>
-        <td>이인아</td>
-        <td>여아</td>
-        <td>25세</td>
-        <td>01082785778</td>
-        <td><a href="#">출석▶</a></td>
-    </tr>
+    <tbody id="class_child">
+
     </tbody>
 </table>
 			</div>

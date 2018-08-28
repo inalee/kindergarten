@@ -5,13 +5,16 @@
 
 <mapper namespace="com.yebin.mapper.fieldtripMapper">
 
+
+<!-- 카테고리 대분류/소분류 저장  -->
 <insert id="insertCategory">
  insert into category (catemain, catesub) values (#{catemain}, #{catesub});
 </insert>
 
+<!-- 카테고리 대분류/소분류 저장  -->
 <select id="insertCandidates" statementType="CALLABLE" parameterType="map" resultType="FieldtripVO">
 {call fc_insertCandidates(#{cateVO.catemain}, #{cateVO.catesub}, #{areaVO.ararea}, #{areaVO.arcity}, #{fieldVO.ftperson},
- #{memVO.memid}, #{fieldVO.fttitle}, #{fieldVO.ftstart}, #{fieldVO.ftend}, #{fieldVO.ftweb}, #{fieldVO.ftaddr})};
+ #{memVO.memid}, #{fieldVO.fttitle}, #{fieldVO.ftstart}, #{fieldVO.ftend}, #{fieldVO.ftweb}, #{fieldVO.ftaddr}, #{fieldVO.ftselecteddate})};
 </select>
 
 <select id="getAddrByFtcode" resultType="String">
@@ -25,5 +28,73 @@ update fieldtrip set ftchoice = true where ftcode = #{ftcode};
 <insert id="insertTourCourse" statementType="CALLABLE" parameterType="map">
 call fc_insertTourism(#{tourVO.touraddr}, #{tourVO.tourweb}, #{tourVO.tourremarks}, 1, #{fieldVO.ftcode});
 </insert>
+
+<insert id="insertMaterials" statementType="CALLABLE" parameterType="map">
+call fc_insertMaterials(#{mVO.mtrbook},#{mVO.mtrpen},#{mVO.mtrcamera},#{mVO.mtruniform},#{mVO.mtrgymsuit},#{mVO.mtrinnerware},#{mVO.mtrshirts},#{mVO.mtrcardigan},#{mVO.mtrraincoat}, #{mVO.mtrsuncream}, #{mVO.mtrtissue}, #{mVO.mtrmedice}, #{mVO.mtrplasticbag}, #{mVO.mtrbag}, #{mVO.mtrshoes}, #{mVO.mtrtooth}, #{mVO.mtrpajamas}, #{fieldVO.ftcode})
+</insert>
+
+<select id="selectReport" resultType="map">
+select f.ftcode, f.ftselecteddate, f.fttitle, f.ftaddr, f.catecode, cate.catemain, cate.catesub, cate.catecode, te.tecode, mem.memname, f.catecode, c.clname, f.ftperson, t.tourremarks, t.touraddr, m.mtrcode,
+mtrbook, mtrpen, mtrcamera, mtruniform, mtrgymsuit, mtrinnerware, mtrshirts, mtrcardigan, mtrpajamas, mtrraincoat, mtrshoes,
+ mtrtooth, mtrsuncream, mtrtissue, mtrmedice, mtrplasticbag, mtrbag, mtrdate
+from fieldtrip f, tourism t, class c, kindergarten k, teacher te, materials m, member mem, category cate
+where t.ftcode = f.ftcode
+and f.tecode = c.tecode
+and k.kincode = te.kincode 
+and k.kincode = c.kincode 
+and c.tecode = te.tecode
+and m.mtrcode = f.mtrcode
+and mem.memid = te.memid
+and f.ftcode = #{ftcode}
+and cate.catecode = f.catecode
+group by t.tourremarks;
+</select>
+
+<select id="insertApprDoc" statementType="CALLABLE" parameterType="map"  resultType="ApprovalVO">
+call fc_insertApprDoc(#{fieldVO.ftcode}, #{apprVO.apvpurpose}, #{apprVO.apvremarks}, #{apprVO.apvtitle}, #{apprVO.apvclname});
+</select>
+
+
+<select id="isMaster" resultType="TeacherVO">
+select t.tmaster from teacher t, member m where m.memid = t.memid and m.memid = #{memid};
+</select>
+
+<select id="getApprList" resultType="map">
+select a.apvcode, a.apvtitle, a.apvclname, a.apvrqdate, a.apvdate, m.memsort, m.memname from approval a, member m, teacher t 
+where t.memid = m.memid
+and t.tecode = a.tecode
+and t.memid = #{memid}
+order by a.apvcode desc;
+</select>
+
+<select id="getApprListMaster" resultType="map">
+select a.apvcode, a.apvtitle, a.apvclname, a.apvrqdate, a.apvdate, m.memname, t.tmaster, t.kincode from approval a, member m, teacher t 
+where t.memid = m.memid
+and t.tecode = a.tecode
+and t.kincode = (select kincode from teacher where memid= #{memid})
+order by a.apvcode desc;
+</select>
+
+<select id="getDetails" resultType="map">
+select f.ftcode, f.ftselecteddate, f.fttitle, f.ftaddr, f.catecode, cate.catemain, cate.catesub, cate.catecode, te.tecode, mem.memname, f.catecode, c.clname, f.ftperson, t.tourremarks, t.touraddr, m.mtrcode,
+mtrbook, mtrpen, mtrcamera, mtruniform, mtrgymsuit, mtrinnerware, mtrshirts, mtrcardigan, mtrpajamas, mtrraincoat, mtrshoes,
+ mtrtooth, mtrsuncream, mtrtissue, mtrmedice, mtrplasticbag, mtrbag, mtrdate, a.apvpurpose, a.apvremarks
+from fieldtrip f, tourism t, class c, kindergarten k, teacher te, materials m, member mem, category cate, approval a
+where t.ftcode = f.ftcode
+and f.tecode = c.tecode
+and k.kincode = te.kincode 
+and k.kincode = c.kincode 
+and c.tecode = te.tecode
+and m.mtrcode = f.mtrcode
+and mem.memid = te.memid
+and f.ftcode = (select ftcode from approval where apvcode = #{apvcode})
+and cate.catecode = f.catecode
+and a.apvcode = #{apvcode}
+group by t.tourremarks;
+</select>
+
+<update id="updateApv">
+update approval set apvdate = sysdate() where apvcode = #{apvcode};
+</update>
 
 </mapper>

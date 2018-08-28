@@ -31,7 +31,7 @@ h1 {
 	text-align: left;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	padding: 30px;
-	width: 20%;
+	width: 60%;
 /* 	height: 210px; */
 	margin: 10px;
 }
@@ -61,7 +61,7 @@ h1 {
 }
 
 .control input:checked ~ .control__indicator {
-	background: #fdc645;
+	background: #2aa1c0;
 }
 
 .control:hover input:not ([disabled]):checked ~ .control__indicator,
@@ -110,29 +110,28 @@ var mtrCode = ['mtrbook', 'mtrpen', 'mtrcamera', 'mtruniform', 'mtrgymsuit' , 'm
 'mtrshirts', 'mtrcardigan', 'mtrraincoat', 'mtrshoes', 'mtrtooth', 'mtrsuncream',
 'mtrtissue', 'mtrmedice', 'mtrplasticbag', 'mtrbag' ,'mtrpajamas'];
 
+
 $(function() {
 $('.control-group').empty();
 
 for(var i = 0; i < materials.length; i++){
-	$('.control-group').append("<label class='control control--checkbox'>"+materials[i]+"<input type='checkbox' id='mcheck' value='"+materials[i]+"'/><div class='control__indicator'></div></label>");
+	$('.control-group').append("<label class='control control--checkbox'>"+materials[i]+"<input type='checkbox' id='mcheck' value='"+mtrCode[i]+"'/><div class='control__indicator'></div></label>");
 }
 
 	var checkedMtr = [];
-	var materialsName = [];
 
-// 	$("#saveMaterials").on('click', function() {
-// 	alert("daf")	
+	$("#saveMaterials").on('click', function() {
+	alert("daf")	
 	
-	window.parent.$("#saveMaterials").on('click', function() {
+// 	window.parent.$("#saveMaterials").on('click', function() {
 		 var cbchecked = $("input[id=mcheck]:checked");
 		 
 			for(var i = 0; i < mtrCode.length; i++){
 		 		var flag = false;				
 				cbchecked.each(function(){
-				if(materials[i] == $(this).val()){
+				if(mtrCode[i] == $(this).val()){
 					flag = true;
 					checkedMtr.push(1);
-					materialsName.push(materials[i]);
 					}
 				})
 				if(flag == false){
@@ -140,14 +139,12 @@ for(var i = 0; i < materials.length; i++){
 				}
 			}
 				console.log(checkedMtr)
-				console.log(materialsName)
-				
-				jQuery.ajaxSettings.traditional = true;
 				
 				$.ajax({
 					url:'/kinder/postSaveMaterials',
 					type:'post',
 					data: {
+						
 						//수정 필요..
 						mtrbook : checkedMtr[0],
 						mtrpen : checkedMtr[1],
@@ -165,16 +162,12 @@ for(var i = 0; i < materials.length; i++){
 						mtrbag : checkedMtr[13],
 						mtrshoes : checkedMtr[14],
 						mtrtooth : checkedMtr[15],
-						mtrpajamas : checkedMtr[16],
-						mtrList : materialsName
+						mtrpajamas : checkedMtr[16]
 					},
 					success : function() {
 						console.log("전달 완료");
-						window.parent.$("#step8").append("<iframe id='mtrCheck' src='/kinder/yebin/approvalForm' frameborder = 0  style='margin-left:1%; width: 100%;  height: 100vh;'></iframe>")				  
-						}
-						
-					})
-				
+					}
+				})
 
 	})
 	
@@ -186,7 +179,7 @@ for(var i = 0; i < materials.length; i++){
 	<div class="ck-container">
 		<div class="control-group">
 		</div>
-<!-- 		<button id='saveMaterials'>버튼</button> -->
+		<button id='saveMaterials'>버튼</button>
 	</div>
 	
 </body>

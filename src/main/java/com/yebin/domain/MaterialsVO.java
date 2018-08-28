@@ -2,166 +2,240 @@ package com.yebin.domain;
 
 public class MaterialsVO {
 
-	private boolean mtrcode;
-	private boolean mtrbook;
-	private boolean mtrpen;
-	private boolean mtrcamera;
-	private boolean mtruniform;
-	private boolean mtrgymsuit;
-	private boolean mtrinnerware;
-	private boolean mtrshirts;
-	private boolean mtrcardigan;
-	private boolean mtrraincoat;
-	private boolean mtrsuncream;
-	private boolean mtrtissue;
-	private boolean mtrmedice;
-	private boolean mtrplasticbag;
-	private boolean mtrbag;
-
+//	private boolean mtrcode;
+//	private boolean mtrbook;
+//	private boolean mtrpen;
+//	private boolean mtrcamera;
+//	private boolean mtruniform;
+//	private boolean mtrgymsuit;
+//	private boolean mtrinnerware;
+//	private boolean mtrshirts;
+//	private boolean mtrcardigan;
+//	private boolean mtrraincoat;
+//	private boolean mtrsuncream;
+//	private boolean mtrtissue;
+//	private boolean mtrmedice;
+//	private boolean mtrplasticbag;
+//	private boolean mtrbag;
+//	private boolean mtrshoes;
+//	private boolean mtrtooth;
+	
+	private int mtrcode;
+	private int mtrbook;
+	private int mtrpen;
+	private int mtrcamera;
+	private int mtruniform;
+	private int mtrgymsuit;
+	private int mtrinnerware;
+	private int mtrshirts;
+	private int mtrcardigan;
+	private int mtrraincoat;
+	private int mtrsuncream;
+	private int mtrtissue;
+	private int mtrmedice;
+	private int mtrplasticbag;
+	private int mtrbag;
+	private int mtrshoes;
+	private int mtrtooth;
+	private int mtrpajamas;
+	
 	public MaterialsVO() {
-		super();
-		// TODO Auto-generated constructor stub
+	}
+	
+
+	
+	public int getMtrpajamas() {
+		return mtrpajamas;
 	}
 
-	public MaterialsVO(boolean mtrcode, boolean mtrbook, boolean mtrpen, boolean mtrcamera, boolean mtruniform,
-			boolean mtrgymsuit, boolean mtrinnerware, boolean mtrshirts, boolean mtrcardigan, boolean mtrraincoat,
-			boolean mtrsuncream, boolean mtrtissue, boolean mtrmedice, boolean mtrplasticbag, boolean mtrbag) {
-		super();
-		this.mtrcode = mtrcode;
-		this.mtrbook = mtrbook;
-		this.mtrpen = mtrpen;
-		this.mtrcamera = mtrcamera;
-		this.mtruniform = mtruniform;
-		this.mtrgymsuit = mtrgymsuit;
-		this.mtrinnerware = mtrinnerware;
-		this.mtrshirts = mtrshirts;
-		this.mtrcardigan = mtrcardigan;
-		this.mtrraincoat = mtrraincoat;
-		this.mtrsuncream = mtrsuncream;
-		this.mtrtissue = mtrtissue;
-		this.mtrmedice = mtrmedice;
-		this.mtrplasticbag = mtrplasticbag;
-		this.mtrbag = mtrbag;
+
+
+	public void setMtrpajamas(int mtrpajamas) {
+		this.mtrpajamas = mtrpajamas;
 	}
 
-	public boolean isMtrcode() {
+
+
+	public int getMtrcode() {
 		return mtrcode;
 	}
 
-	public void setMtrcode(boolean mtrcode) {
+
+	public void setMtrcode(int mtrcode) {
 		this.mtrcode = mtrcode;
 	}
 
-	public boolean isMtrbook() {
+
+	public int getMtrbook() {
 		return mtrbook;
 	}
 
-	public void setMtrbook(boolean mtrbook) {
+
+	public void setMtrbook(int mtrbook) {
 		this.mtrbook = mtrbook;
 	}
 
-	public boolean isMtrpen() {
+
+	public int getMtrpen() {
 		return mtrpen;
 	}
 
-	public void setMtrpen(boolean mtrpen) {
+
+	public void setMtrpen(int mtrpen) {
 		this.mtrpen = mtrpen;
 	}
 
-	public boolean isMtrcamera() {
+
+	public int getMtrcamera() {
 		return mtrcamera;
 	}
 
-	public void setMtrcamera(boolean mtrcamera) {
+
+	public void setMtrcamera(int mtrcamera) {
 		this.mtrcamera = mtrcamera;
 	}
 
-	public boolean isMtruniform() {
+
+	public int getMtruniform() {
 		return mtruniform;
 	}
 
-	public void setMtruniform(boolean mtruniform) {
+
+	public void setMtruniform(int mtruniform) {
 		this.mtruniform = mtruniform;
 	}
 
-	public boolean isMtrgymsuit() {
+
+	public int getMtrgymsuit() {
 		return mtrgymsuit;
 	}
 
-	public void setMtrgymsuit(boolean mtrgymsuit) {
+
+	public void setMtrgymsuit(int mtrgymsuit) {
 		this.mtrgymsuit = mtrgymsuit;
 	}
 
-	public boolean isMtrinnerware() {
+
+	public int getMtrinnerware() {
 		return mtrinnerware;
 	}
 
-	public void setMtrinnerware(boolean mtrinnerware) {
+
+	public void setMtrinnerware(int mtrinnerware) {
 		this.mtrinnerware = mtrinnerware;
 	}
 
-	public boolean isMtrshirts() {
+
+	public int getMtrshirts() {
 		return mtrshirts;
 	}
 
-	public void setMtrshirts(boolean mtrshirts) {
+
+	public void setMtrshirts(int mtrshirts) {
 		this.mtrshirts = mtrshirts;
 	}
 
-	public boolean isMtrcardigan() {
+
+	public int getMtrcardigan() {
 		return mtrcardigan;
 	}
 
-	public void setMtrcardigan(boolean mtrcardigan) {
+
+	public void setMtrcardigan(int mtrcardigan) {
 		this.mtrcardigan = mtrcardigan;
 	}
 
-	public boolean isMtrraincoat() {
+
+	public int getMtrraincoat() {
 		return mtrraincoat;
 	}
 
-	public void setMtrraincoat(boolean mtrraincoat) {
+
+	public void setMtrraincoat(int mtrraincoat) {
 		this.mtrraincoat = mtrraincoat;
 	}
 
-	public boolean isMtrsuncream() {
+
+	public int getMtrsuncream() {
 		return mtrsuncream;
 	}
 
-	public void setMtrsuncream(boolean mtrsuncream) {
+
+	public void setMtrsuncream(int mtrsuncream) {
 		this.mtrsuncream = mtrsuncream;
 	}
 
-	public boolean isMtrtissue() {
+
+	public int getMtrtissue() {
 		return mtrtissue;
 	}
 
-	public void setMtrtissue(boolean mtrtissue) {
+
+	public void setMtrtissue(int mtrtissue) {
 		this.mtrtissue = mtrtissue;
 	}
 
-	public boolean isMtrmedice() {
+
+	public int getMtrmedice() {
 		return mtrmedice;
 	}
 
-	public void setMtrmedice(boolean mtrmedice) {
+
+	public void setMtrmedice(int mtrmedice) {
 		this.mtrmedice = mtrmedice;
 	}
 
-	public boolean isMtrplasticbag() {
+
+	public int getMtrplasticbag() {
 		return mtrplasticbag;
 	}
 
-	public void setMtrplasticbag(boolean mtrplasticbag) {
+
+	public void setMtrplasticbag(int mtrplasticbag) {
 		this.mtrplasticbag = mtrplasticbag;
 	}
 
-	public boolean isMtrbag() {
+
+	public int getMtrbag() {
 		return mtrbag;
 	}
 
-	public void setMtrbag(boolean mtrbag) {
+
+	public void setMtrbag(int mtrbag) {
 		this.mtrbag = mtrbag;
 	}
 
+
+	public int getMtrshoes() {
+		return mtrshoes;
+	}
+
+
+	public void setMtrshoes(int mtrshoes) {
+		this.mtrshoes = mtrshoes;
+	}
+
+
+	public int getMtrtooth() {
+		return mtrtooth;
+	}
+
+
+	public void setMtrtooth(int mtrtooth) {
+		this.mtrtooth = mtrtooth;
+	}
+
+
+	@Override
+	public String toString() {
+		return "MaterialsVO [mtrcode=" + mtrcode + ", mtrbook=" + mtrbook + ", mtrpen=" + mtrpen + ", mtrcamera="
+				+ mtrcamera + ", mtruniform=" + mtruniform + ", mtrgymsuit=" + mtrgymsuit + ", mtrinnerware="
+				+ mtrinnerware + ", mtrshirts=" + mtrshirts + ", mtrcardigan=" + mtrcardigan + ", mtrraincoat="
+				+ mtrraincoat + ", mtrsuncream=" + mtrsuncream + ", mtrtissue=" + mtrtissue + ", mtrmedice=" + mtrmedice
+				+ ", mtrplasticbag=" + mtrplasticbag + ", mtrbag=" + mtrbag + ", mtrshoes=" + mtrshoes + ", mtrtooth="
+				+ mtrtooth + "]";
+	}
+
+	
+	
 }

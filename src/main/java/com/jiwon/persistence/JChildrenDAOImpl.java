@@ -48,7 +48,7 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	}
 
 	@Override
-	public List<ChildrenVO> getChildrenList(String memid) throws Exception {
+	public List<ChildrenDTO> getChildrenList(String memid) throws Exception {
 		return session.selectList(namespace + ".getChildrenList", memid);
 	}
 

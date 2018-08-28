@@ -89,6 +89,7 @@ and m.mtrcode = f.mtrcode
 and mem.memid = te.memid
 and f.ftcode = (select ftcode from approval where apvcode = #{apvcode})
 and cate.catecode = f.catecode
+and a.apvcode = #{apvcode}
 group by t.tourremarks;
 </select>
 

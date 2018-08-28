@@ -15,6 +15,7 @@
     <title>클릭한 위치에 마커 표시하기</title>
     
 </head>
+
 <body>
 <div id="map" style="width:100%;height:350px;"></div>
 <p><em>지도를 클릭해주세요!</em></p> 
@@ -62,6 +63,7 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
     
 });
 </script>
+
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form action="/kinder/guangwo/tmenu10" method="POST">

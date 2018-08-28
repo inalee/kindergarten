@@ -119,13 +119,7 @@ call deletestation(#{stcode});
 </delete>
 
 
-
-
-
-
-
-
-  </mapper>
+</mapper>
   
   
   

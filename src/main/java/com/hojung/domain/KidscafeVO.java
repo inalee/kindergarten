@@ -4,23 +4,23 @@ import java.util.Date;
 
 public class KidscafeVO {
 	
-	int cfcode;
-	String cfname;
-	String sido;
-	int sigungucode;
-	int zipcode;
-	String address;
-	Date cfpermit;
-	double cfarea;
-	String cfphone;
-	double coordinatex;
-	double coordinatey;
-	String cfpermitnum;
-	int cfopen;
-	int cfclose;
-	int numperhour;
-	String urlcode;
-	String cfimg;
+	private int cfcode;
+	private String cfname;
+	private String sido;
+	private int sigungucode;
+	private int zipcode;
+	private String address;
+	private Date cfpermit;
+	private double cfarea;
+	private String cfphone;
+	private double coordinatex;
+	private double coordinatey;
+	private String cfpermitnum;
+	private int cfopen;
+	private int cfclose;
+	private int numperhour;
+	private String urlcode;
+	private String cfimg;
 	
 	public KidscafeVO() {
 		

@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.hojung.domain.KinsearchCri;
+import com.kinder.domain.GuardianVO;
 import com.kinder.domain.KindergartenVO;
 
 @Repository
@@ -34,6 +35,11 @@ public class KinderDAOImpl implements KinderDAO {
 	@Override
 	public List<KindergartenVO> selectKinders_map(KinsearchCri cri) throws Exception {
 		return sqlSession.selectList(namespace+".selectKinders_map",cri);
+	}
+
+	@Override
+	public GuardianVO selectGuardian(String memid) throws Exception {
+		return (GuardianVO) sqlSession.selectOne(namespace+".selectGuardian", memid);
 	}
 
 //	@Override

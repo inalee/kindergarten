@@ -11,6 +11,7 @@ import com.hojung.domain.KidscafeVO;
 import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.KinsearchCri;
+import com.hojung.domain.MyresVO;
 import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
 import com.kinder.domain.KindergartenVO;
@@ -38,9 +39,24 @@ public class KidscafeServiceImpl implements KidscafeService {
 		
 		List<KidscafesumCri> ressum = dao.selectResSum(cri);
 		for (KidscafesumCri sumCri : ressum) {
-			hm.put(sumCri.getCfrestime(), sumCri.getSum_cfresnum());
+			hm.put(sumCri.getCfrestime(), sumCri.getCfresnum());
 		}
 		return hm;
+	}
+
+	@Override
+	public List<MyresVO> selectMyRes(int gcode) throws Exception {
+		return dao.selectMyRes(gcode);
+	}
+
+	@Override
+	public List<Integer> selectMyRestime(int cfrescode) throws Exception {
+		return dao.selectMyRestime(cfrescode);
+	}
+
+	@Override
+	public void deleteMyRes(int cfrescode) throws Exception {
+		dao.deleteMyRes(cfrescode);
 	}
 
 }

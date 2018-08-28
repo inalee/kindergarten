@@ -4,12 +4,12 @@ import java.util.Arrays;
 
 public class KinsearchCri {
 
-	int sigungucode;
-	String kinname;
-	int[] kinkind_lists;
-	int vacancy;
-	int kinshuttle;
-	int[] kinmax;
+	private int sigungucode;
+	private String kinname;
+	private int[] kinkind_lists;
+	private int vacancy;
+	private int kinshuttle;
+	private int[] kinmax;
 	
 	public KinsearchCri() {
 		super();

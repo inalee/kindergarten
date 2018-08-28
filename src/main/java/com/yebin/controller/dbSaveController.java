@@ -1,10 +1,13 @@
 package com.yebin.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
@@ -15,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kinder.domain.MemberVO;
+import com.kinder.domain.TeacherVO;
+import com.yebin.domain.ApprovalVO;
 import com.yebin.domain.FieldtripVO;
 import com.yebin.domain.MaterialsVO;
+import com.yebin.service.ApprovalService;
 import com.yebin.service.ClassService;
 import com.yebin.service.FieldtripService;
 
@@ -28,6 +34,9 @@ public class dbSaveController {
 
 	@Inject
 	FieldtripService fieldService;
+
+	@Inject
+	ApprovalService apprService;
 
 	// MySql-담당 선생님의 반 이름/인원 가져오기
 	@RequestMapping(value = "/postCountingkids", method = RequestMethod.POST)
@@ -78,15 +87,63 @@ public class dbSaveController {
 		return reportSource;
 	}
 
-	// MySql- 승인 받기 전 보고서 DB 등록하기
+	// MySql- 원장 승인 이전 보고서 DB 등록하기
 	@RequestMapping(value = "/postSaveApv", method = RequestMethod.POST)
-	public ResponseEntity<String> postSaveApv(String apvpurpose, String apvremarks, HttpSession hs) {
+	public ResponseEntity<String> postSaveApv(String apvpurpose, String apvremarks, String apvtitle, String apvclname,
+			HttpSession hs, HttpServletRequest hr) {
+		System.out.println("[견학목적] " + apvpurpose + " [견학계획] " + apvremarks);
+
 		FieldtripVO fieldVO = new FieldtripVO();
+		ApprovalVO apprVO = new ApprovalVO();
 		fieldVO.setFtcode((int) hs.getAttribute("ftcodeToken"));
-		System.out.println(apvpurpose);
-		System.out.println(apvremarks);
+		apprVO.setApvpurpose(apvpurpose);
+		apprVO.setApvremarks(apvremarks);
+		apprVO.setApvtitle(apvtitle);
+		apprVO.setApvclname(apvclname);
+		apprService.insertApprDoc(fieldVO, apprVO);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
+	// MySql- 승인요청한 보고서 목록 가져오기
+	@RequestMapping(value = "/getApvList", method = RequestMethod.GET)
+	public ArrayList<Object> getApvList(HttpSession hs) {
+		TeacherVO teVO = new TeacherVO();
+		MemberVO memVO = new MemberVO();
+
+		teVO.setMemid(hs.getAttribute("ybMemid").toString());
+		memVO.setMemid((String) hs.getAttribute("ybMemid"));
+
+		if (apprService.isMaster(teVO)) {
+			System.out.println("원장님 입니다.");
+			hs.setAttribute("isMaster", true);
+			return (ArrayList<Object>) fieldService.getApprList(memVO, "m");
+
+		} else {
+			System.out.println("선생님 입니다.");
+			hs.setAttribute("isMaster", false);
+			return (ArrayList<Object>) fieldService.getApprList(memVO, "t");
+		}
+
+	}
+
+	@RequestMapping(value = "/getDetails", method = RequestMethod.GET)
+	public List<Object> getDetails(String apvcode, HttpSession hs) {
+		TeacherVO teVO = new TeacherVO();
+		ApprovalVO apprVO = new ApprovalVO();
+		apprVO.setApvcode(Integer.parseInt(apvcode));
+		
+		return apprService.getDetails(apprVO);
+	}
+	
+	@RequestMapping(value ="/postUpdateApv", method = RequestMethod.POST)
+	public ResponseEntity<String> postUpdateApv(String apvcode){
+		System.out.println(apvcode);
+		ApprovalVO apprVO = new ApprovalVO();
+		apprVO.setApvcode(Integer.parseInt(apvcode));
+		apprService.updateApv(apprVO);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 
 }

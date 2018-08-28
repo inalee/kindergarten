@@ -402,7 +402,7 @@ $(function() {
   				$("#class").empty()
   				$("#class").append("<option>"+"---반선택---"+"</option>")
   				$.each(data, function(index, item) {
-  					if(item.clname == null){
+  					if(item.clname == ""){
   						alert('아직 선생님 담당 학급이 없습니다.')
   					}else{
   						$("#class").append("<option>"+item.clname+"</option>")
@@ -630,7 +630,7 @@ $(function() {
 			obj.src = "${images}yebin-click-after.jpg";
 			posts.push($(getTitle).text());
 			tableTags.push($(jsonid).text());
-			alert(tableTags);
+// 			alert(tableTags);
 			$(idForJq).data('id', 0); 
 			j = 0;
 			
@@ -640,7 +640,7 @@ $(function() {
 				posts.splice(posts.indexOf($(getTitle).text()),1);
 				tableTags.splice(tableTags.indexOf($(jsonid).text()), 1);
 				$(idForJq).data('id', 1); 
-				alert(tableTags)	
+// 				alert(tableTags)	
 			}
 				
 			}
@@ -691,7 +691,7 @@ $(function() {
 			})
 			
 			
-		  alert(tableTags)
+// 		  alert(tableTags)
 		  
 		  tableTags.push("{'noData' : 'noData'}");
 		  

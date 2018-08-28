@@ -16,4 +16,5 @@ public interface FieldtripService {
 	public void insertTourCourse(FieldtripVO fieldVO, TourismVO tourVO);
 	public void insertMaterials(MaterialsVO mVO, FieldtripVO fieldVO);
 	public List<Object> selectReport(FieldtripVO fieldVO);
+	public List<Object> getApprList(MemberVO memVO, String keyword);
 }

@@ -290,7 +290,7 @@ function veiwNumChange() {
             </select>
 		</li>
 		<li class="basis">
-          <input type="search" id="kinname" title="어린이집명을 입력하세요." placeholder="기관명" style="padding: 0;"/>
+          <input type="search" id="kinname" title="어린이집명을 입력하세요." placeholder="어린이집명" style="padding: 0;"/>
         </li><br>
         <li class="basis">
           <details>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.hojung.domain.KidscafeVO;
 import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KidscafesumCri;
+import com.hojung.domain.MyresVO;
 
 @Repository
 public class KidscafeDAOImpl implements KidscafeDAO {
@@ -38,6 +39,22 @@ public class KidscafeDAOImpl implements KidscafeDAO {
 	@Override
 	public List<KidscafesumCri> selectResSum(KidscafesumCri cri) throws Exception {
 		return sqlSession.selectList(namespace+".selectResSum", cri);
+	}
+	
+	@Override
+	public List<MyresVO> selectMyRes(int gcode) throws Exception {
+		return sqlSession.selectList(namespace+".selectMyRes", gcode);
+	}
+
+	@Override
+	public List<Integer> selectMyRestime(int cfrescode) throws Exception {
+		return sqlSession.selectList(namespace+".selectMyRestime", cfrescode);
+	}
+
+	@Override
+	public void deleteMyRes(int cfrescode) throws Exception {
+		sqlSession.delete(namespace+".deleteCrt",cfrescode);
+		sqlSession.delete(namespace+".deleteCr",cfrescode);
 	}
 	
 }

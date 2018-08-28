@@ -246,7 +246,7 @@ where r.kincode=k.kincode and s.sigungucode=r.sigungucode and ki.kinkindcode=k.k
 			and s.sigungucode=#{sigungucode}
 			</otherwise>
 		</choose>
-		order by r.recode;
+		order by r.recode desc;
 	</if>
 
 </select>

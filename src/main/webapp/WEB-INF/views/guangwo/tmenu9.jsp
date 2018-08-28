@@ -121,7 +121,7 @@ function del_schedule(val) {
 						
 						<div>
 							<label>정거장선택
-		          <select class="time" id="starttime" name="stcode" onchange="possibleEndtime()">
+		          <select class="time" id="starttime" name="stcode">
 		          	<option value="0" selected="selected">전체</option>
 		          	<c:forEach var="i" items="${sdstation}">
 		          		<option value="${i.stcode}">${i.stname}</option>

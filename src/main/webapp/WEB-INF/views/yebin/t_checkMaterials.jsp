@@ -31,7 +31,7 @@ h1 {
 	text-align: left;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	padding: 30px;
-	width: 60%;
+	width: 20%;
 /* 	height: 210px; */
 	margin: 10px;
 }
@@ -61,7 +61,7 @@ h1 {
 }
 
 .control input:checked ~ .control__indicator {
-	background: #2aa1c0;
+	background: #fdc645;
 }
 
 .control:hover input:not ([disabled]):checked ~ .control__indicator,

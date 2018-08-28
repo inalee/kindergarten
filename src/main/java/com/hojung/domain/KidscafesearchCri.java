@@ -1,18 +1,19 @@
 package com.hojung.domain;
 
+import java.util.Date;
 import java.util.Arrays;
 
 public class KidscafesearchCri {
 	
-	int sigungucode;
-	String cfname;
-	String cfresdate;
-	int starttime;
-	int endtime;
-	int[] cfrestime_lists;
-	int adultsnum;
-	int kidsnum;
-	int cfresnum;
+	private int sigungucode;
+	private String cfname;
+	private String cfresdate;
+	private int starttime;
+	private int endtime;
+	private int[] cfrestime_lists;
+	private int adultsnum;
+	private int kidsnum;
+	private int cfresnum;
 	
 	public KidscafesearchCri() {
 	}

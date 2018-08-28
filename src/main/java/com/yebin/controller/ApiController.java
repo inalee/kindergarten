@@ -178,7 +178,6 @@ public class ApiController {
 				}
 			}
 		}
-
 		hs.setAttribute("tempKeyList", pvoList); // 맵 형태가 담긴 리스트
 		System.out.println(hs.getAttribute("tempKeyList").toString());
 
@@ -195,8 +194,11 @@ public class ApiController {
 		TourismVO tvo = new TourismVO();
 
 		for (String f : FtcodeMap.keySet()) {
-			fvo.setFtcode(FtcodeMap.get(f));
+			System.out.println("asdfafadsfasdfasdfasdfasdfasdfasfas"+f);
+//			fvo.setFtcode(FtcodeMap.get(f));
+			fvo.setFtcode((int)hs.getAttribute("ftcodeToken"));
 		}
+		
 
 		for (int i = 0; i < tourCourse.length; i++) {
 			Map<String, Object> map = JsonParse.jsonToSingleMap(tourCourse[i]);

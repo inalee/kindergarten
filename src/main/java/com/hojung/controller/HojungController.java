@@ -1,11 +1,14 @@
 package com.hojung.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -19,16 +22,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.protobuf.TextFormat.ParseException;
 import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscaferesCri;
 import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.KinsearchCri;
+import com.hojung.domain.MyresVO;
 import com.hojung.persistence.KidscafeDAO;
 import com.hojung.persistence.KinderDAO;
 import com.hojung.service.KidscafeService;
 import com.hojung.service.KinderService;
+import com.kinder.domain.GuardianVO;
 import com.kinder.domain.KindergartenVO;
+import com.kinder.domain.MemberVO;
+import com.kinder.domain.TeacherVO;
 
 import net.sf.json.JSONArray;
 
@@ -103,6 +113,9 @@ public class HojungController {
 		
 		cri.setSigungucode(Integer.parseInt(request.getParameter("sigungucode")));
 		cri.setCfname(request.getParameter("cfname"));
+		/*string to date 수정!!!!*/
+//		java.util.Date date = (java.util.Date) new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("cfresdate")); //string to date
+//		System.out.println("================="+date);
 		cri.setCfresdate(request.getParameter("cfresdate"));
 		for (int i = Integer.parseInt(request.getParameter("starttime")); i < Integer.parseInt(request.getParameter("endtime")); i++) {
 			cfrestime_lists[index]=i;
@@ -130,7 +143,7 @@ public class HojungController {
 	
 	/* 키즈카페 예약페이지 */ 
 	@RequestMapping(value = "/cafereservation", method = RequestMethod.GET)
-	public String read(@RequestParam("cfcode") int cfcode, @RequestParam("cfresdate") Date cfresdate, Model model) throws Exception{
+	public String resPage(@RequestParam("cfcode") int cfcode, @RequestParam("cfresdate") Date cfresdate, Model model) throws Exception{
 		// kidscafe 정보 불러오기
 		KidscafeVO kidscafe = kcservice.selectOneKidscafe(cfcode);
 		model.addAttribute("kidscafe", kidscafe);
@@ -190,10 +203,6 @@ public class HojungController {
 		} catch (Exception e) {
 
 		}
-
-	
-
-		
 		
 		model.addAttribute("hm", hm);
 		model.addAttribute("price", price);
@@ -202,17 +211,102 @@ public class HojungController {
 	}
 	
 	
+	/* 키즈카페 예약  */
+	@RequestMapping(value = "/kidscaferes", method = RequestMethod.POST)
+	public String kidscafe_res(HttpSession session, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
+		
+		// 세션에서 현재 로그인 정보를 가져옴
+		MemberVO mem = (MemberVO) session.getAttribute("glogin");
+		GuardianVO gvo = kservice.selectGuardian(mem.getMemid());
+		
+		KidscaferesCri cri = new KidscaferesCri();
+		
+		cri.setCfcode(Integer.parseInt(request.getParameter("cfcode")));
+		cri.setGcode(gvo.getGcode());
+		System.out.println("================="+request.getParameter("hidden_res_date"));
+		
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd");
+		String cfresdate = request.getParameter("hidden_res_date");
+		java.util.Date date = null;
+
+        try {
+
+            date = (Date) formatter.parse(cfresdate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+		cri.setCfresdate(date);
+		cri.setAdultsnum(Integer.parseInt(request.getParameter("adults")));
+		cri.setKidsnum(Integer.parseInt(request.getParameter("kids")));
+		
+		String str = request.getParameter("hidden_res_time");
+		int starttime = Integer.parseInt(str.split(":")[0]);
+		int endtime = Integer.parseInt(str.split(":")[1].substring(5));
+		
+		int [] cfrestime_lists = new int[endtime-starttime+1];
+		int index = 0;
+		
+		for (int i = starttime; i < endtime+1; i++) {
+			cfrestime_lists[index]=i;
+			index++;
+		}
+		
+		cri.setCfrestime_lists(cfrestime_lists);
+		System.out.println("================="+cri);
+		
+		rttr.addFlashAttribute("msg", "success");
+
+		return "redirect:my_res_gmenu";
+	}
+	
+	
+	/* 나의 예약 내역 */
+	@RequestMapping(value = "/my_res_gmenu", method = RequestMethod.GET)
+	public String Myreservation(HttpSession session, Model model) throws Exception {
+
+		// 세션에서 현재 로그인 정보를 가져옴
+		MemberVO mem = (MemberVO) session.getAttribute("glogin");
+		GuardianVO gvo = kservice.selectGuardian(mem.getMemid());
+		
+		// 현재 로그인한 회원의 예약 리스트를 가져옴
+		List<MyresVO> res_list = kcservice.selectMyRes(gvo.getGcode());
+		for (MyresVO myresVO : res_list) {
+			List<Integer> integers = kcservice.selectMyRestime(myresVO.getCfrescode());
+			int[] ret = new int[integers.size()];
+			    for (int i=0; i < ret.length; i++)
+			    {
+			        ret[i] = integers.get(i).intValue();
+			    }
+			myresVO.setCfrestime_lists(ret);
+			myresVO.setCfrestime_str(ret[0]+":00 ~ "+ret[ret.length-1]+":59");
+		}
+		
+		model.addAttribute("res_list", res_list);
+		
+		return "/my_reservation";
+	}
+	
+	/* 예약 취소 */
+	@RequestMapping(value = "/deleteres", method = RequestMethod.GET)
+	public String Myreservation(@RequestParam("cfrescode") int cfrescode, RedirectAttributes rttr) throws Exception {
+		
+		kcservice.deleteMyRes(cfrescode);
+		
+		rttr.addFlashAttribute("msg", "success");
+		
+		return "redirect:my_res_gmenu";
+	}
+	
 	
 	@RequestMapping(value = "/gmenu15", method = RequestMethod.GET)
 	public String gmenu15() {
 		
 		return "/gmenu15";
-	}
-	
-	@RequestMapping(value = "/gmenu17", method = RequestMethod.GET)
-	public String gmenu17() {
-		
-		return "/gmenu17";
 	}
 	
 	@RequestMapping(value = "/tmenu13", method = RequestMethod.GET)

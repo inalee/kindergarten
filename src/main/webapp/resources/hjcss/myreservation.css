@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+/* * {border: thin solid red;}  */
+
+body {
+	background:url(../images/background.jpg);
+/* 	overflow-x: hidden; */
+}
+
+/* 전체 틀 */
+#wrap {
+	width: 1101px;
+	height: auto;
+	margin: 100px auto;
+}
+
+.cafe_res, .cafe_res th, .cafe_res td {
+	border: 0
+}
+
+.cafe_res {
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	text-align: center;
+	width: 1100px;
+	border-bottom: 1px solid #999;
+	color: #666;
+	font-size: 13px;
+	table-layout: fixed;
+	margin: 0;
+	background-color: white;
+}
+
+.cafe_res th {
+	padding: 5px 0 6px;
+	border-top: solid 1px #999;
+	border-bottom: solid 1px #b2b2b2;
+	background-color: #f1f1f4;
+	color: #333;
+	font-weight: bold;
+	line-height: 20px;
+	vertical-align: top
+}
+
+.cafe_res td {
+	padding: 8px 0 9px;
+	border-bottom: solid 1px #d2d2d2;
+	text-align: center;
+	line-height: 24px;
+}
+
+.cafe_res td:first-child, .cfname {
+	font-weight: bold;
+}
+
+.cafe_res .cfimg {
+	display: block;
+	top: 6px;
+	left: 5px;
+	width: 98px;
+	height: 73px;
+	border: 1px solid #ddd;
+	color: #888;
+}
+
+.cafe_res td:nth-child(3), td:nth-child(4) {
+	cursor: pointer;
+}
+
+.cafe_res td:nth-child(4) {
+	text-align: left;
+}
+
+.cafe_res .res_state {
+	width: 75px;
+	height: 32px;
+	margin: 0 auto;
+	color: #ffffff;
+	outline: none;
+}
+
+.cafe_res #blue {
+	background-color: #79a5ff;
+	border: 1px solid #6698ff;
+	
+}
+
+.cafe_res #yellow {
+	background-color: #FFE08C;
+	border: 1px solid #ffd871;
+}
+
+.cafe_res #yellow:hover {
+	background-color: #ffd76a;
+	border: 1px solid #ffcf53;
+	cursor: pointer;
+}
+
+.cafe_res #gray {
+	background-color: #d7d7d7;
+	border: 1px solid #c9c9c9;
+}
+
+
+
+
+
+
+

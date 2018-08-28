@@ -21,8 +21,6 @@ var time2=null;
 
 
 $(function(){
-	//현재달 달력 생성
-	drawCalendar();
 	
 	//url 파라미터값 가져오기
 	var getParameters = function (paramName) {
@@ -45,6 +43,9 @@ $(function(){
 	    }
 	};
 	
+	//예약날짜 달력 생성
+	drawCalendar(getParameters('cfresdate'));
+	
 	//date value 반영
 	selectDate(getParameters('cfresdate'));
 	
@@ -61,8 +62,9 @@ $(function(){
 });
 
 
-function drawCalendar(){
+function drawCalendar(date){
 	var d = new Date();
+// 	var d = new Date(Date.parse(date));
 	var thisMonth = d.getMonth()+1;
 	if(thisMonth <10) thisMonth = "0" + thisMonth;
 	var atmonth = d.getFullYear() + "." + thisMonth;
@@ -198,12 +200,15 @@ function drawCalendar(){
 			selectedDate = select;
 			
 			document.getElementById("res_date").value=day;
+			document.getElementById("hidden_res_date").value=day;
 		}
 		
 	}
 	
 	// 선택된 시간 css 변경 및 form에 추가
 	function selectTime(time) {
+		time = parseInt(time)//정수화
+		
 		if(!time1) { // 아무것도 선택되어 있지 않을 때
 			time1=time;
 			selectedTime.push(time1);
@@ -245,7 +250,6 @@ function drawCalendar(){
 		var disabled=null; // 예약 불가능 판별 변수
 		// 예약 불가능 시간대 판별
 		for ( var t in selectedTime) {
-// 			alert(disabledTime)
 // 			alert(t+", "+disabledTime.indexOf(t))
 			if(disabledTime.indexOf(selectedTime[t])!=-1) {
 				alert("예약 불가능한 시간이 포함되어 있습니다. 다시 선택하여 주세요.");
@@ -262,6 +266,7 @@ function drawCalendar(){
 			// selectedTime 배열이 비어있을 때
 			if(selectedTime.length==0) {
 				document.getElementById("res_time").value = "";
+				document.getElementById("hidden_res_time").value = "";
 			// selectedTime 배열에 값이 존재할 때
 			} else {
 				for ( var t in selectedTime) {
@@ -271,13 +276,14 @@ function drawCalendar(){
 				// form에 추가
 				var res_time = selectedTime[0]+":00 ~ "+selectedTime.slice(-1)[0]+":59"
 				document.getElementById("res_time").value = res_time;
+				document.getElementById("hidden_res_time").value = res_time;
 			}
 			
 		}
 	}
 	
 	//성인 인원수 +,- 함수
-	var count1 = 2;
+	var count1 = 0;
 	function plus1() {
 		if (count1 < 10) {
 			count1++;
@@ -292,7 +298,7 @@ function drawCalendar(){
 	}
 
 	// 어린이 인원수 +,- 함수
-	var count2 = 3;
+	var count2 = 0;
 	function plus2() {
 		if (count2 < 15) {
 			count2++;
@@ -309,10 +315,46 @@ function drawCalendar(){
 	
 	// disabledTime 저장 함수
 	function pushDisabledTime(time) {
-// 		alert(time)
-		disabledTime.push(time);
-// 		alert(disabledTime)
+		disabledTime.push(parseInt(time));
 	}
+	
+	
+	// 예약하기 체크 함수
+	function resCheck() {
+		
+		var cfresnum = parseInt(document.getElementsByName('adults')[0].value) + parseInt(document.getElementsByName('kids')[0].value); //예약 인원수
+		var checkPersonNum = null; // 예약인원 가능 체크 변수
+		
+		if($("input[id='clause1']").prop('checked')==false || $("input[id='clause2']").prop('checked')==false) {
+			alert("약관에 동의해주세요.");
+			return false;
+		} else if(document.getElementById("res_time").value==null || document.getElementById("res_time").value=="") {
+			alert("시간을 선택해주세요.");
+			return false;
+		} else if(cfresnum==0) {
+			alert("인원수를 선택해주세요.");
+			return false;
+		} else if(true) {
+			for ( var t in selectedTime) {
+				if(parseInt($('#p'+selectedTime[t]).text().split('/')[0])+cfresnum <= '${kidscafe.numperhour}') {
+					checkPersonNum = 1;
+				} else {
+					checkPersonNum = 0;
+					break;
+				}
+			}
+			
+			if(checkPersonNum==0) {
+				alert("예약 가능한 인원을 초과하였습니다.");
+				return false;
+			} else if(checkPersonNum==1) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
 	
 	
 	var myVar;
@@ -397,7 +439,10 @@ function drawCalendar(){
 	</div>
 
 	<div id="kidscafe_res">
-	
+	<form action="kidscaferes"  method="post" onsubmit="return resCheck();">
+		<input type="hidden" name="cfcode" value="${kidscafe.cfcode}">
+		<input type="hidden" id="hidden_res_time" name="hidden_res_time">
+		<input type="hidden" id="hidden_res_date" name="hidden_res_date">
 		<div style="height: 560px; border-bottom: 1px solid #bbbbbb;"> <!-- background-color:#F9FBFA;???? -->
 			<!-- 년도, 월 -->
 			<div class="month">
@@ -422,24 +467,22 @@ function drawCalendar(){
 		</div>
 		
 		<ul class="ul_detail">
-			<li><span class="li_detail">날짜</span><input type="text" id="res_date" disabled="disabled" value=""></li>
+			<li><span class="li_detail">날짜</span><input type="text" id="res_date" name="res_date" disabled="disabled"></li>
 			<hr>
-			<li><span class="li_detail">시간</span><input type="text" id="res_time" disabled="disabled" value=""></li>
+			<li><span class="li_detail">시간</span><input type="text" id="res_time" name="res_time" disabled="disabled"></li>
 			<li><span class="li_detail" style="font-size: 15px; display: inline-block; margin-top: 10px;">오전</span>
 				<span style="display: inline-block; width: 400px; float: right;">
 				<c:forEach var="i" begin="${kidscafe.cfopen}" end="11" step="1">
 					<c:if test="${ressum.containsKey(i)}"><c:set var="p" value="${ressum.get(i)}"></c:set></c:if>
 					<c:if test="${!ressum.containsKey(i)}"><c:set var="p" value="0"></c:set></c:if>
 					<c:if test="${kidscafe.numperhour==p}">
-						<button class="btn_time" id="${i}" value="${i}" type="button"  disabled="disabled" title="인원초과입니다.">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+						<button class="btn_time" id="${i}" value="${i}" type="button"  disabled="disabled" title="인원초과입니다.">${i}:00<br><p id="p${i}">${p}/${kidscafe.numperhour}</p></button>
 						<script type="text/javascript">pushDisabledTime('${i}');</script>
 					</c:if>
 					<c:if test="${kidscafe.numperhour!=p}">
-						<button class="btn_time" id="${i}" value="${i}" type="button" onclick="selectTime(this.id);">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+						<button class="btn_time" id="${i}" value="${i}" type="button" onclick="selectTime(this.id);">${i}:00<br><p id="p${i}">${p}/${kidscafe.numperhour}</p></button>
 					</c:if>
 				</c:forEach>
-<!-- 				<button class="btn_time" id="10" value="10" type="button" onclick="selectTime(this.id);">10:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="11" value="11" type="button" onclick="selectTime(this.id);">11:00<br><p>12/20</p></button> -->
 				</span>
 			</li>
 			<li><span class="li_detail" style="font-size: 15px; display: inline-block; padding-top: 8px;">오후</span>
@@ -448,23 +491,13 @@ function drawCalendar(){
 					<c:if test="${ressum.containsKey(i)}"><c:set var="p" value="${ressum.get(i)}"></c:set></c:if>
 					<c:if test="${!ressum.containsKey(i)}"><c:set var="p" value="0"></c:set></c:if>
 					<c:if test="${kidscafe.numperhour==p}">
-						<button class="btn_time" id="${i}" value="${i}" type="button"  disabled="disabled" title="인원초과입니다.">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+						<button class="btn_time" id="${i}" value="${i}" type="button"  disabled="disabled" title="인원초과입니다.">${i}:00<br><p id="p${i}">${p}/${kidscafe.numperhour}</p></button>
+						<script type="text/javascript">pushDisabledTime('${i}');</script>
 					</c:if>
 					<c:if test="${kidscafe.numperhour!=p}">
-						<button class="btn_time" id="${i}" value="${i}" type="button" onclick="selectTime(this.id);">${i}:00<br><p>${p}/${kidscafe.numperhour}</p></button>
+						<button class="btn_time" id="${i}" value="${i}" type="button" onclick="selectTime(this.id);">${i}:00<br><p id="p${i}">${p}/${kidscafe.numperhour}</p></button>
 					</c:if>
 				</c:forEach>
-<!-- 				<button class="btn_time" id="12" value="12" onclick="selectTime(this.id);">12:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="13" value="13" onclick="selectTime(this.id);">13:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="14" value="14" onclick="selectTime(this.id);">14:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="15" value="15" onclick="selectTime(this.id);">15:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="16" value="16" onclick="selectTime(this.id);">16:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="17" value="17" disabled="disabled" title="인원초과입니다. ">17:00<br><p>20/20</p></button> -->
-<!-- 				<button class="btn_time" id="18" value="18" disabled="disabled" title="인원초과입니다.">18:00<br><p>20/20</p></button> -->
-<!-- 				<button class="btn_time" id="19" value="19" onclick="selectTime(this.id);">19:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="20" value="20" onclick="selectTime(this.id);">20:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="21" value="21" onclick="selectTime(this.id);">21:00<br><p>12/20</p></button> -->
-<!-- 				<button class="btn_time" id="22" value="22" onclick="selectTime(this.id);">22:00<br><p>12/20</p></button> -->
 				</span>
 			</li>
 			<hr>
@@ -473,13 +506,13 @@ function drawCalendar(){
 				<span style="display: inline-block; float: right; margin: 0 10px 10px 0;">
 					<span style="font-size: 15px; margin-right: 25px;">성인</span> 
 					<button type="button" class="minus" onclick="minus1();"></button>
-		          	<input type="number" value="0" class="count" id="count1" name="adults" >
+		          	<input type="number" class="count" id="count1" name="adults" >
 				    <button type="button" class="plus" onclick="plus1();"></button><br>
 				</span>
 				<span style="display: inline-block; float: right; margin: 0 10px 10px 0;">
 					<span style="font-size: 15px; margin-right: 10px;">어린이</span> 
 					<button type="button" class="minus" onclick="minus2();"></button>
-		          	<input type="number" value="0" class="count" id="count2" name="kids">
+		          	<input type="number" class="count" id="count2" name="kids">
 				    <button type="button" class="plus" onclick="plus2();"></button>
 				</span>
 				</div>
@@ -495,7 +528,7 @@ function drawCalendar(){
 				- 단, 상법 및 ‘전자상거래 등에서의 소비자 보호에 관한 법률’ 등 관련 법령에 의하여 일정 기간 보관이 필요한 경우에는 해당 기간 동안 보관함<br><br>
 				4. 동의 거부권 등에 대한 고지: 정보주체는 개인정보의 수집 및 이용 동의를 거부할 권리가 있으나, 이 경우 상품 및 서비스 예약이 제한될 수 있습니다.
 			</p></div></li>
-			<li><label class="container"><input type="checkbox" id="kinkind"><span class="checkmark"></span>동의합니다.</label></li>
+			<li><label class="container"><input type="checkbox" id="clause1"><span class="checkmark"></span>동의합니다.</label></li>
 			<li><div class="clause"><p>
 				&lt;개인정보 제공 동의&gt;<br><br>
 				1. 개인정보를 제공받는 자 : 킨더가든<br><br>
@@ -504,10 +537,12 @@ function drawCalendar(){
 				4.개인정보를 제공받는 자의 개인정보 보유 및 이용기간 : 킨더가든 회원탈퇴 시 또는 위 개인정보 이용목적 달성 시 까지 이용합니다.<br><br>
 				5.동의 거부권 등에 대한 고지 : 정보주체는 개인정보 제공 동의를 거부할 권리가 있으나, 이 경우 상품 및 서비스 예약이 제한될 수 있습니다.<br><br>
 			</p></div></li>
-			<li><label class="container"><input type="checkbox" id="kinkind"><span class="checkmark"></span>동의합니다.</label></li>
+			<li><label class="container"><input type="checkbox" id="clause2"><span class="checkmark"></span>동의합니다.</label></li>
 			<hr>
-			<li><button id="btn_res"><span>예 약 하 기</span></button></li>
+			<li><input type="submit" id="btn_res" value="예 약 하 기"></li>
+<!-- 			<li><button id="btn_res" type="submit" onsubmit="resCheck();"><span>예 약 하 기</span></button></li> -->
 		</ul>
+	</form>
 	</div>
 </div>
 

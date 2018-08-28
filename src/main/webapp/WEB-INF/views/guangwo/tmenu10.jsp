@@ -22,10 +22,8 @@ function del_station(val) {
 		alert("삭제가 완료되었습니다.");
 		location.reload();
 	});
-	
 }
 </script>
-
  
 </head>
 <body>
@@ -37,7 +35,8 @@ function del_station(val) {
 						<h2>${teacher.kinname}-정거장</h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addbusModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>정거장추가</span></a>					
+					<a href="map_view" class="btn btn-info">정거장등록</a>
+											
 					</div>
                 </div>
             </div>
@@ -66,37 +65,7 @@ function del_station(val) {
                 </tbody>
         </div>
     </div>
-	<!-- Edit Modal HTML -->
-	<div id="addbusModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form action="/kinder/guangwo/tmenu10" method="POST">
-					<div class="modal-header">						
-						<h4 class="modal-title">정거장등록</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<div class="form-group">
-							<label>정거장명</label>
-							<input type="text" name="stname" class="form-control" placeholder="ex)정거장명" required " >
-						</div>
-						<div class="form-group">
-							<label>위도</label>
-							<input type="text" name="stx" class="form-control" placeholder="ex)000.00000000"  required " >
-						</div>
-						<div class="form-group">
-							<label>경도</label>
-							<input type="text" name="sty" class="form-control" placeholder="ex)000.0000000" required " >
-						</div>		
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-success" value="Add">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+	
 	
 </body>
 </html>                                		                            

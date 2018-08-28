@@ -85,12 +85,7 @@ where k.kincode=#{kincode};
 
 <!-- 차량정거장 보기 -->
 <select id="select_schedule_station" resultType="com.guangwoo.domain.CarstationVO" >
-select k.kincode, k.kinname,st.stcode,st.stname
-from vehicle v join schedule sd on v.carcode=sd.carcode
-join kindergarten k on k.kincode=v.kincode
-join service sv on sv.svcode=sd.svcode
-join station st on st.sdcode=sd.sdcode
-where k.kincode=#{kincode};
+select stcode,stname,stx,sty from station;
 </select>
 
 <!-- 화면10 -->
@@ -100,12 +95,7 @@ insert into station(sdcode,stname,stx,sty) values(#{sdcode},#{stname},#{stx},#{s
 </insert>
 <!-- 정거장보기 -->
 <select id="station_select" resultType="com.guangwoo.domain.StationVO">
-select k.kincode, k.kinname,st.stcode,st.stname, st.stx,st.sty
-from vehicle v join schedule sd on v.carcode=sd.carcode
-join kindergarten k on k.kincode=v.kincode
-join service sv on sv.svcode=sd.svcode
-join station st on st.sdcode=sd.sdcode
-where k.kincode=#{kincode};
+select stcode,stname,stx,sty from station;
 </select>
 <!-- 정거장수정 -->
 <update id="station_update_sdcode">

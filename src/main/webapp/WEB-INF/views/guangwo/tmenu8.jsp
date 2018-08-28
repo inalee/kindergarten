@@ -113,22 +113,48 @@ function delete_car(val) {
 						
 						<div class="form-group">
 							<label>연료종류</label>
-							<input type="" class="form-control" name="oilname" placeholder="ex)휘발류" required>
+							<select class="time" id="starttime" name="oilname" >
+							<option value="">전체</option>
+		          		<option value="휘발류">휘발류</option>
+		          		<option value="고급휘발류">고급휘발류</option>
+		          		<option value="경유">경유</option>
+		          		<option value="가솔린">가솔린</option>
+		          		<option value="디젤">디젤</option>
+		          		<option value="전기">전기</option>
+		          	</select>
 						</div>		
 						
 						<div class="form-group">
 							<label>차종명</label>
-							<input type="text" class="form-control" name="vtlname" placeholder="ex)중형25인승" required>
+							<select class="time" id="starttime" name="vtlname1" >
+		          		<option value="">전체</option>
+		          		<option value="소형">소형</option>
+		          		<option value="중형">중형</option>
+		          		<option value="대형">대형</option>
+		          		
+		          	</select>
+							<input type="text" class="form-control" name="vtlname2" placeholder="ex)중형25인승" required>
 						</div>
 						
 						<div class="form-group">
 							<label>제조사명</label>
-							<input type="text" class="form-control" name="faname" placeholder="ex)기아" required>
+							<select class="time" id="starttime" name="faname" >
+		          		<option value="">전체</option>
+		          		<option value="기아">기아</option>
+		          		<option value="현대">현대</option>
+		          		<option value="쌍룡">쌍룡</option>
+		          		<option value="르노삼성">르노삼성</option>
+		          		<option value="대창모터스">대창모터스</option>
+		          	</select>
 						</div>
 						
 						<div class="form-group">
 							<label>연식</label>
-							<input type="text" class="form-control" name="fayear" placeholder="ex)2018" required>
+								<select class="time" id="starttime" name="fayear1" >
+		          	<c:forEach begin="1988" end="2100" var="i">
+		          		<option value="${i}">${i}년식</option>
+		          	</c:forEach>
+		          	</select>
 						</div>		
 							
 					</div>

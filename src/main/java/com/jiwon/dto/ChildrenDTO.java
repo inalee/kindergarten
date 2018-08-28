@@ -4,7 +4,9 @@ public class ChildrenDTO {
 
 	String cname;
 	String kinname;
+	int kincode;
 	String clname;
+	int clcode;
 	int ccode;
 	int cage;
 	String cidnum;
@@ -17,6 +19,18 @@ public class ChildrenDTO {
 	String memphone;
 
 	
+	public int getKincode() {
+		return kincode;
+	}
+	public void setKincode(int kincode) {
+		this.kincode = kincode;
+	}
+	public int getClcode() {
+		return clcode;
+	}
+	public void setClcode(int clcode) {
+		this.clcode = clcode;
+	}
 	public int getMemage() {
 		return memage;
 	}

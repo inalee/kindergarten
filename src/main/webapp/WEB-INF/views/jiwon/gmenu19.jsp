@@ -113,6 +113,7 @@ li { list-style : none;}
 
 </style>
 <body>
+<c:url var="video" value="resources/images/video.gif"></c:url>
 <script>
 var reVideo = new Array();
 var baVideo = new Array();
@@ -141,6 +142,7 @@ var popVideo = new Array();
 	}
 	function openTab(ccode) {
 		//alert(ccode);
+		$(".beforeOpen").hide();
 		$("#ul_freqCh").empty();
 		$("#ul_recent").empty();	
 		$("#ul_base").empty();
@@ -257,6 +259,9 @@ var popVideo = new Array();
 		})	
 		
 	}
+	$(function(){
+		$(".beforeOpen").append("<img width='100%' src='${video}'/>");
+	})
 </script>
 
 	<div class="gmenu19" style="width:98%; margin:0px auto">
@@ -266,6 +271,7 @@ var popVideo = new Array();
 		  	 <button id ="tab_${i.ccode}"class="tablinks" onclick="openTab(${i.ccode})">${i.cname}</button>
 		  </c:forEach>
 		</div>
+		<div class="beforeOpen"></div>
 		<div class="tabcontent">
 			<div id="search_box">
 			</div>

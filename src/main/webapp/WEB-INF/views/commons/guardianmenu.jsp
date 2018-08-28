@@ -82,7 +82,6 @@ $(function(){
 	       <a href="#">어린이집 정보</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/hojung/search_keyword_gmenu">어린이집 찾기</a></li>
-	         <li><a href="/kinder/hojung/gmenu15">어린이집 후기</a></li>
 	         <li><a href="/kinder/ina/safety_gmenu">어린이집 안전정보</a></li>
 	       </ul>
 	     </li>
@@ -98,7 +97,7 @@ $(function(){
 	       <a href="#">키즈카페</a>
 	       <ul class="sub-menu">
 	         <li><a href="/kinder/hojung/kidscafe_gmenu">키즈카페 예약</a></li>
-	         <li><a href="/kinder/hojung/gmenu17">나의 예약 내역</a></li>
+	         <li><a href="/kinder/hojung/my_res_gmenu">나의 예약 내역</a></li>
 	       </ul>
 	      </li>
 	   </ul>

@@ -61,7 +61,7 @@
   from kidscafe kc, cfres_summary cs
   where kc.cfcode=cs.cfcode and kc.cfname like CONCAT('%',#{cfname},'%')
   and cs.cfresdate=#{cfresdate}
-  and kc.numperhour-cs.sum_cfresnum < #{cfresnum}]]>
+  and kc.numperhour-cs.cfresnum < #{cfresnum}]]>
   <if test="sigungucode != 0">
 	and kc.sigungucode=#{sigungucode}
   </if>
@@ -80,6 +80,35 @@
   <select id="selectResSum" resultType="com.hojung.domain.KidscafesumCri">
   select * from cfres_summary where cfcode=#{cfcode} and cfresdate=#{cfresdate}
   </select>
+  
+  <!-- 키즈카페 예약 -->
+  
+  
+  <!-- 보호자 정보 가져오기 -->
+  <select id="selectGuardian" resultType="com.kinder.domain.GuardianVO">
+  select g.gcode, g.memid, g.grelation from member m, guardian g where m.memid=g.memid and m.memid=#{memid};
+  </select>
+  
+  <!-- 나의 예약 내역 -->
+  <select id="selectMyRes" resultType="com.hojung.domain.MyresVO">
+  select cr.cfrescode, cr.confirtime, kc.cfimg, kc.cfname, kc.address, cr.cfresdate, cr.adultsnum, cr.kidsnum
+  from cafe_reservation cr, kidscafe kc
+  where cr.cfcode=kc.cfcode and gcode=#{gcode}
+  order by cr.confirtime desc
+  </select>
+  
+  <!-- 나의 예약 내역 시간 -->
+  <select id="selectMyRestime" resultType="int">
+  select cfrestime from cafe_restime where cfrescode=#{cfrescode} order by cfrescode
+  </select>
+  
+  <!-- 예약내역 취소 -->
+  <delete id="deleteCr">
+  delete from cafe_reservation where cfrescode=#{cfrescode}
+  </delete>
+  <delete id="deleteCrt">
+  delete from cafe_restime where cfrescode=#{cfrescode}
+  </delete>
 
 
   </mapper>

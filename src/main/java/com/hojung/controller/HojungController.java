@@ -259,7 +259,7 @@ public class HojungController {
 		cri.setCfrestime_lists(cfrestime_lists);
 		System.out.println("================="+cri);
 		
-		rttr.addFlashAttribute("msg", "success");
+		rttr.addFlashAttribute("msg_res", "success");
 
 		return "redirect:my_res_gmenu";
 	}
@@ -297,7 +297,7 @@ public class HojungController {
 		
 		kcservice.deleteMyRes(cfrescode);
 		
-		rttr.addFlashAttribute("msg", "success");
+		rttr.addFlashAttribute("msg_del", "success");
 		
 		return "redirect:my_res_gmenu";
 	}

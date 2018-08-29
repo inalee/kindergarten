@@ -28,6 +28,7 @@ table th, td{
 	border-left : hidden;
 }
 table th{
+	height : 50px;
 	background-color: #EBF7FF;
 	padding : 5px;
 	font-size : 18px;
@@ -510,7 +511,7 @@ function drawCalendar(){
 				<ul style="margin-top:10px">
 				<li>
 					<table width=100%;>
-						<tr><th >이름 </th><th colspan="2">상태</th><th>학생정보</th></tr>
+						<tr><th>이름 </th><th colspan="2">상태</th><th>학생정보</th></tr>
 						<c:forEach items="${children}" var="i">
 							<c:if test="${i.atstate == 0}">
 <%-- 								<tr><td class="tds" width="15%">${i.cname}</td><td width="15%" id="atText_${i.ccode}"  class="tds">미출석</td><td width="50%" id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button><button class="etc" value="${i.ccode}">기타</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr> --%>

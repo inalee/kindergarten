@@ -44,7 +44,7 @@ body #bgimg .image-top {
 #bgimg{
 	background-image: url('resources/images/cute4.gif');
 	text-align: center;
-	        font-family: 'Jeju Gothic', sans-serif;	
+/* 	        font-family: 'Jeju Gothic', sans-serif;	 */
 }
 
 #contains{
@@ -52,17 +52,70 @@ body #bgimg .image-top {
 	position: relative;
 width: 80%;
 height: 80%;
-opacity: 0.2;
-background-color: black;
-margin-top: -200px;
+margin-top:300px;
 color: black;
+}
+
+h4 {
+  height: 100px;
+}
+
+h4 span {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  animation: bounce .3s ease infinite alternate;
+/*   font-family: 'Titan One', cursive; */
+  font-size: 60px;
+  color: #FFF;
+  text-shadow: 0 1px 0 #CCC,
+               0 2px 0 #CCC,
+               0 3px 0 #CCC,
+               0 4px 0 #CCC,
+               0 5px 0 #CCC,
+               0 6px 0 transparent,
+               0 7px 0 transparent,
+               0 8px 0 transparent,
+               0 9px 0 transparent,
+               0 10px 10px rgba(0, 0, 0, .4);
+}
+
+h4 span:nth-child(2) { animation-delay: .1s; }
+h4 span:nth-child(3) { animation-delay: .2s; }
+h4 span:nth-child(4) { animation-delay: .3s; }
+h4 span:nth-child(5) { animation-delay: .4s; }
+h4 span:nth-child(6) { animation-delay: .5s; }
+h4 span:nth-child(7) { animation-delay: .6s; }
+h4 span:nth-child(8) { animation-delay: .7s; }
+
+@keyframes bounce {
+  100% {
+    top: -20px;
+    text-shadow: 0 1px 0 #CCC,
+                 0 2px 0 #CCC,
+                 0 3px 0 #CCC,
+                 0 4px 0 #CCC,
+                 0 5px 0 #CCC,
+                 0 6px 0 #CCC,
+                 0 7px 0 #CCC,
+                 0 8px 0 #CCC,
+                 0 9px 0 #CCC,
+                 0 50px 25px rgba(0, 0, 0, .2);
+        }
 }
 
 </style>
 <body>
 <div id="bgimg">
 <div id="contains">
-<h1 style="margin: 300px;">행복과 웃음이 가득한 Kindergarten 입니다♥</h1>
+<h4>
+  <span>행복과</span>
+  <span>웃음이</span>
+  <span>가득한</span>
+  <span>Kindergarten</span>
+  <span>입니다</span>
+  <span>♥</span>
+</h4>
 </div>
 </div>
 </body>

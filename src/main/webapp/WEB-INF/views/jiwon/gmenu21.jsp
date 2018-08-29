@@ -115,7 +115,7 @@ $(".undefinedCl").on("click",function(){
 			<c:forEach items="${children}" var="i">
 				<li>
 					<c:if test="${i.kincode eq 0 }">
-						<a href="javascript:undefinedKin(${i.ccode})" id="ch_${i.ccode}">${i.cname} <b>유치원미등록</b></a>
+						<a href="#ch_${i.ccode}" id="chi_${i.ccode}">${i.cname} <b>유치원미등록</b></a>
 					</c:if>
 					<c:if test="${i.clcode eq 1 and i.kincode ne 0}">
 						<a href="#ch_${i.ccode}" id="chi_${i.ccode}">${i.cname} <b> 반미등록 </b></a>

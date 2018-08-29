@@ -213,6 +213,14 @@ public class HojungController {
 		return "/kidscafe_reservation";
 	}
 	
+	/* 달력 날짜 변경시 시간별 예약인원 수 재반영 */
+	@RequestMapping("/change_date")
+	public @ResponseBody HashMap<Integer, Integer> ressumUpdate(KidscafesumCri cri) throws Exception {
+		// cfres_summary 정보 불러오기
+		System.out.println("====================="+cri);
+		return kcservice.selectResSum(cri);//hashmap으로 리턴
+	}
+	
 	
 	/* 키즈카페 예약  */
 	@RequestMapping(value = "/kidscaferes", method = RequestMethod.POST)

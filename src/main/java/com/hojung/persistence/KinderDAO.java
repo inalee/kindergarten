@@ -15,16 +15,5 @@ public interface KinderDAO {
 	public List<KindergartenVO> selectKinders_map(KinsearchCri cri) throws Exception;
 	
 	public GuardianVO selectGuardian(String memid) throws Exception;
-	
-//	public void insertMember(MemberVO vo);
-//	
-//	public MemberVO readMember(String userid) throws Exception;
-//	
-//	public MemberVO readWithPW(String userid, String userpw) throws Exception;
-//	
-//	
-//	
-//	public void removeMember(String userid);
-//	
-//	public void modifyMember(MemberVO vo);
+
 }

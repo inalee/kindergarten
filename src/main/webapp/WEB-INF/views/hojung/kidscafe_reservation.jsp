@@ -199,7 +199,8 @@ function drawCalendar(date){
 	function selectDate(day){
 		
 		var select = document.getElementById(day);
-		if(!selectedDate || selectedDate != select) {
+		
+		if(!selectedDateId || selectedDateId != day) { // selected된 값이 없거나 바꼈을 때
 			//이전 선택 날짜 css 초기화
 			if(selectedDate!=null) {
 				selectedDate.style.backgroundColor="#ffffff";
@@ -212,6 +213,15 @@ function drawCalendar(date){
 			
 			document.getElementById("res_date").value=day;
 			document.getElementById("hidden_res_date").value=day;
+			
+		} else { // 달력만 바뀌고 selected된 값은 그대로일 때
+			if(select!=null) {
+				select.style.backgroundColor="#95d5ff";
+				select.style.color="#ffffff";
+				selectedDateId = day;
+				selectedDate = select;
+			}
+			
 		}
 		
 	}

@@ -108,7 +108,7 @@ public class JiwonController {
 		 }
 		 String[] queries = query.split(" ");
 		 query = String.join("%20", queries);
-		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=rating",
+		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video",
 				   clientId, query); // json 결과
 		 StringBuffer sb= apiservice.youtubeService(apiURL);
 		 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
@@ -295,7 +295,7 @@ public class JiwonController {
 		int kincode = tvo.getKincode();
 		List<ChildrenVO> child = dao.getKinderMember(kincode);
 		List<Document> list = MongoAttendCheck.findKinderAttend(kincode, today);
-		session.setAttribute("classinfo", dao.getClassList(kincode));
+		model.addAttribute("classinfo", dao.getClassList(kincode));
 
 		int[] state = {0, 0, 0, 0, 0, 0};
 		
@@ -389,9 +389,10 @@ public class JiwonController {
 				ad.add(new AttendDTO(vo.getCcode(), vo.getCname(), Integer.parseInt(r.getParameter("clcode")), 0));
 			}
 		}
-		
+		TeacherVO tvo = (TeacherVO) session.getAttribute("teacher");
+		model.addAttribute("classinfo", dao.getClassList(tvo.getKincode()));
 		model.addAttribute("children", ad);
-		
+
 		return "/tmenu5";
 	}
 	@RequestMapping(value = "/addAttend", method = RequestMethod.POST)

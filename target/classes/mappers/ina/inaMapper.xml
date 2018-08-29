@@ -111,11 +111,9 @@ and s.statcode=e.statcode and g.gcode=c.gcode and g.gcode=#{gcode} and (e.statco
 SELECT @RNUM := @RNUM + 1 AS ROWNUM, encode,cname,crank,enlog
 FROM
 (SELECT e.encode,c.cname,c.crank,e.enlog
-FROM
-enroll e,children c,kindergarten k where e.ccode=c.ccode and e.kincode=k.kincode and (e.statcode<5 or e.statcode=8) and  k.kincode=#{kincode} order by crank desc,enlog
-) t,
-( SELECT @RNUM := 0 ) R
-
+FROM enroll e,children c,kindergarten k where e.ccode=c.ccode 
+and e.kincode=k.kincode and (e.statcode<5 or e.statcode=8) and  k.kincode=#{kincode} order by crank desc,enlog
+) t,( SELECT @RNUM := 0 ) R
 ]]>
 </select>
 

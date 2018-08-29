@@ -41,36 +41,5 @@ public class KinderDAOImpl implements KinderDAO {
 	public GuardianVO selectGuardian(String memid) throws Exception {
 		return (GuardianVO) sqlSession.selectOne(namespace+".selectGuardian", memid);
 	}
-
-//	@Override
-//	public void insertMember(MemberVO vo) {
-//		sqlSession.insert(namespace+".insertMember", vo);
-//	}
-//
-//	@Override
-//	public MemberVO readMember(String userid) throws Exception {
-//		return (MemberVO)sqlSession.selectOne(namespace+".selectMember", userid);
-//	}
-//
-//	@Override
-//	public MemberVO readWithPW(String userid, String userpw) throws Exception {
-//		Map<String, Object> paramMap = new HashMap<String, Object>();
-//		
-//		paramMap.put("userid", userid);
-//		paramMap.put("userpw", userpw);
-//		return sqlSession.selectOne(namespace+".readWithPW", paramMap);
-//	}
-//
-//	
-//
-//	@Override
-//	public void removeMember(String userid) {
-//		sqlSession.delete(namespace+".removeMember", userid);
-//	}
-//
-//	@Override
-//	public void modifyMember(MemberVO vo) {
-//		sqlSession.update(namespace+".modifyMember", vo);
-//	}
 	
 }

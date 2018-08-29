@@ -246,8 +246,8 @@ $(function(){
   <button class="w3-bar-item w3-button tablink" id="id6" onclick="openStep(event, 'step6', 'id6')" disabled="disabled">6. 주변 관광지 찾기</button>
   <button class="w3-bar-item w3-button tablink" id="id7" onclick="openStep(event, 'step7', 'id7')" disabled="disabled">7. 체험학습 준비물 체크</button>
   <button class="w3-bar-item w3-button tablink" id="id8" onclick="openStep(event, 'step8', 'id8')" disabled="disabled">8. 원장님 승인 받기</button>
-  <button class="w3-bar-item w3-button tablink" id="id9" onclick="openStep(event, 'step9', 'id9')" disabled="disabled">9. 체험학습 동의서 작성</button>
-  <button class="w3-bar-item w3-button tablink" id="id10" onclick="openStep(event, 'step10', 'id10')" disabled="disabled">10. 일정 등록</button>
+<!--   <button class="w3-bar-item w3-button tablink" id="id9" onclick="openStep(event, 'step9', 'id9')" disabled="disabled">9. 체험학습 동의서 작성</button> -->
+<!--   <button class="w3-bar-item w3-button tablink" id="id10" onclick="openStep(event, 'step10', 'id10')" disabled="disabled">10. 일정 등록</button> -->
   <button class="w3-bar-item w3-button tablink" onclick="openStep(event, 'step11')">완료!</button>
   </div>
 
@@ -300,8 +300,8 @@ $(function() {
 						}
 				}
 			}
-			}
-		})
+		}
+	})
 })
 
 // 1. 체험학습 분류 - 몽고DB에 저장된 program-category catesub 불러오기
@@ -401,10 +401,12 @@ $(function() {
   			success: function(data) {
   				$("#class").empty()
   				$("#class").append("<option>"+"---반선택---"+"</option>")
-  				$.each(data, function(index, item) {
-  					if(item.clname == ""){
-  						alert('아직 선생님 담당 학급이 없습니다.')
-  					}else{
+  				
+  				if(data == ""){
+  					alert('아직 선생님 담당 학급이 없습니다. 반을 등록하시거나 원장님께 문의 바랍니다.')
+//   					location.href ="/kinder/ina/manage2";
+  				}else{
+  					$.each(data, function(index, item) {
   						$("#class").append("<option>"+item.clname+"</option>")
   	  					$("#person").append("<option>"+"--반선택 시 자동 입력--"+"</option>")
   						$("#class").change(function() {
@@ -416,10 +418,8 @@ $(function() {
   	  		  					$("#person").append("<option>"+"--반선택 시 자동 입력--"+"</option>")	
   	  		  				}
   						})
-  					}
-  					
-  					
-				})	
+				})
+  			}
 			}
   		})
   	})
@@ -511,19 +511,19 @@ $(function() {
 								$("#uldata").empty();
 								
 								for(var i=0; i < data.length; i++){
-									$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 600px; float: left; padding: 0.5%; border-radius: 4px'>"
-									+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
-									+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
-									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
-									+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+", "+i+")'>"
-									+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
-									+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
-									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
-									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
-									+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
-//		 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
-									+ "</table>")
-									$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "-" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "-" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
+									$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 450px; float: left; padding: 0.5%; border-radius: 4px'>"
+											+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
+											+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
+											+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
+											+ "<td><button class='btlikes' id='btlikes"+i+"' type='button' data-id= '1' onclick='toggle_bt(likes"+i+", "+i+")'>"
+											+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
+											+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
+											+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
+											+ "<tr style='display:none;'><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+											+ "<tr style='display:none;'><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+//				 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
+											+ "</table>")
+											$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
 
 										}
 									}
@@ -572,7 +572,7 @@ $(function() {
 							$("#uldata").empty();
 							
 							for(var i=0; i < data.length; i++){
-								$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 600px; float: left; padding: 0.5%; border-radius: 4px'>"
+								$("#uldata").append("<table id ='table"+i+"' frame='void' border='1' border-style='solid' border-width='3px' style='width:33%; height: 450px; float: left; padding: 0.5%; border-radius: 4px'>"
 								+ "<tr><td id='title"+i+"' colspan='2' style='font-weight: bold; font-size: 17px; background-color: #ffeb3b;'>"+data[i].title+"</td></tr>"
 								+ "<tr><td colspan='2' style='font-weight: bold;'><img src="+data[i].thumbnail_url+"></td></tr>"
 								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>관심등록</td>"
@@ -580,8 +580,8 @@ $(function() {
 								+ "<img src='${images}yebin-click-before.jpg' id='likes"+i+"'></button></td></tr>"
 								+ "<tr><td style='font-weight: bold; width: 20%; background-color: lightgray;'>웹사이트</td><td><a id='web"+i+"' href='"+data[i].website+"' target='_blank' style='color: blue'>홈페이지 방문하기</a></td></tr>"
 								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>주소</td><td id='address"+i+"' >"+(data[i].address == "" ? "-" : data[i].address) +"</td></tr>"
-								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
-								+ "<tr><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
+								+ "<tr style='display:none;'><td style='font-weight: bold; background-color: lightgray;'>모집기간</td><td id='apply"+i+"'>"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"</td></tr>"
+								+ "<tr style='display:none;'><td style='font-weight: bold; background-color: lightgray;'>운영기간</td><td id='do"+i+"'>"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"</td></tr>"
 //	 							+ "<tr><td style='font-weight: bold; background-color: lightgray;'>모집정원</td><td>"+(data[i].apply_count == "" ? "-" : data[i].apply_count)+"</td></tr>"
 								+ "</table>")
 								$("#uldata").append("<a id='json"+i+"' style='display:none;'>{'title' : '"+data[i].title+"', 'website' : '"+data[i].website+"', 'address' : '"+data[i].address+"', 'apply' : '"+(data[i].apply_date_start == "" ? "제한없음" : (data[i].apply_date_start + "~" + data[i].apply_date_end))+"', 'do' : '"+(data[i].do_date_start == "" ? "제한없음" : (data[i].do_date_start + "~" + data[i].do_date_end))+"'}</a>")	
@@ -614,6 +614,8 @@ $(function() {
 // 			alert(test)
 //	 				tableTags.splice(tableTags.indexOf($(tableid).text()+"★"));
 	
+	
+	//관심등록 표시를 위한 토글버튼
 	var j = 0;
 	function toggle_bt(img_id, num) {
 		var obj = img_id;
@@ -630,7 +632,6 @@ $(function() {
 			obj.src = "${images}yebin-click-after.jpg";
 			posts.push($(getTitle).text());
 			tableTags.push($(jsonid).text());
-// 			alert(tableTags);
 			$(idForJq).data('id', 0); 
 			j = 0;
 			
@@ -640,7 +641,6 @@ $(function() {
 				posts.splice(posts.indexOf($(getTitle).text()),1);
 				tableTags.splice(tableTags.indexOf($(jsonid).text()), 1);
 				$(idForJq).data('id', 1); 
-// 				alert(tableTags)	
 			}
 				
 			}
@@ -688,13 +688,10 @@ $(function() {
 			$(function() {
 				openStep(event, 'step5', 'id5');
 				$('#id5').attr('disabled', false);
-			})
-			
-			
-// 		  alert(tableTags)
-		  
+			})  
 		  tableTags.push("{'noData' : 'noData'}");
 		  
+			// 4. 체험학습 후보지 저장 - 키워드 controller로 전송
 			jQuery.ajaxSettings.traditional = true;
 			$.ajax({
 				url : '/kinder/postSaveList',
@@ -746,11 +743,6 @@ $('#selection').on('click', function() {
 function searchAbtIt(buttonId, keywordId, trId, num) {
 	var btid = buttonId;
 	var keyid = keywordId;
-	
-	
-	
-// 	alert($(btid).attr('id'));
-// 	alert($(keyid).text());
 	
 	$.ajax({
 		url: '/kinder/getSearch',

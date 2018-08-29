@@ -43,16 +43,16 @@ $(function(){
 	    }
 	};
 	
-	//예약날짜 달력 생성
+	//예약날짜 달력 생성 및 date value 반영
 	drawCalendar(getParameters('cfresdate'));
 	
-	//date value 반영
-	selectDate(getParameters('cfresdate'));
-	
 	//time value 반영
-	selectTime(getParameters('starttime'));
-	if(getParameters('starttime')!=getParameters('endtime')-1) {
-		selectTime(getParameters('endtime')-1);
+	if(getParameters('starttime')!=null && getParameters('starttime')!='') {
+		
+		selectTime(getParameters('starttime'));
+		if(getParameters('starttime')!=getParameters('endtime')-1) {
+			selectTime(getParameters('endtime')-1);
+		}
 	}
 	
 	//인원수 반영
@@ -63,8 +63,8 @@ $(function(){
 
 
 function drawCalendar(date){
-	var d = new Date();
-// 	var d = new Date(Date.parse(date));
+	var today = new Date();
+	var d = new Date(Date.parse(date));
 	var thisMonth = d.getMonth()+1;
 	if(thisMonth <10) thisMonth = "0" + thisMonth;
 	var atmonth = d.getFullYear() + "." + thisMonth;
@@ -84,14 +84,25 @@ function drawCalendar(date){
 		} else {
 			day = (i+1)
 		}
-		if((i+1)<d.getDate()) {
+		if(d.getFullYear()<today.getFullYear()) {
 			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+d.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
+		} else if (d.getFullYear()>today.getFullYear()) {
+			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+d.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
 		} else {
-			$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+d.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);'>"+(i+1)+"</span></li>");
+			if(thisMonth<today.getMonth()+1) {
+				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+d.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
+			} else if(thisMonth>today.getMonth()+1) {
+				$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+d.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");				
+			} else {
+				if ((i+1)<today.getDate()) {
+					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='n' id="+d.getFullYear()+"-"+thisMonth+"-"+day+">"+(i+1)+"</span></li>");
+				} else {
+					$(".calendar #date").append("<li id=day_"+(i+1)+"><span class='d' id="+d.getFullYear()+"-"+thisMonth+"-"+day+" onclick='selectDate(this.id);');\">"+(i+1)+"</span></li>");
+				}
+			}
 		}
-
 	}
-
+	selectDate(date);
 }
 	function drawPrevCalendar(){
 		var today = new Date();
@@ -188,7 +199,8 @@ function drawCalendar(date){
 	function selectDate(day){
 		
 		var select = document.getElementById(day);
-		if(!selectedDate || selectedDate != select) {
+		
+		if(!selectedDateId || selectedDateId != day) { // selected된 값이 없거나 바꼈을 때
 			//이전 선택 날짜 css 초기화
 			if(selectedDate!=null) {
 				selectedDate.style.backgroundColor="#ffffff";
@@ -201,6 +213,15 @@ function drawCalendar(date){
 			
 			document.getElementById("res_date").value=day;
 			document.getElementById("hidden_res_date").value=day;
+			
+		} else { // 달력만 바뀌고 selected된 값은 그대로일 때
+			if(select!=null) {
+				select.style.backgroundColor="#95d5ff";
+				select.style.color="#ffffff";
+				selectedDateId = day;
+				selectedDate = select;
+			}
+			
 		}
 		
 	}
@@ -424,16 +445,16 @@ function drawCalendar(date){
 			<li style="padding: 10px 10px;"><span style="white-space:pre-wrap;">${hm.description}</span>
 				<c:if test="${hm.description==null || hm.description==''}">-</c:if>
 			</li>
-			<hr>
-			<li><span class="li_detail">찾아가는 길</span></li>
-			<li>지도</li>
-			<li>주변 지하철역</li>
-			<li>주변 버스정류장</li>
-			<hr>
-			<li><span class="li_detail">블로그·카페 리뷰</span></li>
-			<li>리뷰</li>
-			<li>리뷰</li>
-			<li>리뷰</li>
+<!-- 			<hr> -->
+<!-- 			<li><span class="li_detail">찾아가는 길</span></li> -->
+<!-- 			<li>지도</li> -->
+<!-- 			<li>주변 지하철역</li> -->
+<!-- 			<li>주변 버스정류장</li> -->
+<!-- 			<hr> -->
+<!-- 			<li><span class="li_detail">블로그·카페 리뷰</span></li> -->
+<!-- 			<li>리뷰</li> -->
+<!-- 			<li>리뷰</li> -->
+<!-- 			<li>리뷰</li> -->
 		</ul>
 
 	</div>

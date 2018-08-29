@@ -103,16 +103,17 @@ h4{
 	var ps = new daum.maps.services.Places();
 	var geocoder = new daum.maps.services.Geocoder();
 	
-	var keyword = "${keyword}";
-// 	  	alert(keyword);
-		var x;
-		var y;
+// 	var keyword = "${keyword}";
+	var keyword = "국립중앙박물관";
+	console.log(keyword)
+	var x;
+	var y;
 
 		
 
 
 	//받은 주소로 지도 검색
-		geocoder.addressSearch(keyword, function(result, status) {
+		geocoder.addressSearch("서울시 용산구 서빙고로 137", function(result, status) {
 			
 		
 
@@ -143,7 +144,7 @@ h4{
 								});
 								
 								// 키워드로 장소를 검색합니다
-								ps.keywordSearch(keyword +' 관광', placesSearchCB);
+								ps.keywordSearch('용산구' +' 관광', placesSearchCB);
 
 								// 키워드 검색 완료 시 호출되는 콜백함수 입니다
 								

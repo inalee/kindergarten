@@ -14,9 +14,7 @@ public class JsonParse {
 
 		JSONParser jsParser = new JSONParser();
 		JSONObject jsObj = new JSONObject();
-		String tempStr = null;
 
-		System.out.println("왜 짤리는가?"+ arrays[0]);
 		// 타이틀로 키&값을 찾을 수 있는 맵
 		Map<String, Map<String, Object>> completeMap = new HashMap<>();
 
@@ -32,10 +30,8 @@ public class JsonParse {
 			}else if (arrays[i].contains("'")) {
 				arrays[i] = arrays[i].replaceAll("'", "\"");
 			}
-			System.out.println("왜 짤리는가?"+ arrays[i]);
 			try {
 				jsObj = (JSONObject) jsParser.parse(arrays[i]);
-				System.out.println("왜 짤리는가?"+jsObj.toString());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}

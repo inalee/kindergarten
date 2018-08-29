@@ -113,10 +113,13 @@ public class HojungController {
 		
 		cri.setSigungucode(Integer.parseInt(request.getParameter("sigungucode")));
 		cri.setCfname(request.getParameter("cfname"));
-		/*string to date 수정!!!!*/
-//		java.util.Date date = (java.util.Date) new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("cfresdate")); //string to date
-//		System.out.println("================="+date);
-		cri.setCfresdate(request.getParameter("cfresdate"));
+		
+		cri.setCfresdatestr(request.getParameter("cfresdate"));
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = request.getParameter("cfresdate");
+		java.util.Date cfresdate = transFormat.parse(date);
+		cri.setCfresdate(cfresdate);
+		
 		for (int i = Integer.parseInt(request.getParameter("starttime")); i < Integer.parseInt(request.getParameter("endtime")); i++) {
 			cfrestime_lists[index]=i;
 			index++;
@@ -210,6 +213,14 @@ public class HojungController {
 		return "/kidscafe_reservation";
 	}
 	
+	/* 달력 날짜 변경시 시간별 예약인원 수 재반영 */
+	@RequestMapping("/change_date")
+	public @ResponseBody HashMap<Integer, Integer> ressumUpdate(KidscafesumCri cri) throws Exception {
+		// cfres_summary 정보 불러오기
+		System.out.println("====================="+cri);
+		return kcservice.selectResSum(cri);//hashmap으로 리턴
+	}
+	
 	
 	/* 키즈카페 예약  */
 	@RequestMapping(value = "/kidscaferes", method = RequestMethod.POST)
@@ -223,24 +234,12 @@ public class HojungController {
 		
 		cri.setCfcode(Integer.parseInt(request.getParameter("cfcode")));
 		cri.setGcode(gvo.getGcode());
-		System.out.println("================="+request.getParameter("hidden_res_date"));
 		
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = request.getParameter("hidden_res_date");
+		java.util.Date res_date = transFormat.parse(date);
+		cri.setCfresdate(res_date);
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd");
-		String cfresdate = request.getParameter("hidden_res_date");
-		java.util.Date date = null;
-
-        try {
-
-            date = (Date) formatter.parse(cfresdate);
-            System.out.println(date);
-            System.out.println(formatter.format(date));
-
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
-		cri.setCfresdate(date);
 		cri.setAdultsnum(Integer.parseInt(request.getParameter("adults")));
 		cri.setKidsnum(Integer.parseInt(request.getParameter("kids")));
 		
@@ -250,7 +249,6 @@ public class HojungController {
 		
 		int [] cfrestime_lists = new int[endtime-starttime+1];
 		int index = 0;
-		
 		for (int i = starttime; i < endtime+1; i++) {
 			cfrestime_lists[index]=i;
 			index++;
@@ -258,6 +256,8 @@ public class HojungController {
 		
 		cri.setCfrestime_lists(cfrestime_lists);
 		System.out.println("================="+cri);
+		
+		kcservice.kidscafeRes(cri);
 		
 		rttr.addFlashAttribute("msg_res", "success");
 

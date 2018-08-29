@@ -1,6 +1,5 @@
 package com.hojung.persistence;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscaferesCri;
+import com.hojung.domain.KidscaferestimeCri;
 import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.MyresVO;
@@ -55,6 +56,17 @@ public class KidscafeDAOImpl implements KidscafeDAO {
 	public void deleteMyRes(int cfrescode) throws Exception {
 		sqlSession.delete(namespace+".deleteCrt",cfrescode);
 		sqlSession.delete(namespace+".deleteCr",cfrescode);
+	}
+
+	@Override
+	public int kidscafeRes(KidscaferesCri cri) throws Exception {
+		sqlSession.insert(namespace+".kidscafeRes",cri);
+		return sqlSession.selectOne(namespace+".selectCfrescode");
+	}
+
+	@Override
+	public void kidscafeResTime(KidscaferestimeCri cri) throws Exception {
+		sqlSession.insert(namespace+".kidscafeResTime",cri);
 	}
 	
 }

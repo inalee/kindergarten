@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -57,6 +58,7 @@ public class JiwonController {
 	int month = c.get(Calendar.MONTH)+1 ;
 	String today = c.get(Calendar.YEAR) + "-" + month + "-" + c.get(Calendar.DATE);
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	String late = today + "T10:30:00Z";
 	
 	@Inject JChildrenDAO dao;
 	@Inject JapiService apiservice;
@@ -87,7 +89,7 @@ public class JiwonController {
 		 query = query.equals("") ? "어린이" : query;
 		 String[] queries = query.split(" ");
 		 query = String.join("%20", queries);
-		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&order=rating&d_catg=320040010",
+		 String apiURL = String.format("https://www.googleapis.com/youtube/v3/search?key=%s&part=snippet&q=%s&maxResults=4&safeSearch=strict&type=video&d_catg=320040010",
 				   clientId, query); // json 결과
 		 StringBuffer sb= apiservice.youtubeService(apiURL);
 		 return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
@@ -99,7 +101,7 @@ public class JiwonController {
 		 
 		 String clientId = "AIzaSyD3VvQ9ybvDJAvsYm6pIsjZhrJ9qdDqpME";//애플리케이션 클라이언트 아이디값";
 		 String query = dao.getKeyword(Integer.parseInt(r.getParameter("ccode")));
-		 System.out.println("Qeury : " + r.getParameter("ccode"));
+		 System.out.println("Qeury : " + r.getParameter("ccode") + query);
 		 if(Objects.isNull(query)) {
 			query = dao.getInterest(Integer.parseInt(r.getParameter("ccode")));
 			query = Objects.isNull(query)? "어린이" : query;
@@ -216,10 +218,31 @@ public class JiwonController {
 	 }
 	
 	@RequestMapping(value = "/gmenu21", method = RequestMethod.GET)
-	public void gmenu21(HttpSession session) throws Exception {
+	public void gmenu21(HttpSession session, HttpServletRequest r) throws Exception {
 		if(Objects.isNull(session.getAttribute("children"))) {
 			MemberVO vo = (MemberVO)session.getAttribute("glogin");
-			session.setAttribute("children", dao.getChildrenList(vo.getMemid()));
+			ArrayList<ChildrenDTO> chlist = (ArrayList<ChildrenDTO>)dao.getChildrenList(vo.getMemid());
+			List<Document> list = new ArrayList<>();
+			for(ChildrenDTO dto : chlist) {
+				System.out.println("CCODE : "+dto.getCcode());
+				list = MongoAttendCheck.findChildAt(dto.getCcode(), today);
+				for (Document document : list) {
+					if(document.get("state").equals("leave")) {
+						dto.setState(3);
+						break;
+					}else if(document.get("state").equals("attend")) {
+							if(((Date)document.get("date")).compareTo(format.parse(late)) > 0) {
+								dto.setState(2);
+							}else {
+								dto.setState(1);
+							}
+							break;
+					}else {
+						dto.setState(0);
+					}
+				}
+			}			
+			session.setAttribute("children", chlist);			
 		}
 	}
 	@RequestMapping(value = "/getChnGInfo", method = RequestMethod.GET)
@@ -227,10 +250,11 @@ public class JiwonController {
 		return dao.getChnGInfo(Integer.parseInt(r.getParameter("ccode")));
 	}
 	@RequestMapping(value = "/getChildAttendInfo", method = RequestMethod.GET)
-	public String getChildAttendInfo(HttpServletRequest r) throws Exception {
+	public @ResponseBody Map<String, Object> getChildAttendInfo(HttpServletRequest r) throws Exception {
 		//System.out.println(r.getParameter("ccode"));
-		String late = today + "T10:30:00Z";
-		r.setAttribute("chInfo", dao.getChildInfo(Integer.parseInt(r.getParameter("ccode"))));
+		Map<String, Object> map = new HashMap<>();
+		map.put("chInfo", dao.getChildInfo(Integer.parseInt(r.getParameter("ccode"))));
+		//r.setAttribute("chInfo", dao.getChildInfo(Integer.parseInt(r.getParameter("ccode"))));
 		List<Document> list = MongoAttendCheck.findChildAt(Integer.parseInt(r.getParameter("ccode")), today);
 		int k = -1;
 		String time;
@@ -239,27 +263,30 @@ public class JiwonController {
 			//System.out.println(document.get("date").toString().split(" ")[3]);
 			time = document.get("date").toString().split(" ")[3];
 			if(document.get("state").equals("leave")) {
-				r.setAttribute("state", "leave");
+				map.put("state", "leave");
 				dto.setAtetime(time);
 				k = 1;
 			}else if(document.get("state").equals("attend")) {
 				dto.setAtstime(time);
 				if(k==-1) {
 					if(((Date)document.get("date")).compareTo(format.parse(late)) > 0) {
-						r.setAttribute("state", "late");
+						map.put("state", "late");
 					}else {
-						r.setAttribute("state", "attend");
+						map.put("state", "attend");
 					}
 					k = 1;
 				}
 			}
 		}
 		if(k==-1) {
-			r.setAttribute("state", "absent");
+			map.put("state", "absent");
 		}
-		r.setAttribute("time", dto);
-		r.setAttribute("teacher", dao.getTeacherInfo(Integer.parseInt(r.getParameter("ccode"))));
-		return "/gmenu21";
+		//r.setAttribute("time", dto);
+		map.put("time", dto);
+		//r.setAttribute("teacher", dao.getTeacherInfo(Integer.parseInt(r.getParameter("ccode"))));
+		map.put("teacher", dao.getTeacherInfo(Integer.parseInt(r.getParameter("ccode"))));
+		map.put("kinInfo", dao.getKinderInfo(Integer.parseInt(r.getParameter("ccode"))));
+		return map;
 	}
 	@RequestMapping(value = "/tmenu5", method = RequestMethod.GET)
 	public void tmenu5(Model model, HttpSession session) throws Exception {
@@ -423,10 +450,10 @@ public class JiwonController {
 		return ac;
 	}
 	
-	@Scheduled(cron="0 00 18 * * *")
+	@Scheduled(cron="0 0 18 * * *")
 	public void checkTime() throws Exception {
-		//today = "2018-08-21";
-		String late = today + "T10:30:00Z";
+		//today = "2018-08-27";
+		
 
 		List<Integer> kl = dao.getKinderList();
 		List<ClassVO> cl = new ArrayList<>();

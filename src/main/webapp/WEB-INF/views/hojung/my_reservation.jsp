@@ -22,13 +22,31 @@
 	
 	var result = '${msg_del}';
 	if(result=='success'){
-		alert("취소되었습니다.");
+		alert("예약이 취소되었습니다.");
 	}
 	
-// 	var result = '${msg_res}';
-// 	if(result=='success'){
-// 		alert("예약 완료되었습니다.");
-// 	}
+	var result = '${msg_res}';
+	if(result=='success'){
+		alert("예약 완료되었습니다.");
+	}
+	
+	
+	// date 포맷 함수
+	function getFormatDate(date) {
+
+		var year = date.getFullYear(); //yyyy
+		var month = (1 + date.getMonth()); //M
+		month = month >= 10 ? month : '0' + month; // month 두자리로 저장
+		var day = date.getDate(); //d
+		day = day >= 10 ? day : '0' + day; //day 두자리로 저장
+		return year + '-' + month + '-' + day;
+	}
+	
+	function goCafeRes(cfcode) {
+		
+		var d = new Date();
+		location.href="cafereservation?sigungucode=0&cfname=&cfresdate="+getFormatDate(d)+"&starttime=&endtime=&adults=0&kids=0&cfcode="+cfcode;
+	}
 	
 </script>
 </head>
@@ -75,8 +93,8 @@
 				<tr>
 					<td>No.${res_list.cfrescode}</td>
 					<td><fmt:formatDate value="${res_list.confirtime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td onclick=""><img class="cfimg" src="${cfimg}"></td>
-					<td><span class="cfname">${res_list.cfname}</span><br>${res_list.address}</td>
+					<td onclick="goCafeRes(${res_list.cfcode});" title="${res_list.cfname}"><img class="cfimg" src="${cfimg}"></td>
+					<td onclick="goCafeRes(${res_list.cfcode});" title="${res_list.cfname}"><span class="cfname">${res_list.cfname}</span><br>${res_list.address}</td>
 					<td>${res_list.cfresdate}</td>
 					<td>${res_list.cfrestime_str}</td>
 					<td>성인 ${res_list.adultsnum}명<br>어린이 ${res_list.kidsnum}명</td>
@@ -104,28 +122,6 @@
 					</c:if>
 				</tr>
 			</c:forEach>
-<!-- 			<tr> -->
-<!-- 				<td>No.123</td> -->
-<!-- 				<td>2018-08-27 12:00:34</td> -->
-<!-- 				<td onclick=""><img class="cfimg" src="resources/images/noimage.gif"></td> -->
-<!-- 				<td><span class="cfname">카페이름</span><br>카페주소카페주소카페주소카페주소카페주소카페주소카페주소카페주소</td> -->
-<!-- 				<td>2018-08-27</td> -->
-<!-- 				<td>12:00 ~ 13:59</td> -->
-<!-- 				<td>성인 4명<br>어린이 3명</td> -->
-<!-- 				<td><button type="button" class="res_state" id="blue" disabled="disabled">예약완료</button></td> -->
-<!-- 				<td><button type="button" class="res_state" id="yellow">취소</button></td> -->
-<!-- 			</tr> -->
-<!-- 			<tr> -->
-<!-- 				<td>No.123</td> -->
-<!-- 				<td>2018-08-27 12:00:34</td> -->
-<!-- 				<td onclick=""><img class="cfimg" src="resources/images/noimage.gif"></td> -->
-<!-- 				<td><span class="cfname">카페이름</span><br>카페주소카페주소카페주소카페주소카페주소카페주소카페주소카페주소</td> -->
-<!-- 				<td>2018-08-27</td> -->
-<!-- 				<td>12:00 ~ 13:59</td> -->
-<!-- 				<td>성인 4명<br>어린이 3명</td> -->
-<!-- 				<td><button type="button" class="res_state" id="gray" disabled="disabled">사용완료</button></td> -->
-<!-- 				<td></td> -->
-<!-- 			</tr> -->
 		</tbody>
 	</table>
 

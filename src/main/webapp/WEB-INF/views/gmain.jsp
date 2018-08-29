@@ -52,13 +52,7 @@ body #bgimg .image-top {
 	position: relative;
 width: 80%;
 height: 80%;
-<<<<<<< HEAD
-opacity: 0.5;
-background-color: white;
-margin-top: -200px;
-=======
 margin-top:300px;
->>>>>>> branch 'dev' of https://github.com/yebinable/kindergarten.git
 color: black;
 }
 
@@ -114,7 +108,6 @@ h4 span:nth-child(8) { animation-delay: .7s; }
 <body>
 <div id="bgimg">
 <div id="contains">
-
 <h4>
   <span>행복과</span>
   <span>웃음이</span>
@@ -123,8 +116,7 @@ h4 span:nth-child(8) { animation-delay: .7s; }
   <span>입니다</span>
   <span>♥</span>
 </h4>
-
 </div>
-</div> 
+</div>
 </body>
 </html>

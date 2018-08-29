@@ -257,6 +257,7 @@ var popVideo = new Array();
 			
 			window.open("http://www.youtube.com/watch?v="+vid ,"_blank");
 		})	
+		openTab(ccode);
 		
 	}
 	$(function(){

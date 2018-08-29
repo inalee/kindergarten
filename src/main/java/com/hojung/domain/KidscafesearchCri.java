@@ -7,7 +7,8 @@ public class KidscafesearchCri {
 	
 	private int sigungucode;
 	private String cfname;
-	private String cfresdate;
+	private String cfresdatestr;
+	private Date cfresdate;
 	private int starttime;
 	private int endtime;
 	private int[] cfrestime_lists;
@@ -18,11 +19,12 @@ public class KidscafesearchCri {
 	public KidscafesearchCri() {
 	}
 
-	public KidscafesearchCri(int sigungucode, String cfname, String cfresdate, int starttime, int endtime,
-			int[] cfrestime_lists, int adultsnum, int kidsnum, int cfresnum) {
+	public KidscafesearchCri(int sigungucode, String cfname, String cfresdatestr, Date cfresdate, int starttime,
+			int endtime, int[] cfrestime_lists, int adultsnum, int kidsnum, int cfresnum) {
 		super();
 		this.sigungucode = sigungucode;
 		this.cfname = cfname;
+		this.cfresdatestr = cfresdatestr;
 		this.cfresdate = cfresdate;
 		this.starttime = starttime;
 		this.endtime = endtime;
@@ -48,11 +50,19 @@ public class KidscafesearchCri {
 		this.cfname = cfname;
 	}
 
-	public String getCfresdate() {
+	public String getCfresdatestr() {
+		return cfresdatestr;
+	}
+
+	public void setCfresdatestr(String cfresdatestr) {
+		this.cfresdatestr = cfresdatestr;
+	}
+
+	public Date getCfresdate() {
 		return cfresdate;
 	}
 
-	public void setCfresdate(String cfresdate) {
+	public void setCfresdate(Date cfresdate) {
 		this.cfresdate = cfresdate;
 	}
 
@@ -110,13 +120,11 @@ public class KidscafesearchCri {
 
 	@Override
 	public String toString() {
-		return "KidscafesearchCri [sigungucode=" + sigungucode + ", cfname=" + cfname + ", cfresdate=" + cfresdate
-				+ ", starttime=" + starttime + ", endtime=" + endtime + ", cfrestime_lists="
-				+ Arrays.toString(cfrestime_lists) + ", adultsnum=" + adultsnum + ", kidsnum=" + kidsnum + ", cfresnum="
-				+ cfresnum + "]";
+		return "KidscafesearchCri [sigungucode=" + sigungucode + ", cfname=" + cfname + ", cfresdatestr=" + cfresdatestr
+				+ ", cfresdate=" + cfresdate + ", starttime=" + starttime + ", endtime=" + endtime
+				+ ", cfrestime_lists=" + Arrays.toString(cfrestime_lists) + ", adultsnum=" + adultsnum + ", kidsnum="
+				+ kidsnum + ", cfresnum=" + cfresnum + "]";
 	}
-	
-	
-	
+
 
 }

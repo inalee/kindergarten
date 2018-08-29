@@ -1,9 +1,10 @@
 package com.hojung.persistence;
 
-import java.util.Date;
 import java.util.List;
 
 import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscaferesCri;
+import com.hojung.domain.KidscaferestimeCri;
 import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.MyresVO;
@@ -23,5 +24,9 @@ public interface KidscafeDAO {
 	public List<Integer> selectMyRestime(int cfrescode) throws Exception;
 	
 	public void deleteMyRes(int cfrescode) throws Exception;
+	
+	public int kidscafeRes(KidscaferesCri cri) throws Exception;
+	
+	public void kidscafeResTime(KidscaferestimeCri cri) throws Exception;
 	
 }

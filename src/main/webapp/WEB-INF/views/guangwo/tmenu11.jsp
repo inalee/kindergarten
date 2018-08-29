@@ -13,7 +13,6 @@
 <head>
     <meta charset="utf-8">
     <title>클릭한 위치에 마커 표시하기</title>
-    
 </head>
 <body>
 <div id="map" style="width:100%;height:350px;"></div>
@@ -24,8 +23,8 @@
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
-        center: new daum.maps.LatLng(37.49910326863306, 127.02925593486506), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
+        center: new daum.maps.LatLng(37.49485459665077, 127.04495569318487), // 지도의 중심좌표
+        level: 2 // 지도의 확대 레벨
     };
 
 var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -62,6 +61,7 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
     
 });
 </script>
+
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form action="/kinder/guangwo/tmenu10" method="POST">

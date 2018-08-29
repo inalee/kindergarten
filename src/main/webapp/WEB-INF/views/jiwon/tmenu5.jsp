@@ -514,10 +514,10 @@ function drawCalendar(){
 						<c:forEach items="${children}" var="i">
 							<c:if test="${i.atstate == 0}">
 <%-- 								<tr><td class="tds" width="15%">${i.cname}</td><td width="15%" id="atText_${i.ccode}"  class="tds">미출석</td><td width="50%" id="atCheck_${i.ccode}" class="tds"><button class="attend" value="${i.ccode}">출석</button><button class="etc" value="${i.ccode}">기타</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr> --%>
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tdst">미출석</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="attend" value="${i.ccode}">출석</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}"  class="tdst">미등원</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="attend" value="${i.ccode}">출석</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}" >Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate == 1 || i.atstate == 2}">
-								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tdst">출석</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="leave" value="${i.ccode}">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
+								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tdst">등원</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="leave" value="${i.ccode}">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>
 							</c:if>
 							<c:if test="${i.atstate eq 3}">
 								<tr><td class="tds">${i.cname}</td><td id="atText_${i.ccode}" class="tdst">하원</td><td id="atCheck_${i.ccode}" class="tdbtn"><button class="btn_disabled" disabled="disabled">하원</button></td><td width="20%"><button class="chinfo" data-target="#info_modal" value="${i.ccode}">Click</button></td></tr>

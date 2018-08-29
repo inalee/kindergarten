@@ -263,7 +263,7 @@
    //table onclick 함수
    function kidscafeRespage(cfcode) {
 	  loadFunction();
-      location.href="cafereservation?sigungucode=${cri.sigungucode}&cfname=${cri.cfname}&cfresdate=${cri.cfresdate}&starttime=${cri.starttime}&endtime=${cri.endtime}&adults=${cri.adultsnum}&kids=${cri.kidsnum}&cfcode="+cfcode;
+      location.href="cafereservation?sigungucode=${cri.sigungucode}&cfname=${cri.cfname}&cfresdate=${cri.cfresdatestr}&starttime=${cri.starttime}&endtime=${cri.endtime}&adults=${cri.adultsnum}&kids=${cri.kidsnum}&cfcode="+cfcode;
       loadFunction();
    }
 

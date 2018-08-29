@@ -32,6 +32,11 @@
   <select id="getAttendByWeek" resultType="AttendDTO">
   	select c.ccode, a.atdate, a.atstate  from attend a, children c where a.atdate >= #{atdate} and c.kincode=#{kincode} and c.ccode = a.ccode order by atdate desc;
   </select>
+    <!--   해당 유치원 정보를 가져옴 -->
+  <select id="getKinderInfo" resultType="KindergartenVO">
+  	select k.kinaddress, k.kinphone from kindergarten k, children ch where ch.kincode = k.kincode and ch.ccode = #{ccode};
+  </select>
+  
   
 <!--   해당 학부모의 아이 리스트를 가져옴 -->
 	<select id="getChildrenList" resultType="ChildrenDTO">

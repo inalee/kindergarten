@@ -27,6 +27,7 @@
 <!-- 		<property name="username" value="scott"></property> -->
 <!-- 		<property name="password" value="Tiger07#"></property> -->
 
+
 	</bean>	
 	<!-- mybatis SqlSessionFactoryBean -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

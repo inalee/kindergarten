@@ -20,7 +20,8 @@ public class MongoAttendCheck {
 	public static void insertState(int kincode, int clcode, int ccode, String state) {
 		MongoCollection<Document> col = MongoUtil.getCollection("kinder", "atcheck");
 		Document d = new Document();
-		d.append("date", new Date()).append("kincode", kincode).append("clcode", clcode).append("ccode", ccode).append("state", state);
+		d.append("date", new Date()).append("kincode", kincode).append("clcode", clcode)
+			.append("ccode", ccode).append("state", state);
 		col.insertOne(d);
 	}
 

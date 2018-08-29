@@ -15,13 +15,14 @@ public class MyresVO {
 	private String cfrestime_str;
 	private int adultsnum;
 	private int kidsnum;
+	private int cfcode;
 	
 	public MyresVO() {
 
 	}
 
 	public MyresVO(int cfrescode, java.util.Date confirtime, String cfimg, String cfname, String address,
-			Date cfresdate, int[] cfrestime_lists, String cfrestime_str, int adultsnum, int kidsnum) {
+			Date cfresdate, int[] cfrestime_lists, String cfrestime_str, int adultsnum, int kidsnum, int cfcode) {
 		super();
 		this.cfrescode = cfrescode;
 		this.confirtime = confirtime;
@@ -33,6 +34,7 @@ public class MyresVO {
 		this.cfrestime_str = cfrestime_str;
 		this.adultsnum = adultsnum;
 		this.kidsnum = kidsnum;
+		this.cfcode = cfcode;
 	}
 
 	public int getCfrescode() {
@@ -115,14 +117,20 @@ public class MyresVO {
 		this.kidsnum = kidsnum;
 	}
 
+	public int getCfcode() {
+		return cfcode;
+	}
+
+	public void setCfcode(int cfcode) {
+		this.cfcode = cfcode;
+	}
+
 	@Override
 	public String toString() {
 		return "MyresVO [cfrescode=" + cfrescode + ", confirtime=" + confirtime + ", cfimg=" + cfimg + ", cfname="
 				+ cfname + ", address=" + address + ", cfresdate=" + cfresdate + ", cfrestime_lists="
 				+ Arrays.toString(cfrestime_lists) + ", cfrestime_str=" + cfrestime_str + ", adultsnum=" + adultsnum
-				+ ", kidsnum=" + kidsnum + "]";
+				+ ", kidsnum=" + kidsnum + ", cfcode=" + cfcode + "]";
 	}
-
-	
 
 }

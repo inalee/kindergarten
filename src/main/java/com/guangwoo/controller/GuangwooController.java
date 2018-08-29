@@ -70,13 +70,16 @@ public class GuangwooController {
 	public String tmenu8Post(HttpSession session,
 			@RequestParam String carname,@RequestParam Integer tecode,
 			@RequestParam String carnum,@RequestParam String carpay,
-			@RequestParam String oilname,@RequestParam String vtlname,
-			@RequestParam String faname,@RequestParam Integer fayear
+			@RequestParam String oilname,@RequestParam String vtlname1,@RequestParam String vtlname2,
+			@RequestParam String faname,@RequestParam String fayear1
 			) throws Exception {
 		
 		TeacherVO vo = (TeacherVO) session.getAttribute("teacher");
 		VehicleVO vvo = new VehicleVO();
 		vvo.setKincode(vo.getKincode());
+		
+		String vtlname = vtlname1+vtlname2;
+		int fayear = Integer.parseInt(fayear1);
 		
 		    vvo.setTecode(tecode);
 			vvo.setCarname(carname);
@@ -158,6 +161,18 @@ public class GuangwooController {
 		return "redirect:tmenu9";
 	}
 	
+	@RequestMapping(value = "/tmenu10", method = RequestMethod.POST)
+	public String tmenu10inpost(HttpSession session,
+			@RequestParam String stname,@RequestParam Double stx, @RequestParam Double sty )throws Exception {
+		StationVO svo = new StationVO();
+		svo.setSdcode(11);
+		svo.setStname(stname);
+		svo.setStx(stx);
+		svo.setSty(sty);
+		stservice.station_insert(svo);
+
+		return "redirect:tmenu10";
+	}
 	
 	@RequestMapping(value = "/tmenu10", method = RequestMethod.GET)
 	public String tmenu10get(HttpSession session, Model model) throws Exception {
@@ -166,17 +181,7 @@ public class GuangwooController {
 		return "/tmenu10";
 	}
 	
-	@RequestMapping(value = "/tmenu10", method = RequestMethod.POST)
-	public String tmenu10inpost(HttpSession session,
-			@RequestParam String stname,@RequestParam Double stx, @RequestParam Double sty )throws Exception {
-		StationVO svo = new StationVO();
-		svo.setStname(stname);
-		svo.setStx(stx);
-		svo.setSty(sty);
-		stservice.station_insert(svo);	
-
-		return "redirect:tmenu10";
-	}
+	
 	@RequestMapping(value="del_station",method=RequestMethod.GET)
 	public String del_station(HttpServletRequest request) throws Exception {
 		

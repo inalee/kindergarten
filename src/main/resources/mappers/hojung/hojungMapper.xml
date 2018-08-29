@@ -82,6 +82,15 @@
   </select>
   
   <!-- 키즈카페 예약 -->
+  <insert id="kidscafeRes" >
+  insert into cafe_reservation(cfcode, gcode, cfresdate, adultsnum, kidsnum) values(#{cfcode},#{gcode},#{cfresdate},#{adultsnum},#{kidsnum})
+  </insert>
+  <select id="selectCfrescode" resultType="int">
+  select max(cfrescode) from cafe_reservation
+  </select>
+  <insert id="kidscafeResTime" >
+  insert into cafe_restime(cfrescode, cfrestime) values(#{cfrescode},#{cfrestime})
+  </insert>
   
   
   <!-- 보호자 정보 가져오기 -->
@@ -91,7 +100,7 @@
   
   <!-- 나의 예약 내역 -->
   <select id="selectMyRes" resultType="com.hojung.domain.MyresVO">
-  select cr.cfrescode, cr.confirtime, kc.cfimg, kc.cfname, kc.address, cr.cfresdate, cr.adultsnum, cr.kidsnum
+  select cr.cfrescode, cr.confirtime, kc.cfimg, kc.cfname, kc.address, cr.cfresdate, cr.adultsnum, cr.kidsnum, kc.cfcode
   from cafe_reservation cr, kidscafe kc
   where cr.cfcode=kc.cfcode and gcode=#{gcode}
   order by cr.confirtime desc

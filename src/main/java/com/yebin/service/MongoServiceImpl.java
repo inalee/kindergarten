@@ -34,6 +34,7 @@ public class MongoServiceImpl implements MongoService {
 	public MongoServiceImpl() {
 	}
 
+	// 몽고DB 연결 시 DB이름 / Collection이름을 설정하는 함수
 	@Override
 	public void defaultSetting(String dbname, String colname) {
 		setDbname(dbname);
@@ -61,10 +62,10 @@ public class MongoServiceImpl implements MongoService {
 		MongoCollection<Document> col = MongoUtil.getCollection(getDbname(), getColname());
 		List<Document> docList = new ArrayList<>();
 
-//		if (jsonString.contains("'")) {
-//			jsonString = jsonString.replaceAll("'", "\"");
-//		}
-		
+		// if (jsonString.contains("'")) {
+		// jsonString = jsonString.replaceAll("'", "\"");
+		// }
+
 		if (jsonString.contains("\"")) {
 			jsonString = jsonString.replaceAll("\"", "'");
 		}
@@ -72,7 +73,7 @@ public class MongoServiceImpl implements MongoService {
 		if (jsonString.startsWith("[")) {
 			jsonString = jsonString.substring(1, jsonString.lastIndexOf("]"));
 		}
-		
+
 		if (jsonString.contains("!")) {
 			jsonString = jsonString.replaceAll("!", " ");
 		}
@@ -89,6 +90,7 @@ public class MongoServiceImpl implements MongoService {
 
 	}
 
+	// 날짜가 포함되어있는 json String을 MongoDB에 입력하기 위한 함수
 	@Override
 	public void insertWithDate(String jsonString, String dateKeyName) {
 		MongoCollection<Document> col = MongoUtil.getCollection(getDbname(), getColname());
@@ -108,6 +110,7 @@ public class MongoServiceImpl implements MongoService {
 
 	}
 
+	// 몽고DB에서 해당 컬렉션의 전체 DB를 가져와 List로 Return하는 함수
 	@Override
 	public List<Document> findAll() {
 		MongoCollection<Document> col = MongoUtil.getCollection(getDbname(), getColname());
@@ -121,7 +124,8 @@ public class MongoServiceImpl implements MongoService {
 	@Override
 	public List<Document> findwithFilter(String projectionStr, String filterKey, String filterValue) {
 		MongoCollection<Document> col = MongoUtil.getCollection(getDbname(), getColname());
-		FindIterable<Document> findIter = col.find(Filters.eq(filterKey, filterValue)).projection(Document.parse(projectionStr));
+		FindIterable<Document> findIter = col.find(Filters.eq(filterKey, filterValue))
+				.projection(Document.parse(projectionStr));
 		Iterator<Document> iter = findIter.iterator();
 		List<Document> list = Lists.newArrayList(iter);
 		System.out.println("[findWithFilter] " + list);
@@ -182,7 +186,7 @@ public class MongoServiceImpl implements MongoService {
 
 		return map;
 	}
-	
+
 	@Override
 	public Map<Object, Object> bsonToJson(List<Document> list) {
 		// 가장 최신의 data만 가져와서 map에 저장
@@ -191,12 +195,12 @@ public class MongoServiceImpl implements MongoService {
 		for (Document listDoc : list) {
 			try {
 				jsObj = (JSONObject) jsParser.parse(listDoc.toJson());
-				for(Object key : jsObj.keySet()) {
+				for (Object key : jsObj.keySet()) {
 					map.put(jsObj.get(key), jsObj.get(key));
-//					System.out.println("키 : " + jsObj.get(key) + " 값:" + jsObj.get(key));
+					// System.out.println("키 : " + jsObj.get(key) + " 값:" + jsObj.get(key));
 
 				}
-			
+
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -204,7 +208,6 @@ public class MongoServiceImpl implements MongoService {
 
 		return map;
 	}
-	
 
 	public String getDbname() {
 		return dbname;

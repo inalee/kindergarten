@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.kinder.domain.ClassVO;
+import com.kinder.domain.KindergartenVO;
 import com.kinder.domain.MemberVO;
 import com.jiwon.domain.VideoVO;
 import com.jiwon.dto.AttendDTO;
@@ -106,5 +107,10 @@ public class JChildrenDAOImpl implements JChildrenDAO {
 	@Override
 	public List<AttendDTO> getAttendByWeek(AttendDTO dto) throws Exception {
 		return session.selectList(namespace + ".getAttendByWeek", dto);
+	}
+
+	@Override
+	public KindergartenVO getKinderInfo(int ccode) throws Exception {
+		return session.selectOne(namespace + ".getKinderInfo", ccode);
 	}
 }

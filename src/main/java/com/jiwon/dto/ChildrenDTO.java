@@ -17,8 +17,15 @@ public class ChildrenDTO {
 	String memgen;
 	int memage;
 	String memphone;
+	int state;
 
 	
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
+	}
 	public int getKincode() {
 		return kincode;
 	}

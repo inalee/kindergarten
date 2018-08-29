@@ -52,8 +52,8 @@ body #bgimg .image-top {
 	position: relative;
 width: 80%;
 height: 80%;
-opacity: 0.2;
-background-color: black;
+opacity: 0.5;
+background-color: white;
 margin-top: -200px;
 color: black;
 }
@@ -62,8 +62,8 @@ color: black;
 <body>
 <div id="bgimg">
 <div id="contains">
-<h1 style="margin: 300px;">행복과 웃음이 가득한 Kindergarten 입니다♥</h1>
+<h1 style="margin: 300px; color: black;	">${glogin.memname }보호자님 환영합니다.<br>행복과 웃음이 가득한 Kindergarten 입니다.</h1>
 </div>
-</div>
+</div>  v
 </body>
 </html>

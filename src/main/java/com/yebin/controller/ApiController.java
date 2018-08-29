@@ -105,12 +105,9 @@ public class ApiController {
 
 	// MySql - 사용자가 선택한 체험학습 후보지 저장
 	@RequestMapping(value = "/postSaveList", method = RequestMethod.POST)
-	public ResponseEntity<String> postSaveList(@RequestParam String[] keywords, @RequestParam String[] jsondata,
+	public ResponseEntity<String> postSaveList(@RequestParam String[] keywords, @RequestParam String[] jsondata, //매개변수로 선택한 키워드 / json데이터를 넘겨받고
 			HttpSession hs) {
-
-		// HttpHeaders responseHeaders = new HttpHeaders();
-		// responseHeaders.add("Content-Type", "application/json; charset=utf-8");
-
+		
 		// MongoDB에서 임시저장한 분류 가져오기
 		mongoService.defaultSetting("kinder", "condTempSave");
 		MemberVO memVO = (MemberVO) hs.getAttribute("tlogin");
@@ -128,10 +125,12 @@ public class ApiController {
 		areaVO.setArarea(map.get("zone").toString());
 		areaVO.setArcity(map.get("city").toString());
 		fieldVO.setFtperson(map.get("person").toString());
-		fieldVO.setFtselecteddate(map.get("date").toString()+"-01");
+		fieldVO.setFtselecteddate(map.get("date").toString()+"-01"); // 날짜 임의 지정
 
 		List<Map<String, Integer>> pvoList = new ArrayList<>();
 		Map<String, Integer> tempKey = new HashMap<>();
+		
+		//가짜 데이터를 항상 마지막에 마침표처럼 사용하기 때문에 길이를 -1 해줌
 		String[] data = new String[jsondata.length-1];
 		for(int i = 0; i < jsondata.length; i++) {
 			if(!jsondata[i].contains("noData")) {
@@ -139,15 +138,17 @@ public class ApiController {
 				System.out.println(data[i]);				
 			}
 		}
+		
+		// 매개변수로 받은 jsondata를 파싱하는 과정 
 		Map<String, Map<String, Object>> comMap = JsonParse.jsonToMap(data);
+		
 		for (int i = 0; i < keywords.length; i++) {
-			fieldVO.setFttitle(keywords[i]);
-
-			for (String m : comMap.keySet()) {
-				if (fieldVO.getFttitle().equals(m)) {
-					Map<String, Object> temp = comMap.get(m);
-					fieldVO.setFtweb(temp.get("website").toString());
-					fieldVO.setFtaddr(temp.get("address").toString());
+			fieldVO.setFttitle(keywords[i]); // 매개변수로 받아온 키워드(fttitle)를 fieldVO에 set
+			for (String m : comMap.keySet()) { //map으로 변환한 json데이터를 돌리면서
+				if (fieldVO.getFttitle().equals(m)) { //키워드와 해당 맵의 title이 같으면
+					Map<String, Object> temp = comMap.get(m); // 해당 값을 가지고와서
+					fieldVO.setFtweb(temp.get("website").toString()); //웹사이트 url과
+					fieldVO.setFtaddr(temp.get("address").toString()); //주소를 해당 인스턴스에 set 하고
 					String[] doSplit = null;
 					if (temp.get("do").equals("제한없음")) {
 
@@ -156,7 +157,6 @@ public class ApiController {
 							pvoList.add(tempKey);
 						}
 					} else {
-
 						doSplit = temp.get("do").toString().split("~");
 
 						try {
@@ -178,6 +178,7 @@ public class ApiController {
 				}
 			}
 		}
+		
 		hs.setAttribute("tempKeyList", pvoList); // 맵 형태가 담긴 리스트
 		System.out.println(hs.getAttribute("tempKeyList").toString());
 
@@ -194,12 +195,9 @@ public class ApiController {
 		TourismVO tvo = new TourismVO();
 
 		for (String f : FtcodeMap.keySet()) {
-			System.out.println("asdfafadsfasdfasdfasdfasdfasdfasfas"+f);
-//			fvo.setFtcode(FtcodeMap.get(f));
 			fvo.setFtcode((int)hs.getAttribute("ftcodeToken"));
 		}
 		
-
 		for (int i = 0; i < tourCourse.length; i++) {
 			Map<String, Object> map = JsonParse.jsonToSingleMap(tourCourse[i]);
 			tvo.setTouraddr((String) map.get("placeAddr"));

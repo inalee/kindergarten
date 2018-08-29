@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.hojung.domain.KidscafeVO;
+import com.hojung.domain.KidscaferesCri;
+import com.hojung.domain.KidscaferestimeCri;
 import com.hojung.domain.KidscafesearchCri;
 import com.hojung.domain.KidscafesumCri;
 import com.hojung.domain.KinsearchCri;
@@ -57,6 +59,19 @@ public class KidscafeServiceImpl implements KidscafeService {
 	@Override
 	public void deleteMyRes(int cfrescode) throws Exception {
 		dao.deleteMyRes(cfrescode);
+	}
+
+	@Override
+	public void kidscafeRes(KidscaferesCri cri) throws Exception {
+		int cfrescode = dao.kidscafeRes(cri);
+		
+		KidscaferestimeCri tcri = new KidscaferestimeCri();
+		for (int cfrestime : cri.getCfrestime_lists()) {
+			tcri.setCfrescode(cfrescode);
+			tcri.setCfrestime(cfrestime);
+			dao.kidscafeResTime(tcri);
+		}
+		
 	}
 
 }

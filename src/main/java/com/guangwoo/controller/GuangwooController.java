@@ -161,14 +161,6 @@ public class GuangwooController {
 		return "redirect:tmenu9";
 	}
 	
-	
-	@RequestMapping(value = "/tmenu10", method = RequestMethod.GET)
-	public String tmenu10get(HttpSession session, Model model) throws Exception {
-		TeacherVO vo = (TeacherVO) session.getAttribute("teacher");
-		model.addAttribute("stlist", stservice.station_select(vo.getKincode()));
-		return "/tmenu10";
-	}
-	
 	@RequestMapping(value = "/tmenu10", method = RequestMethod.POST)
 	public String tmenu10inpost(HttpSession session,
 			@RequestParam String stname,@RequestParam Double stx, @RequestParam Double sty )throws Exception {
@@ -181,6 +173,15 @@ public class GuangwooController {
 
 		return "redirect:tmenu10";
 	}
+	
+	@RequestMapping(value = "/tmenu10", method = RequestMethod.GET)
+	public String tmenu10get(HttpSession session, Model model) throws Exception {
+		TeacherVO vo = (TeacherVO) session.getAttribute("teacher");
+		model.addAttribute("stlist", stservice.station_select(vo.getKincode()));
+		return "/tmenu10";
+	}
+	
+	
 	@RequestMapping(value="del_station",method=RequestMethod.GET)
 	public String del_station(HttpServletRequest request) throws Exception {
 		

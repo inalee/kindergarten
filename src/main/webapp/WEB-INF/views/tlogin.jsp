@@ -32,7 +32,7 @@ var join = '${jointest}';
 var naverLogin = new naver.LoginWithNaverId(
 	{
 		clientId: "nZ6hOsd_vBKNiin5JPzT",
-		callbackUrl: "http://localhost:8080/tloginWithNaver.jsp",
+		callbackUrl: "http://192.168.0.15:8080/tloginWithNaver.jsp",
 		isPopup: false , /* 팝업을 통한 연동처리 여부 */
 		callbackHandle: false
 	}
